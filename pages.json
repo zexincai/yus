@@ -2,6 +2,12 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
 			"path": "pages/login/index",
 			"style": {
 				"navigationBarTitleText": "登录",
@@ -9,17 +15,120 @@
 			}
 		},
 		{
-			"path": "pages/index/index",
+			"path": "pages/login/register/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "找回密码"
+			}
+		},
+		{
+			"path": "pages/login/result/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/message/index",
+			"style": {
+				"navigationBarTitleText": "消息"
+			}
+		},
+		{
+			"path": "pages/message/detail/index",
+			"style": {
+				"navigationBarTitleText": "消息"
+			}
+		},
+		{
+			"path": "pages/case/index",
+			"style": {
+				"navigationBarTitleText": "案例"
+			}
+		},
+		{
+			"path": "pages/case/detail/index",
+			"style": {
+				"navigationBarTitleText": "案例详情"
+			}
+		},
+		{
+			"path": "pages/news/index",
+			"style": {
+				"navigationBarTitleText": "资讯"
+			}
+		},
+		{
+			"path": "pages/news/detail/index",
+			"style": {
+				"navigationBarTitleText": "资讯"
+			}
+		},
+		{
+			"path": "pages/device/edit/index",
+			"style": {
+				"navigationBarTitleText": "编辑设备"
+			}
+		},
+		{
+			"path": "pages/device/param/index",
+			"style": {
+				"navigationBarTitleText": "参数"
+			}
+		},
+		{
+			"path": "pages/device/data/index",
+			"style": {
+				"navigationBarTitleText": "数据"
+			}
+		},
+		{
+			"path": "pages/device/stat/index",
+			"style": {
+				"navigationBarTitleText": "统计"
+			}
+		},
+		{
+			"path": "pages/device/setting/index",
+			"style": {
+				"navigationBarTitleText": "统计"
 			}
 		}
 	],
+	"tabBar": {
+		"color": "#ffffff",
+		"selectedColor": "#D68F01",
+		"backgroundColor": "#2D3C58",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/images/home.png",
+				"selectedIconPath": "static/images/home-active.png"
+			},
+			{
+				"pagePath": "pages/message/index",
+				"text": "消息",
+				"iconPath": "static/images/message.png",
+				"selectedIconPath": "static/images/message-active.png"
+			},
+			{
+				"pagePath": "pages/news/index",
+				"text": "资讯",
+				"iconPath": "static/images/news.png",
+				"selectedIconPath": "static/images/news-active.png"
+			},
+			{
+				"pagePath": "pages/case/index",
+				"text": "案例",
+				"iconPath": "static/images/case.png",
+				"selectedIconPath": "static/images/case-active.png"
+			}
+		]
+	},
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "优口",
+		"navigationBarBackgroundColor": "#152136",
+		"backgroundColor": "#152136"
 	},
 	"uniIdRouter": {}
 }

@@ -1,22 +1,86 @@
 <template>
-	<view>
-		
+	<view class="container">
+		<view v-if="type == 'reset'" class="result-content">
+			<!-- 成功图标 -->
+			<image class="success-icon" src="/static/images/login-reset-success.png" mode="aspectFit" />
+			<!-- 成功提示文本 -->
+			<text class="success-title">重置密码成功！</text>
+			<text class="success-desc">请使用手机号码与密码登录</text>ƒ
+			<!-- 登录按钮 -->
+			<button class="login-btn" @click="goToLogin">
+				去登录
+			</button>
+		</view>
+		<view v-if="type == 'register'" class="result-content">
+			<!-- 成功图标 -->
+			<image class="success-icon" src="/static/images/login-register-success.png" mode="aspectFit" />
+			<!-- 成功提示文本 -->
+			<text class="success-title">注册成功</text>
+			<text class="success-desc">请使用手机号码与密码登录</text>ƒ
+			<!-- 登录按钮 -->
+			<button class="login-btn" @click="goToLogin">
+				去登录
+			</button>
+		</view>
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			
-		}
-	}
+<script setup>
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+// const type = ref(route.query.type)
+const type = ref('register')
+const goToLogin = () => {
+	uni.redirectTo({
+		url: '/pages/login/index'
+	})
+}
 </script>
 
-<style>
+<style lang="scss" scoped>
+.container {
+	min-height: 100vh;
+	background-color: $primary-color;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
 
+.result-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+
+	.success-icon {
+		width: 217rpx;
+		height: 217rpx;
+		margin-bottom: 40rpx;
+	}
+
+	.success-title {
+		font-size: 32rpx;
+		color: #D68F01;
+		margin-bottom: 20rpx;
+	}
+
+	.success-desc {
+		font-size: 29rpx;
+		color: #fff;
+		margin-bottom: 491rpx;
+	}
+
+	.login-btn {
+		width: 688rpx;
+		height: 90rpx;
+		border-radius: 18rpx;
+		background: #D68F01;
+		font-size: 29rpx;
+		color: #fff;
+	}
+}
 </style>

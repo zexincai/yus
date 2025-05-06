@@ -1,20 +1,13 @@
 <template>
   <view class="login-container">
+    <image src="/static/login-bg.png" class="login-bg" />
     <!-- 登录类型选择 -->
     <view class="login-type">
-      <view
-        class="type-item"
-        :class="{ active: loginType === 'user' }"
-        @click="loginType = 'user'"
-      >
+      <view class="type-item" :class="{ active: loginType === 'user' }" @click="loginType = 'user'">
         <view class="circle" :class="{ active: loginType === 'user' }"></view>
         用户登录
       </view>
-      <view
-        class="type-item"
-        :class="{ active: loginType === 'dealer' }"
-        @click="loginType = 'dealer'"
-      >
+      <view class="type-item" :class="{ active: loginType === 'dealer' }" @click="loginType = 'dealer'">
         <view class="circle" :class="{ active: loginType === 'dealer' }"></view>
         经销商登录
       </view>
@@ -23,20 +16,11 @@
     <!-- 登录表单 -->
     <view class="login-form">
       <view class="form-item">
-        <input
-          type="text"
-          v-model="form.phone"
-          placeholder="手机号码"
-          placeholder-class="placeholder"
-        />
+        <input type="text" v-model="form.phone" placeholder="手机号码" placeholder-class="placeholder" />
       </view>
       <view class="form-item">
-        <input
-          :type="showPassword ? 'text' : 'password'"
-          v-model="form.password"
-          placeholder="密码"
-          placeholder-class="placeholder"
-        />
+        <input :type="showPassword ? 'text' : 'password'" v-model="form.password" placeholder="密码"
+          placeholder-class="placeholder" />
         <text class="eye-icon" @click="showPassword = !showPassword"> 👁 </text>
       </view>
 
@@ -133,13 +117,24 @@ const handleViewPrivacy = () => {
 .login-container {
   min-height: 100vh;
   background-color: #1c2431;
-  padding: 60rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  align-items: center;
+}
+
+.login-bg {
+  margin-top: 240rpx;
+  width: 420rpx;
+  height: 170rpx;
 }
 
 .login-type {
+  margin-top: 136rpx;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 80rpx;
+  width: 550rpx;
 
   .type-item {
     display: flex;
