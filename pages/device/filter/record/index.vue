@@ -1,29 +1,35 @@
 <template>
-  <view class="record-container">
+  <view class="filter-record-container">
     <!-- 顶部导航栏 -->
     <view class="nav-bar">
       <view class="back" @click="handleBack">
         <text class="iconfont icon-back">&#xe8ef;</text>
       </view>
-      <text class="title">续期记录</text>
+      <text class="title">换芯记录</text>
     </view>
 
     <!-- 记录总数 -->
-    <view class="record-count"> 续期记录：{{ records.length }} </view>
+    <view class="record-count"> 换芯记录：{{ records.length }} </view>
 
-    <!-- 续期记录列表 -->
+    <!-- 换芯记录列表 -->
     <view v-for="(item, idx) in records" :key="idx" class="record-card">
       <view class="card-header">
-        <text class="sn"
-          >SN：<text class="sn-blue">{{ item.sn }}</text></text
+        <text class="filter-code"
+          >滤芯码：<text class="blue">{{ item.code }}</text></text
         >
-        <text class="days">续期{{ item.days }}天</text>
+        <text class="imei">IMEI: {{ item.imei }}</text>
       </view>
-      <view class="card-info">
-        <view>续约前：{{ item.beforeDate }}</view>
-        <view>续后前：{{ item.afterDate }}</view>
+      <view class="card-body">
+        <view class="label-orange">更换滤芯：</view>
+        <view class="filter-list">
+          <view v-for="(f, i) in item.filters" :key="i" class="filter-name">{{
+            f
+          }}</view>
+        </view>
+      </view>
+      <view class="card-footer">
         <view>操作人：{{ item.operator }}</view>
-        <view>操作时间：{{ item.operateTime }}</view>
+        <view>操作时间：{{ item.time }}</view>
       </view>
     </view>
   </view>
@@ -34,28 +40,18 @@ import { ref } from "vue";
 
 const records = ref([
   {
-    sn: "4533095668934",
-    days: 90,
-    beforeDate: "2025-03-30",
-    afterDate: "2025-06-30",
+    code: "C56498",
+    imei: "84569833450098",
+    filters: ["精密PP棉", "活性炭", "RO反渗透膜"],
     operator: "李小梦",
-    operateTime: "2025-04-23 16:28",
+    time: "2025-04-23 16:28",
   },
   {
-    sn: "4533095668934",
-    days: 60,
-    beforeDate: "2025-03-30",
-    afterDate: "2025-06-30",
+    code: "C56498",
+    imei: "84569833450098",
+    filters: ["精密PP棉", "活性炭", "RO反渗透膜"],
     operator: "李小梦",
-    operateTime: "2025-04-23 16:28",
-  },
-  {
-    sn: "4533095668934",
-    days: 120,
-    beforeDate: "2025-03-30",
-    afterDate: "2025-06-30",
-    operator: "李小梦",
-    operateTime: "2025-04-23 16:28",
+    time: "2025-04-23 16:28",
   },
 ]);
 
@@ -65,7 +61,7 @@ const handleBack = () => {
 </script>
 
 <style lang="scss" scoped>
-.record-container {
+.filter-record-container {
   min-height: 100vh;
   background: #1c2431;
   padding-top: var(--status-bar-height);
@@ -84,7 +80,6 @@ const handleBack = () => {
     left: 30rpx;
     font-size: 40rpx;
   }
-
   .title {
     font-size: 36rpx;
   }
@@ -108,24 +103,46 @@ const handleBack = () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18rpx;
+    margin-bottom: 12rpx;
 
-    .sn {
+    .filter-code {
       font-size: 28rpx;
-      .sn-blue {
+      .blue {
         color: #1ecfff;
       }
     }
-    .days {
-      font-size: 28rpx;
+    .imei {
+      font-size: 26rpx;
+      color: #bfc9d6;
     }
   }
 
-  .card-info {
+  .card-body {
+    display: flex;
+    margin-bottom: 12rpx;
+
+    .label-orange {
+      color: #f39b11;
+      font-size: 26rpx;
+      margin-right: 12rpx;
+      flex-shrink: 0;
+    }
+    .filter-list {
+      display: flex;
+      flex-direction: column;
+      .filter-name {
+        color: #fff;
+        font-size: 26rpx;
+        line-height: 36rpx;
+      }
+    }
+  }
+
+  .card-footer {
     font-size: 26rpx;
     color: #bfc9d6;
     view {
-      margin-bottom: 8rpx;
+      margin-bottom: 4rpx;
     }
   }
 }

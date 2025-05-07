@@ -58,7 +58,7 @@
     </view>
 
     <!-- 底部导航栏 -->
-    <view class="tab-bar">
+    <!-- <view class="tab-bar">
       <view 
         v-for="(item, index) in tabBarList" 
         :key="index"
@@ -69,7 +69,7 @@
         <image :src="item.icon" mode="aspectFit" class="tab-bar-icon" />
         <text>{{ item.label }}</text>
       </view>
-    </view>
+    </view> -->
   </view>
 </template>
 
