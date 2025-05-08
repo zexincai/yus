@@ -1,191 +1,191 @@
 <template>
-	<view class="register-page">
-		<view class="form">
-			<!-- 手机号输入 -->
+	<view class="login-container">
+		<view class="forget-form">
+			<view class="label">手机号码</view>
 			<view class="form-item">
-				<text class="label">手机号码</text>
-				<input v-model="formData.phone" type="number" placeholder="请输入" class="input" />
+				<input type="text" maxlength="11" v-model="form.phone" placeholder="手机号码"
+					placeholder-class="placeholder" />
+			</view>
+			<view class="label">验证码</view>
+			<view class="form-item">
+				<input type="text" maxlength="11" v-model="form.code" placeholder="请输入"
+					placeholder-class="placeholder" />
+				<text class="code">获取验证码</text>
+			</view>
+			<view class="label">姓名</view>
+			<view class="form-item">
+				<input type="text" v-model="form.name" placeholder="请输入" placeholder-class="placeholder" />
+			</view>
+			<view class="label">密码</view>
+			<view class="form-item">
+				<input :type="showPassword ? 'text' : 'password'" v-model="form.password" placeholder="密码"
+					placeholder-class="placeholder" />
+				<image v-if="!showPassword" src="/static/images/eye-off.png" class="eye-icon"
+					@click="showPassword = !showPassword" />
+				<image v-else src="/static/images/eye-open.png" class="eye-icon eye-open"
+					@click="showPassword = !showPassword" />
 			</view>
 
-			<!-- 验证码输入 -->
+			<view class="label">确认密码</view>
 			<view class="form-item">
-				<text class="label">验证码</text>
-				<view class="verify-code">
-					<input v-model="formData.code" type="number" placeholder="请输入" class="input" />
-					<text class="get-code" :class="{ disabled: counting }" @click="getVerifyCode">
-						{{ codeText }}
-					</text>
-				</view>
+				<input :type="showPasswordTwo ? 'text' : 'password'" v-model="form.passwordTwo" placeholder="密码"
+					placeholder-class="placeholder" />
+				<image v-if="!showPasswordTwo" src="/static/images/eye-off.png" class="eye-icon"
+					@click="showPasswordTwo = !showPasswordTwo" />
+				<image v-else src="/static/images/eye-open.png" class="eye-icon eye-open"
+					@click="showPasswordTwo = !showPasswordTwo" />
 			</view>
-
-			<!-- 密码输入 -->
-			<view class="form-item">
-				<text class="label">密码</text>
-				<input v-model="formData.password" type="password" placeholder="请输入" class="input" password />
-			</view>
-
-			<!-- 确认密码 -->
-			<view class="form-item">
-				<text class="label">确认密码</text>
-				<input v-model="formData.confirmPassword" type="password" placeholder="请输入" class="input" password />
-			</view>
-
-			<text class="tip">密码需由字母与数字组成，不少于8位</text>
-
-			<!-- 提交按钮 -->
-			<button class="submit-btn" @click="handleSubmit">
-				确定
-			</button>
+			<view class="login-tip">密码需由字母与数字组成，不少于8位</view>
+			<button class="login-btn" @click="handleSubmit">确定</button>
+			<view class="to-login-tip" @click="goToLogin">已有账号？去登录 >></view>
 		</view>
 	</view>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive } from "vue";
+
+// 登录类型
+const showPassword = ref(false);
+const showPasswordTwo = ref(false);
 
 // 表单数据
-const formData = reactive({
-	phone: '',
+const form = reactive({
+	phone: "",
+	password: "",
 	code: '',
-	password: '',
-	confirmPassword: ''
-})
+	passwordTwo: ""
+});
 
-// 验证码相关
-const counting = ref(false)
-const countdown = ref(60)
-const codeText = ref('获取验证码')
-
-// 获取验证码
-const getVerifyCode = () => {
-	if (counting.value) return
-	if (!formData.phone) {
-		uni.showToast({
-			title: '请输入手机号',
-			icon: 'none'
-		})
-		return
-	}
-
-	counting.value = true
-	codeText.value = `${countdown.value}s`
-
-	const timer = setInterval(() => {
-		countdown.value--
-		codeText.value = `${countdown.value}s`
-		if (countdown.value <= 0) {
-			clearInterval(timer)
-			counting.value = false
-			countdown.value = 60
-			codeText.value = '获取验证码'
-		}
-	}, 1000)
-
-	// TODO: 调用获取验证码接口
+const goToLogin = () => {
+	uni.redirectTo({
+		url: '/pages/login/index'
+	})
 }
-
-// 提交表单
+// 处理登录
 const handleSubmit = () => {
-	if (!formData.phone) {
+	return uni.navigateTo({
+		url: `/pages/login/result/index?from=register`
+	})
+	if (!form.phone) {
 		uni.showToast({
-			title: '请输入手机号',
-			icon: 'none'
-		})
-		return
+			title: "请输入手机号码",
+			icon: "none",
+		});
+		return;
 	}
-	if (!formData.code) {
+	if (!form.password) {
 		uni.showToast({
-			title: '请输入验证码',
-			icon: 'none'
-		})
-		return
+			title: "请输入密码",
+			icon: "none",
+		});
+		return;
 	}
-	if (!formData.password) {
-		uni.showToast({
-			title: '请输入密码',
-			icon: 'none'
-		})
-		return
-	}
-	if (formData.password !== formData.confirmPassword) {
-		uni.showToast({
-			title: '两次密码输入不一致',
-			icon: 'none'
-		})
-		return
-	}
-
-	// TODO: 调用重置密码接口
-}
+	// TODO: 实现登录逻辑
+};
 </script>
 
 <style lang="scss" scoped>
-.register-page {
+.login-container {
 	min-height: 100vh;
-	background-color: $primary-color;
-	padding: 20px;
+	background-color: $bg-color;
+	display: flex;
+	flex-direction: column;
+	// justify-content: center;
+	align-items: center;
 }
 
-.form {
-	.form-item {
-		margin-bottom: 20px;
+.forget-form {
+	margin-top: 40rpx;
+	width: 100vw;
+	padding-left: 32rpx;
+	padding-right: 32rpx;
 
-		.label {
-			font-size: 14px;
-			color: #fff;
-			margin-bottom: 8px;
-			display: block;
-		}
-
-		.input {
-			background-color: #fff;
-			height: 44px;
-			border-radius: 8px;
-			padding: 0 15px;
-			font-size: 14px;
-		}
-
-		.verify-code {
-			display: flex;
-			align-items: center;
-
-			.input {
-				flex: 1;
-				margin-right: 10px;
-			}
-
-			.get-code {
-				background-color: #f0ad4e;
-				color: #fff;
-				padding: 0 15px;
-				height: 44px;
-				line-height: 44px;
-				border-radius: 8px;
-				font-size: 14px;
-
-				&.disabled {
-					background-color: #ccc;
-				}
-			}
-		}
-	}
-
-	.tip {
-		font-size: 12px;
-		color: #999;
-		margin-bottom: 30px;
-		display: block;
-	}
-
-	.submit-btn {
-		width: 100%;
-		height: 44px;
-		line-height: 44px;
-		background-color: #f0ad4e;
+	.label {
+		font-size: 29rpx;
+		font-weight: 500;
 		color: #fff;
-		font-size: 16px;
-		border-radius: 8px;
-		text-align: center;
+		margin-bottom: 16rpx;
 	}
+
+	.form-item {
+		background: #fff;
+		margin-bottom: 48rpx;
+		border-radius: 18rpx;
+		padding: 0 25rpx;
+		position: relative;
+		height: 90rpx;
+
+		input {
+			height: 100%;
+			font-size: 25rpx;
+		}
+
+		.code {
+			font-size: 25rpx;
+			color: $active-color;
+			position: absolute;
+			right: 38rpx;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		.eye-icon {
+			width: 34rpx;
+			height: 26rpx;
+			position: absolute;
+			right: 38rpx;
+			top: 50%;
+			transform: translateY(-50%);
+
+		}
+
+		.eye-open {
+			width: 40rpx;
+			height: 40rpx;
+		}
+	}
+}
+
+.login-btn {
+	background: $active-color;
+	color: #fff;
+	height: 90rpx;
+	line-height: 90rpx;
+	border-radius: 18rpx;
+	margin-bottom: 30rpx;
+	font-size: 29rpx;
+}
+
+.login-tip {
+	color: #fff;
+	font-size: 29rpx;
+	text-align: center;
+	padding-top: 30rpx;
+	margin-bottom: 72rpx;
+}
+
+.to-login-tip {
+	color: $link-color;
+	font-size: 29rpx;
+	text-align: center;
+	padding-top: 30rpx;
+}
+
+
+.agreement {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 25rpx;
+
+	.link {
+		color: $link-color;
+	}
+}
+
+.placeholder {
+	color: #999;
 }
 </style>

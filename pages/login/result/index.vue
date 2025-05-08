@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view v-if="type == 'reset'" class="result-content">
+		<view v-if="from == 'forget'" class="result-content">
 			<!-- 成功图标 -->
 			<image class="success-icon" src="/static/images/login-reset-success.png" mode="aspectFit" />
 			<!-- 成功提示文本 -->
@@ -11,7 +11,7 @@
 				去登录
 			</button>
 		</view>
-		<view v-if="type == 'register'" class="result-content">
+		<view v-if="from == 'register'" class="result-content">
 			<!-- 成功图标 -->
 			<image class="success-icon" src="/static/images/login-register-success.png" mode="aspectFit" />
 			<!-- 成功提示文本 -->
@@ -29,8 +29,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-// const type = ref(route.query.type)
-const type = ref('register')
+const from = ref(route.query.from)
 const goToLogin = () => {
 	uni.redirectTo({
 		url: '/pages/login/index'
@@ -41,7 +40,7 @@ const goToLogin = () => {
 <style lang="scss" scoped>
 .container {
 	min-height: 100vh;
-	background-color: $primary-color;
+	background-color: $bg-color;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -50,10 +49,11 @@ const goToLogin = () => {
 
 .result-content {
 	flex: 1;
+	margin-top: 200rpx;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	// justify-content: center;
 	width: 100%;
 
 	.success-icon {
@@ -77,8 +77,9 @@ const goToLogin = () => {
 	.login-btn {
 		width: 688rpx;
 		height: 90rpx;
+		line-height: 90rpx;
 		border-radius: 18rpx;
-		background: #D68F01;
+		background: $active-color;
 		font-size: 29rpx;
 		color: #fff;
 	}

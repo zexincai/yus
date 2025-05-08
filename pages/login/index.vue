@@ -1,13 +1,13 @@
 <template>
   <view class="login-container">
-    <image src="/static/login-bg.png" class="login-bg" />
+    <image src="/static/images/login-bg.png" class="login-bg" />
     <!-- 登录类型选择 -->
     <view class="login-type">
-      <view class="type-item" :class="{ active: loginType === 'user' }" @click="loginType = 'user'">
+      <view class="type-item" @click="loginType = 'user'">
         <view class="circle" :class="{ active: loginType === 'user' }"></view>
         用户登录
       </view>
-      <view class="type-item" :class="{ active: loginType === 'dealer' }" @click="loginType = 'dealer'">
+      <view class="type-item" @click="loginType = 'dealer'">
         <view class="circle" :class="{ active: loginType === 'dealer' }"></view>
         经销商登录
       </view>
@@ -15,19 +15,24 @@
 
     <!-- 登录表单 -->
     <view class="login-form">
+      <view class="label">手机号码</view>
       <view class="form-item">
-        <input type="text" v-model="form.phone" placeholder="手机号码" placeholder-class="placeholder" />
+        <input type="text" maxlength="11" v-model="form.phone" placeholder="手机号码" placeholder-class="placeholder" />
       </view>
+      <view class="label">密码</view>
       <view class="form-item">
         <input :type="showPassword ? 'text' : 'password'" v-model="form.password" placeholder="密码"
           placeholder-class="placeholder" />
-        <text class="eye-icon" @click="showPassword = !showPassword"> 👁 </text>
+        <image v-if="!showPassword" src="/static/images/eye-off.png" class="eye-icon"
+          @click="showPassword = !showPassword" />
+        <image v-else src="/static/images/eye-open.png" class="eye-icon eye-open"
+          @click="showPassword = !showPassword" />
       </view>
 
       <!-- 记住账号和忘记密码 -->
       <view class="form-options">
         <label class="remember">
-          <checkbox v-model="form.remember" color="#F39B11" />
+          <checkbox activeBackgroundColor="#0ECBF7" style="transform:scale(0.6)" v-model="form.remember" color="#000" />
           记住账号
         </label>
         <text class="forget" @click="handleForgetPassword">忘记密码？</text>
@@ -35,11 +40,12 @@
 
       <!-- 登录按钮 -->
       <button class="login-btn" @click="handleLogin">登录</button>
-      <button class="register-btn" @click="handleRegister">注册</button>
+      <button v-if="loginType == 'user'" class="register-btn" @click="handleRegister">注册</button>
+      <view v-else class="dealer-info">经销商申请致电详询：020-89567789</view>
 
       <!-- 用户协议 -->
       <view class="agreement">
-        <checkbox v-model="form.agreement" color="#F39B11" />
+        <checkbox activeBackgroundColor="#0ECBF7" style="transform:scale(0.6)" v-model="form.agreement" color="#000" />
         <text class="agreement-text">
           您已阅读并同意
           <text class="link" @click="handleViewTerms">《用户服务协议》</text>
@@ -68,6 +74,9 @@ const form = reactive({
 
 // 处理登录
 const handleLogin = () => {
+  return uni.switchTab({
+    url: '/pages/index/index'
+  })
   if (!form.phone) {
     uni.showToast({
       title: "请输入手机号码",
@@ -95,11 +104,17 @@ const handleLogin = () => {
 // 处理注册
 const handleRegister = () => {
   // TODO: 跳转到注册页面
+  uni.navigateTo({
+    url: `/pages/login/register/index`
+  })
 };
 
 // 处理忘记密码
 const handleForgetPassword = () => {
   // TODO: 跳转到忘记密码页面
+  uni.navigateTo({
+    url: `/pages/login/forget/index`
+  })
 };
 
 // 查看用户协议
@@ -133,53 +148,69 @@ const handleViewPrivacy = () => {
   margin-top: 136rpx;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 80rpx;
+  margin-bottom: 85rpx;
   width: 550rpx;
 
   .type-item {
     display: flex;
     align-items: center;
     color: #fff;
-    font-size: 32rpx;
+    font-size: 36rpx;
 
     .circle {
-      width: 40rpx;
-      height: 40rpx;
+      width: 36rpx;
+      height: 36rpx;
+      background-color: #fff;
       border-radius: 50%;
-      border: 2rpx solid #fff;
-      margin-right: 20rpx;
+      border: 2rpx solid #A5BFE8;
+      margin-right: 18rpx;
+      box-sizing: border-box;
 
       &.active {
-        background-color: #f39b11;
-        border-color: #f39b11;
+        border: 10rpx solid #D68F01;
       }
-    }
-
-    &.active {
-      color: #f39b11;
     }
   }
 }
 
 .login-form {
+  width: 100vw;
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+
+  .label {
+    font-size: 29rpx;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 16rpx;
+  }
+
   .form-item {
     background: #fff;
-    border-radius: 12rpx;
-    height: 100rpx;
     margin-bottom: 30rpx;
-    padding: 0 30rpx;
+    border-radius: 18rpx;
+    padding: 0 25rpx;
     position: relative;
+    height: 90rpx;
 
     input {
       height: 100%;
-      font-size: 28rpx;
+      font-size: 25rpx;
     }
 
     .eye-icon {
+      width: 34rpx;
+      height: 26rpx;
       position: absolute;
-      right: 30rpx;
+      right: 38rpx;
       top: 50%;
       transform: translateY(-50%);
+
+    }
+
+    .eye-open {
+      width: 40rpx;
+      height: 40rpx;
     }
   }
 }
@@ -192,34 +223,45 @@ const handleViewPrivacy = () => {
 
   .remember {
     color: #fff;
-    font-size: 28rpx;
+    font-size: 26rpx;
     display: flex;
     align-items: center;
   }
 
+
   .forget {
-    color: #f39b11;
-    font-size: 28rpx;
+    color: #0ECBF7;
+    font-size: 26rpx;
   }
 }
 
 .login-btn {
-  background: #f39b11;
+  background: $active-color;
   color: #fff;
-  height: 100rpx;
-  line-height: 100rpx;
-  border-radius: 12rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 18rpx;
   margin-bottom: 30rpx;
+  font-size: 29rpx;
 }
 
 .register-btn {
   background: transparent;
-  color: #f39b11;
   height: 100rpx;
   line-height: 100rpx;
-  border-radius: 12rpx;
-  border: 2rpx solid #f39b11;
-  margin-bottom: 40rpx;
+  color: $active-color;
+  border-radius: 18rpx;
+  border: 3rpx solid $active-color;
+  margin-bottom: 101rpx;
+  font-size: 29rpx;
+}
+
+.dealer-info {
+  color: #fff;
+  font-size: 29rpx;
+  text-align: center;
+  padding-top: 30rpx;
+  margin-bottom: 116rpx;
 }
 
 .agreement {
@@ -227,10 +269,10 @@ const handleViewPrivacy = () => {
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 24rpx;
+  font-size: 25rpx;
 
   .link {
-    color: #f39b11;
+    color: $link-color;
   }
 }
 

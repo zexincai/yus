@@ -1,0 +1,522 @@
+@import './common.scss';
+
+// 主题颜色
+$bg-color: #1c2431; // 主背景色
+$secondary-color: #2D3C58; // 次背景色
+$accent-color: #D68F01; // 强调色
+$link-color: #0A84FF; // 链接色
+$success-color: #52c41a; // 成功色
+$warning-color: #faad14; // 警告色
+$error-color: #ff4d4f; // 错误色
+// 文字颜色
+$text-primary: #333333; // 主要文字
+$text-secondary: #999999; // 次要文字
+$text-disabled: #666666; // 禁用文字
+
+// 字体大小
+$font-size-small: 24rpx; // 小号字体
+$font-size-base: 28rpx; // 基础字体
+$font-size-large: 32rpx; // 大号字体
+$font-size-xlarge: 36rpx; // 特大号字体
+$font-size-xxlarge: 40rpx; // 超大号字体
+
+// 间距
+$spacing-mini: 10rpx; // 最小间距
+$spacing-small: 20rpx; // 小间距
+$spacing-base: 30rpx; // 基础间距
+$spacing-large: 40rpx; // 大间距
+
+// 圆角
+$border-radius-small: 8rpx; // 小圆角
+$border-radius-base: 12rpx; // 基础圆角
+$border-radius-large: 16rpx; // 大圆角
+
+// 边框
+$border-color: rgba(255, 255, 255, 0.1); // 边框颜色
+
+// 常用混入
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// 常用卡片样式
+.card {
+    background: $secondary-color;
+    border-radius: $border-radius-base;
+    padding: $spacing-base;
+}
+
+// 常用按钮样式
+.btn {
+    height: 88rpx;
+    line-height: 88rpx;
+    text-align: center;
+    font-size: $font-size-large;
+    border-radius: $border-radius-base;
+
+    &.primary {
+        background: $accent-color;
+        color: $text-primary;
+    }
+
+    &.default {
+        background: $secondary-color;
+        color: $text-primary;
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+// 常用输入框样式
+.input {
+    background: $bg-color;
+    height: 80rpx;
+    border-radius: $border-radius-small;
+    padding: 0 $spacing-base;
+    color: $text-primary;
+    font-size: $font-size-base;
+
+    &::placeholder {
+        color: $text-disabled;
+    }
+}
+
+// 常用列表样式
+.list-item {
+    @include flex-between;
+    padding: $spacing-base 0;
+    border-bottom: 2rpx solid $border-color;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+// 常用开关样式
+.custom-switch {
+    transform: scale(0.8);
+}
+
+// 常用图标样式
+.icon {
+    width: 40rpx;
+    height: 40rpx;
+
+    &.small {
+        width: 32rpx;
+        height: 32rpx;
+    }
+
+    &.large {
+        width: 48rpx;
+        height: 48rpx;
+    }
+}
+
+// 常用标签样式
+.tag {
+    padding: 4rpx 12rpx;
+    border-radius: $border-radius-small;
+    font-size: $font-size-small;
+
+    &.success {
+        background: $success-color;
+        color: $text-primary;
+    }
+
+    &.warning {
+        background: $warning-color;
+        color: $text-primary;
+    }
+
+    &.error {
+        background: $error-color;
+        color: $text-primary;
+    }
+}
+
+// 页面容器样式
+.container {
+    min-height: 100vh;
+    background-color: $bg-color;
+    padding: $spacing-base;
+}
+
+// 布局类
+.flex {
+    display: flex;
+
+    &-center {
+        @extend .flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &-between {
+        @extend .flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &-around {
+        @extend .flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    &-column {
+        @extend .flex;
+        flex-direction: column;
+    }
+
+    &-wrap {
+        @extend .flex;
+        flex-wrap: wrap;
+    }
+}
+
+// 间距类
+.m {
+    &-t {
+        &-mini {
+            margin-top: $spacing-mini;
+        }
+
+        &-small {
+            margin-top: $spacing-small;
+        }
+
+        &-base {
+            margin-top: $spacing-base;
+        }
+
+        &-large {
+            margin-top: $spacing-large;
+        }
+    }
+
+    &-b {
+        &-mini {
+            margin-bottom: $spacing-mini;
+        }
+
+        &-small {
+            margin-bottom: $spacing-small;
+        }
+
+        &-base {
+            margin-bottom: $spacing-base;
+        }
+
+        &-large {
+            margin-bottom: $spacing-large;
+        }
+    }
+
+    &-l {
+        &-mini {
+            margin-left: $spacing-mini;
+        }
+
+        &-small {
+            margin-left: $spacing-small;
+        }
+
+        &-base {
+            margin-left: $spacing-base;
+        }
+
+        &-large {
+            margin-left: $spacing-large;
+        }
+    }
+
+    &-r {
+        &-mini {
+            margin-right: $spacing-mini;
+        }
+
+        &-small {
+            margin-right: $spacing-small;
+        }
+
+        &-base {
+            margin-right: $spacing-base;
+        }
+
+        &-large {
+            margin-right: $spacing-large;
+        }
+    }
+}
+
+.p {
+    &-t {
+        &-mini {
+            padding-top: $spacing-mini;
+        }
+
+        &-small {
+            padding-top: $spacing-small;
+        }
+
+        &-base {
+            padding-top: $spacing-base;
+        }
+
+        &-large {
+            padding-top: $spacing-large;
+        }
+    }
+
+    &-b {
+        &-mini {
+            padding-bottom: $spacing-mini;
+        }
+
+        &-small {
+            padding-bottom: $spacing-small;
+        }
+
+        &-base {
+            padding-bottom: $spacing-base;
+        }
+
+        &-large {
+            padding-bottom: $spacing-large;
+        }
+    }
+
+    &-l {
+        &-mini {
+            padding-left: $spacing-mini;
+        }
+
+        &-small {
+            padding-left: $spacing-small;
+        }
+
+        &-base {
+            padding-left: $spacing-base;
+        }
+
+        &-large {
+            padding-left: $spacing-large;
+        }
+    }
+
+    &-r {
+        &-mini {
+            padding-right: $spacing-mini;
+        }
+
+        &-small {
+            padding-right: $spacing-small;
+        }
+
+        &-base {
+            padding-right: $spacing-base;
+        }
+
+        &-large {
+            padding-right: $spacing-large;
+        }
+    }
+}
+
+// 文字类
+.text {
+    &-center {
+        text-align: center;
+    }
+
+    &-left {
+        text-align: left;
+    }
+
+    &-right {
+        text-align: right;
+    }
+
+    &-primary {
+        color: $text-primary;
+    }
+
+    &-secondary {
+        color: $text-secondary;
+    }
+
+    &-disabled {
+        color: $text-disabled;
+    }
+
+    &-small {
+        font-size: $font-size-small;
+    }
+
+    &-base {
+        font-size: $font-size-base;
+    }
+
+    &-large {
+        font-size: $font-size-large;
+    }
+
+    &-xlarge {
+        font-size: $font-size-xlarge;
+    }
+
+    &-xxlarge {
+        font-size: $font-size-xxlarge;
+    }
+
+    &-bold {
+        font-weight: bold;
+    }
+
+    &-ellipsis {
+        @include text-ellipsis;
+    }
+}
+
+// 背景类
+.bg {
+    &-primary {
+        background-color: $bg-color;
+    }
+
+    &-secondary {
+        background-color: $secondary-color;
+    }
+
+    &-accent {
+        background-color: $accent-color;
+    }
+
+    &-success {
+        background-color: $success-color;
+    }
+
+    &-warning {
+        background-color: $warning-color;
+    }
+
+    &-error {
+        background-color: $error-color;
+    }
+}
+
+// 圆角类
+.radius {
+    &-small {
+        border-radius: $border-radius-small;
+    }
+
+    &-base {
+        border-radius: $border-radius-base;
+    }
+
+    &-large {
+        border-radius: $border-radius-large;
+    }
+}
+
+// 边框类
+.border {
+    border: 2rpx solid $border-color;
+
+    &-t {
+        border-top: 2rpx solid $border-color;
+    }
+
+    &-b {
+        border-bottom: 2rpx solid $border-color;
+    }
+
+    &-l {
+        border-left: 2rpx solid $border-color;
+    }
+
+    &-r {
+        border-right: 2rpx solid $border-color;
+    }
+}
+
+// 阴影类
+.shadow {
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+
+    &-lg {
+        box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.2);
+    }
+}
+
+// 定位类
+.position {
+    &-relative {
+        position: relative;
+    }
+
+    &-absolute {
+        position: absolute;
+    }
+
+    &-fixed {
+        position: fixed;
+    }
+}
+
+// 显示类
+.d {
+    &-none {
+        display: none;
+    }
+
+    &-block {
+        display: block;
+    }
+
+    &-inline {
+        display: inline;
+    }
+
+    &-inline-block {
+        display: inline-block;
+    }
+}
+
+// 溢出类
+.overflow {
+    &-hidden {
+        overflow: hidden;
+    }
+
+    &-auto {
+        overflow: auto;
+    }
+
+    &-scroll {
+        overflow: scroll;
+    }
+}
+
+view {
+    box-sizing: border-box;
+}

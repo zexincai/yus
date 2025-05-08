@@ -89,7 +89,7 @@ const handleDeleteAll = () => {
 <style lang="scss" scoped>
 .container {
 	min-height: 100vh;
-	background-color: $primary-color;
+	background-color: $bg-color;
 	padding: 20rpx;
 }
 

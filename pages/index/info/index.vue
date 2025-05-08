@@ -1,13 +1,5 @@
 <template>
   <view class="info-edit-container">
-    <!-- 顶部导航栏 -->
-    <view class="nav-bar">
-      <view class="back" @click="handleBack">
-        <text class="iconfont icon-back">&#xe8ef;</text>
-      </view>
-      <text class="title">编辑信息</text>
-    </view>
-
     <!-- 我的信息 -->
     <view class="section-title">我的信息</view>
     <view class="info-card">
@@ -15,6 +7,7 @@
         <text class="label">手机号码：</text>
         <text class="value">13876669980</text>
       </view>
+      <view class="divider"></view>
       <view class="info-row">
         <text class="label">姓名：</text>
         <text class="value">周芸</text>
@@ -26,35 +19,17 @@
     <view class="info-card">
       <view class="info-row">
         <text class="label">原密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="oldPwd"
-          placeholder=""
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="oldPwd" placeholder="" placeholder-class="placeholder" />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">新密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="newPwd"
-          placeholder=""
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="newPwd" placeholder="" placeholder-class="placeholder" />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">确认新密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="confirmPwd"
-          placeholder=""
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="confirmPwd" placeholder="" placeholder-class="placeholder" />
       </view>
     </view>
 
@@ -62,7 +37,7 @@
     <button class="save-btn" @click="handleSave">保存</button>
 
     <!-- 退出账号 -->
-    <view class="logout-link" @click="handleLogout">退出当前账号 >></view>
+    <view class="logout-link" @click="handleLogout">退出当前账号>></view>
   </view>
 </template>
 
@@ -99,10 +74,12 @@ const handleLogout = () => {
 
 <style lang="scss" scoped>
 .info-edit-container {
+  padding-top: 1rpx;
   min-height: 100vh;
-  background: #1c2431;
+  background: $bg-color;
   padding-bottom: 40rpx;
 }
+
 .nav-bar {
   position: relative;
   height: 88rpx;
@@ -110,6 +87,7 @@ const handleLogout = () => {
   align-items: center;
   justify-content: center;
   color: #fff;
+
   .back {
     position: absolute;
     left: 30rpx;
@@ -119,39 +97,46 @@ const handleLogout = () => {
     display: flex;
     align-items: center;
   }
+
   .title {
     font-size: 36rpx;
     font-weight: bold;
   }
 }
+
 .section-title {
   color: #fff;
   font-size: 28rpx;
   font-weight: bold;
-  margin: 40rpx 30rpx 10rpx 30rpx;
+  margin: 52rpx 30rpx 16rpx 30rpx;
 }
+
 .info-card {
   margin: 0 30rpx 0 30rpx;
   background: #f7f9fb;
   border-radius: 20rpx;
-  padding: 0;
+  padding: 4rpx 0;
+
   .info-row {
     display: flex;
     align-items: center;
-    height: 80rpx;
+    height: 89rpx;
     padding: 0 30rpx;
+
     .label {
       color: #223a7a;
       font-size: 28rpx;
       width: 180rpx;
       flex-shrink: 0;
     }
+
     .value {
       color: #333;
       font-size: 28rpx;
       flex: 1;
       text-align: right;
     }
+
     .input {
       flex: 1;
       font-size: 28rpx;
@@ -162,39 +147,47 @@ const handleLogout = () => {
       outline: none;
       letter-spacing: 4rpx;
     }
+
     .placeholder {
       color: #cccccc;
     }
   }
+
   .divider {
     height: 1rpx;
     background: #e5e5e5;
     margin: 0 30rpx;
   }
 }
+
 .save-btn {
-  margin: 60rpx 30rpx 0 30rpx;
-  background: #d28b0a;
+  margin: 180rpx 32rpx 0 30rpx;
+  background: $active-color;
   color: #fff;
-  height: 100rpx;
-  line-height: 100rpx;
-  border-radius: 16rpx;
-  font-size: 32rpx;
-  font-weight: bold;
+  line-height: 90rpx;
+  font-size: 29rpx;
+  height: 90rpx;
+  border-radius: 18rpx;
 }
+
 .logout-link {
-  margin: 60rpx 30rpx 0 0;
   color: #1ecfff;
   font-size: 28rpx;
-  text-align: right;
-  text-decoration: underline;
+  // text-align: right;
+  position: fixed;
+  bottom: 40rpx;
+  left: 50%;
+  transform: translateX(-50%);
+
 }
+
 .iconfont {
   font-family: "iconfont" !important;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .icon-back:before {
   content: "\e8ef";
 }

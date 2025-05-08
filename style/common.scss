@@ -1,0 +1,19 @@
+// 表单类
+.form-item {
+    background: #fff;
+    border-radius: 18rpx;
+    padding: 0 25rpx;
+    position: relative;
+    height: 90rpx;
+
+    input {
+        color: $uni-text-color;
+        height: 100%;
+        font-size: 25rpx;
+
+        &::placeholder {
+            color: $uni-text-color-placeholder;
+        }
+    }
+
+}
