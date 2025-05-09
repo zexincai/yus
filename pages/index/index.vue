@@ -172,7 +172,7 @@ const onRefresh = async () => {
 <style lang="scss" scoped>
 .container {
   min-height: 100vh;
-  background-color: #1c2431;
+  background-color: $bg-color;
   padding: 30rpx;
   padding-top: calc(var(--status-bar-height) + 10rpx);
 }

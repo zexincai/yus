@@ -1,227 +1,227 @@
 {
-	"pages": [
-		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/login/index",
-			"style": {
-				"navigationBarTitleText": "登录",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/login/forget/index",
-			"style": {
-				"navigationBarTitleText": "找回密码"
-			}
-		},
-		{
-			"path": "pages/login/register/index",
-			"style": {
-				"navigationBarTitleText": "用户注册"
-			}
-		},
-		{
-			"path": "pages/login/result/index",
-			"style": {
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/index/scan/index",
-			"style": {
-				"navigationBarTitleText": "扫码添加"
-			}
-		},
-		{
-			"path": "pages/index/record/index",
-			"style": {
-				"navigationBarTitleText": "出库记录"
-			}
-		},
-		{
-			"path": "pages/index/info/index",
-			"style": {
-				"navigationBarTitleText": "编辑信息"
-			}
-		},
-		{
-			"path": "pages/message/index",
-			"style": {
-				"navigationBarTitleText": "消息"
-			}
-		},
-		{
-			"path": "pages/message/detail/index",
-			"style": {
-				"navigationBarTitleText": "消息"
-			}
-		},
-		{
-			"path": "pages/case/index",
-			"style": {
-				"navigationBarTitleText": "案例"
-			}
-		},
-		{
-			"path": "pages/case/detail/index",
-			"style": {
-				"navigationBarTitleText": "案例详情"
-			}
-		},
-		{
-			"path": "pages/news/index",
-			"style": {
-				"navigationBarTitleText": "资讯"
-			}
-		},
-		{
-			"path": "pages/news/detail/index",
-			"style": {
-				"navigationBarTitleText": "资讯"
-			}
-		},
-		{
-			"path": "pages/device/edit/index",
-			"style": {
-				"navigationBarTitleText": "编辑设备"
-			}
-		},
-		{
-			"path": "pages/device/param/index",
-			"style": {
-				"navigationBarTitleText": "参数"
-			}
-		},
-		{
-			"path": "pages/device/data/index",
-			"style": {
-				"navigationBarTitleText": "数据"
-			}
-		},
-		{
-			"path": "pages/device/stat/index",
-			"style": {
-				"navigationBarTitleText": "统计"
-			}
-		},
-		{
-			"path": "pages/device/setting/index",
-			"style": {
-				"navigationBarTitleText": "统计"
-			}
-		},
-		{
-			"path": "pages/device/renewal/index",
-			"style": {
-				"navigationBarTitleText": "续期"
-			}
-		},
-		{
-			"path": "pages/device/renewal/record/index",
-			"style": {
-				"navigationBarTitleText": "续期"
-			}
-		},
-		{
-			"path": "pages/device/filter/index",
-			"style": {
-				"navigationBarTitleText": "续期"
-			}
-		},
-		{
-			"path": "pages/device/filter/record/index",
-			"style": {
-				"navigationBarTitleText": "换芯记录"
-			}
-		},
-		{
-			"path": "pages/device/share/index",
-			"style": {
-				"navigationBarTitleText": "共享账号"
-			}
-		},
-		{
-			"path": "pages/device/share/detail/index",
-			"style": {
-				"navigationBarTitleText": "共享账号"
-			}
-		},
-		{
-			"path": "pages/device/share/add/index",
-			"style": {
-				"navigationBarTitleText": "添加共享账号"
-			}
-		},
-		{
-			"path": "pages/device/detail/index",
-			"style": {
-				"navigationBarTitleText": "设备详情",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/device/authorize/index",
-			"style": {
-				"navigationBarTitleText": "设备授权",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/index/customer/index",
-			"style": {
-				"navigationBarTitleText": "客户详情"
-			}
-		},
-		{
-			"path": "pages/index/customer/edit/index",
-			"style": {
-				"navigationBarTitleText": "客户详情"
-			}
-		}
-	],
-	"tabBar": {
-		"color": "#A5BFE8",
-		"selectedColor": "#D68F01",
-		"backgroundColor": "#293D5E",
-		"list": [
-			{
-				"pagePath": "pages/index/index",
-				"text": "首页",
-				"iconPath": "static/images/icon-home.png",
-				"selectedIconPath": "static/images/icon-home-active.png"
-			},
-			{
-				"pagePath": "pages/message/index",
-				"text": "消息",
-				"iconPath": "static/images/icon-message.png",
-				"selectedIconPath": "static/images/icon-message-active.png"
-			},
-			{
-				"pagePath": "pages/news/index",
-				"text": "资讯",
-				"iconPath": "static/images/icon-news.png",
-				"selectedIconPath": "static/images/icon-news-active.png"
-			},
-			{
-				"pagePath": "pages/case/index",
-				"text": "案例",
-				"iconPath": "static/images/icon-case.png",
-				"selectedIconPath": "static/images/icon-case-active.png"
-			}
-		]
-	},
-	"globalStyle": {
-		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "优口",
-		"navigationBarBackgroundColor": "#152136",
-		"backgroundColor": "#152136"
-	},
-	"uniIdRouter": {}
+  "pages": [
+    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/forget/index",
+      "style": {
+        "navigationBarTitleText": "找回密码"
+      }
+    },
+    {
+      "path": "pages/login/register/index",
+      "style": {
+        "navigationBarTitleText": "用户注册"
+      }
+    },
+    {
+      "path": "pages/login/result/index",
+      "style": {
+        "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "pages/index/scan/index",
+      "style": {
+        "navigationBarTitleText": "扫码添加"
+      }
+    },
+    {
+      "path": "pages/index/record/index",
+      "style": {
+        "navigationBarTitleText": "出库记录"
+      }
+    },
+    {
+      "path": "pages/index/info/index",
+      "style": {
+        "navigationBarTitleText": "编辑信息"
+      }
+    },
+    {
+      "path": "pages/message/index",
+      "style": {
+        "navigationBarTitleText": "消息"
+      }
+    },
+    {
+      "path": "pages/message/detail/index",
+      "style": {
+        "navigationBarTitleText": "消息"
+      }
+    },
+    {
+      "path": "pages/case/index",
+      "style": {
+        "navigationBarTitleText": "案例"
+      }
+    },
+    {
+      "path": "pages/case/detail/index",
+      "style": {
+        "navigationBarTitleText": "案例详情"
+      }
+    },
+    {
+      "path": "pages/news/index",
+      "style": {
+        "navigationBarTitleText": "资讯"
+      }
+    },
+    {
+      "path": "pages/news/detail/index",
+      "style": {
+        "navigationBarTitleText": "资讯"
+      }
+    },
+    {
+      "path": "pages/device/edit/index",
+      "style": {
+        "navigationBarTitleText": "编辑设备"
+      }
+    },
+    {
+      "path": "pages/device/param/index",
+      "style": {
+        "navigationBarTitleText": "参数"
+      }
+    },
+    {
+      "path": "pages/device/data/index",
+      "style": {
+        "navigationBarTitleText": "数据"
+      }
+    },
+    {
+      "path": "pages/device/stat/index",
+      "style": {
+        "navigationBarTitleText": "统计"
+      }
+    },
+    {
+      "path": "pages/device/setting/index",
+      "style": {
+        "navigationBarTitleText": "统计"
+      }
+    },
+    {
+      "path": "pages/device/renewal/index",
+      "style": {
+        "navigationBarTitleText": "续期"
+      }
+    },
+    {
+      "path": "pages/device/renewal/record/index",
+      "style": {
+        "navigationBarTitleText": "续期"
+      }
+    },
+    {
+      "path": "pages/device/filter/index",
+      "style": {
+        "navigationBarTitleText": "续期"
+      }
+    },
+    {
+      "path": "pages/device/filter/record/index",
+      "style": {
+        "navigationBarTitleText": "换芯记录"
+      }
+    },
+    {
+      "path": "pages/device/share/index",
+      "style": {
+        "navigationBarTitleText": "共享账号"
+      }
+    },
+    {
+      "path": "pages/device/share/detail/index",
+      "style": {
+        "navigationBarTitleText": "共享账号"
+      }
+    },
+    {
+      "path": "pages/device/share/add/index",
+      "style": {
+        "navigationBarTitleText": "添加共享账号"
+      }
+    },
+    {
+      "path": "pages/device/detail/index",
+      "style": {
+        "navigationBarTitleText": "设备详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/device/authorize/index",
+      "style": {
+        "navigationBarTitleText": "设备授权",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/customer/index",
+      "style": {
+        "navigationBarTitleText": "客户详情"
+      }
+    },
+    {
+      "path": "pages/index/customer/edit/index",
+      "style": {
+        "navigationBarTitleText": "客户详情"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#A5BFE8",
+    "selectedColor": "#D68F01",
+    "backgroundColor": "#293D5E",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/images/icon-home.png",
+        "selectedIconPath": "static/images/icon-home-active.png"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息",
+        "iconPath": "static/images/icon-message.png",
+        "selectedIconPath": "static/images/icon-message-active.png"
+      },
+      {
+        "pagePath": "pages/news/index",
+        "text": "资讯",
+        "iconPath": "static/images/icon-news.png",
+        "selectedIconPath": "static/images/icon-news-active.png"
+      },
+      {
+        "pagePath": "pages/case/index",
+        "text": "案例",
+        "iconPath": "static/images/icon-case.png",
+        "selectedIconPath": "static/images/icon-case-active.png"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "优口",
+    "navigationBarBackgroundColor": "#152136",
+    "backgroundColor": "#152136"
+  },
+  "uniIdRouter": {}
 }
