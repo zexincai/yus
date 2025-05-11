@@ -39,6 +39,7 @@ const paramList = reactive([
 .container {
   background-color: $bg-color;
   padding: 40rpx 24rpx;
+  height: 100vh;
 }
 
 .param-card {

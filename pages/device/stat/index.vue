@@ -107,29 +107,30 @@ const handleConfirm = () => {
 <style lang="scss" scoped>
 .container {
 	min-height: 100vh;
-	background-color: #1c2431;
-	padding: 30rpx;
+	background-color: $bg-color;
+	padding: 24rpx;
 }
 
 .total-stats {
+	padding: 10rpx 50rpx;
 	display: flex;
-	justify-content: space-between;
-	margin-bottom: 40rpx;
+	justify-content: space-around;
+	margin-bottom: 50rpx;
 
 	.stat-item {
 		text-align: center;
 
 		.value {
 			color: #fff;
-			font-size: 48rpx;
-			font-weight: bold;
+			font-size: 43rpx;
 			margin-bottom: 10rpx;
+			line-height: 1;
 			display: block;
 		}
 
 		.label {
-			color: #999;
-			font-size: 24rpx;
+			color: #A5BFE8;
+			font-size: 21rpx;
 		}
 	}
 }
@@ -141,78 +142,89 @@ const handleConfirm = () => {
 
 	.picker-item {
 		flex: 1;
-		background: #2D3C58;
-		height: 80rpx;
+		height: 65.22rpx;
 		border-radius: 12rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		padding: 0 20rpx;
+		border-radius: 9rpx;
+		background: #324A70;
 
 		text {
 			color: #fff;
-			font-size: 28rpx;
+			font-size: 25rpx;
 		}
 
 		.arrow-icon {
-			width: 32rpx;
-			height: 32rpx;
+			// 箭头图标样式
+			width: 0;
+			height: 0;
+			border-left: 10rpx solid transparent;
+			border-right: 10rpx solid transparent;
+			border-top: 12rpx solid #CCCCCC;
+			margin-left: 4rpx;
+			display: inline-block;
+			vertical-align: middle;
+
 		}
 	}
 
 	.picker-separator {
 		color: #fff;
+		font-size: 28rpx;
 		padding: 0 20rpx;
 	}
 
 	.confirm-btn {
-		width: 160rpx;
-		height: 80rpx;
-		line-height: 80rpx;
-		background: #D68F01;
 		color: #fff;
-		font-size: 28rpx;
+		font-size: 25rpx;
 		border-radius: 12rpx;
-		margin-left: 20rpx;
+		margin-left: 40rpx;
 		text-align: center;
+		width: 130rpx;
+		line-height: 65rpx;
+		height: 65rpx;
+		border-radius: 36rpx;
+		background: $active-color;
 	}
 }
 
 .data-table {
-	background: #2D3C58;
-	border-radius: 12rpx;
+	background: #233657;
 	overflow: hidden;
 
 	.table-header {
 		display: flex;
-		padding: 20rpx 0;
-		background: #1c2431;
+		height: 66rpx;
+		align-items: center;
+		background: #35568FFF;
+		border-bottom: 4rpx solid $bg-color;
 
 		.header-cell {
 			flex: 1;
+			padding-left: 25rpx;
 			color: #fff;
-			font-size: 28rpx;
-			text-align: center;
+			font-size: 25rpx;
 		}
 	}
 
 	.table-body {
-		height: calc(100vh - 400rpx);
-
 		.table-row {
 			display: flex;
-			padding: 20rpx 0;
-			border-bottom: 2rpx solid rgba(255, 255, 255, 0.1);
+			height: 66rpx;
+			align-items: center;
+			border-bottom: 4rpx solid $bg-color;
 
 			&:last-child {
 				border-bottom: none;
 			}
 
 			.table-cell {
+				padding-left: 25rpx;
 				flex: 1;
 				color: #fff;
-				font-size: 28rpx;
-				text-align: center;
+				font-size: 25rpx;
 			}
 		}
 	}

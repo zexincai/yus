@@ -1,36 +1,20 @@
 <template>
   <view class="container">
     <!-- 轮播图 -->
-    <swiper
-      @change="onSwiperChange"
-      class="banner"
-      circular
-      autoplay
-      interval="3000"
-      duration="500"
-    >
+    <swiper @change="onSwiperChange" class="banner" circular autoplay interval="3000" duration="500">
       <swiper-item v-for="(item, index) in bannerList" :key="index">
         <image :src="item.image" mode="aspectFill" class="banner-image" />
       </swiper-item>
     </swiper>
     <view class="custom-dots">
-      <view
-        v-for="(item, idx) in bannerList"
-        :key="idx"
-        :class="['dot', { active: currentBanner === idx }]"
-      ></view>
+      <view v-for="(item, idx) in bannerList" :key="idx" :class="['dot', { active: currentBanner === idx }]"></view>
     </view>
 
     <!-- 分类标签 -->
     <scroll-view scroll-x class="status-tabs" :show-scrollbar="false">
       <view class="category-tabs">
-        <view
-          v-for="(tab, index) in tabs"
-          :key="index"
-          class="tab-item"
-          :class="{ active: currentTab === index }"
-          @click="handleTabClick(index)"
-        >
+        <view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === index }"
+          @click="handleTabClick(index)">
           {{ tab.name }}
         </view>
       </view>
@@ -38,12 +22,7 @@
 
     <!-- 案例列表 -->
     <view class="case-list">
-      <view
-        v-for="(item, index) in caseList"
-        :key="index"
-        class="case-item"
-        @click="handleCaseClick(item)"
-      >
+      <view v-for="(item, index) in caseList" :key="index" class="case-item" @click="handleCaseClick(item)">
         <image :src="item.image" mode="aspectFill" class="case-image" />
         <text class="case-title">{{ item.title }}</text>
       </view>
@@ -128,22 +107,26 @@ const handleCaseClick = (item) => {
     height: 100%;
   }
 }
+
 .custom-dots {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 30rpx;
+
   .dot {
     width: 16rpx;
     height: 16rpx;
     border-radius: 50%;
     background: #a5bfe8ff;
     margin: 0 8rpx;
+
     &.active {
       background: #0ecbf7ff;
     }
   }
 }
+
 .category-tabs {
   white-space: nowrap;
   margin-top: 8rpx;

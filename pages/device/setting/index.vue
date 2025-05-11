@@ -1,14 +1,15 @@
 <template>
 	<view class="container">
 		<!-- 基础开关设置 -->
-		<view class="setting-card">
+		<view class="setting-card flex-between">
 			<view class="switch-item">
 				<text>暂停</text>
-				<switch :checked="settings.pause" @change="handlePauseChange" color="#0A84FF" class="custom-switch" />
+				<xSwitch v-model="settings.pause" />
 			</view>
+
 			<view class="switch-item">
 				<text>排空</text>
-				<switch :checked="settings.drain" @change="handleDrainChange" color="#0A84FF" class="custom-switch" />
+				<xSwitch v-model="settings.drain" />
 			</view>
 		</view>
 
@@ -40,15 +41,16 @@
 			<view class="timer-item">
 				<view class="timer-header">
 					<view class="timer-left">
-						<image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
 						<text>定时运行</text>
 					</view>
-					<switch :checked="settings.timerRun" @change="handleTimerRunChange" color="#0A84FF"
-						class="custom-switch" />
+					<xSwitch v-model="settings.timerRun" />
 				</view>
 				<view class="timer-link" @click="navigateToTimerSetting">
-					<text>定时开关设置</text>
-					<image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+					<image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
+					<view>
+						<text>定时开关设置</text>
+						<image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+					</view>
 				</view>
 			</view>
 		</view>
@@ -57,14 +59,16 @@
 			<view class="timer-item">
 				<view class="timer-header">
 					<view class="timer-left">
-						<image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
 						<text>定时消毒</text>
 					</view>
-					<switch :checked="settings.timerSterilize" @change="handleTimerSterilizeChange" color="#0A84FF" />
+					<xSwitch v-model="settings.timerSterilize" />
 				</view>
 				<view class="timer-link" @click="navigateToSterilizeSetting">
-					<text>定时消毒设置</text>
-					<image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+					<image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
+					<view>
+						<text>定时消毒设置</text>
+						<image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+					</view>
 				</view>
 			</view>
 		</view>
@@ -73,14 +77,16 @@
 			<view class="timer-item">
 				<view class="timer-header">
 					<view class="timer-left">
-						<image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
 						<text>定时冲洗</text>
 					</view>
-					<switch :checked="settings.timerWash" @change="handleTimerWashChange" color="#0A84FF" />
+					<xSwitch v-model="settings.timerWash" />
 				</view>
 				<view class="timer-link" @click="navigateToWashSetting">
-					<text>定时冲洗设置</text>
-					<image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+					<image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
+					<view>
+						<text>定时冲洗设置</text>
+						<image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+					</view>
 				</view>
 			</view>
 		</view>
@@ -88,6 +94,7 @@
 </template>
 
 <script setup>
+import xSwitch from '@/components/switch/index.vue'
 import { reactive } from 'vue'
 
 // 设置数据
@@ -188,12 +195,14 @@ const navigateToWashSetting = () => {
 }
 
 .setting-card {
-	background: #2D3C58;
-	border-radius: 12rpx;
-	margin-bottom: 20rpx;
+	margin-bottom: 25rpx;
 
 	.switch-item {
-		padding: 30rpx;
+		width: 344rpx;
+		height: 144rpx;
+		border-radius: 18.12px;
+		background: linear-gradient(180deg, #324A70FF 0%, #324A7033 100%);
+		padding: 40rpx;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -209,12 +218,18 @@ const navigateToWashSetting = () => {
 	}
 
 	.temp-item {
-		padding: 30rpx;
+		padding: 0rpx 40rpx;
+		display: flex;
+		align-items: center;
+		border-radius: 18rpx;
+		height: 145rpx;
+		background: linear-gradient(180deg, #324A70 0%, #324A7033 100%);
+
 
 		text {
+			flex: 1;
 			color: #fff;
-			font-size: 28rpx;
-			margin-bottom: 20rpx;
+			font-size: 25rpx;
 			display: block;
 		}
 
@@ -223,37 +238,46 @@ const navigateToWashSetting = () => {
 			align-items: center;
 
 			.input {
-				width: 120rpx;
-				height: 80rpx;
-				background: #1c2431;
-				border-radius: 8rpx;
-				color: #fff;
-				font-size: 32rpx;
+				width: 90rpx;
+				height: 65rpx;
+				border-radius: 9rpx;
+				background: #fff;
+				box-sizing: border-box;
+				font-size: 25rpx;
 				text-align: center;
 				margin-right: 20rpx;
 			}
 
 			.unit {
 				color: #fff;
-				font-size: 28rpx;
-				margin-right: 20rpx;
+				font-size: 25rpx;
+				margin-right: 52rpx;
 			}
 
 			.save-btn {
-				width: 140rpx;
-				height: 80rpx;
+				height: 65rpx;
 				line-height: 80rpx;
 				background: #D68F01;
 				color: #fff;
-				font-size: 28rpx;
+				font-size: 25rpx;
 				border-radius: 8rpx;
 				text-align: center;
+				width: 130rpx;
+				line-height: 65rpx;
+				border-radius: 36rpx;
+				background: $active-color;
 			}
 		}
 	}
 
 	.timer-item {
-		padding: 30rpx;
+		padding: 0rpx 40rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		border-radius: 18rpx;
+		height: 235rpx;
+		background: linear-gradient(180deg, #324A70FF 0%, #324A7033 100%);
 
 		.timer-header {
 			display: flex;
@@ -273,7 +297,7 @@ const navigateToWashSetting = () => {
 
 				text {
 					color: #fff;
-					font-size: 28rpx;
+					font-size: 25rpx;
 				}
 			}
 
@@ -287,16 +311,28 @@ const navigateToWashSetting = () => {
 			justify-content: space-between;
 			align-items: center;
 			padding: 20rpx 0;
-			border-top: 2rpx solid rgba(255, 255, 255, 0.1);
+
+			// border-top: 2rpx solid rgba(255, 255, 255, 0.1);
+			image {
+				width: 72rpx;
+				height: 72rpx;
+			}
 
 			text {
-				color: #999;
-				font-size: 28rpx;
+				color: #fff;
+				font-size: 25rpx;
 			}
 
 			.arrow-icon {
-				width: 32rpx;
-				height: 32rpx;
+				margin-left: 10rpx;
+				width: 14rpx;
+				height: 14rpx;
+				border-top: 2rpx solid #fff;
+				border-right: 2rpx solid #fff;
+				// border-left: 18rpx solid #fff;
+				transform: rotate(45deg);
+				display: inline-block;
+				vertical-align: middle;
 			}
 		}
 	}

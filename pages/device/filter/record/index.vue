@@ -1,22 +1,12 @@
 <template>
   <view class="filter-record-container">
-    <!-- 顶部导航栏 -->
-    <view class="nav-bar">
-      <view class="back" @click="handleBack">
-        <text class="iconfont icon-back">&#xe8ef;</text>
-      </view>
-      <text class="title">换芯记录</text>
-    </view>
-
     <!-- 记录总数 -->
     <view class="record-count"> 换芯记录：{{ records.length }} </view>
 
     <!-- 换芯记录列表 -->
     <view v-for="(item, idx) in records" :key="idx" class="record-card">
       <view class="card-header">
-        <text class="filter-code"
-          >滤芯码：<text class="blue">{{ item.code }}</text></text
-        >
+        <text class="filter-code">滤芯码：<text class="blue">{{ item.code }}</text></text>
         <text class="imei">IMEI: {{ item.imei }}</text>
       </view>
       <view class="card-body">
@@ -24,7 +14,7 @@
         <view class="filter-list">
           <view v-for="(f, i) in item.filters" :key="i" class="filter-name">{{
             f
-          }}</view>
+            }}</view>
         </view>
       </view>
       <view class="card-footer">
@@ -63,41 +53,24 @@ const handleBack = () => {
 <style lang="scss" scoped>
 .filter-record-container {
   min-height: 100vh;
-  background: #1c2431;
-  padding-top: var(--status-bar-height);
-}
-
-.nav-bar {
-  position: relative;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-
-  .back {
-    position: absolute;
-    left: 30rpx;
-    font-size: 40rpx;
-  }
-  .title {
-    font-size: 36rpx;
-  }
+  background: $bg-color;
+  padding: 24rpx;
 }
 
 .record-count {
   color: #fff;
-  font-size: 30rpx;
-  margin: 30rpx 30rpx 20rpx 30rpx;
+  font-size: 29rpx;
 }
 
 .record-card {
-  margin: 0 24rpx 32rpx 24rpx;
-  background: linear-gradient(90deg, #232e44 0%, #22304a 100%);
+  margin-top: 24rpx;
   border-radius: 24rpx;
   padding: 32rpx 28rpx 24rpx 28rpx;
   color: #fff;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  border-radius: 18rpx;
+  background: linear-gradient(90deg, #324A70FF 0%, #324A7033 100%);
+  box-shadow: 0px 4rpx 7rpx #0000003F;
+  font-size: 22rpx;
 
   .card-header {
     display: flex;
@@ -106,43 +79,52 @@ const handleBack = () => {
     margin-bottom: 12rpx;
 
     .filter-code {
-      font-size: 28rpx;
+      font-size: 25rpx;
+      color: #1ecfff;
+
+
       .blue {
         color: #1ecfff;
       }
     }
+
     .imei {
-      font-size: 26rpx;
-      color: #bfc9d6;
+      font-size: 22rpx;
+      color: #C7C7C7FF;
     }
   }
 
   .card-body {
     display: flex;
     margin-bottom: 12rpx;
+    justify-content: space-between;
 
     .label-orange {
-      color: #f39b11;
-      font-size: 26rpx;
+      color: $active-color;
+      font-size: 22rpx;
       margin-right: 12rpx;
       flex-shrink: 0;
     }
+
     .filter-list {
       display: flex;
       flex-direction: column;
+
       .filter-name {
+        margin-bottom: 12rpx;
         color: #fff;
-        font-size: 26rpx;
+        font-size: 22rpx;
         line-height: 36rpx;
+        text-align: right;
       }
     }
   }
 
   .card-footer {
-    font-size: 26rpx;
-    color: #bfc9d6;
+    color: #C7C7C7FF;
+
     view {
-      margin-bottom: 4rpx;
+      margin-bottom: 10rpx;
     }
   }
 }

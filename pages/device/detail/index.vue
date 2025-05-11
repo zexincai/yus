@@ -1,33 +1,15 @@
 <template>
   <view class="device-detail-container">
-    <uni-nav-bar
-      @click="uni.navigateBack()"
-      backgroundColor="#152136"
-      statusBar
-      dark
-      fixed
-      leftIcon="left"
-      rightIcon="more"
-      title="设备详情"
-      :left-arrow="false"
-      :border="false"
-    >
+    <uni-nav-bar @click="handleBack" backgroundColor="#152136" statusBar dark fixed leftIcon="left"
+      rightIcon="more" title="设备详情" :left-arrow="false" :border="false">
       <template v-slot:right>
-        <image
-          src="/static/images/more.png"
-          mode="aspectFit"
-          class="right-icon"
-        />
+        <image src="/static/images/more.png" mode="aspectFit" class="right-icon" />
       </template>
     </uni-nav-bar>
     <view class="device-header">
       <view class="device-title">
         <text>小芸家</text>
-        <image
-          src="/static/images/icon-edit.png"
-          mode="aspectFit"
-          class="edit-icon"
-        />
+        <image src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
       </view>
       <image src="/static/images/signal-full.png" class="view-device"> </image>
     </view>
@@ -60,27 +42,14 @@
           <text class="address-value">{{ deviceInfo.address }}</text>
         </view>
       </view>
-      <image
-        class="device-img"
-        :src="deviceInfo.image"
-        mode="aspectFit"
-      ></image>
+      <image class="device-img" :src="deviceInfo.image" mode="aspectFit"></image>
     </view>
 
     <!-- 功能导航 -->
     <view class="function-nav">
-      <view
-        class="nav-item"
-        v-for="(item, index) in navList"
-        :key="item.text"
-        @click="navigateTo(item.page)"
-      >
+      <view class="nav-item" v-for="(item, index) in navList" :key="item.text" @click="navigateTo(item.page)">
         <view class="icon-wrapper">
-          <image
-            class="iconfont"
-            :class="{ small: index == 0 }"
-            :src="item.icon"
-          />
+          <image class="iconfont" :class="{ small: index == 0 }" :src="item.icon" />
         </view>
         <text class="nav-text">{{ item.text }}</text>
       </view>
@@ -93,12 +62,14 @@
       </view>
       <view class="auth-row">
         <text>到期日期：{{ deviceInfo.expireDate }}</text>
-        <text class="renewal-link" @click="navigateTo('renewal')"
-          >续期记录 >>
+        <text class="renewal-link" @click="navigateTo('renewal')">续期记录 >>
         </text>
-        <view class="renewal-btn" @click="navigateTo('renewal')">
+        <view v-if="userType != 'user'" class="call-btn" @click="navigateTo('renewal')">
           <image class="icon" src="/static/images/call.png"></image>
           联系经销商
+        </view>
+        <view v-else class="renewal-btn" @click="navigateTo('renewal')">
+          续期
         </view>
       </view>
     </view>
@@ -123,9 +94,7 @@
 
     <!-- 水温数据 -->
     <view class="temperature-card">
-      <text class="temp-value"
-        >{{ deviceInfo.temperature }}<text class="temp-unit">℃</text></text
-      >
+      <text class="temp-value">{{ deviceInfo.temperature }}<text class="temp-unit">℃</text></text>
       <text class="temp-label">水温</text>
     </view>
 
@@ -134,31 +103,20 @@
       <view class="filter-header">
         <text class="filter-title">滤芯状态</text>
         <view class="filter-actions">
-          <text class="action-btn active" @click="navigateTo('filterRecord')"
-            >换芯记录
+          <text class="action-btn active" @click="navigateTo('filterRecord')">换芯记录
           </text>
-          <text class="action-btn" @click="navigateTo('filterReset')"
-            >更换滤芯</text
-          >
+          <text class="action-btn" @click="navigateTo('filterReset')">更换滤芯</text>
         </view>
       </view>
       <view class="filter-list">
-        <view
-          class="filter-item"
-          v-for="(filter, index) in deviceInfo.filters"
-          :key="index"
-        >
+        <view class="filter-item" v-for="(filter, index) in deviceInfo.filters" :key="index">
           <view class="filter-index">{{ index + 1 }}</view>
           <view class="filter-info">
             <text class="filter-name">{{ filter.name }}</text>
             <view class="progress-bar">
-              <view
-                class="progress-inner"
-                :class="{
-                  'progress-yellow': filter.percent < 30,
-                }"
-                :style="{ width: filter.percent + '%' }"
-              ></view>
+              <view class="progress-inner" :class="{
+                'progress-yellow': filter.percent < 30,
+              }" :style="{ width: filter.percent + '%' }"></view>
             </view>
           </view>
           <view class="filter-percent">{{ filter.percent }}%</view>
@@ -169,8 +127,9 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
-
+import { ref, reactive, } from "vue";
+import { onLoad } from '@dcloudio/uni-app'
+const userType = ref('user')
 const deviceInfo = reactive({
   name: "小芸家",
   sn: "3452345671456",
@@ -199,9 +158,15 @@ const navList = [
   { text: "参数", icon: "/static/images/device/param.png", page: "params" },
   { text: "数据", icon: "/static/images/device/datas.png", page: "data" },
   { text: "消息", icon: "/static/images/device/news.png", page: "message" },
-  { text: "统计", icon: "/static/images/device/stas.png", page: "statistics" },
+  { text: "统计", icon: "/static/images/device/stas.png", page: "stat" },
   { text: "设置", icon: "/static/images/device/setting.png", page: "setting" },
 ];
+// 获取路由参数
+onLoad((options) => {
+  if (options.type) {
+    userType.value = options.type;
+  }
+});
 
 const handleBack = () => {
   uni.navigateBack();
@@ -218,9 +183,10 @@ const navigateTo = (page) => {
     filterReset: "/pages/device/filter/index",
     params: "/pages/device/param/index",
     data: "/pages/device/data/index",
-    message: "/pages/device/message/index",
-    statistics: "/pages/device/statistics/index",
+    message: "/pages/message/detail/index",
+    stat: "/pages/device/stat/index",
     setting: "/pages/device/setting/index",
+    renewal: "/pages/device/renewal/index",
   };
   if (pathMap[page]) {
     uni.navigateTo({
@@ -232,12 +198,14 @@ const navigateTo = (page) => {
 
 <style lang="scss" scoped>
 .device-detail-container {
-  padding: 24rpx;
+  padding: 0rpx 24rpx;
   background: $bg-color;
+
   .right-icon {
     width: 43rpx;
     height: 43rpx;
   }
+
   .device-header {
     display: flex;
     justify-content: space-between;
@@ -277,8 +245,10 @@ const navigateTo = (page) => {
   display: flex;
   align-items: center;
   position: relative;
+
   .device-info {
     flex: 1;
+
     .sn-row,
     .model-row,
     .type-row,
@@ -288,6 +258,7 @@ const navigateTo = (page) => {
       display: flex;
       align-items: center;
       margin-bottom: 12rpx;
+
       .sn-label,
       .model-label,
       .type-label,
@@ -297,6 +268,7 @@ const navigateTo = (page) => {
         color: #fff;
         font-size: 25rpx;
       }
+
       .sn-value,
       .model-value,
       .type-value,
@@ -307,6 +279,7 @@ const navigateTo = (page) => {
         font-size: 24rpx;
         margin-left: 8rpx;
       }
+
       .online-tag {
         margin-left: 16rpx;
         background: #f39b11;
@@ -315,6 +288,7 @@ const navigateTo = (page) => {
         padding: 2rpx 12rpx;
         border-radius: 8rpx;
       }
+
       .copy-btn {
         margin-left: 16rpx;
         background: #f39b11;
@@ -328,6 +302,7 @@ const navigateTo = (page) => {
       }
     }
   }
+
   .device-img {
     margin-top: 30rpx;
     width: 180rpx;
@@ -336,14 +311,17 @@ const navigateTo = (page) => {
     border-radius: 8rpx;
   }
 }
+
 .function-nav {
   display: flex;
   justify-content: space-between;
   margin: 52rpx 16rpx 0 16rpx;
+
   .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .icon-wrapper {
       width: 90rpx;
       height: 90rpx;
@@ -353,11 +331,13 @@ const navigateTo = (page) => {
       align-items: center;
       justify-content: center;
       margin-bottom: 12rpx;
+
       .iconfont {
         width: 48rpx;
         height: 48rpx;
         color: #fff;
       }
+
       .small {
         width: 40rpx;
         height: 40rpx;
@@ -370,12 +350,14 @@ const navigateTo = (page) => {
     }
   }
 }
+
 .auth-info {
   margin-top: 38rpx;
   border-radius: 18rpx;
   padding: 30rpx;
   position: relative;
   background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+
   .auth-row {
     display: flex;
     align-items: center;
@@ -388,7 +370,8 @@ const navigateTo = (page) => {
       margin-left: 16rpx;
       font-size: 24rpx;
     }
-    .renewal-btn {
+
+    .call-btn {
       right: 30rpx;
       top: 20rpx;
       position: absolute;
@@ -398,17 +381,35 @@ const navigateTo = (page) => {
       justify-content: center;
       color: #0ecbf7;
       font-size: 18rpx;
+
       .icon {
         height: 80rpx;
         width: 80rpx;
         margin-bottom: 4rpx;
       }
     }
+
+    .renewal-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 25rpx;
+      right: 30rpx;
+      top: 45rpx;
+      position: absolute;
+      width: 108rpx;
+      height: 54rpx;
+      border-radius: 90rpx;
+      background: $active-color;
+    }
   }
+
   .auth-row:last-child {
     margin-bottom: 0;
   }
 }
+
 .error-card {
   margin-top: 30rpx;
   padding: 0rpx 20rpx;
@@ -419,21 +420,25 @@ const navigateTo = (page) => {
   color: #152136;
   font-size: 25rpx;
   background: linear-gradient(90deg, #fcc9bdff 0%, #fcc9bd7f 100%);
+
   .error-icon {
     width: 42rpx;
     height: 42rpx;
     margin-right: 12rpx;
   }
+
   .error-text {
     color: #152136;
     font-size: 24rpx;
     line-height: 1;
   }
 }
+
 .water-data {
   margin-top: 30rpx;
   display: flex;
   justify-content: space-between;
+
   .data-card {
     width: 344rpx;
     height: 181rpx;
@@ -442,30 +447,33 @@ const navigateTo = (page) => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     .data-value {
       font-size: 43rpx;
       color: #fff;
     }
+
     .data-unit {
       font-size: 21rpx;
       color: #fff;
       margin-top: 4rpx;
     }
+
     &.orange {
       border-radius: 18rpx;
-      background: linear-gradient(
-        180deg,
-        #4f3500ff 0%,
-        #f1a100ff 0%,
-        #523700ff 100%
-      );
+      background: linear-gradient(180deg,
+          #4f3500ff 0%,
+          #f1a100ff 0%,
+          #523700ff 100%);
     }
+
     &.blue {
       border-radius: 18rpx;
       background: linear-gradient(180deg, #1a479cff 0%, #0a1938ff 100%);
     }
   }
 }
+
 .temperature-card {
   height: 181rpx;
   margin-top: 20rpx;
@@ -475,35 +483,43 @@ const navigateTo = (page) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   .temp-value {
     font-size: 54rpx;
     color: #fff;
+
     .temp-unit {
       font-size: 28rpx;
     }
   }
+
   .temp-label {
     font-size: 21rpx;
     color: $active-color;
     margin-top: 8rpx;
   }
 }
+
 .filter-status {
   margin-top: 20rpx;
   border-radius: 18rpx;
   background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
   padding: 26rpx;
+
   .filter-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20rpx;
+
     .filter-title {
       color: #fff;
       font-size: 32rpx;
     }
+
     .filter-actions {
       display: flex;
+
       .action-btn {
         color: #fff;
         background: #13337cff;
@@ -515,6 +531,7 @@ const navigateTo = (page) => {
         width: 152rpx;
         height: 54rpx;
         margin-left: 16rpx;
+
         &.active {
           background: #f39b11;
           color: #fff;
@@ -522,15 +539,18 @@ const navigateTo = (page) => {
       }
     }
   }
+
   .filter-list {
     .filter-item {
       display: flex;
       align-items: center;
       align-content: center;
       margin-bottom: 28rpx;
+
       &:last-child {
         margin-bottom: 18rpx;
       }
+
       .filter-index {
         width: 54rpx;
         height: 54rpx;
@@ -543,28 +563,34 @@ const navigateTo = (page) => {
         font-size: 25rpx;
         margin-right: 20rpx;
       }
+
       .filter-info {
         flex: 1;
+
         .filter-name {
           color: #fff;
           font-size: 21rpx;
         }
+
         .progress-bar {
           margin-top: 12rpx;
           height: 18rpx;
           background: #a5abb7;
           border-radius: 90rpx;
           overflow: hidden;
+
           .progress-inner {
             height: 100%;
             background: linear-gradient(180deg, #96b0e0ff 0%, #13337cff 100%);
             border-radius: 90rpx;
           }
+
           .progress-yellow {
             background: linear-gradient(180deg, #d68f01ff 0%, #f7e4bcff 100%);
           }
         }
       }
+
       .filter-percent {
         color: #fff;
         font-size: 21rpx;
@@ -575,27 +601,34 @@ const navigateTo = (page) => {
     }
   }
 }
+
 .iconfont {
   font-family: "iconfont" !important;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .icon-back:before {
   content: "\e8ef";
 }
+
 .icon-param:before {
   content: "\e64c";
 }
+
 .icon-data:before {
   content: "\e64f";
 }
+
 .icon-message:before {
   content: "\e650";
 }
+
 .icon-stat:before {
   content: "\e651";
 }
+
 .icon-setting:before {
   content: "\e652";
 }

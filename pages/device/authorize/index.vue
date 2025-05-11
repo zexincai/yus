@@ -1,39 +1,24 @@
 <template>
   <view class="authorize-container">
-    <!-- 顶部导航栏 -->
-    <view class="nav-bar">
-      <view class="back" @click="handleBack">
-        <text class="iconfont icon-back">&#xe8ef;</text>
-      </view>
-      <text class="title">设备授权</text>
-    </view>
-
     <!-- 设备信息卡片 -->
     <view class="device-card">
-      <image
-        class="device-img"
-        src="/static/images/device-s808.png"
-        mode="aspectFit"
-      ></image>
+      <image class="device-img" src="/static/images/device.png" mode="aspectFit"></image>
       <view class="device-info">
         <view class="sn-row">
           <text class="sn-label">SN：</text>
-          <text class="sn-value">4533095668934</text>
+          <text class="sn-value blue">4533095668934</text>
         </view>
         <view class="model-row">
           <text class="model-label">型号：</text>
-          <text class="model-value">商务饮水机 S808</text>
+          <text class="model-value gray">商务饮水机 S808</text>
         </view>
         <view class="imei-row">
           <text class="imei-label">IMEI：</text>
-          <text class="imei-value">9845789948778980</text>
+          <text class="imei-value gray">9845789948778980</text>
         </view>
       </view>
-      <view class="signal-icon">
-        <text class="iconfont">&#xe8c4;</text>
-      </view>
+      <image class="signal-icon" src="/static/images/signal-full.png" />
     </view>
-
     <!-- 授权表单 -->
     <view class="form-card">
       <view class="form-item">
@@ -46,13 +31,7 @@
       </view>
       <view class="form-item">
         <text class="label">客户备注：</text>
-        <input
-          class="input"
-          type="text"
-          v-model="form.remark"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="text" v-model="form.remark" placeholder="请输入" placeholder-class="placeholder" />
       </view>
       <view class="form-item">
         <text class="label">所在地区：</text>
@@ -66,25 +45,23 @@
         <text class="label">安装位置：</text>
         <text class="value">产业展厅</text>
       </view>
+    </view>
+    <view class="form-card">
       <view class="form-item sale-mode">
         <text class="label">销售模式：</text>
-        <label class="radio-label">
-          <radio
-            value="租赁"
-            :checked="form.saleMode === '租赁'"
-            color="#D28B0A"
-            @click="form.saleMode = '租赁'"
-          />租赁
-        </label>
-        <label class="radio-label">
-          <radio
-            value="买断"
-            :checked="form.saleMode === '买断'"
-            color="#D28B0A"
-            @click="form.saleMode = '买断'"
-          />买断
-        </label>
+        <view style="display: flex;">
+          <label class="radio-label">
+            <radio style="transform: scale(0.8);" value="租赁" :checked="form.saleMode === '租赁'" color="#D28B0A"
+              @click="form.saleMode = '租赁'" />租赁
+          </label>
+          <label class="radio-label">
+            <radio style="transform: scale(0.8);" value="买断" :checked="form.saleMode === '买断'" color="#D28B0A"
+              @click="form.saleMode = '买断'" />买断
+          </label>
+        </view>
       </view>
+    </view>
+    <view class="form-card">
       <view class="form-item date-picker-row">
         <text class="label">到期日期：</text>
         <view class="date-picker" @click="showDatePicker">
@@ -93,24 +70,17 @@
         </view>
       </view>
     </view>
-
     <!-- 滤芯更换周期 -->
     <view class="section-title">滤芯更换周期（天）：</view>
     <view class="filter-cycle-card">
       <view class="filter-row" v-for="(cycle, idx) in filterCycles" :key="idx">
         <text class="filter-label">{{ cycle.name }}：</text>
-        <input
-          class="filter-input"
-          type="number"
-          v-model="cycle.value"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input class="filter-input" type="number" v-model="cycle.value" placeholder="请输入"
+          placeholder-class="placeholder" />
       </view>
     </view>
-
     <!-- 确认按钮 -->
-    <button class="confirm-btn" @click="handleConfirm">确认授权</button>
+    <view class="confirm-btn" @click="handleConfirm">确认授权</view>
   </view>
 </template>
 
@@ -144,7 +114,6 @@ const showDatePicker = () => {
 };
 
 const handleConfirm = () => {
-  // TODO: 提交授权信息
   uni.showToast({
     title: "授权成功",
     icon: "success",
@@ -155,69 +124,71 @@ const handleConfirm = () => {
 <style lang="scss" scoped>
 .authorize-container {
   min-height: 100vh;
-  background: #1c2431;
+  background: $bg-color;
   padding-top: var(--status-bar-height);
-}
-
-.nav-bar {
-  position: relative;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  .back {
-    position: absolute;
-    left: 30rpx;
-    font-size: 40rpx;
-  }
-  .title {
-    font-size: 36rpx;
-  }
+  padding-bottom: 60rpx;
 }
 
 .device-card {
   margin: 30rpx 30rpx 0 30rpx;
   background: #f7f9fb;
   border-radius: 20rpx;
-  padding: 30rpx;
+  padding: 40rpx 30rpx 30rpx;
   display: flex;
   align-items: center;
   position: relative;
+
   .device-img {
-    width: 90rpx;
-    height: 180rpx;
-    margin-right: 24rpx;
+    width: 106rpx;
+    height: 106rpx;
+    margin-right: 30rpx;
   }
+
   .device-info {
     flex: 1;
+
     .sn-row,
     .model-row,
     .imei-row {
       display: flex;
       align-items: center;
       margin-bottom: 10rpx;
-      .sn-label,
+
+      .sn-label {
+        color: #13337CFF;
+        font-size: 25rpx;
+      }
+
       .model-label,
       .imei-label {
-        color: #223a7a;
-        font-size: 28rpx;
+        color: #999999FF;
+        font-size: 22rpx;
       }
+
       .sn-value {
-        color: #223a7a;
-        font-size: 28rpx;
-        font-weight: bold;
+        color: #13337CFF;
+        font-size: 25rpx;
       }
+
       .model-value,
       .imei-value {
-        color: #bfc9d6;
-        font-size: 26rpx;
+        color: #999999;
+        font-size: 22rpx;
+      }
+
+      .blue {
+        color: #13337CFF;
+      }
+
+      .gray {
+        color: #999999;
       }
     }
   }
+
   .signal-icon {
-    color: #00c8b4;
-    font-size: 40rpx;
+    width: 36rpx;
+    height: 36rpx;
     position: absolute;
     right: 30rpx;
     top: 30rpx;
@@ -227,61 +198,82 @@ const handleConfirm = () => {
 .form-card {
   margin: 30rpx;
   background: #f7f9fb;
-  border-radius: 20rpx;
-  padding: 0 0 10rpx 0;
+  border-radius: 18rpx;
+  // padding: 0 0 10rpx 0;
+
   .form-item {
+    background-color: #f7f9fb;
+    border-radius: 0;
     display: flex;
     align-items: center;
-    padding: 0 30rpx;
-    height: 80rpx;
+    margin: 0 30rpx;
+    padding: 0;
+    height: 87rpx;
     border-bottom: 1rpx solid #eee;
+
     &:last-child {
       border-bottom: none;
     }
+
     .label {
-      color: #223a7a;
-      font-size: 28rpx;
+      color: #13337C;
+      font-size: 25rpx;
       width: 180rpx;
       flex-shrink: 0;
     }
+
     .value {
       color: #333;
-      font-size: 28rpx;
+      font-size: 25rpx;
       flex: 1;
       text-align: right;
     }
+
     .input {
       flex: 1;
-      font-size: 28rpx;
+      font-size: 25rpx;
       color: #333;
+      padding: 0;
       text-align: right;
       background: transparent;
       border: none;
       outline: none;
     }
+
     &.sale-mode {
+      justify-content: space-between;
+
       .radio-label {
-        margin-right: 40rpx;
+        margin-right: 10rpx;
         font-size: 28rpx;
         color: #223a7a;
         display: flex;
         align-items: center;
       }
     }
+
     &.date-picker-row {
       .date-picker {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: flex-end;
+
         .value {
           color: #333;
           font-size: 28rpx;
         }
+
         .icon-arrow {
-          font-size: 28rpx;
-          color: #c7c7cc;
+          // 向下的三角形
           margin-left: 10rpx;
+          width: 0;
+          height: 0;
+          border-left: 10rpx solid transparent;
+          border-right: 10rpx solid transparent;
+          border-top: 12rpx solid #CCCCCC;
+          display: inline-block;
+          vertical-align: middle;
         }
       }
     }
@@ -299,24 +291,28 @@ const handleConfirm = () => {
   background: #f7f9fb;
   border-radius: 20rpx;
   padding: 10rpx 0;
+
   .filter-row {
     display: flex;
     align-items: center;
-    padding: 0 30rpx;
-    height: 80rpx;
+    margin: 0 30rpx;
+    height: 87rpx;
     border-bottom: 1rpx solid #eee;
+
     &:last-child {
       border-bottom: none;
     }
+
     .filter-label {
       color: #223a7a;
-      font-size: 28rpx;
+      font-size: 25rpx;
       width: 180rpx;
       flex-shrink: 0;
     }
+
     .filter-input {
       flex: 1;
-      font-size: 28rpx;
+      font-size: 25rpx;
       color: #333;
       text-align: right;
       background: transparent;
@@ -328,28 +324,30 @@ const handleConfirm = () => {
 
 .confirm-btn {
   margin: 60rpx 30rpx;
-  background: #d28b0a;
+  background: $active-color;
   color: #fff;
-  height: 100rpx;
-  line-height: 100rpx;
-  border-radius: 12rpx;
-  font-size: 32rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 18rpx;
+  text-align: center;
+  font-size: 25rpx;
 }
 
 .placeholder {
   color: #cccccc;
 }
 
-// iconfont样式
 .iconfont {
   font-family: "iconfont" !important;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .icon-back:before {
   content: "\e8ef";
 }
+
 .icon-arrow:before {
   content: "\e65c";
 }

@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- 滤芯更换周期 -->
-		<text class="section-title">滤芯更换周期</text>
+		<view class="section-title">滤芯更换周期</view>
 		<view class="data-grid">
 			<view class="data-card">
 				<text class="value">100</text>
@@ -22,7 +22,7 @@
 		</view>
 
 		<!-- 设备数据 -->
-		<text class="section-title">设备数据</text>
+		<view class="section-title">设备数据</view>
 		<view class="data-grid">
 			<view class="data-card">
 				<text class="value">14530</text>
@@ -39,7 +39,7 @@
 		</view>
 
 		<!-- 状态数据 -->
-		<text class="section-title">状态数据</text>
+		<view class="section-title">状态数据</view>
 		<view class="status-grid">
 			<view class="status-card">
 				<text class="status-value">加热中</text>
@@ -76,39 +76,42 @@
 <style lang="scss" scoped>
 .container {
 	min-height: 100vh;
-	background-color: #1c2431;
-	padding: 30rpx;
+	background-color: $bg-color;
+	padding: 30rpx 24rpx;
 }
 
 .section-title {
 	color: #fff;
-	font-size: 28rpx;
-	margin-bottom: 20rpx;
+	font-size: 29rpx;
+	margin-bottom: 38rpx;
 }
 
 .data-grid {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 20rpx;
+	gap: 16rpx;
 	margin-bottom: 40rpx;
 
 	.data-card {
-		background: #2D3C58;
-		border-radius: 12rpx;
-		padding: 30rpx;
+		border-radius: 18rpx;
+		background: linear-gradient(180deg, #324A70FF 0%, #324A7033 100%);
 		text-align: center;
+		height: 181rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 
 		.value {
 			color: #fff;
-			font-size: 40rpx;
-			font-weight: bold;
-			margin-bottom: 10rpx;
+			font-size: 43rpx;
+			margin-bottom: 12rpx;
 			display: block;
 		}
 
 		.label {
-			color: #999;
-			font-size: 24rpx;
+			color: #A5BFE8;
+			font-size: 21rpx;
 		}
 	}
 }
@@ -119,21 +122,25 @@
 	gap: 20rpx;
 
 	.status-card {
-		background: #2D3C58;
-		border-radius: 12rpx;
-		padding: 30rpx;
+		border-radius: 18rpx;
+		background: linear-gradient(180deg, #324A70FF 0%, #324A7033 100%);
 		text-align: center;
+		height: 181rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 
 		.status-value {
-			color: #0A84FF;
-			font-size: 32rpx;
-			margin-bottom: 10rpx;
+			color: #fff;
+			font-size: 43rpx;
+			margin-bottom: 12rpx;
 			display: block;
 		}
 
 		.status-label {
-			color: #999;
-			font-size: 24rpx;
+			color: #A5BFE8;
+			font-size: 21rpx;
 		}
 	}
 }

@@ -44,9 +44,9 @@
 <script setup>
 import { ref } from "vue";
 
-const oldPwd = ref("");
-const newPwd = ref("");
-const confirmPwd = ref("");
+const oldPwd = ref("xxxxxxx");
+const newPwd = ref("xxxxxxx");
+const confirmPwd = ref("xxxxxxx");
 
 const handleBack = () => {
   uni.navigateBack();
@@ -65,6 +65,7 @@ const handleLogout = () => {
     success: (res) => {
       if (res.confirm) {
         uni.showToast({ title: "已退出", icon: "success" });
+        uni.navigateTo({ url: "/pages/login/index" });
         // 这里可跳转到登录页
       }
     },
@@ -174,10 +175,12 @@ const handleLogout = () => {
   color: #1ecfff;
   font-size: 28rpx;
   // text-align: right;
-  position: fixed;
-  bottom: 40rpx;
-  left: 50%;
-  transform: translateX(-50%);
+  text-align: center;
+  // position: fixed;
+  // bottom: 40rpx;
+  // left: 50%;
+  // transform: translateX(-50%);
+  margin-top: 360rpx;
 
 }
 

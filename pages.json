@@ -36,7 +36,19 @@
     {
       "path": "pages/index/scan/index",
       "style": {
-        "navigationBarTitleText": "扫码添加"
+        "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "pages/index/scan/detail/index",
+      "style": {
+        "navigationBarTitleText": "添加设备"
+      }
+    },
+    {
+      "path": "pages/index/scan/result/index",
+      "style": {
+        "navigationBarTitleText": "添加设备"
       }
     },
     {
@@ -114,7 +126,7 @@
     {
       "path": "pages/device/setting/index",
       "style": {
-        "navigationBarTitleText": "统计"
+        "navigationBarTitleText": "设置"
       }
     },
     {
@@ -126,13 +138,13 @@
     {
       "path": "pages/device/renewal/record/index",
       "style": {
-        "navigationBarTitleText": "续期"
+        "navigationBarTitleText": "续期记录"
       }
     },
     {
       "path": "pages/device/filter/index",
       "style": {
-        "navigationBarTitleText": "续期"
+        "navigationBarTitleText": "重置滤芯"
       }
     },
     {
@@ -169,8 +181,7 @@
     {
       "path": "pages/device/authorize/index",
       "style": {
-        "navigationBarTitleText": "设备授权",
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "设备授权"
       }
     },
     {

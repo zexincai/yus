@@ -1,13 +1,5 @@
 <template>
   <view class="record-container">
-    <!-- 顶部导航栏 -->
-    <view class="nav-bar">
-      <view class="back" @click="handleBack">
-        <text class="iconfont icon-back">&#xe8ef;</text>
-      </view>
-      <text class="title">出库记录</text>
-    </view>
-
     <!-- 订单信息 -->
     <view class="order-info">
       <text class="order-label">订单：</text>
@@ -43,31 +35,31 @@ const order = ref({
 
 const devices = ref([
   {
-    img: "/static/images/device-home-ro.png",
+    img: "/static/images/device.png",
     title: "家用反渗透净水机",
     model: "RO-24",
     sn: "34587690983566",
   },
   {
-    img: "/static/images/device-home-ro.png",
+    img: "/static/images/device.png",
     title: "家用反渗透净水机",
     model: "RO-24",
     sn: "34587690983406",
   },
   {
-    img: "/static/images/device-business.png",
+    img: "/static/images/device.png",
     title: "商用饮水机",
     model: "S800-1",
     sn: "34529478370945",
   },
   {
-    img: "/static/images/device-business.png",
+    img: "/static/images/device.png",
     title: "商用饮水机",
     model: "S800-1",
     sn: "34529478370237",
   },
   {
-    img: "/static/images/device-business.png",
+    img: "/static/images/device.png",
     title: "商用饮水机",
     model: "S800-1",
     sn: "34529478370034",
@@ -91,114 +83,107 @@ const copyOrderNo = () => {
 <style lang="scss" scoped>
 .record-container {
   min-height: 100vh;
-  background: #1c2431;
-  padding-bottom: 40rpx;
+  padding: 24rpx;
+  background: $bg-color;
 }
-.nav-bar {
-  position: relative;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  .back {
-    position: absolute;
-    left: 30rpx;
-    font-size: 40rpx;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-  }
-  .title {
-    font-size: 36rpx;
-    font-weight: bold;
-  }
-}
+
 .order-info {
-  margin: 30rpx 30rpx 0 30rpx;
-  background: #fff;
   border-radius: 20rpx;
   display: flex;
   align-items: center;
   padding: 0 30rpx;
   height: 80rpx;
-  font-size: 28rpx;
+  font-size: 25rpx;
+  background: #F4F6F9FF;
+
   .order-label {
     color: #223a7a;
     margin-right: 8rpx;
   }
+
   .order-no {
     color: #223a7a;
     font-weight: bold;
-    margin-right: 16rpx;
+    // margin-right: 16rpx;
   }
+
   .copy-btn {
-    background: #d28b0a;
+    border-radius: 36rpx;
+    background: #D68F01FF;
     color: #fff;
-    font-size: 24rpx;
-    border-radius: 8rpx;
+    font-size: 18rpx;
     padding: 0 18rpx;
     margin-right: 16rpx;
-    height: 48rpx;
-    line-height: 48rpx;
+    height: 36rpx;
+    line-height: 36rpx;
     min-width: 60rpx;
   }
+
   .order-date {
+    font-size: 22rpx;
     color: #bfc9d6;
-    font-size: 26rpx;
     margin-left: auto;
   }
 }
+
 .device-count {
   color: #fff;
-  font-size: 28rpx;
-  margin: 30rpx 30rpx 10rpx 30rpx;
+  margin-top: 50rpx;
+  font-size: 29rpx;
 }
+
 .device-list {
-  padding: 0 20rpx;
+  margin-top: 40rpx;
+
   .device-card {
     display: flex;
     align-items: center;
-    background: linear-gradient(90deg, #26314a 0%, #22304a 100%);
-    border-radius: 20rpx;
-    margin-bottom: 24rpx;
+    background: linear-gradient(90deg, #324A70FF 0%, #324A7033 100%);
+    box-shadow: 0px 3.62px 7.25px #0000003F;
+    border-radius: 18rpx;
+    margin-bottom: 27rpx;
     padding: 24rpx 24rpx;
+
     .device-img {
-      width: 90rpx;
-      height: 120rpx;
+      width: 106rpx;
+      height: 106rpx;
       margin-right: 24rpx;
       border-radius: 8rpx;
-      background: #fff;
     }
+
     .device-info {
       display: flex;
       flex-direction: column;
       justify-content: center;
+
       .device-title {
         color: #fff;
-        font-size: 30rpx;
+        font-size: 29rpx;
         font-weight: bold;
         margin-bottom: 6rpx;
       }
+
       .device-model {
-        color: #bfc9d6;
-        font-size: 26rpx;
+        color: #fff;
+        font-size: 25rpx;
         margin-bottom: 6rpx;
       }
+
       .device-sn {
-        color: #bfc9d6;
-        font-size: 26rpx;
+        color: #C7C7C7FF;
+        font-size: 25rpx;
       }
     }
   }
 }
+
 .iconfont {
   font-family: "iconfont" !important;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .icon-back:before {
   content: "\e8ef";
 }

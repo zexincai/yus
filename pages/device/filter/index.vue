@@ -5,9 +5,7 @@
       <view class="device-info">
         <text class="label">SN:</text>
         <text class="sn">4533095668934</text>
-        <view class="signal-icon">
-          <text class="iconfont">&#xe8c4;</text>
-        </view>
+        <image class="signal-icon" src="/static/images/signal-full.png" />
       </view>
       <view class="imei-info">
         <text class="imei-label">IMEI:</text>
@@ -27,15 +25,17 @@
       </view>
       <view class="filter-list">
         <view v-for="(item, idx) in filters" :key="idx" class="filter-item">
-          <checkbox
-            :checked="item.checked"
-            :disabled="item.disabled"
-            color="#223A7A"
-            @click="toggleCheck(idx)"
-          />
-          <text class="percent" :class="{ disabled: item.disabled }"
-            >{{ item.percent }}%</text
-          >
+          <checkbox activeBackgroundColor="#13337CFF" style="transform:scale(0.6)" :checked="item.checked"
+            :disabled="item.disabled" color="#fff" @click="toggleCheck(idx)" />
+          <view class="filter-info">
+            <text class="filter-name">{{ item.name }}</text>
+            <view class="progress-bar">
+              <view class="progress-inner" :class="{
+                'progress-yellow': item.percent < 30,
+              }" :style="{ width: item.percent + '%' }"></view>
+            </view>
+          </view>
+          <text class="percent" :class="{ disabled: item.disabled }">{{ item.percent }}%</text>
         </view>
       </view>
     </view>
@@ -51,9 +51,9 @@
 import { ref } from "vue";
 
 const filters = ref([
-  { checked: true, percent: 86, disabled: false },
-  { checked: true, percent: 73, disabled: false },
-  { checked: false, percent: 8, disabled: true },
+  { checked: true, percent: 86, disabled: false, name: "精密PP棉" },
+  { checked: true, percent: 73, disabled: false, name: '活性炭', },
+  { checked: false, percent: 8, disabled: true, name: 'RO反渗透膜' },
 ]);
 
 const handleBack = () => {
@@ -78,79 +78,73 @@ const handleConfirm = () => {
 <style lang="scss" scoped>
 .reset-container {
   min-height: 100vh;
-  background: #1c2431;
-  padding-top: var(--status-bar-height);
-}
-
-.nav-bar {
-  position: relative;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-
-  .back {
-    position: absolute;
-    left: 30rpx;
-    font-size: 40rpx;
-  }
-  .title {
-    font-size: 36rpx;
-  }
+  padding: 24rpx;
+  background: $bg-color;
 }
 
 .device-card {
-  margin: 30rpx;
-  background: #f7f9fb;
-  border-radius: 20rpx;
-  padding: 30rpx;
+  background: #F4F6F9FF;
+  border-radius: 18rpx;
+  padding: 32rpx 30rpx 20rpx;
+  position: relative;
 
   .device-info {
     display: flex;
     align-items: center;
     margin-bottom: 18rpx;
+    font-size: 25rpx;
 
     .label {
-      color: #333;
+      color: #13337C;
       margin-right: 20rpx;
     }
+
     .sn {
-      color: #223a7a;
+      color: #13337C;
       font-weight: bold;
       margin-right: 20rpx;
     }
+
     .signal-icon {
-      color: #00c8b4;
-      font-size: 40rpx;
+      position: absolute;
+      right: 30rpx;
+      top: 30rpx;
+      width: 36rpx;
+      height: 36rpx;
     }
   }
-  .imei-info {
-    color: #bfc9d6;
-    margin-bottom: 10rpx;
+
+  .imei-info,
+  .date-info {
+    color: #999999;
+    margin-bottom: 12rpx;
+    font-size: 22rpx;
+
     .imei-label {
       margin-right: 10rpx;
     }
+
     .imei-value {
-      color: #bfc9d6;
+      color: #999999;
     }
   }
+
   .date-info {
-    color: #bfc9d6;
     .date-label {
       margin-right: 10rpx;
     }
-    .date-value {
-      color: #bfc9d6;
-    }
+
+    .date-value {}
   }
 }
 
 .filter-card {
-  margin: 30rpx;
-  background: #f7f9fb;
-  border-radius: 20rpx;
+  border-radius: 18rpx;
+  margin-top: 24rpx;
   padding: 30rpx;
+  border-radius: 18rpx;
+  background: #F4F6F9FF;
+  font-size: 25rpx;
 
   .filter-header {
     display: flex;
@@ -159,45 +153,79 @@ const handleConfirm = () => {
     margin-bottom: 18rpx;
 
     .filter-title {
-      color: #223a7a;
-      font-size: 28rpx;
+      color: #13337CFF;
     }
+
     .filter-code {
-      color: #333;
-      font-size: 28rpx;
+      color: #152136FF;
     }
   }
+
   .filter-list {
     .filter-item {
       display: flex;
       align-items: center;
-      margin-bottom: 24rpx;
+      margin-bottom: 10rpx;
+
+      .filter-info {
+        flex: 1;
+        margin-left: 12rpx;
+
+        .filter-name {
+          color: #808080;
+          font-size: 21rpx;
+        }
+
+        .progress-bar {
+          margin-top: 8rpx;
+          height: 18rpx;
+          background: #a5abb7;
+          border-radius: 90rpx;
+          overflow: hidden;
+
+          .progress-inner {
+            height: 100%;
+            background: linear-gradient(180deg, #96b0e0ff 0%, #13337cff 100%);
+            border-radius: 90rpx;
+          }
+
+          .progress-yellow {
+            background: linear-gradient(180deg, #d68f01ff 0%, #f7e4bcff 100%);
+          }
+        }
+      }
 
       &:last-child {
         margin-bottom: 0;
       }
 
       .percent {
-        margin-left: 32rpx;
-        color: #999;
-        font-size: 28rpx;
-        &.disabled {
-          color: #ccc;
-        }
+        width: 50rpx;
+        text-align: right;
+        margin-left: 14rpx;
+        color: #999999;
+        margin-top: 40rpx;
+        font-size: 22rpx;
+
+        // &.disabled {
+        //   color: #ccc;
+        // }
       }
     }
   }
 }
 
 .button-wrapper {
-  margin: 60rpx 30rpx;
+  margin-top: 140rpx;
+
   .confirm-btn {
-    background: #d28b0a;
     color: #fff;
-    height: 100rpx;
-    line-height: 100rpx;
-    border-radius: 12rpx;
-    font-size: 32rpx;
+    line-height: 90rpx;
+    height: 90rpx;
+    line-height: 90rpx;
+    font-size: 29rpx;
+    border-radius: 18rpx;
+    background: $active-color;
   }
 }
 </style>

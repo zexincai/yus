@@ -6,21 +6,13 @@
       <view class="actions">
         <view class="action-btn" @click="handleReadAll">
           <view class="icon-clear flex-center">
-            <image
-              src="/static/images/icon-clear.png"
-              mode="aspectFit"
-              class="action-icon"
-            />
+            <image src="/static/images/icon-clear.png" mode="aspectFit" class="action-icon" />
           </view>
           <text>全部已读</text>
         </view>
         <view class="action-btn" @click="handleDeleteAll">
           <view class="icon-delete flex-center">
-            <image
-              src="/static/images/icon-delete.png"
-              mode="aspectFit"
-              class="action-icon"
-            />
+            <image src="/static/images/icon-delete.png" mode="aspectFit" class="action-icon" />
           </view>
           <text>全部删除</text>
         </view>
@@ -29,12 +21,8 @@
 
     <!-- 消息列表 -->
     <view class="message-list">
-      <view
-        v-for="(message, index) in messageList"
-        :key="index"
-        class="message-item"
-        @click="handleMessageClick(message)"
-      >
+      <view v-for="(message, index) in messageList" :key="index" class="message-item"
+        @click="handleMessageClick(message)">
         <image :src="message.icon" mode="aspectFit" class="device-icon" />
         <view class="message-info">
           <text class="device-name">{{ message.name }}</text>
@@ -125,6 +113,7 @@ const handleDeleteAll = () => {
   align-items: center;
   margin-bottom: 40rpx;
   font-size: 29rpx;
+
   .title {
     color: #fff;
   }
@@ -137,6 +126,7 @@ const handleDeleteAll = () => {
       display: flex;
       align-items: center;
       margin-left: 40rpx;
+
       .icon-clear,
       .icon-delete {
         width: 36.23rpx;
@@ -145,9 +135,11 @@ const handleDeleteAll = () => {
         background: $active-color;
         margin-right: 10rpx;
       }
+
       .icon-delete {
         background: $danger-color;
       }
+
       .action-icon {
         width: 21.74rpx;
         height: 21.74rpx;
@@ -169,6 +161,7 @@ const handleDeleteAll = () => {
     border-radius: 18rpx;
     box-shadow: 0rpx 4rpx 8rpx #000000;
     background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+
     .device-icon {
       width: 106rpx;
       height: 106rpx;
@@ -207,15 +200,15 @@ const handleDeleteAll = () => {
 
       .unread-badge {
         display: inline-block;
-        min-width: 36rpx;
-        height: 44rpx;
-        line-height: 44rpx;
+        min-width: 42rpx;
+        height: 42rpx;
+        line-height: 42rpx;
         text-align: center;
         background: $danger-color;
         color: #fff;
         font-size: 24rpx;
         border-radius: 50%;
-        padding: 0 14rpx;
+        padding: 0 8rpx;
       }
     }
   }

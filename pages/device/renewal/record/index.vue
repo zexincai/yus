@@ -1,22 +1,12 @@
 <template>
   <view class="record-container">
-    <!-- 顶部导航栏 -->
-    <view class="nav-bar">
-      <view class="back" @click="handleBack">
-        <text class="iconfont icon-back">&#xe8ef;</text>
-      </view>
-      <text class="title">续期记录</text>
-    </view>
-
     <!-- 记录总数 -->
     <view class="record-count"> 续期记录：{{ records.length }} </view>
 
     <!-- 续期记录列表 -->
     <view v-for="(item, idx) in records" :key="idx" class="record-card">
       <view class="card-header">
-        <text class="sn"
-          >SN：<text class="sn-blue">{{ item.sn }}</text></text
-        >
+        <text class="sn">SN：<text class="sn-blue">{{ item.sn }}</text></text>
         <text class="days">续期{{ item.days }}天</text>
       </view>
       <view class="card-info">
@@ -67,42 +57,23 @@ const handleBack = () => {
 <style lang="scss" scoped>
 .record-container {
   min-height: 100vh;
-  background: #1c2431;
-  padding-top: var(--status-bar-height);
-}
-
-.nav-bar {
-  position: relative;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-
-  .back {
-    position: absolute;
-    left: 30rpx;
-    font-size: 40rpx;
-  }
-
-  .title {
-    font-size: 36rpx;
-  }
+  padding: 24rpx;
+  background: $bg-color;
 }
 
 .record-count {
   color: #fff;
-  font-size: 30rpx;
-  margin: 30rpx 30rpx 20rpx 30rpx;
+  font-size: 29rpx;
 }
 
 .record-card {
-  margin: 0 24rpx 32rpx 24rpx;
-  background: linear-gradient(90deg, #232e44 0%, #22304a 100%);
-  border-radius: 24rpx;
+  margin-top: 24rpx;
   padding: 32rpx 28rpx 24rpx 28rpx;
   color: #fff;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  border-radius: 18rpx;
+  background: linear-gradient(90deg, #324A70FF 0%, #324A7033 100%);
+  box-shadow: 0px 4rpx 7rpx #0000003F;
+  font-size: 25rpx;
 
   .card-header {
     display: flex;
@@ -111,19 +82,22 @@ const handleBack = () => {
     margin-bottom: 18rpx;
 
     .sn {
-      font-size: 28rpx;
+      margin-bottom: 2rpx;
+      color: #1ecfff;
       .sn-blue {
         color: #1ecfff;
       }
     }
+
     .days {
-      font-size: 28rpx;
+      font-size: 25rpx;
     }
   }
 
   .card-info {
-    font-size: 26rpx;
+    font-size: 25rpx;
     color: #bfc9d6;
+
     view {
       margin-bottom: 8rpx;
     }

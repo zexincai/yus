@@ -1,21 +1,11 @@
 <template>
   <view class="renewal-container">
-    <!-- 顶部导航栏 -->
-    <view class="nav-bar">
-      <view class="back" @click="handleBack">
-        <text class="iconfont icon-back">&#xe8ef;</text>
-      </view>
-      <text class="title">续期</text>
-    </view>
-
     <!-- 设备信息卡片 -->
-    <view class="device-card">
+    <view @click="goToDetail" class="device-card">
       <view class="device-info">
         <text class="label">SN:</text>
         <text class="value">453309566893</text>
-        <view class="signal-icon">
-          <text class="iconfont">&#xe8c4;</text>
-        </view>
+        <image class="signal-icon" src="/static/images/signal-full.png" />
       </view>
 
       <view class="time-info">
@@ -61,15 +51,19 @@ const handleBack = () => {
 
 // 显示日期选择器
 const showDatePicker = () => {
-  uni.showDatePicker({
-    mode: "date",
-    value: form.endDate,
-    success: (res) => {
-      form.endDate = res.value;
-    },
-  });
+  // uni.showDatePicker({
+  //   mode: "date",
+  //   value: form.endDate,
+  //   success: (res) => {
+  //     form.endDate = res.value;
+  //   },
+  // });
 };
-
+const goToDetail = () => {
+  uni.navigateTo({
+    url: "/pages/device/renewal/record/index",
+  });
+}
 // 确认续期
 const handleConfirm = () => {
   // TODO: 实现续期逻辑
@@ -83,113 +77,116 @@ const handleConfirm = () => {
 <style lang="scss" scoped>
 .renewal-container {
   min-height: 100vh;
-  background-color: #1c2431;
-  padding-top: var(--status-bar-height);
+  background-color: $bg-color;
+  padding: 30rpx;
 }
 
-.nav-bar {
-  position: relative;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-
-  .back {
-    position: absolute;
-    left: 30rpx;
-    font-size: 40rpx;
-  }
-
-  .title {
-    font-size: 36rpx;
-  }
-}
 
 .device-card {
-  margin: 30rpx;
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 30rpx;
+  padding: 30rpx 30rpx;
+  height: 196rpx;
+  border-radius: 18rpx;
+  background: #F4F6F9FF;
+  position: relative;
 
   .device-info {
     display: flex;
     align-items: center;
-    margin-bottom: 30rpx;
+    margin-bottom: 20rpx;
 
     .label {
       color: #333;
+      font-size: 25rpx;
+      color: rgba(19, 51, 124, 1);
       margin-right: 20rpx;
     }
 
     .value {
-      flex: 1;
-      color: #333;
+      font-size: 25rpx;
+      color: rgba(19, 51, 124, 1);
       font-weight: bold;
     }
 
     .signal-icon {
-      color: #00c8b4;
-      font-size: 40rpx;
+      position: absolute;
+      right: 30rpx;
+      top: 30rpx;
+      width: 36rpx;
+      height: 36rpx;
     }
   }
 
   .time-info {
     .time-item {
       display: flex;
-      margin-bottom: 20rpx;
+      margin-bottom: 10rpx;
+      font-size: 22rpx;
 
       .label {
-        color: #666;
+        color: #999999;
         width: 160rpx;
       }
 
       .value {
-        color: #333;
+        color: #999999;
       }
     }
   }
 }
 
 .date-picker {
-  margin: 30rpx;
-  background: #fff;
+  margin-top: 25rpx;
   border-radius: 20rpx;
   padding: 30rpx;
   display: flex;
   align-items: center;
+  height: 80rpx;
+  border-radius: 18rpx;
+  background: #F4F6F9FF;
 
   .label {
-    color: #333;
+    color: #13337CFF;
     margin-right: 20rpx;
+    font-size: 25rpx;
   }
 
   .picker-wrapper {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 
     .value {
-      color: #333;
+      color: #152136FF;
+      font-size: 25rpx;
     }
 
     .icon-arrow {
-      color: #999;
-      font-size: 32rpx;
+      // 向下的三角形
+      margin-left: 10rpx;
+      width: 0;
+      height: 0;
+      border-left: 10rpx solid transparent;
+      border-right: 10rpx solid transparent;
+      border-top: 12rpx solid #CCCCCC;
+      margin-left: 4rpx;
+      display: inline-block;
+      vertical-align: middle;
     }
   }
 }
 
 .button-wrapper {
-  margin: 60rpx 30rpx;
 
   .confirm-btn {
-    background: #f39b11;
     color: #fff;
-    height: 100rpx;
-    line-height: 100rpx;
+    height: 90rpx;
+    margin-top: 161rpx;
+    line-height: 90rpx;
     border-radius: 12rpx;
+    border-radius: 18rpx;
+    background: $active-color;
+    font-size: 29rpx;
   }
 }
 </style>
