@@ -1,7 +1,7 @@
 <template>
   <view class="device-detail-container">
-    <uni-nav-bar @click="handleBack" backgroundColor="#152136" statusBar dark fixed leftIcon="left"
-      rightIcon="more" title="设备详情" :left-arrow="false" :border="false">
+    <uni-nav-bar @click="handleBack" backgroundColor="#152136" statusBar dark fixed leftIcon="left" rightIcon="more"
+      title="设备详情" :left-arrow="false" :border="false">
       <template v-slot:right>
         <image src="/static/images/more.png" mode="aspectFit" class="right-icon" />
       </template>
@@ -62,7 +62,7 @@
       </view>
       <view class="auth-row">
         <text>到期日期：{{ deviceInfo.expireDate }}</text>
-        <text class="renewal-link" @click="navigateTo('renewal')">续期记录 >>
+        <text class="renewal-link" @click="navigateTo('renewalLog')">续期记录 >>
         </text>
         <view v-if="userType != 'user'" class="call-btn" @click="navigateTo('renewal')">
           <image class="icon" src="/static/images/call.png"></image>
@@ -76,7 +76,7 @@
 
     <!-- 故障信息 -->
     <view class="error-card" v-if="deviceInfo.error">
-      <image src="/static/images/error.png" class="error-icon">!</image>
+      <image src="/static/images/error.png" class="error-icon" />
       <text class="error-text">故障：{{ deviceInfo.error }}</text>
     </view>
 
@@ -187,6 +187,7 @@ const navigateTo = (page) => {
     stat: "/pages/device/stat/index",
     setting: "/pages/device/setting/index",
     renewal: "/pages/device/renewal/index",
+    renewalLog: "/pages/device/renewal/record/index",
   };
   if (pathMap[page]) {
     uni.navigateTo({

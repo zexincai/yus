@@ -441,13 +441,13 @@ const onRefresh = async () => {
 }
 
 .my {
-  margin-top: 10rpx;
+  margin-top: 52rpx;
   color: #fff;
   font-size: 32rpx;
 }
 
 .type {
-  margin-top: 10rpx;
+  margin-top: 52rpx;
   color: #fff;
   font-size: 25rpx;
 
