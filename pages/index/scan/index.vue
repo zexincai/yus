@@ -16,7 +16,7 @@
 
 <script setup>
 import { ref } from "vue";
-
+import { loadDeviceBaseInfo } from '@/api/dealer'
 const sn = ref("");
 
 const handleBack = () => {
@@ -36,9 +36,20 @@ const handleScan = () => {
 };
 
 const handleConfirm = () => {
-  uni.navigateTo({
-    url: '/pages/index/scan/detail/index'
+  loadDeviceBaseInfo({ mes: sn.value }).then((res) => {
+    if (res.activeState !== 2) {
+      uni.showToast({
+        title: '设备已激活',
+        icon: 'none'
+      })
+    } else {
+      uni.setStorageSync('deviceInfo', res)
+      uni.navigateTo({
+        url: '/pages/device/authorize/index'
+      })
+    }
   })
+
   // if (!sn.value.trim()) {
   //   uni.showToast({ title: "请输入SN码", icon: "none" });
   //   return;

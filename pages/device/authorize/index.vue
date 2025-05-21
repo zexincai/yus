@@ -6,103 +6,145 @@
       <view class="device-info">
         <view class="sn-row">
           <text class="sn-label">SN：</text>
-          <text class="sn-value blue">4533095668934</text>
+          <text class="sn-value blue">{{ deviceData.mes }}</text>
         </view>
         <view class="model-row">
           <text class="model-label">型号：</text>
-          <text class="model-value gray">商务饮水机 S808</text>
+          <text class="model-value gray">{{ deviceData.modelName }} </text>
         </view>
         <view class="imei-row">
           <text class="imei-label">IMEI：</text>
-          <text class="imei-value gray">9845789948778980</text>
+          <text class="imei-value gray">{{ deviceData.imei }}</text>
         </view>
       </view>
-      <image class="signal-icon" src="/static/images/signal-full.png" />
+      <image v-if="deviceData.rssiUrl" class="signal-icon" :src="deviceData.rssiUrl" />
     </view>
+    <view class="info-tip" v-if="deviceData.online == 0">
+      <view>设备离线</view>
+      <view> 请检查设备的联网情况</view>
+      <view @click="onRefresh" class="refresh-btn">
+        刷新网络
+      </view>
+    </view>
+
     <!-- 授权表单 -->
-    <view class="form-card">
-      <view class="form-item">
-        <text class="label">手机号码：</text>
-        <text class="value">17688978904</text>
-      </view>
-      <view class="form-item">
-        <text class="label">客户姓名：</text>
-        <text class="value">陈霞</text>
-      </view>
-      <view class="form-item">
-        <text class="label">客户备注：</text>
-        <input class="input" type="text" v-model="form.remark" placeholder="请输入" placeholder-class="placeholder" />
-      </view>
-      <view class="form-item">
-        <text class="label">所在地区：</text>
-        <text class="value">广东省-佛山市-禅城区</text>
-      </view>
-      <view class="form-item">
-        <text class="label">详细地址：</text>
-        <text class="value">海运八路302号富业大厦A305</text>
-      </view>
-      <view class="form-item">
-        <text class="label">安装位置：</text>
-        <text class="value">产业展厅</text>
-      </view>
-    </view>
-    <view class="form-card">
-      <view class="form-item sale-mode">
-        <text class="label">销售模式：</text>
-        <view style="display: flex;">
-          <label class="radio-label">
-            <radio style="transform: scale(0.8);" value="租赁" :checked="form.saleMode === '租赁'" color="#D28B0A"
-              @click="form.saleMode = '租赁'" />租赁
-          </label>
-          <label class="radio-label">
-            <radio style="transform: scale(0.8);" value="买断" :checked="form.saleMode === '买断'" color="#D28B0A"
-              @click="form.saleMode = '买断'" />买断
-          </label>
+    <template v-else>
+      <view class="form-card">
+        <view class="form-item">
+          <text class="label">手机号码：</text>
+          <!-- <text class="value">17688978904</text> -->
+          <input class="input" type="text" v-model="form.customerPhone" placeholder="请输入"
+            placeholder-class="placeholder" />
+        </view>
+        <view class="form-item">
+          <text class="label">客户姓名：</text>
+          <input class="input" type="text" v-model="form.name" placeholder="请输入" placeholder-class="placeholder" />
+        </view>
+        <view class="form-item">
+          <text class="label">客户备注：</text>
+          <input class="input" type="text" v-model="form.customerRemark" placeholder="请输入"
+            placeholder-class="placeholder" />
+        </view>
+        <view class="form-item">
+          <text class="label">所在地区：</text>
+          <text class="value">{{ form.area }}</text>
+        </view>
+        <view class="form-item">
+          <text class="label">详细地址：</text>
+          <input class="input" type="text" v-model="form.address" placeholder="请输入" placeholder-class="placeholder" />
+        </view>
+        <view class="form-item">
+          <text class="label">安装位置：</text>
+          <input class="input" type="text" v-model="form.location" placeholder="请输入" placeholder-class="placeholder" />
         </view>
       </view>
-    </view>
-    <view class="form-card">
-      <view class="form-item date-picker-row">
-        <text class="label">到期日期：</text>
-        <view class="date-picker" @click="showDatePicker">
-          <text class="value">{{ form.expireDate }}</text>
-          <text class="iconfont icon-arrow">&#xe65c;</text>
+      <view class="form-card">
+        <view class="form-item sale-mode">
+          <text class="label">销售模式：</text>
+          <view style="display: flex;">
+            <label class="radio-label">
+              <radio style="transform: scale(0.8);" value="租赁" :checked="form.saleMode === '租赁'" color="#D28B0A"
+                @click="form.saleMode = '租赁'" />租赁
+            </label>
+            <label class="radio-label">
+              <radio style="transform: scale(0.8);" value="买断" :checked="form.saleMode === '买断'" color="#D28B0A"
+                @click="form.saleMode = '买断'" />买断
+            </label>
+          </view>
         </view>
       </view>
-    </view>
-    <!-- 滤芯更换周期 -->
-    <view class="section-title">滤芯更换周期（天）：</view>
-    <view class="filter-cycle-card">
-      <view class="filter-row" v-for="(cycle, idx) in filterCycles" :key="idx">
-        <text class="filter-label">{{ cycle.name }}：</text>
-        <input class="filter-input" type="number" v-model="cycle.value" placeholder="请输入"
-          placeholder-class="placeholder" />
+      <view v-if="form.saleMode == '租赁'" class="form-card">
+        <picker mode="date" :value="date" :start="startDate" @change="hanldeDateChange">
+          <view class="form-item date-picker-row">
+            <text class="label">到期日期：</text>
+            <view class="date-picker"> <text class="value">{{ form.expireDate }}</text>
+              <text class="iconfont icon-arrow">&#xe65c;</text>
+            </view>
+          </view>
+        </picker>
       </view>
-    </view>
-    <!-- 确认按钮 -->
-    <view class="confirm-btn" @click="handleConfirm">确认授权</view>
+      <!-- 滤芯更换周期 -->
+      <view class="section-title">滤芯更换周期（天）：</view>
+      <view class="filter-cycle-card">
+        <view class="filter-row" v-for="(cycle, idx) in filterCycles" :key="idx">
+          <text class="filter-label">{{ cycle.name }}：</text>
+          <input class="filter-input" type="number" v-model="cycle.value" placeholder="请输入"
+            placeholder-class="placeholder" />
+        </view>
+      </view>
+      <!-- 确认按钮 -->
+      <view class="confirm-btn" @click="handleConfirm">确认授权</view>
+    </template>
   </view>
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
-
+import DateUtil from '@/utils/date.js';
+import { ref, reactive, watch } from "vue";
+import { onLoad } from '@dcloudio/uni-app'
+import { activeCmd, activeCmdResult, activeDevice, loadDeviceBaseInfo, searchCustomerByPhone } from '@/api/dealer'
 const form = reactive({
-  remark: "",
+  name: '',
+  customerRemark: '',
   saleMode: "租赁",
-  expireDate: "2025-07-30",
+  expireDate: "",
+  area: "广东省,广州市,天河区",
+  address: "具体位置",
+  location: "测试",
+  customerPhone: "",
 });
+// const startDate = new Date();
+// 今天格式化为 yyyy-MM-dd
+const startDate = DateUtil.format(new Date(), 'yyyy-MM-dd');
 
+const deviceData = ref({})
 const filterCycles = ref([
-  { name: "精密PP棉", value: 100 },
-  { name: "活性炭", value: 150 },
-  { name: "RO反渗透膜", value: 80 },
+  { name: "精密PP棉", value: '' },
+  { name: "活性炭", value: '' },
+  { name: "RO反渗透膜", value: '' },
 ]);
+onLoad(() => {
+  // 从缓存中获取设备信息
+  const deviceInfo = uni.getStorageSync('deviceInfo')
+  if (deviceInfo) {
+    deviceData.value = deviceInfo
+  }
+})
+
+watch(() => form.customerPhone, (newValue, oldValue) => {
+  if (newValue.length == 11) {
+    searchCustomerByPhone({ phone: form.customerPhone }, { noTip: true }).then((res) => {
+      form.name = res.name
+    })
+  }
+})
 
 const handleBack = () => {
   uni.navigateBack();
 };
-
+const hanldeDateChange = (e) => {
+  form.expireDate = e.detail.value;
+};
 const showDatePicker = () => {
   uni.showDatePicker({
     mode: "date",
@@ -114,11 +156,94 @@ const showDatePicker = () => {
 };
 
 const handleConfirm = () => {
-  uni.showToast({
-    title: "授权成功",
-    icon: "success",
-  });
+  if (!form.customerPhone) {
+    uni.showToast({
+      title: "请输入客户姓名",
+      icon: "none",
+    });
+    return;
+  }
+  if (!form.area) {
+    uni.showToast({
+      title: "请选择所在地区",
+      icon: "none",
+    });
+    return;
+  }
+  if (!form.address) {
+    uni.showToast({
+      title: "请输入详细地址",
+      icon: "none",
+    });
+    return;
+  }
+  if (!form.location) {
+    uni.showToast({
+      title: "请输入安装位置",
+      icon: "none",
+    })
+  }
+  if (!form.expireDate && form.saleMode == '租赁') {
+    uni.showToast({
+      title: "请选择到期日期",
+      icon: "none",
+    });
+    return;
+  }
+  if (filterCycles.value.some(v => !v.value)) {
+    uni.showToast({
+      title: "请输入滤芯更换周期",
+      icon: "none",
+    })
+    return
+  }
+  const params = {
+    deviceId: deviceData.value.deviceId,
+    buyout: form.saleMode === '租赁' ? 1 : 0,
+    expireDate: form.expireDate,
+    chipLifeJson: JSON.stringify([filterCycles.value.map((v, i) => ({
+      index: i + 1,
+      periodValue: v.value
+    }))]),
+  }
+  activeCmd(params).then(res => {
+    // 在十秒内每隔两秒调用activeCmdResult函数，如果成功几句调用activeDevice函数，超过十秒则提示失败
+    let count = 0;
+    if (interval) clearInterval(interval);
+    const interval = setInterval(() => {
+      count++;
+      if (count <= 5) {
+        activeCmdResult(params, { noTip: count != 5 }).then(res => {
+          clearInterval(interval);
+          activeDevice({
+            deviceId: deviceData.value.deviceId,
+          })
+        })
+      }
+    }, 2000);
+  }).catch(err => {
+    let count = 0;
+    if (interval) clearInterval(interval);
+    const interval = setInterval(() => {
+      count++;
+      if (count <= 5) {
+        activeCmdResult(params, { noTip: count != 5 }).then(res => {
+          clearInterval(interval);
+          activeDevice({
+            ...params,
+            ...form
+          })
+        })
+      }
+    }, 2000);
+  })
 };
+
+const onRefresh = () => {
+  loadDeviceBaseInfo({ mes: deviceData.value.mes }).then((res) => {
+    deviceData.value = res
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -350,5 +475,24 @@ const handleConfirm = () => {
 
 .icon-arrow:before {
   content: "\e65c";
+}
+
+.info-tip {
+  margin-top: 90rpx;
+  font-size: 28rpx;
+  text-align: center;
+  color: rgba(14, 203, 247, 1);
+}
+
+.refresh-btn {
+  margin: 67rpx auto 0;
+  width: 181rpx;
+  color: #fff;
+  font-size: 22rpx;
+  height: 72.46rpx;
+  border-radius: 90rpx;
+  line-height: 72rpx;
+  text-align: center;
+  background: #13337CFF;
 }
 </style>

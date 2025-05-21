@@ -5,44 +5,44 @@
       <view class="logo">
         <image class="logo-img" src="/static/images/header-logo.png" mode="aspectFit" />
       </view>
-      <view v-if="loginType == 'dealer'" class="dear-info">
+      <view v-if="loginType == 'ROLE_DEALER'" class="dear-info">
         <view class="greeting flex-between">
           <view @click="goToInfo" class="name">
-            Hi,陈理想
+            Hi,{{ userInfo.name }}
             <image class="icon" src="/static/images/setting-active.png" />
           </view>
           <view class="user-id">
             <text class="tag">经销商</text>
-            <text>15956757809</text>
+            <text>{{ userInfo.phone }}</text>
           </view>
         </view>
       </view>
       <view v-else class="user-info">
         <view class="greeting flex-between">
           <view @click="goToInfo" class="name">
-            Hi,周芸
+            Hi,{{ userInfo.name }}
             <image class="icon" src="/static/images/setting-active.png" />
           </view>
           <view class="user-id">
             <text class="tag">用户</text>
-            <text>15956757809</text>
+            <text>{{ userInfo.phone }}</text>
           </view>
         </view>
       </view>
       <image @click="handelbanner" src="/static/images/banner.png" mode="aspectFill" class="banner" />
     </view>
-    <view v-if="loginType == 'dealer'" class="nav-list">
+    <view v-if="loginType == 'ROLE_DEALER'" class="nav-list">
       <view v-for="(tab, index) in navTabs" :key="index" class="nav-item" :class="{ active: currentNav === tab.value }"
         @tap="handleNavChange(tab.value)">
         {{ tab.label }}
       </view>
     </view>
     <!-- 搜索和添加设备 -->
-    <view v-if="loginType === 'dealer'" class="search-bar flex-between">
+    <view v-if="loginType === 'ROLE_DEALER'" class="search-bar flex-between">
       <view class="search-input flex-center">
         <image src="/static/images/icon-search.png" mode="aspectFit" class="icon small" />
-        <input v-if="currentNav == 'customer'" type="text" placeholder="客户/手机号/SN码/安装位置"
-          placeholder-class="placeholder" />
+        <input v-model="searchKey" @confirm="onSearch" v-if="currentNav == 'customer'" type="text"
+          placeholder="客户/手机号/SN码/安装位置" placeholder-class="placeholder" />
         <input v-if="currentNav == 'device'" type="text" placeholder="类型/SN码/订单" placeholder-class="placeholder" />
         <input v-if="currentNav == 'log'" type="text" placeholder="订单" placeholder-class="placeholder" />
       </view>
@@ -55,14 +55,14 @@
     <view v-else class="search-bar flex-between">
       <view class="search-input flex-center">
         <image src="/static/images/icon-search.png" mode="aspectFit" class="icon small" />
-        <input type="text" placeholder="SN码/安装位置" placeholder-class="placeholder" />
+        <input @confirm="onSearch" type="text" placeholder="SN码/安装位置" placeholder-class="placeholder" />
       </view>
       <view class="btn primary" @click="handleAddDevice">
         <image src="/static/images/icon-scan.png" mode="aspectFit" class="icon small" />
         <text>添加/前往设备</text>
       </view>
     </view>
-    <view v-if="loginType !== 'dealer'" class="flex-between">
+    <view v-if="loginType !== 'ROLE_DEALER'" class="flex-between">
       <view class="my">
         我的设备
       </view>
@@ -71,28 +71,29 @@
       </view>
     </view>
     <!-- 设备状态标签 -->
-    <scroll-view v-if="!(loginType == 'dealer' && currentNav == 'device')" scroll-x class="status-tabs"
+    <scroll-view v-if="!(loginType == 'ROLE_DEALER' && currentNav == 'device')" scroll-x class="status-tabs"
       :show-scrollbar="false">
       <view class="tab-list">
         <view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === tab.value }"
           @tap="handleTabChange(tab.value)">
           {{ tab.label }}
-          <!-- <text v-if="tab.count" class="count">({{ tab.count }})</text> -->
         </view>
       </view>
     </scroll-view>
     <view v-if="loginType == 'user'" class="device-num">设备：24</view>
-    <view v-if="loginType == 'dealer' && currentNav == 'customer'" class="device-num">客户:
-      <view style="display: inline-block; margin-right: 20rpx;">2</view>设备：24
+    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'customer'" class="device-num">
+      客户:
+      <view style="display: inline-block; margin-right: 20rpx;">{{ customerData.customerNum }}</view>
+      设备：{{ customerData.deviceNum }}
     </view>
-    <view v-if="loginType == 'dealer' && currentNav == 'device'" class="auth-status-tabs">
+    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'device'" class="auth-status-tabs">
       <text class="auth-status-label">未授权设备：5</text>
       <view class="status-btn-group">
         <view :class="['status-btn', { active: !isAuthorized }]" @click="isAuthorized = false">未授权</view>
         <view :class="['status-btn', { active: isAuthorized }]" @click="isAuthorized = true">已授权</view>
       </view>
     </view>
-    <view v-if="loginType == 'dealer' && currentNav == 'log'" class="device-num">设备：24</view>
+    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'log'" class="device-num">设备：24</view>
     <!-- 设备列表 -->
     <scroll-view v-if="loginType == 'user'" class="device-scroll" scroll-y refresher-enabled
       :refresher-triggered="isRefreshing" @refresherrefresh="onRefresh">
@@ -113,10 +114,11 @@
         </view>
       </view>
     </scroll-view>
-    <scroll-view v-if="loginType == 'dealer'" class="device-scroll" scroll-y refresher-enabled
+    <scroll-view v-if="loginType == 'ROLE_DEALER'" class="device-scroll" scroll-y refresher-enabled
       :refresher-triggered="isRefreshing" @refresherrefresh="onRefresh">
       <view v-if="currentNav === 'customer'" class="customer-list">
-        <view @tap="handleCustomerClick(item)" class="customer-item" v-for="item in customers" :key="item.id">
+        <view @tap="handleCustomerClick(item)" class="customer-item" v-for="item in customerData.users"
+          :key="item.phone">
           <view class="avatar">
             <image src="/static/images/avatar.png" class="avatar-img" />
           </view>
@@ -128,7 +130,7 @@
             <text class="phone">{{ item.phone }}</text>
           </view>
           <view class="device-count">
-            <text>{{ item.deviceCount }}台</text>
+            <text>{{ item.num }}台</text>
             <view class="right-arrow"></view>
           </view>
         </view>
@@ -152,20 +154,33 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import store from '@/store'
 import { onShow } from '@dcloudio/uni-app'
+import { equipmentStatistics } from '@/api/dealer'
 // 从缓存里获取登录类型
 let loginType = ref('')
+let userInfo = ref({})
+let searchKey = ref('')
 onShow(() => {
-  loginType.value = uni.getStorageSync('loginType')
+  const data = uni.getStorageSync('userInfo')
+  console.log('userInfo', data)
+  if (data) {
+    userInfo.value = data
+    loginType.value = data.role
+  }
+
+  getEquipmentStatistics()
+
+  // loginType.value = uni.getStorageSync('userInfo')
 })
 
 const tabs = ref([
-  { label: '全部', value: 'all', count: 12 },
-  { label: '正常', value: 'normal', count: 8 },
-  { label: '离线', value: 'offline', count: 2 },
-  { label: '停用', value: 'disabled', count: 0 },
-  { label: '故障', value: 'error', count: 1 },
-  { label: '换芯', value: 'change', count: 1 }
+  { label: '全部', value: '0', count: 12 },
+  { label: '正常', value: '1', count: 8 },
+  { label: '离线', value: '2', count: 2 },
+  { label: '停用', value: '3', count: 0 },
+  { label: '故障', value: '4', count: 1 },
+  { label: '换芯', value: '5', count: 1 }
 ])
 
 const navTabs = ref([
@@ -177,7 +192,13 @@ const customers = ref([
   { id: 1, name: '陈霞', phone: '13467458906', deviceCount: 16 },
   { id: 2, name: '张国莉', phone: '17834902226', deviceCount: 8 }
 ])
-const currentTab = ref('all')
+
+const customerData = ref({
+  customerNum: 0,
+  deviceNum: 0,
+  users: []
+})
+const currentTab = ref('0')
 const currentNav = ref('customer')
 const isAuthorized = ref(false)
 const deviceList = ref([
@@ -246,8 +267,22 @@ const filteredDevices = computed(() => {
 
 const isRefreshing = ref(false)
 
+
+const getEquipmentStatistics = () => {
+  equipmentStatistics({ tab: currentTab.value, arg: searchKey.value }).then(res => {
+    console.log('res', res)
+    customerData.value = res
+  })
+}
+
+const onSearch = () => {
+  if (currentNav.value == 'customer') {
+    getEquipmentStatistics()
+  }
+}
 const handleTabChange = (tab) => {
   currentTab.value = tab
+  getEquipmentStatistics()
 }
 
 const handleNavChange = (tab) => {

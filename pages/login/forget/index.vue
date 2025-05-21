@@ -10,7 +10,7 @@
 			<view class="form-item">
 				<input type="text" maxlength="11" v-model="form.code" placeholder="请输入"
 					placeholder-class="placeholder" />
-				<text class="code">获取验证码</text>
+				<text @click="getCode" class="code">获取验证码</text>
 			</view>
 			<view class="label">密码</view>
 			<view class="form-item">
@@ -38,6 +38,7 @@
 </template>
 
 <script setup>
+import { passwordReset, getCaptcha } from '@/api/login'
 import { ref, reactive } from "vue";
 
 // 登录类型
@@ -51,6 +52,23 @@ const form = reactive({
 	code: '',
 	passwordTwo: ""
 });
+
+const getCode = () => {
+	console.log(form.phone)
+	if (!form.phone) {
+		uni.showToast({
+			title: "请输入手机号码",
+			icon: "none",
+		});
+		return;
+	}
+	getCaptcha({
+		phone: form.phone
+	}).then(res => {
+		console.log(res)
+	})
+
+}
 
 // 处理登录
 const handleSubmit = () => {
@@ -114,6 +132,7 @@ const handleSubmit = () => {
 		.code {
 			font-size: 25rpx;
 			color: $active-color;
+			z-index: 100;
 			position: absolute;
 			right: 38rpx;
 			top: 50%;

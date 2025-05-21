@@ -50,7 +50,7 @@
 
 <script setup>
 import { ref } from 'vue'
-
+import { onLoad } from '@dcloudio/uni-app'
 const status = ref('success')
 const device = ref({
     sn: '4533095668934',
@@ -61,6 +61,14 @@ const device = ref({
     installPos: '产业展厅'
 })
 
+
+onLoad(() => {
+    // 从缓存中获取设备信息
+    const deviceInfo = uni.getStorageSync('deviceInfo')
+    if (deviceInfo) {
+        device.value = deviceInfo
+    }
+})
 const handleBack = () => {
     uni.navigateBack()
 }

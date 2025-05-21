@@ -61,231 +61,239 @@
 </template>
 
 <script setup>
-	import {
-		ref,
-		reactive
-	} from "vue";
+import { managerLogin } from '@/api/login'
+import store from '@/store'
+import {
+	ref,
+	reactive
+} from "vue";
 
-	// 登录类型
-	const loginType = ref("user");
-	const showPassword = ref(false);
+// 登录类型
+const loginType = ref("user");
+const showPassword = ref(false);
 
-	// 表单数据
-	const form = reactive({
-		phone: "",
-		password: "",
-		remember: false,
-		agreement: false,
-	});
+// 表单数据
+const form = reactive({
+	phone: "18826483596",
+	password: "123456",
+	remember: false,
+	agreement: false,
+});
 
-	// 处理登录
-	const handleLogin = () => {
-		// 设置缓存
-		uni.setStorageSync('loginType', loginType.value);
-
-		return uni.switchTab({
+// 处理登录
+const handleLogin = () => {
+	if (!form.phone) {
+		uni.showToast({
+			title: "请输入手机号码",
+			icon: "none",
+		});
+		return;
+	}
+	if (!form.password) {
+		uni.showToast({
+			title: "请输入密码",
+			icon: "none",
+		});
+		return;
+	}
+	if (!form.agreement) {
+		uni.showToast({
+			title: "请阅读并同意用户协议",
+			icon: "none",
+		});
+		return;
+	}
+	// 账号角色 ROLE_DEALER:经销商；ROLE_CUSTOMER:客户，ROLE_EMPLOYEE:员工
+	managerLogin({
+		account: form.phone,
+		password: form.password,
+		role: 'ROLE_DEALER'
+	}).then(res => {
+		store.commit('setUserInfo', res)
+		uni.switchTab({
 			url: '/pages/index/index'
 		})
-		if (!form.phone) {
-			uni.showToast({
-				title: "请输入手机号码",
-				icon: "none",
-			});
-			return;
-		}
-		if (!form.password) {
-			uni.showToast({
-				title: "请输入密码",
-				icon: "none",
-			});
-			return;
-		}
-		if (!form.agreement) {
-			uni.showToast({
-				title: "请阅读并同意用户协议",
-				icon: "none",
-			});
-			return;
-		}
-		// TODO: 实现登录逻辑
-	};
+	})
+	// TODO: 实现登录逻辑
+};
 
-	// 处理注册
-	const handleRegister = () => {
-		// TODO: 跳转到注册页面
-		uni.navigateTo({
-			url: `/pages/login/register/index`
-		})
-	};
+// 处理注册
+const handleRegister = () => {
+	// TODO: 跳转到注册页面
+	uni.navigateTo({
+		url: `/pages/login/register/index`
+	})
+};
 
-	// 处理忘记密码
-	const handleForgetPassword = () => {
-		// TODO: 跳转到忘记密码页面
-		uni.navigateTo({
-			url: `/pages/login/forget/index`
-		})
-	};
+// 处理忘记密码
+const handleForgetPassword = () => {
+	// TODO: 跳转到忘记密码页面
+	uni.navigateTo({
+		url: `/pages/login/forget/index`
+	})
+};
 
-	// 查看用户协议
-	const handleViewTerms = () => {
-		// TODO: 跳转到用户协议页面
-	};
+// 查看用户协议
+const handleViewTerms = () => {
+	// TODO: 跳转到用户协议页面
+};
 
-	// 查看隐私政策
-	const handleViewPrivacy = () => {
-		// TODO: 跳转到隐私政策页面
-	};
+// 查看隐私政策
+const handleViewPrivacy = () => {
+	// TODO: 跳转到隐私政策页面
+};
 </script>
 
 <style lang="scss" scoped>
-	.login-container {
-		min-height: 100vh;
-		background-color: #1c2431;
+.login-container {
+	background-color: $bg-color;
+	min-height: 100vh;
+	background-color: #1c2431;
+	display: flex;
+	flex-direction: column;
+	// justify-content: center;
+	align-items: center;
+}
+
+.login-bg {
+	margin-top: 240rpx;
+	width: 420rpx;
+	height: 170rpx;
+}
+
+.login-type {
+	margin-top: 136rpx;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 85rpx;
+	width: 550rpx;
+
+	.type-item {
 		display: flex;
-		flex-direction: column;
-		// justify-content: center;
 		align-items: center;
-	}
-
-	.login-bg {
-		margin-top: 240rpx;
-		width: 420rpx;
-		height: 170rpx;
-	}
-
-	.login-type {
-		margin-top: 136rpx;
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 85rpx;
-		width: 550rpx;
-
-		.type-item {
-			display: flex;
-			align-items: center;
-			color: #fff;
-			font-size: 36rpx;
-
-			.circle {
-				width: 36rpx;
-				height: 36rpx;
-				background-color: #fff;
-				border-radius: 50%;
-				border: 2rpx solid #A5BFE8;
-				margin-right: 18rpx;
-				box-sizing: border-box;
-
-				&.active {
-					border: 10rpx solid #D68F01;
-				}
-			}
-		}
-	}
-
-	.login-form {
-		width: 100vw;
-		padding-left: 32rpx;
-		padding-right: 32rpx;
-
-		.label {
-			font-size: 29rpx;
-			font-weight: 500;
-			color: #fff;
-			margin-bottom: 16rpx;
-		}
-
-		.form-item {
-			background: #fff;
-			margin-bottom: 30rpx;
-			border-radius: 18rpx;
-			padding: 0 25rpx;
-			position: relative;
-			height: 90rpx;
-
-			input {
-				height: 100%;
-				font-size: 25rpx;
-			}
-
-			.eye-icon {
-				width: 34rpx;
-				height: 26rpx;
-				position: absolute;
-				right: 38rpx;
-				top: 50%;
-				transform: translateY(-50%);
-
-			}
-
-			.eye-open {
-				width: 40rpx;
-				height: 40rpx;
-			}
-		}
-	}
-
-	.form-options {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin: 20rpx 0 40rpx;
-
-		.remember {
-			color: #fff;
-			font-size: 26rpx;
-			display: flex;
-			align-items: center;
-		}
-
-
-		.forget {
-			color: #0ECBF7;
-			font-size: 26rpx;
-		}
-	}
-
-	.login-btn {
-		background: $active-color;
 		color: #fff;
-		height: 90rpx;
-		line-height: 90rpx;
-		border-radius: 18rpx;
+		font-size: 36rpx;
+
+		.circle {
+			width: 36rpx;
+			height: 36rpx;
+			background-color: #fff;
+			border-radius: 50%;
+			border: 2rpx solid #A5BFE8;
+			margin-right: 18rpx;
+			box-sizing: border-box;
+
+			&.active {
+				border: 10rpx solid #D68F01;
+			}
+		}
+	}
+}
+
+.login-form {
+	width: 100vw;
+	padding-left: 32rpx;
+	padding-right: 32rpx;
+
+	.label {
+		font-size: 29rpx;
+		font-weight: 500;
+		color: #fff;
+		margin-bottom: 16rpx;
+	}
+
+	.form-item {
+		background: #fff;
 		margin-bottom: 30rpx;
-		font-size: 29rpx;
-	}
-
-	.register-btn {
-		background: transparent;
-		height: 100rpx;
-		line-height: 100rpx;
-		color: $active-color;
 		border-radius: 18rpx;
-		border: 3rpx solid $active-color;
-		margin-bottom: 101rpx;
-		font-size: 29rpx;
-	}
+		padding: 0 25rpx;
+		position: relative;
+		height: 90rpx;
 
-	.dealer-info {
-		color: #fff;
-		font-size: 29rpx;
-		text-align: center;
-		padding-top: 30rpx;
-		margin-bottom: 116rpx;
-	}
+		input {
+			height: 100%;
+			font-size: 25rpx;
+		}
 
-	.agreement {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: #fff;
-		font-size: 25rpx;
+		.eye-icon {
+			width: 34rpx;
+			height: 26rpx;
+			position: absolute;
+			right: 38rpx;
+			top: 50%;
+			transform: translateY(-50%);
 
-		.link {
-			color: $link-color;
+		}
+
+		.eye-open {
+			width: 40rpx;
+			height: 40rpx;
 		}
 	}
+}
 
-	.placeholder {
-		color: #999;
+.form-options {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 20rpx 0 40rpx;
+
+	.remember {
+		color: #fff;
+		font-size: 26rpx;
+		display: flex;
+		align-items: center;
 	}
+
+
+	.forget {
+		color: #0ECBF7;
+		font-size: 26rpx;
+	}
+}
+
+.login-btn {
+	background: $active-color;
+	color: #fff;
+	height: 90rpx;
+	line-height: 90rpx;
+	border-radius: 18rpx;
+	margin-bottom: 30rpx;
+	font-size: 29rpx;
+}
+
+.register-btn {
+	background: transparent;
+	height: 100rpx;
+	line-height: 100rpx;
+	color: $active-color;
+	border-radius: 18rpx;
+	border: 3rpx solid $active-color;
+	margin-bottom: 101rpx;
+	font-size: 29rpx;
+}
+
+.dealer-info {
+	color: #fff;
+	font-size: 29rpx;
+	text-align: center;
+	padding-top: 30rpx;
+	margin-bottom: 116rpx;
+}
+
+.agreement {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 25rpx;
+
+	.link {
+		color: $link-color;
+	}
+}
+
+.placeholder {
+	color: #999;
+}
 </style>

@@ -15,7 +15,8 @@ export default class Request {
 		this.config = {
 			baseUrl: '',
 			header: {
-				'content-type': 'application/json',
+				// 'content-type': 'application/json',
+				'content-type': 'application/x-www-form-urlencoded',
 			},
 			method: 'get',
 			dataType: 'json',
@@ -29,7 +30,7 @@ export default class Request {
 		}
 
 		forEach(['delete', 'get', 'head', 'options', 'post', 'put', 'patch'], (method) => {
-			this[method] = function(url, data = {}, config) {
+			this[method] = function (url, data = {}, config) {
 				return this.request({
 					...config,
 					method,
@@ -60,9 +61,9 @@ export default class Request {
 
 		const dispatchRequest = async (config) => {
 			const resp = await uni.request(config)
-			return resp[0] ? Promise.reject(resp[0]) : {
+			return {
 				config,
-				...resp[1],
+				...resp,
 			}
 		}
 		// Hook up interceptors middleware
