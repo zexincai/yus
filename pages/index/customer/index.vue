@@ -2,175 +2,206 @@
   <view class="customer-detail-container">
     <!-- 客户信息 -->
     <view class="customer-info">
-      <image class="avatar" src="/static/images/avatar.png" mode="aspectFit"></image>
+      <image
+        class="avatar"
+        src="/static/images/avatar.png"
+        mode="aspectFit"
+      ></image>
       <view class="info">
-        <text class="name">{{ customer.name }}</text>
-        <text class="phone">{{ customer.phone }}</text>
+        <text class="name">{{ customerData.detail.remark }}</text>
+        <text class="phone">{{ customerData.detail.phone }}</text>
       </view>
-      <image src="/static/images/icon-edit.png" class="edit-btn" @click="handleEdit">
-
+      <image
+        src="/static/images/icon-edit.png"
+        class="edit-btn"
+        @click="handleEdit"
+      >
       </image>
     </view>
     <view class="search-bar flex-between">
       <view class="search-input flex-center">
-        <image src="/static/images/icon-search.png" mode="aspectFit" class="icon small" />
-        <input type="text" placeholder="SN码/安装位置" placeholder-class="placeholder" />
+        <image
+          src="/static/images/icon-search.png"
+          mode="aspectFit"
+          class="icon small"
+        />
+        <input
+          type="text"
+          v-model="searchKeyword"
+          @confirm="handleSearch"
+          placeholder="SN码/安装位置"
+          placeholder-class="placeholder"
+        />
       </view>
     </view>
     <view class="flex-between">
-      <view class="my">
-        我的设备
-      </view>
-      <view class="type">
-        全部类型
-      </view>
+      <view class="my"> 客户设备 </view>
+
+      <picker
+        @change="onBrandPickerChange"
+        :value="brandIndex"
+        :range="brandList"
+      >
+        <view class="type"> {{ brandList[brandIndex] }} </view>
+      </picker>
     </view>
     <!-- 设备状态标签 -->
     <scroll-view scroll-x class="status-tabs" :show-scrollbar="false">
       <view class="tab-list">
-        <view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === tab.value }"
-          @tap="handleTabChange(tab.value)">
+        <view
+          v-for="(tab, index) in tabs"
+          :key="index"
+          class="tab-item"
+          :class="{ active: currentTab === tab.value }"
+          @tap="handleTabChange(tab.value)"
+        >
           {{ tab.label }}
           <!-- <text v-if="tab.count" class="count">({{ tab.count }})</text> -->
         </view>
       </view>
     </scroll-view>
-    <view class="device-num">设备：24
-    </view>
-    <scroll-view class="device-scroll" scroll-y refresher-enabled :refresher-triggered="isRefreshing"
-      @refresherrefresh="onRefresh">
-      <view class="device-list">
-        <view v-for="(device, index) in filteredDevices" :key="index" class="device-item"
-          @tap="handleDeviceClick(device)">
-          <image :src="device.icon" mode="aspectFit" class="device-icon" />
-          <view class="device-info">
-            <text class="name">{{ device.name }}</text>
-            <text class="model">{{ device.model }}</text>
-          </view>
-          <view class="device-status">
-            <view v-if="device.tags && device.tags.length" class="status-tags">
-              <text v-for="(tag, idx) in device.tags" :key="idx" class="tag" :class="tag.type">{{ tag.text }}</text>
-            </view>
-          </view>
-          <image :src="device.signalIcon" mode="aspectFit" class="icon small" />
+    <view class="device-num">设备：{{ customerData.list.length }} </view>
+    <!-- <scroll-view
+      class="device-scroll"
+      scroll-y
+      refresher-enabled
+      :refresher-triggered="isRefreshing"
+      @refresherrefresh="onRefresh"
+    > -->
+    <view v-if="customerData.list.length" class="device-list">
+      <view
+        v-for="(device, index) in customerData.list"
+        :key="index"
+        class="device-item"
+        @tap="handleDeviceClick(device)"
+      >
+        <image
+          :src="device.productUrl || '/static/images/device.png'"
+          mode="aspectFit"
+          class="device-icon"
+        />
+        <view class="device-info">
+          <text class="name">{{ device.location }}</text>
+          <text class="model">{{ device.modelName }}</text>
         </view>
+        <view class="device-status">
+          <view
+            v-if="device.labels && device.labels.length"
+            class="status-tags"
+          >
+            <text
+              v-for="(tag, idx) in device.labels"
+              :key="idx"
+              class="tag"
+              :class="'tag-' + idx"
+              >{{ tag }}</text
+            >
+          </view>
+        </view>
+        <image :src="device.rssiUrl" mode="aspectFit" class="icon small" />
       </view>
-    </scroll-view>
-
+    </view>
+    <view v-if="!customerData.list.length" class="empty">
+      <image
+        src="/static/images/empty.png"
+        mode="aspectFit"
+        class="empty-img"
+      />
+      <view class="empty-text"> 暂无设备 </view>
+    </view>
+    <!-- </scroll-view> -->
   </view>
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { ref, reactive } from "vue";
+import { getCustomerDevices, loadBrands, getCustomerInfo } from "@/api/dealer";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+// import store from "@/store";
 // 从缓存里获取登录类型
-let loginType = ref('')
+const searchKeyword = ref("");
+const customerData = reactive({
+  detail: { name: "", phone: "" },
+  list: [],
+});
+const brandList = ref([]);
+const brandIndex = ref(0);
 onLoad(() => {
-  loginType.value = uni.getStorageSync('loginType')
-})
-const customer = reactive({
-  name: "陈霞",
-  phone: "13467458906",
+  const customerDetail = uni.getStorageSync("customerDetail");
+  customerData.detail = customerDetail;
+
+  getCustomerDevicesList();
+
+  loadBrands().then((res) => {
+    brandList.value = ["全部类型", ...(res || [])];
+  });
 });
 
+onShow(() => {
+  getCustomerInfo({ phone: customerData.detail.phone }).then((res) => {
+    customerData.detail = res;
+  });
+});
 
 const tabs = ref([
-  { label: '全部', value: 'all', count: 12 },
-  { label: '正常', value: 'normal', count: 8 },
-  { label: '离线', value: 'offline', count: 2 },
-  { label: '停用', value: 'disabled', count: 0 },
-  { label: '故障', value: 'error', count: 1 },
-  { label: '换芯', value: 'change', count: 1 }
-])
+  { label: "全部", value: "0", count: 12 },
+  { label: "正常", value: "1", count: 8 },
+  { label: "离线", value: "2", count: 2 },
+  { label: "停用", value: "3", count: 0 },
+  { label: "故障", value: "4", count: 1 },
+  { label: "换芯", value: "5", count: 1 },
+]);
 
-const navTabs = ref([
-  { label: '我的客户', value: 'customer', },
-  { label: '授权设备', value: 'device', },
-  { label: '出库记录', value: 'log', },
-])
-const customers = ref([
-  { id: 1, name: '陈霞', phone: '13467458906', deviceCount: 16 },
-  { id: 2, name: '张国莉', phone: '17834902226', deviceCount: 8 }
-])
-const currentTab = ref('all')
-const currentNav = ref('customer')
+const currentTab = ref("0");
 
-const devices = ref([
-  {
-    id: 1,
-    name: '一楼前台',
-    model: 'S800-2',
-    icon: '/static/images/device.png',
-    status: 'normal',
-    signalIcon: '/static/images/signal-full.png',
-    tags: []
-  },
-  {
-    id: 2,
-    name: '茶水间',
-    model: 'RO508',
-    icon: '/static/images/device.png',
-    status: 'change',
-    signalIcon: '/static/images/signal-full.png',
-    tags: [{ type: 'change', text: '换芯' }]
-  },
-  {
-    id: 3,
-    name: '会议室',
-    model: 'S800-2',
-    icon: '/static/images/device.png',
-    status: 'error',
-    signalIcon: '/static/images/signal-full.png',
-    tags: [
-      { type: 'error', text: '故障' },
-      { type: 'warning', text: '到期' },
-      { type: 'change', text: '换芯' }
-    ]
-  },
-  {
-    id: 4,
-    name: '企业展厅',
-    model: 'RO508',
-    icon: '/static/images/device.png',
-    status: 'error',
-    signalIcon: '/static/images/signal-low.png',
-    tags: [{ type: 'error', text: '故障' }]
+const isRefreshing = ref(false);
+
+const getCustomerDevicesList = async () => {
+  try {
+    const res = await getCustomerDevices({
+      phone: customerData.detail.phone,
+      tab: currentTab.value,
+      arg: searchKeyword.value,
+      brand: brandIndex.value != 0 ? brandList.value[brandIndex.value] : "",
+    });
+    customerData.list = res;
+  } catch (error) {
+    console.error("获取设备列表失败", error);
   }
-])
-
-const filteredDevices = computed(() => {
-  if (currentTab.value === 'all') return devices.value
-  return devices.value.filter(device => device.status === currentTab.value)
-})
-
-const isRefreshing = ref(false)
-
+};
+const onBrandPickerChange = (e) => {
+  brandIndex.value = e.detail.value;
+  getCustomerDevicesList();
+};
 const handleTabChange = (tab) => {
-  currentTab.value = tab
-}
+  currentTab.value = tab;
+  getCustomerDevicesList();
+};
 
+const handleSearch = () => {
+  getCustomerDevicesList();
+};
 
 const handleEdit = () => {
   uni.navigateTo({
-    url: '/pages/index/customer/edit/index'
-  })
-}
+    url: `/pages/index/customer/edit/index?phone=${customerData.detail.phone}`,
+  });
+};
 
 const handleDeviceClick = (device) => {
   uni.navigateTo({
-    url: `/pages/device/detail/index?id=${device.id}`
-  })
-}
-
+    url: `/pages/device/detail/index?id=${device.deviceId}`,
+  });
+};
 
 const onRefresh = async () => {
-  isRefreshing.value = true
+  isRefreshing.value = true;
   try {
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   } finally {
-    isRefreshing.value = false
+    isRefreshing.value = false;
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -179,7 +210,6 @@ const onRefresh = async () => {
   padding: 26rpx;
   background: $bg-color;
 }
-
 
 .customer-info {
   display: flex;
@@ -249,14 +279,13 @@ const onRefresh = async () => {
 
   .user-id .tag {
     border-radius: 6rpx;
-    background: #13337CFF;
+    background: #13337cff;
     color: #fff;
     font-size: 22rpx;
     padding: 4rpx 12rpx;
     border-radius: 6rpx;
     margin-right: 10rpx;
   }
-
 }
 
 .greeting {
@@ -290,7 +319,7 @@ const onRefresh = async () => {
 }
 
 .user-id .tag {
-  background: #D68F01;
+  background: #d68f01;
   color: #fff;
   font-size: 22rpx;
   padding: 4rpx 12rpx;
@@ -299,7 +328,7 @@ const onRefresh = async () => {
 }
 
 .user-id text {
-  color: #C7C7C7;
+  color: #c7c7c7;
   font-size: 28rpx;
 }
 
@@ -319,7 +348,7 @@ const onRefresh = async () => {
 
 .search-input {
   flex: 1;
-  background: #2D3C58;
+  background: #2d3c58;
   height: 80rpx;
   border-radius: 90rpx;
   padding: 0 30rpx;
@@ -342,7 +371,7 @@ const onRefresh = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #D68F01;
+  background: #d68f01;
   color: #fff;
   font-size: 25rpx;
   border-radius: 90rpx;
@@ -369,14 +398,14 @@ const onRefresh = async () => {
   font-size: 25rpx;
 
   &::after {
-    content: '';
+    content: "";
     // 画一个向下的箭头
     display: inline-block;
     width: 0;
     height: 0;
     border-left: 10rpx solid transparent;
     border-right: 10rpx solid transparent;
-    border-top: 12rpx solid #61D4CC;
+    border-top: 12rpx solid #61d4cc;
     margin-left: 5rpx;
     // vertical-align: middle;
     margin-bottom: 2rpx;
@@ -405,7 +434,7 @@ const onRefresh = async () => {
     font-size: 32rpx;
     margin: 0rpx 30rpx 40rpx;
     padding: 14rpx 0;
-    color: #A5BFE8;
+    color: #a5bfe8;
     position: relative;
     cursor: pointer;
   }
@@ -415,7 +444,7 @@ const onRefresh = async () => {
   }
 
   .nav-item.active::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: 0rpx;
@@ -423,13 +452,11 @@ const onRefresh = async () => {
     height: 4rpx;
     background: $active-color;
   }
-
-
 }
 
 .tab-item {
   padding: 24rpx 30rpx;
-  color: #A5BFE8;
+  color: #a5bfe8;
   font-size: 28rpx;
   position: relative;
   cursor: pointer;
@@ -446,7 +473,7 @@ const onRefresh = async () => {
 }
 
 .tab-item.active::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   bottom: 0rpx;
@@ -470,7 +497,7 @@ const onRefresh = async () => {
 
 .device-item {
   position: relative;
-  background: #2D3C58;
+  background: #2d3c58;
   border-radius: 12rpx;
   padding: 60rpx 30rpx 30rpx;
   margin-bottom: 30rpx;
@@ -479,9 +506,8 @@ const onRefresh = async () => {
   width: 336rpx;
   height: 180rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324A70 0%, #324A70 100%);
+  background: linear-gradient(90deg, #324a70 0%, #324a70 100%);
   box-shadow: 0px 4rpx 8rpx #000000;
-
 
   .icon {
     position: absolute;
@@ -510,10 +536,14 @@ const onRefresh = async () => {
   font-size: 28rpx;
   margin-bottom: 10rpx;
   display: block;
+  // 省略号
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .device-info .model {
-  color: #C7C7C7;
+  color: #c7c7c7;
   font-size: 24rpx;
 }
 
@@ -537,18 +567,17 @@ const onRefresh = async () => {
   color: #fff;
 }
 
-.status-tags .tag.warning {
-  background: #CFB55F;
+.status-tags .tag.tag-1 {
+  background: #cfb55f;
 }
 
-.status-tags .tag.error {
-  background: #FA927A;
+.status-tags .tag.tag-0 {
+  background: #fa927a;
 }
 
-.status-tags .tag.change {
-  background: #629CDE;
+.status-tags .tag.tag-2 {
+  background: #629cde;
 }
-
 
 .placeholder {
   color: #999;
@@ -602,7 +631,7 @@ const onRefresh = async () => {
       }
 
       .phone {
-        color: #C7C7C7FF;
+        color: #c7c7c7ff;
         font-size: 25rpx;
         margin-top: 20rpx;
       }

@@ -1,168 +1,173 @@
 <template>
-	<view class="container">
-		<!-- 表单区域 -->
-		<view class="form-card">
-			<!-- 所在地区 -->
-			<view class="form-item">
-				<text class="label">所在地区：</text>
-				<view class="input-wrapper" @click="handleRegionClick">
-					<text :class="['input-text', !formData.region && 'placeholder']">
-						{{ formData.region || '请选择' }}
-					</text>
-					<image src="/static/images/arrow-down.png" mode="aspectFit" class="arrow-icon" />
-				</view>
-			</view>
-
-			<!-- 详细地址 -->
-			<view class="form-item">
-				<text class="label">详细地址：</text>
-				<input type="text" v-model="formData.address" placeholder="请输入" placeholder-class="placeholder"
-					class="input" />
-			</view>
-
-			<!-- 安装位置 -->
-			<view class="form-item">
-				<text class="label">安装位置：</text>
-				<input type="text" v-model="formData.location" placeholder="请输入" placeholder-class="placeholder"
-					class="input" />
-			</view>
-		</view>
-
-		<!-- 保存按钮 -->
-		<button class="save-btn" @click="handleSave">保存</button>
-	</view>
+  <view class="customer-edit-container">
+    <!-- 信息卡片 -->
+    <view class="info-card">
+      <view class="info-row">
+        <text class="label">所在地区：</text>
+        <text @click="visible = true" class="value"
+          >{{ province }}{{ city }}{{ zone }}</text
+        >
+      </view>
+      <view class="info-row">
+        <text class="label">详细地址：</text>
+        <input
+          class="input"
+          type="text"
+          v-model="detail.address"
+          placeholder="请输入"
+          placeholder-class="placeholder"
+        />
+      </view>
+      <view class="info-row">
+        <text class="label">安装位置：</text>
+        <input
+          class="input"
+          type="text"
+          v-model="detail.location"
+          placeholder="请输入"
+          placeholder-class="placeholder"
+        />
+      </view>
+    </view>
+    <cityPicker
+      :column="3"
+      :default-value="defaultValue"
+      :mask-close-able="true"
+      @confirm="confirm"
+      @cancel="cancel"
+      :visible="visible"
+    />
+    <!-- 保存按钮 -->
+    <button class="save-btn" @click="handleSave">保存</button>
+  </view>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive } from "vue";
+import { editLocation } from "@/api/dealer";
+import { onLoad } from "@dcloudio/uni-app";
+import cityPicker from "@/uni_modules/piaoyi-cityPicker/components/piaoyi-cityPicker/piaoyi-cityPicker";
 
-// 表单数据
-const formData = reactive({
-	region: '广东省广州市天河区',
-	address: '中山大道56号骏景创意园合生骏景广场B3和家公寓',
-	location: '小芸家'
-})
+const detail = reactive({
+  location: "",
+  address: "",
+  deviceId: "",
+});
+const province = ref("");
+const city = ref("");
+const zone = ref("");
+const defaultValue = ref("");
+const visible = ref(false);
 
-// 处理地区选择
-const handleRegionClick = () => {
-	uni.showRegionPicker({
-		success: (result) => {
-			formData.region = result.label.join('')
-		}
-	})
-}
-
-// 处理保存
-const handleSave = () => {
-	if (!formData.region) {
-		uni.showToast({
-			title: '请选择所在地区',
-			icon: 'none'
-		})
-		return
-	}
-	if (!formData.address) {
-		uni.showToast({
-			title: '请输入详细地址',
-			icon: 'none'
-		})
-		return
-	}
-	if (!formData.location) {
-		uni.showToast({
-			title: '请输入安装位置',
-			icon: 'none'
-		})
-		return
-	}
-
-	// TODO: 调用保存接口
-	uni.showToast({
-		title: '保存成功',
-		icon: 'success'
-	})
-
-	// 返回上一页
-	setTimeout(() => {
-		uni.navigateBack()
-	}, 1500)
-}
+onLoad(() => {
+  const res = uni.getStorageSync("lastPageData");
+  detail.deviceId = res.deviceId;
+  detail.location = res.location;
+  detail.address = res.address;
+  const list = res.area.split(" ");
+  if (list.length > 0) {
+    province.value = list[0];
+    city.value = list[1];
+    zone.value = list[2];
+  }
+});
+const confirm = (e) => {
+  province.value = e.provinceName;
+  city.value = e.cityName;
+  zone.value = e.areaName;
+  visible.value = false;
+};
+const cancel = () => {
+  visible.value = false;
+};
+const handleSave = async () => {
+  await editLocation({
+    deviceId: detail.deviceId,
+    address: detail.address,
+    location: detail.location,
+    province: province.value,
+    city: city.value,
+    zone: zone.value,
+  });
+  uni.showToast({
+    title: "保存成功",
+    icon: "success",
+  });
+};
 </script>
 
 <style lang="scss" scoped>
-.container {
-	min-height: 100vh;
-	background-color: #1c2431;
-	padding: 20rpx;
+.customer-edit-container {
+  min-height: 100vh;
+  background: $bg-color;
+  padding: 30rpx;
 }
 
-.form-card {
-	background: #2D3C58;
-	border-radius: 12rpx;
-	padding: 0 30rpx;
+.info-card {
+  margin-top: 20rpx;
+  background: #f7f9fb;
+  border-radius: 20rpx;
 
-	.form-item {
-		padding: 30rpx 0;
-		border-bottom: 2rpx solid rgba(255, 255, 255, 0.1);
+  .info-row {
+    display: flex;
+    align-items: center;
+    height: 90rpx;
+    border-bottom: 1rpx solid #e0d7d7ff;
+    margin: 0 30rpx;
 
-		&:last-child {
-			border-bottom: none;
-		}
+    &:last-child {
+      border-bottom: none;
+    }
 
-		.label {
-			color: #999;
-			font-size: 28rpx;
-			margin-bottom: 20rpx;
-			display: block;
-		}
+    .label {
+      color: #13337cff;
+      font-size: 25rpx;
+      width: 180rpx;
+      flex-shrink: 0;
+    }
 
-		.input-wrapper {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
+    .value {
+      color: #333333;
+      font-size: 25rpx;
+      flex: 1;
+      text-align: right;
+    }
 
-			.input-text {
-				color: #fff;
-				font-size: 28rpx;
+    .input {
+      flex: 1;
+      font-size: 25rpx;
+      color: #333;
+      text-align: right;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+    }
 
-				&.placeholder {
-					color: #666;
-				}
-			}
-
-			.arrow-icon {
-				width: 32rpx;
-				height: 32rpx;
-			}
-		}
-
-		.input {
-			color: #fff;
-			font-size: 28rpx;
-			width: 100%;
-
-			&.placeholder {
-				color: #666;
-			}
-		}
-	}
+    .placeholder {
+      color: #cccccc;
+    }
+  }
 }
 
 .save-btn {
-	position: fixed;
-	left: 20rpx;
-	right: 20rpx;
-	bottom: 40rpx;
-	height: 88rpx;
-	line-height: 88rpx;
-	background: #D68F01;
-	color: #fff;
-	font-size: 32rpx;
-	border-radius: 12rpx;
-	text-align: center;
+  color: #fff;
+  margin-top: 172rpx;
+  height: 90rpx;
+  font-size: 29rpx;
+  border-radius: 18rpx;
+  line-height: 90rpx;
+  background: $active-color;
 }
 
-.placeholder {
-	color: #666;
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-back:before {
+  content: "\e8ef";
 }
 </style>

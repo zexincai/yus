@@ -4,15 +4,21 @@
     <view class="info-card">
       <view class="info-row">
         <text class="label">手机号码：</text>
-        <text class="value">17688978904</text>
+        <text class="value">{{ detail.phone }}</text>
       </view>
       <view class="info-row">
         <text class="label">客户姓名：</text>
-        <text class="value">陈霞</text>
+        <text class="value">{{ detail.name }}</text>
       </view>
       <view class="info-row">
         <text class="label">客户备注：</text>
-        <input class="input" type="text" v-model="remark" placeholder="请输入" placeholder-class="placeholder" />
+        <input
+          class="input"
+          type="text"
+          v-model="detail.remark"
+          placeholder="请输入"
+          placeholder-class="placeholder"
+        />
       </view>
     </view>
 
@@ -23,15 +29,31 @@
 
 <script setup>
 import { ref } from "vue";
+import { getCustomerInfo, operaCustomer } from "@/api/dealer";
+import { onLoad } from "@dcloudio/uni-app";
 
-const remark = ref("");
-
-const handleBack = () => {
-  uni.navigateBack();
+const detail = ref({});
+const getCustomerInfoDetail = async (phone) => {
+  // 从路由里获取 phone
+  try {
+    const res = await getCustomerInfo({
+      phone,
+    });
+    detail.value = res;
+  } catch (error) {
+    console.error("获取详情失败", error);
+  }
 };
 
-const handleSave = () => {
-  // TODO: 保存逻辑
+onLoad(({ phone }) => {
+  getCustomerInfoDetail(phone);
+});
+
+const handleSave = async () => {
+  await operaCustomer({
+    phone: detail.value.phone,
+    remark: detail.value.remark,
+  });
   uni.showToast({
     title: "保存成功",
     icon: "success",
@@ -55,7 +77,7 @@ const handleSave = () => {
     display: flex;
     align-items: center;
     height: 90rpx;
-    border-bottom: 1rpx solid #E0D7D7FF;
+    border-bottom: 1rpx solid #e0d7d7ff;
     margin: 0 30rpx;
 
     &:last-child {
@@ -63,7 +85,7 @@ const handleSave = () => {
     }
 
     .label {
-      color: #13337CFF;
+      color: #13337cff;
       font-size: 25rpx;
       width: 180rpx;
       flex-shrink: 0;

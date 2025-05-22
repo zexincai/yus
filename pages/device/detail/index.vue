@@ -1,17 +1,36 @@
 <template>
   <view class="device-detail-container">
-    <uni-nav-bar @click="handleBack" backgroundColor="#152136" statusBar dark fixed leftIcon="left" rightIcon="more"
-      title="设备详情" :left-arrow="false" :border="false">
+    <uni-nav-bar
+      @click="handleBack"
+      backgroundColor="#152136"
+      statusBar
+      dark
+      fixed
+      leftIcon="left"
+      rightIcon="more"
+      title="设备详情"
+      :left-arrow="false"
+      :border="false"
+    >
       <template v-slot:right>
-        <image src="/static/images/more.png" mode="aspectFit" class="right-icon" />
+        <image
+          src="/static/images/more.png"
+          mode="aspectFit"
+          class="right-icon"
+        />
       </template>
     </uni-nav-bar>
     <view class="device-header">
       <view class="device-title">
-        <text>小芸家</text>
-        <image src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
+        <text>{{ deviceInfo.location }}</text>
+        <image
+          @click="navigateTo('edit')"
+          src="/static/images/icon-edit.png"
+          mode="aspectFit"
+          class="edit-icon"
+        />
       </view>
-      <image src="/static/images/signal-full.png" class="view-device"> </image>
+      <image :src="deviceInfo.rssiUrl" class="view-device"> </image>
     </view>
     <!-- 设备信息卡片 -->
     <view class="device-card">
@@ -23,33 +42,46 @@
         </view>
         <view class="model-row">
           <text class="model-label">型号：</text>
-          <text class="model-value">{{ deviceInfo.model }}</text>
+          <text class="model-value">{{ deviceInfo.modelName }}</text>
         </view>
         <view class="type-row">
           <text class="type-label">类型：</text>
-          <text class="type-value">{{ deviceInfo.type }}</text>
+          <text class="type-value">{{ deviceInfo.brand }}</text>
         </view>
         <view class="customer-row">
           <text class="customer-label">客户：</text>
-          <text class="customer-value">{{ deviceInfo.customer }}</text>
+          <text class="customer-value">{{ deviceInfo.customerName }}</text>
         </view>
         <view class="region-row">
           <text class="region-label">地区：</text>
-          <text class="region-value">{{ deviceInfo.region }}</text>
+          <text class="region-value">{{ deviceInfo.area }}</text>
         </view>
         <view class="address-row">
           <text class="address-label">地址：</text>
           <text class="address-value">{{ deviceInfo.address }}</text>
         </view>
       </view>
-      <image class="device-img" :src="deviceInfo.image" mode="aspectFit"></image>
+      <image
+        class="device-img"
+        :src="deviceInfo.productUrl"
+        mode="aspectFit"
+      ></image>
     </view>
 
     <!-- 功能导航 -->
     <view class="function-nav">
-      <view class="nav-item" v-for="(item, index) in navList" :key="item.text" @click="navigateTo(item.page)">
+      <view
+        class="nav-item"
+        v-for="(item, index) in navList"
+        :key="item.text"
+        @click="navigateTo(item.page)"
+      >
         <view class="icon-wrapper">
-          <image class="iconfont" :class="{ small: index == 0 }" :src="item.icon" />
+          <image
+            class="iconfont"
+            :class="{ small: index == 0 }"
+            :src="item.icon"
+          />
         </view>
         <text class="nav-text">{{ item.text }}</text>
       </view>
@@ -58,13 +90,23 @@
     <!-- 授权信息 -->
     <view class="auth-info">
       <view class="auth-row">
-        <text>授权时间：{{ deviceInfo.authTime }}</text>
+        <text>授权时间：{{ deviceInfo.activeDate }}</text>
       </view>
       <view class="auth-row">
-        <text>到期日期：{{ deviceInfo.expireDate }}</text>
-        <text class="renewal-link" @click="navigateTo('renewalLog')">续期记录 >>
+        <text v-if="deviceInfo.buyout == 1"
+          >到期日期：{{ deviceInfo.expireDate }}</text
+        >
+        <text
+          v-if="deviceInfo.buyout == 1"
+          class="renewal-link"
+          @click="navigateTo('renewalLog')"
+          >续期记录 >>
         </text>
-        <view v-if="userType != 'user'" class="call-btn" @click="navigateTo('renewal')">
+        <view
+          v-if="userType != 'user'"
+          class="call-btn"
+          @click="navigateTo('renewal')"
+        >
           <image class="icon" src="/static/images/call.png"></image>
           联系经销商
         </view>
@@ -79,23 +121,30 @@
       <image src="/static/images/error.png" class="error-icon" />
       <text class="error-text">故障：{{ deviceInfo.error }}</text>
     </view>
-
+    <!-- 水温数据 -->
+    <view class="temperature">
+      <view class="temperature-card">
+        <text class="temp-value"
+          >{{ deviceInfo.waterTemperature }}
+          <text class="temp-unit">℃</text></text
+        >
+        <text class="temp-label">水温</text>
+      </view>
+      <view class="temperature-card waterLevel">
+        <text class="temp-value">{{ deviceInfo.waterLevel }}</text>
+        <text class="temp-label">水位</text>
+      </view>
+    </view>
     <!-- 水质数据 -->
     <view class="water-data">
       <view class="data-card orange">
-        <text class="data-value">{{ deviceInfo.rawWater }}</text>
+        <text class="data-value">{{ deviceInfo.originTds }}</text>
         <text class="data-unit">原水 (ppm)</text>
       </view>
       <view class="data-card blue">
-        <text class="data-value">{{ deviceInfo.purifiedWater }}</text>
+        <text class="data-value">{{ deviceInfo.pureTds }}</text>
         <text class="data-unit">纯水 (ppm)</text>
       </view>
-    </view>
-
-    <!-- 水温数据 -->
-    <view class="temperature-card">
-      <text class="temp-value">{{ deviceInfo.temperature }}<text class="temp-unit">℃</text></text>
-      <text class="temp-label">水温</text>
     </view>
 
     <!-- 滤芯状态 -->
@@ -103,20 +152,31 @@
       <view class="filter-header">
         <text class="filter-title">滤芯状态</text>
         <view class="filter-actions">
-          <text class="action-btn active" @click="navigateTo('filterRecord')">换芯记录
+          <text class="action-btn active" @click="navigateTo('filterRecord')"
+            >换芯记录
           </text>
-          <text class="action-btn" @click="navigateTo('filterReset')">更换滤芯</text>
+          <text class="action-btn" @click="navigateTo('filterReset')"
+            >更换滤芯</text
+          >
         </view>
       </view>
       <view class="filter-list">
-        <view class="filter-item" v-for="(filter, index) in deviceInfo.filters" :key="index">
-          <view class="filter-index">{{ index + 1 }}</view>
+        <view
+          class="filter-item"
+          v-for="(filter, index) in deviceInfo.chips"
+          :key="index"
+        >
+          <view class="filter-index">{{ filter.index }}</view>
           <view class="filter-info">
-            <text class="filter-name">{{ filter.name }}</text>
+            <text class="filter-name">{{ filter.chipName }}</text>
             <view class="progress-bar">
-              <view class="progress-inner" :class="{
-                'progress-yellow': filter.percent < 30,
-              }" :style="{ width: filter.percent + '%' }"></view>
+              <view
+                class="progress-inner"
+                :class="{
+                  'progress-yellow': filter.red,
+                }"
+                :style="{ width: filter.percent + '%' }"
+              ></view>
             </view>
           </view>
           <view class="filter-percent">{{ filter.percent }}%</view>
@@ -127,10 +187,12 @@
 </template>
 
 <script setup>
-import { ref, reactive, } from "vue";
-import { onLoad } from '@dcloudio/uni-app'
-const userType = ref('user')
-const deviceInfo = reactive({
+import { ref, reactive } from "vue";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+import { deviceDetailInfo } from "@/api/dealer";
+const userType = ref("user");
+const deviceId = ref("");
+const deviceInfo = ref({
   name: "小芸家",
   sn: "3452345671456",
   model: "RO200",
@@ -141,17 +203,11 @@ const deviceInfo = reactive({
   image: "/static/images/device.png",
   authTime: "2025-04-01 20:30",
   expireDate: "2025-07-30",
-  error: "E4-温水温度传感器故障",
+  error: "",
   rawWater: 368,
   purifiedWater: 2,
   temperature: 68,
-  filters: [
-    { name: "精密PP棉", percent: 86 },
-    { name: "活性炭", percent: 73 },
-    { name: "弱性碳", percent: 8 },
-    { name: "超滤膜", percent: 90 },
-    { name: "RO反渗透膜", percent: 40 },
-  ],
+  chips: [],
 });
 
 const navList = [
@@ -163,9 +219,14 @@ const navList = [
 ];
 // 获取路由参数
 onLoad((options) => {
-  if (options.type) {
-    userType.value = options.type;
-  }
+  deviceId.value = options.id;
+  // userType.value = store.state.userInfo.role;
+});
+
+onShow(() => {
+  deviceDetailInfo({ deviceId: deviceId.value }).then((res) => {
+    deviceInfo.value = res;
+  });
 });
 
 const handleBack = () => {
@@ -173,12 +234,16 @@ const handleBack = () => {
 };
 const copySn = () => {
   uni.setClipboardData({
-    data: deviceInfo.sn,
-    success: () => uni.showToast({ title: "已复制", icon: "success" }),
+    data: deviceInfo.value.sn,
+    success: () => uni.showToast({ title: "复制成功", icon: "success" }),
   });
 };
 const navigateTo = (page) => {
+  const params = {
+    id: deviceId.value,
+  };
   const pathMap = {
+    edit: "/pages/device/edit/index?id=",
     filterRecord: "/pages/device/filter/record/index",
     filterReset: "/pages/device/filter/index",
     params: "/pages/device/param/index",
@@ -189,9 +254,15 @@ const navigateTo = (page) => {
     renewal: "/pages/device/renewal/index",
     renewalLog: "/pages/device/renewal/record/index",
   };
+  uni.setStorageSync("lastPageData", deviceInfo.value);
   if (pathMap[page]) {
     uni.navigateTo({
-      url: pathMap[page],
+      url:
+        pathMap[page] +
+        "?" +
+        Object.keys(params)
+          .map((key) => key + "=" + params[key])
+          .join("&"),
     });
   }
 };
@@ -222,6 +293,11 @@ const navigateTo = (page) => {
         color: #fff;
         font-size: 43rpx;
         margin-right: 34rpx;
+        // 省略号
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 500rpx;
       }
 
       .edit-icon {
@@ -268,6 +344,7 @@ const navigateTo = (page) => {
       .address-label {
         color: #fff;
         font-size: 25rpx;
+        min-width: 76rpx;
       }
 
       .sn-value,
@@ -278,7 +355,12 @@ const navigateTo = (page) => {
       .address-value {
         color: #fff;
         font-size: 24rpx;
-        margin-left: 8rpx;
+        margin-left: 6rpx;
+        // 省略号
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 350rpx;
       }
 
       .online-tag {
@@ -436,7 +518,7 @@ const navigateTo = (page) => {
 }
 
 .water-data {
-  margin-top: 30rpx;
+  margin-top: 14rpx;
   display: flex;
   justify-content: space-between;
 
@@ -462,10 +544,12 @@ const navigateTo = (page) => {
 
     &.orange {
       border-radius: 18rpx;
-      background: linear-gradient(180deg,
-          #4f3500ff 0%,
-          #f1a100ff 0%,
-          #523700ff 100%);
+      background: linear-gradient(
+        180deg,
+        #4f3500ff 0%,
+        #f1a100ff 0%,
+        #523700ff 100%
+      );
     }
 
     &.blue {
@@ -474,8 +558,11 @@ const navigateTo = (page) => {
     }
   }
 }
-
+.temperature {
+  display: flex;
+}
 .temperature-card {
+  flex: 1;
   height: 181rpx;
   margin-top: 20rpx;
   border-radius: 18rpx;
@@ -500,7 +587,22 @@ const navigateTo = (page) => {
     margin-top: 8rpx;
   }
 }
-
+.waterLevel {
+  flex: none;
+  margin-left: 14rpx;
+  width: 217rpx;
+  height: 181rpx;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 71, 156, 1) 0%,
+    rgba(10, 25, 56, 1) 100%
+  );
+  color: #fff;
+  border-radius: 18rpx;
+  .temp-label {
+    color: #fff !important;
+  }
+}
 .filter-status {
   margin-top: 20rpx;
   border-radius: 18rpx;

@@ -3,6 +3,7 @@ const store = createStore({
     state: {
         token: uni.getStorageSync('token'), userInfo: uni.getStorageSync('userInfo') || {}
     },
+
     mutations: {
         setToken(state, token) {
             state.token = token

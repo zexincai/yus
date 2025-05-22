@@ -21,18 +21,28 @@
 
 <script setup>
 import { reactive } from "vue";
-
+import { deviceParams } from "@/api/dealer";
+import { onLoad } from "@dcloudio/uni-app";
 // 参数列表数据
 const paramList = reactive([
-  { label: "自动冲洗功能", value: "有" },
-  { label: "排空功能", value: "有" },
-  { label: "消毒功能", value: "有" },
-  { label: "净水量统计功能", value: "有" },
-  { label: "原水TDS显示", value: "显示" },
-  { label: "纯水TDS显示", value: "显示" },
-  { label: "温开水温度显示", value: "不显示" },
-  { label: "滤芯寿命显示", value: "显示" },
+  { label: "自动冲洗功能", value: "", key: "funcWH" },
+  { label: "排空功能", value: "", key: "funcEM" },
+  { label: "消毒功能", value: "", key: "funcST" },
+  { label: "净水量统计功能", value: "", key: "pwenable" },
+  { label: "原水TDS显示", value: "", key: "rwtdsshow" },
+  { label: "纯水TDS显示", value: "", key: "fwtdsshow" },
+  { label: "温开水温度显示", value: "", key: "wtshow" },
+  { label: "滤芯寿命显示", value: "", key: "flshow" },
 ]);
+
+onLoad(async ({ id }) => {
+  const res = await deviceParams({ deviceId: id });
+  paramList.forEach((item) => {
+    if (res[item.key]) {
+      item.value = res[item.key];
+    }
+  });
+});
 </script>
 
 <style lang="scss" scoped>

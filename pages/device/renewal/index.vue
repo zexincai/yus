@@ -1,21 +1,21 @@
 <template>
   <view class="renewal-container">
     <!-- 设备信息卡片 -->
-    <view @click="goToDetail" class="device-card">
+    <view class="device-card">
       <view class="device-info">
         <text class="label">SN:</text>
-        <text class="value">453309566893</text>
-        <image class="signal-icon" src="/static/images/signal-full.png" />
+        <text class="value">{{ form.sn }}</text>
+        <image class="signal-icon" :src="form.rssiUrl" />
       </view>
 
       <view class="time-info">
         <view class="time-item">
           <text class="label">激活时间:</text>
-          <text class="value">2025-03-30 12:30</text>
+          <text class="value">{{ form.activeDate }}</text>
         </view>
         <view class="time-item">
           <text class="label">到期日期:</text>
-          <text class="value">2025-06-30</text>
+          <text class="value">{{ form.expireDate }}</text>
         </view>
       </view>
     </view>
@@ -23,9 +23,11 @@
     <!-- 截止日期选择 -->
     <view class="date-picker">
       <text class="label">截止日期:</text>
-      <view class="picker-wrapper" @click="showDatePicker">
-        <text class="value">{{ form.endDate }}</text>
-        <text class="iconfont icon-arrow">&#xe65c;</text>
+      <view class="picker-wrapper">
+        <picker mode="date" :value="form.endDate" @change="hanldeDateChange">
+          <text class="value">{{ form.endDate }}</text>
+          <text class="icon-arrow"></text>
+        </picker>
       </view>
     </view>
 
@@ -37,40 +39,53 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { reactive } from "vue";
+import { deviceCmdSet } from "@/api/dealer";
+import { onLoad } from "@dcloudio/uni-app";
 
 // 表单数据
 const form = reactive({
   endDate: "2025-06-30",
+  deviceId: "",
+  expireDate: "",
+  activeDate: "",
+  rssiUrl: "",
 });
 
-// 返回上一页
-const handleBack = () => {
-  uni.navigateBack();
-};
-
-// 显示日期选择器
-const showDatePicker = () => {
-  // uni.showDatePicker({
-  //   mode: "date",
-  //   value: form.endDate,
-  //   success: (res) => {
-  //     form.endDate = res.value;
-  //   },
-  // });
+onLoad(async () => {
+  const res = await uni.getStorageSync("lastPageData");
+  form.deviceId = res.deviceId;
+  form.activeDate = res.activeDate;
+  form.expireDate = res.expireDate;
+  form.rssiUrl = res.rssiUrl;
+  form.sn = res.sn;
+});
+const hanldeDateChange = (e) => {
+  form.endDate = e.detail.value;
 };
 const goToDetail = () => {
   uni.navigateTo({
     url: "/pages/device/renewal/record/index",
   });
-}
+};
 // 确认续期
-const handleConfirm = () => {
-  // TODO: 实现续期逻辑
+const handleConfirm = async () => {
+  const resp = await deviceCmdSet(
+    {
+      key: "EnableDate",
+      value: form.endDate,
+      deviceId: form.deviceId,
+    },
+    { raw: true }
+  );
   uni.showToast({
-    title: "续期成功",
+    title: resp.msg,
     icon: "success",
+    duration: 1500,
   });
+  setTimeout(() => {
+    uni.navigateBack();
+  }, 1500);
 };
 </script>
 
@@ -81,12 +96,11 @@ const handleConfirm = () => {
   padding: 30rpx;
 }
 
-
 .device-card {
   padding: 30rpx 30rpx;
   height: 196rpx;
   border-radius: 18rpx;
-  background: #F4F6F9FF;
+  background: #f4f6f9ff;
   position: relative;
 
   .device-info {
@@ -98,7 +112,7 @@ const handleConfirm = () => {
       color: #333;
       font-size: 25rpx;
       color: rgba(19, 51, 124, 1);
-      margin-right: 20rpx;
+      margin-right: 10rpx;
     }
 
     .value {
@@ -124,7 +138,7 @@ const handleConfirm = () => {
 
       .label {
         color: #999999;
-        width: 160rpx;
+        width: 120rpx;
       }
 
       .value {
@@ -142,10 +156,10 @@ const handleConfirm = () => {
   align-items: center;
   height: 80rpx;
   border-radius: 18rpx;
-  background: #F4F6F9FF;
+  background: #f4f6f9ff;
 
   .label {
-    color: #13337CFF;
+    color: #13337cff;
     margin-right: 20rpx;
     font-size: 25rpx;
   }
@@ -157,18 +171,20 @@ const handleConfirm = () => {
     justify-content: flex-end;
 
     .value {
-      color: #152136FF;
+      color: #152136ff;
       font-size: 25rpx;
+      margin-right: 10rpx;
     }
 
     .icon-arrow {
       // 向下的三角形
-      margin-left: 10rpx;
+      margin-left: 20rpx;
+      display: inline-block;
       width: 0;
       height: 0;
       border-left: 10rpx solid transparent;
       border-right: 10rpx solid transparent;
-      border-top: 12rpx solid #CCCCCC;
+      border-top: 12rpx solid #cccccc;
       margin-left: 4rpx;
       display: inline-block;
       vertical-align: middle;
@@ -177,7 +193,6 @@ const handleConfirm = () => {
 }
 
 .button-wrapper {
-
   .confirm-btn {
     color: #fff;
     height: 90rpx;

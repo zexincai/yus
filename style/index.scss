@@ -520,3 +520,15 @@ $border-color: rgba(255, 255, 255, 0.1); // 边框颜色
 view {
   box-sizing: border-box;
 }
+
+.empty {
+  text-align: center;
+  color: #fff;
+  font-size: 28rpx;
+  margin-top: 100rpx;
+  .empty-img {
+    width: 280rpx;
+    height: 280rpx;
+    margin-bottom: 20rpx;
+  }
+}
