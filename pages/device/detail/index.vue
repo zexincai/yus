@@ -270,7 +270,7 @@ const navigateTo = (page) => {
 
 <style lang="scss" scoped>
 .device-detail-container {
-  padding: 0rpx 24rpx;
+  padding: 0rpx 24rpx 40rpx;
   background: $bg-color;
 
   .right-icon {

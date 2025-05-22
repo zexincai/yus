@@ -4,49 +4,29 @@
     <view class="info-card">
       <view class="info-row">
         <text class="label">所在地区：</text>
-        <text @click="visible = true" class="value"
-          >{{ province }}{{ city }}{{ zone }}</text
-        >
+        <text @click="visible = true" class="value">{{ province }}{{ city }}{{ zone }}</text>
       </view>
       <view class="info-row">
         <text class="label">详细地址：</text>
-        <input
-          class="input"
-          type="text"
-          v-model="detail.address"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="text" v-model="detail.address" placeholder="请输入" placeholder-class="placeholder" />
       </view>
       <view class="info-row">
         <text class="label">安装位置：</text>
-        <input
-          class="input"
-          type="text"
-          v-model="detail.location"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="text" v-model="detail.location" placeholder="请输入" placeholder-class="placeholder" />
       </view>
     </view>
-    <cityPicker
-      :column="3"
-      :default-value="defaultValue"
-      :mask-close-able="true"
-      @confirm="confirm"
-      @cancel="cancel"
-      :visible="visible"
-    />
+    <CityPicker :column="3" :default-value="defaultValue" :mask-close-able="true" @confirm="confirm" @cancel="cancel"
+      :visible="visible" />
     <!-- 保存按钮 -->
     <button class="save-btn" @click="handleSave">保存</button>
   </view>
 </template>
 
 <script setup>
+import CityPicker from "@/components/cityPicker/index.vue";
 import { ref, reactive } from "vue";
 import { editLocation } from "@/api/dealer";
 import { onLoad } from "@dcloudio/uni-app";
-import cityPicker from "@/uni_modules/piaoyi-cityPicker/components/piaoyi-cityPicker/piaoyi-cityPicker";
 
 const detail = reactive({
   location: "",

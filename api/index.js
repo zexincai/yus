@@ -30,7 +30,7 @@ http.interceptors.request.use(async (config) => {
 http.interceptors.response.use(
   async (resp) => {
     console.log("resp", resp);
-    const { data, code, msg } = resp.data;
+    const { data, code, msg, login } = resp.data;
     // 根据需要打印日志方便调试
     if (Config.isConsole) console.log(resp.config.url, resp.data);
     if (resp.config.loading) {
@@ -43,11 +43,20 @@ http.interceptors.response.use(
       return data;
     }
     if ([500].includes(code)) {
+
       if (!resp.config.noTip) {
         uni.showToast({
           title: msg,
           icon: "none",
         });
+      }
+      if (login) {
+        // store.dispatch('refreshToken')
+        // 跳转到登录页
+        uni.reLaunch({
+          url: '/pages/login/index',
+        })
+
       }
       return Promise.reject(resp.data);
     }

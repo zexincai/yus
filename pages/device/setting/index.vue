@@ -4,20 +4,12 @@
     <view class="setting-card flex-between">
       <view class="switch-item">
         <text>暂停</text>
-        <xSwitch
-          keyName="stopSW"
-          @change="handleSave"
-          v-model="settings.pause"
-        />
+        <xSwitch keyName="stopSW" @change="handleSave" v-model="settings.pause" />
       </view>
 
       <view class="switch-item">
         <text>排空</text>
-        <xSwitch
-          keyName="emptySwitch"
-          @change="handleSave"
-          v-model="settings.drain"
-        />
+        <xSwitch keyName="emptySwitch" @change="handleSave" v-model="settings.drain" />
       </view>
     </view>
 
@@ -26,12 +18,7 @@
       <view class="temp-item">
         <text>开水停止加热温度</text>
         <view class="temp-input">
-          <input
-            type="number"
-            v-model="settings.hotWaterTemp"
-            class="input"
-            maxlength="3"
-          />
+          <input type="number" v-model="settings.hotWaterTemp" class="input" maxlength="3" />
           <text class="unit">℃</text>
           <button class="save-btn" @click="handleSaveHotTemp">保存</button>
         </view>
@@ -42,12 +29,7 @@
       <view class="temp-item">
         <text>温开水停止加热温度</text>
         <view class="temp-input">
-          <input
-            type="number"
-            v-model="settings.warmWaterTemp"
-            class="input"
-            maxlength="3"
-          />
+          <input type="number" v-model="settings.warmWaterTemp" class="input" maxlength="3" />
           <text class="unit">℃</text>
           <button class="save-btn" @click="handleSaveWarmTemp">保存</button>
         </view>
@@ -61,25 +43,13 @@
           <view class="timer-left">
             <text>定时运行</text>
           </view>
-          <xSwitch
-            @change="handleSave"
-            keyName="workMode"
-            v-model="settings.timerRun"
-          />
+          <xSwitch @change="handleSave" keyName="workMode" v-model="settings.timerRun" />
         </view>
         <view class="timer-link" @click="navigateToTimerSetting">
-          <image
-            src="/static/images/timer.png"
-            mode="aspectFit"
-            class="timer-icon"
-          />
+          <image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
           <view>
             <text>定时开关设置</text>
-            <image
-              src="/static/images/arrow-right.png"
-              mode="aspectFit"
-              class="arrow-icon"
-            />
+            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
           </view>
         </view>
       </view>
@@ -91,25 +61,13 @@
           <view class="timer-left">
             <text>定时消毒</text>
           </view>
-          <xSwitch
-            @change="handleSave"
-            keyName="sterilizingSwitch"
-            v-model="settings.timerSterilize"
-          />
+          <xSwitch @change="handleSave" keyName="sterilizingSwitch" v-model="settings.timerSterilize" />
         </view>
         <view class="timer-link" @click="navigateToSterilizeSetting">
-          <image
-            src="/static/images/sterilize.png"
-            mode="aspectFit"
-            class="timer-icon"
-          />
+          <image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
           <view>
             <text>定时消毒设置</text>
-            <image
-              src="/static/images/arrow-right.png"
-              mode="aspectFit"
-              class="arrow-icon"
-            />
+            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
           </view>
         </view>
       </view>
@@ -121,25 +79,13 @@
           <view class="timer-left">
             <text>定时冲洗</text>
           </view>
-          <xSwitch
-            @change="handleSave"
-            keyName="washingSwitch"
-            v-model="settings.timerWash"
-          />
+          <xSwitch @change="handleSave" keyName="washingSwitch" v-model="settings.timerWash" />
         </view>
         <view class="timer-link" @click="navigateToWashSetting">
-          <image
-            src="/static/images/wash.png"
-            mode="aspectFit"
-            class="timer-icon"
-          />
+          <image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
           <view>
             <text>定时冲洗设置</text>
-            <image
-              src="/static/images/arrow-right.png"
-              mode="aspectFit"
-              class="arrow-icon"
-            />
+            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
           </view>
         </view>
       </view>
@@ -149,9 +95,10 @@
 
 <script setup>
 import xSwitch from "@/components/switch/index.vue";
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import { loadSetParams, deviceCmdSet } from "@/api/dealer";
-import { onLoad } from "@dcloudio/uni-app";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+let deviceId = "";
 // 设置数据
 const settings = reactive({
   pause: false,
@@ -164,7 +111,11 @@ const settings = reactive({
 });
 
 onLoad(async ({ id }) => {
-  const res = await loadSetParams({ deviceId: id });
+  deviceId = id;
+});
+
+onShow(async () => {
+  const res = await loadSetParams({ deviceId });
   settings.pause = res.stopSW === 1;
   settings.deviceId = res.deviceId;
   settings.drain = res.emptySwitch === 1;
@@ -173,17 +124,7 @@ onLoad(async ({ id }) => {
   settings.timerRun = res.workMode === 1;
   settings.timerSterilize = res.sterilizingSwitch === 1;
   settings.timerWash = res.washingSwitch === 1;
-});
-
-// 暂停开关
-const handlePauseChange = (e) => {
-  settings.pause = e.detail.value;
-};
-
-// 排空开关
-const handleDrainChange = (e) => {
-  settings.drain = e.detail.value;
-};
+})
 
 // 保存开水温度
 const handleSaveHotTemp = async () => {
@@ -233,21 +174,6 @@ const handleSaveWarmTemp = async () => {
     icon: "none",
   });
 };
-
-// 定时运行开关
-const handleTimerRunChange = (e) => {
-  settings.timerRun = e.detail.value;
-};
-
-// 定时消毒开关
-const handleTimerSterilizeChange = (e) => {
-  settings.timerSterilize = e.detail.value;
-};
-
-// 定时冲洗开关
-const handleTimerWashChange = (e) => {
-  settings.timerWash = e.detail.value;
-};
 const handleSave = async (params) => {
   if (params.key) {
     const resp = await deviceCmdSet(
@@ -267,21 +193,21 @@ const handleSave = async (params) => {
 // 跳转到定时开关设置
 const navigateToTimerSetting = () => {
   uni.navigateTo({
-    url: "/pages/device/setting/run?id=" + settings.deviceId,
+    url: "/pages/device/setting/run/index?id=" + settings.deviceId,
   });
 };
 
 // 跳转到定时消毒设置
 const navigateToSterilizeSetting = () => {
   uni.navigateTo({
-    url: "/pages/device/setting/sterilize?id=" + settings.deviceId,
+    url: "/pages/device/setting/sterilize/index?id=" + settings.deviceId,
   });
 };
 
 // 跳转到定时冲洗设置
 const navigateToWashSetting = () => {
   uni.navigateTo({
-    url: "/pages/device/setting/wash?id=" + settings.deviceId,
+    url: "/pages/device/setting/wash/index?id=" + settings.deviceId,
   });
 };
 </script>

@@ -27,6 +27,8 @@
 
 <script setup>
 import { ref } from "vue";
+import { chipResetRecord } from "@/api/dealer"
+import { onLoad } from "@dcloudio/uni-app";
 
 const records = ref([
   {
@@ -45,9 +47,11 @@ const records = ref([
   },
 ]);
 
-const handleBack = () => {
-  uni.navigateBack();
-};
+onLoad(async ({ id }) => {
+  chipResetRecord({ deviceId: id, current: 1, size: 10 }).then(res => {
+  })
+})
+
 </script>
 
 <style lang="scss" scoped>

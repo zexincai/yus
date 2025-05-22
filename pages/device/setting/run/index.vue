@@ -5,20 +5,11 @@
       <view class="timer-item">
         <view class="timer-link">
           <text>开机日</text>
-          <picker
-            mode="selector"
-            range-key="text"
-            :range="weekList"
-            :value="settings.workBeginDay - 1"
-            @change="onWeekChange($event, 'workBeginDay')"
-          >
+          <picker mode="selector" range-key="text" :range="weekList" :value="settings.workBeginDay - 1"
+            @change="onWeekChange($event, 'workBeginDay')">
             <view>
               <text>{{ getText(settings.workBeginDay) }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
@@ -29,20 +20,11 @@
         <view class="timer-link">
           <text>停机日</text>
 
-          <picker
-            mode="selector"
-            range-key="text"
-            :range="weekList"
-            :value="settings.workEndDay - 1"
-            @change="onWeekChange($event, 'workEndDay')"
-          >
+          <picker mode="selector" range-key="text" :range="weekList" :value="settings.workEndDay - 1"
+            @change="onWeekChange($event, 'workEndDay')">
             <view>
               <text>{{ getText(settings.workEndDay) }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
@@ -58,35 +40,19 @@
         <view class="timer-link">
           <text>开机</text>
 
-          <picker
-            mode="time"
-            :value="settings.openTime1"
-            @change="onTimeChange($event, 'openTime1')"
-          >
+          <picker mode="time" :value="settings.openTime1" @change="onTimeChange($event, 'openTime1')">
             <view>
               <text>{{ settings.openTime1 }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
         <view class="timer-link">
           <text>关机</text>
-          <picker
-            mode="time"
-            :value="settings.closeTime1"
-            @change="onTimeChange($event, 'closeTime1')"
-          >
+          <picker mode="time" :value="settings.closeTime1" @change="onTimeChange($event, 'closeTime1')">
             <view>
               <text>{{ settings.closeTime1 }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
@@ -102,35 +68,19 @@
         <view class="timer-link">
           <text>开机</text>
 
-          <picker
-            mode="time"
-            :value="settings.openTime2"
-            @change="onTimeChange($event, 'openTime2')"
-          >
+          <picker mode="time" :value="settings.openTime2" @change="onTimeChange($event, 'openTime2')">
             <view>
               <text>{{ settings.openTime2 }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
         <view class="timer-link">
           <text>关机</text>
-          <picker
-            mode="time"
-            :value="settings.closeTime2"
-            @change="onTimeChange($event, 'closeTime2')"
-          >
+          <picker mode="time" :value="settings.closeTime2" @change="onTimeChange($event, 'closeTime2')">
             <view>
               <text>{{ settings.closeTime2 }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
@@ -145,35 +95,19 @@
         </view>
         <view class="timer-link">
           <text>开机</text>
-          <picker
-            mode="time"
-            :value="settings.openTime3"
-            @change="onTimeChange($event, 'openTime3')"
-          >
+          <picker mode="time" :value="settings.openTime3" @change="onTimeChange($event, 'openTime3')">
             <view>
               <text>{{ settings.openTime3 }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
         <view class="timer-link">
           <text>关机</text>
-          <picker
-            mode="time"
-            :value="settings.closeTime3"
-            @change="onTimeChange($event, 'closeTime3')"
-          >
+          <picker mode="time" :value="settings.closeTime3" @change="onTimeChange($event, 'closeTime3')">
             <view>
               <text>{{ settings.closeTime3 }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
@@ -183,7 +117,6 @@
 </template>
 
 <script setup>
-import xSwitch from "@/components/switch/index.vue";
 import { reactive, ref } from "vue";
 import { loadWorkTime, deviceCmdSet } from "@/api/dealer";
 import { onLoad } from "@dcloudio/uni-app";
@@ -243,7 +176,7 @@ onLoad(async ({ id }) => {
 });
 
 const getText = (val) => {
-  return weekList.value.find((item) => item.value === val)?.text;
+  return weekList.value.find((item) => item.value == val)?.text;
 };
 const onTimeChange = async (e, key) => {
   settings[key] = e.detail.value;
@@ -261,8 +194,8 @@ const onTimeChange = async (e, key) => {
   });
 };
 const onWeekChange = async (e, key) => {
-  settings[key] = e.detail.value + 1;
-
+  console.log(e.detail.value, key);
+  settings[key] = Number(e.detail.value) + 1;
   const resp = await deviceCmdSet(
     {
       key: "SetWorkTime",
@@ -290,8 +223,7 @@ const onWeekChange = async (e, key) => {
 
   .switch-item {
     width: 344rpx;
-    // height: 144rpx;
-    border-radius: 18.12px;
+    border-radius: 18rpx;
     background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
     padding: 40rpx;
     display: flex;

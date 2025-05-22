@@ -3,12 +3,12 @@
 		<image src="/static/images/login-bg.png" class="login-bg" />
 		<!-- 登录类型选择 -->
 		<view class="login-type">
-			<view class="type-item" @click="loginType = 'user'">
-				<view class="circle" :class="{ active: loginType === 'user' }"></view>
+			<view class="type-item" @click="loginType = 'ROLE_CUSTOMER'">
+				<view class="circle" :class="{ active: loginType === 'ROLE_CUSTOMER' }"></view>
 				用户登录
 			</view>
-			<view class="type-item" @click="loginType = 'dealer'">
-				<view class="circle" :class="{ active: loginType === 'dealer' }"></view>
+			<view class="type-item" @click="loginType = 'ROLE_DEALER'">
+				<view class="circle" :class="{ active: loginType === 'ROLE_DEALER' }"></view>
 				经销商登录
 			</view>
 		</view>
@@ -64,22 +64,34 @@
 import { managerLogin } from '@/api/login'
 import store from '@/store'
 import {
+	onLoad
+} from "@dcloudio/uni-app";
+import {
 	ref,
 	reactive
 } from "vue";
 
 // 登录类型
-const loginType = ref("user");
+const loginType = ref("ROLE_DEALER");
 const showPassword = ref(false);
 
 // 表单数据
 const form = reactive({
-	phone: "18826483596",
-	password: "123456",
+	phone: "",
+	// phone: "18826483596",
+	// password: "123456",
+	password: "",
 	remember: false,
 	agreement: false,
 });
-
+onLoad(() => {
+	const res = uni.getStorageSync('loginForm')
+	if (res) {
+		form.phone = res.phone
+		form.password = res.password
+		form.remember = res.remember
+	}
+});
 // 处理登录
 const handleLogin = () => {
 	if (!form.phone) {
@@ -103,11 +115,16 @@ const handleLogin = () => {
 		});
 		return;
 	}
+	if (form.remember) {
+		uni.setStorageSync('loginForm', form)
+	} else {
+		uni.removeStorageSync('loginForm')
+	}
 	// 账号角色 ROLE_DEALER:经销商；ROLE_CUSTOMER:客户，ROLE_EMPLOYEE:员工
 	managerLogin({
 		account: form.phone,
 		password: form.password,
-		role: 'ROLE_DEALER'
+		role: loginType.value
 	}).then(res => {
 		store.commit('setUserInfo', res)
 		uni.switchTab({
@@ -136,11 +153,17 @@ const handleForgetPassword = () => {
 // 查看用户协议
 const handleViewTerms = () => {
 	// TODO: 跳转到用户协议页面
+	uni.navigateTo({
+		url: `/pages/login/agreement/index`
+	})
 };
 
 // 查看隐私政策
 const handleViewPrivacy = () => {
 	// TODO: 跳转到隐私政策页面
+	uni.navigateTo({
+		url: `/pages/login/privacy/index`
+	})
 };
 </script>
 

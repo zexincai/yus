@@ -113,8 +113,20 @@ export const resetChipConfig = (data) =>
     loading: true,
   });
 
+// 14-滤芯更换记录
+export const chipResetRecord = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/chipResetRecord", data, {
+    loading: true,
+  });
+
 // 15-续期记录
 export const expireRenewalRecord = (data) =>
   http.post("https://yuq.fenaor.com/ma/device/expireRenewalRecord", data, {
+    loading: true,
+  });
+
+// 16-授权设备列表
+export const searchDevices = (data) =>
+  http.post("https://yuq.fenaor.com/ma/dealer/searchDevices", data, {
     loading: true,
   });

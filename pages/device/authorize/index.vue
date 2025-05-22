@@ -32,7 +32,6 @@
       <view class="form-card">
         <view class="form-item">
           <text class="label">手机号码：</text>
-          <!-- <text class="value">17688978904</text> -->
           <input class="input" type="text" v-model="form.customerPhone" placeholder="请输入"
             placeholder-class="placeholder" />
         </view>
@@ -45,9 +44,9 @@
           <input class="input" type="text" v-model="form.customerRemark" placeholder="请输入"
             placeholder-class="placeholder" />
         </view>
-        <view class="form-item">
+        <view @click="cityVisible = true" class="form-item">
           <text class="label">所在地区：</text>
-          <text class="value">{{ form.area }}</text>
+          <text :style="!form.area ? 'color:#333' : ''" class="value">{{ form.area || '请选择' }}</text>
         </view>
         <view class="form-item">
           <text class="label">详细地址：</text>
@@ -62,13 +61,13 @@
         <view class="form-item sale-mode">
           <text class="label">销售模式：</text>
           <view style="display: flex;">
-            <label class="radio-label">
-              <radio style="transform: scale(0.8);" value="租赁" :checked="form.saleMode === '租赁'" color="#D28B0A"
-                @click="form.saleMode = '租赁'" />租赁
+            <label @click="form.saleMode = '租赁'" class="radio-label">
+              <text :class="{ active: form.saleMode === '租赁' }"></text>
+              租赁
             </label>
-            <label class="radio-label">
-              <radio style="transform: scale(0.8);" value="买断" :checked="form.saleMode === '买断'" color="#D28B0A"
-                @click="form.saleMode = '买断'" />买断
+            <label @click="form.saleMode = '买断'" class="radio-label">
+              <text :class="{ active: form.saleMode === '买断' }"></text>
+              买断
             </label>
           </view>
         </view>
@@ -77,7 +76,8 @@
         <picker mode="date" :value="date" :start="startDate" @change="hanldeDateChange">
           <view class="form-item date-picker-row">
             <text class="label">到期日期：</text>
-            <view class="date-picker"> <text class="value">{{ form.expireDate }}</text>
+            <view class="date-picker"> <text v-if="form.expireDate" class="value">{{ form.expireDate }}</text>
+              <text v-else style="font-size: 25rpx;" class="value">请选择</text>
               <text class="iconfont icon-arrow">&#xe65c;</text>
             </view>
           </view>
@@ -95,22 +95,28 @@
       <!-- 确认按钮 -->
       <view class="confirm-btn" @click="handleConfirm">确认授权</view>
     </template>
+    <CityPicker :column="3" :default-value="defaultValue" :mask-close-able="true" @confirm="onCityConfirm"
+      @cancel="onCityCancel" :visible="cityVisible" />
   </view>
 </template>
 
 <script setup>
+import CityPicker from "@/components/cityPicker/index.vue";
 import DateUtil from '@/utils/date.js';
 import { ref, reactive, watch } from "vue";
 import { onLoad } from '@dcloudio/uni-app'
 import { activeCmd, activeCmdResult, activeDevice, loadDeviceBaseInfo, searchCustomerByPhone } from '@/api/dealer'
+const defaultValue = ref("");
+const cityVisible = ref(false);
+
 const form = reactive({
   name: '',
   customerRemark: '',
   saleMode: "租赁",
   expireDate: "",
-  area: "广东省,广州市,天河区",
-  address: "具体位置",
-  location: "测试",
+  area: "",
+  address: "",
+  location: "",
   customerPhone: "",
 });
 // const startDate = new Date();
@@ -154,9 +160,22 @@ const showDatePicker = () => {
     },
   });
 };
-
+const onCityConfirm = (e) => {
+  form.area = `${e.provinceName},${e.cityName},${e.areaName}`;
+  cityVisible.value = false;
+};
+const onCityCancel = () => {
+  cityVisible.value = false;
+};
 const handleConfirm = () => {
   if (!form.customerPhone) {
+    uni.showToast({
+      title: "请输入手机号码",
+      icon: "none",
+    });
+    return;
+  }
+  if (!form.name) {
     uni.showToast({
       title: "请输入客户姓名",
       icon: "none",
@@ -217,25 +236,15 @@ const handleConfirm = () => {
           clearInterval(interval);
           activeDevice({
             deviceId: deviceData.value.deviceId,
+            ...form
+          }).then(res => {
+
           })
         })
       }
     }, 2000);
   }).catch(err => {
-    let count = 0;
-    if (interval) clearInterval(interval);
-    const interval = setInterval(() => {
-      count++;
-      if (count <= 5) {
-        activeCmdResult(params, { noTip: count != 5 }).then(res => {
-          clearInterval(interval);
-          activeDevice({
-            ...params,
-            ...form
-          })
-        })
-      }
-    }, 2000);
+
   })
 };
 
@@ -250,12 +259,11 @@ const onRefresh = () => {
 .authorize-container {
   min-height: 100vh;
   background: $bg-color;
-  padding-top: var(--status-bar-height);
   padding-bottom: 60rpx;
 }
 
 .device-card {
-  margin: 30rpx 30rpx 0 30rpx;
+  margin: 20rpx 30rpx 0 30rpx;
   background: #f7f9fb;
   border-radius: 20rpx;
   padding: 40rpx 30rpx 30rpx;
@@ -369,11 +377,27 @@ const onRefresh = () => {
       justify-content: space-between;
 
       .radio-label {
-        margin-right: 10rpx;
-        font-size: 28rpx;
-        color: #223a7a;
+        margin-left: 60rpx;
+        // margin-right: 10rpx;
+        font-size: 25rpx;
+        color: #333333FF;
         display: flex;
         align-items: center;
+
+        text {
+          border-radius: 50%;
+          margin-right: 10rpx;
+          display: inline-block;
+          width: 29rpx;
+          height: 29rpx;
+          box-sizing: border-box;
+          background: #FFFFFFFF;
+          border: 4rpx solid #A5BFE8FF;
+        }
+
+        .active {
+          border: 10rpx solid #D68F01FF;
+        }
       }
     }
 

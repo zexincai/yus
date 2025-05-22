@@ -28,8 +28,10 @@ const handleScan = () => {
     success: (res) => {
       sn.value = res.result;
       uni.showToast({ title: "扫码成功", icon: "success" });
+      handleConfirm();
     },
-    fail: () => {
+    fail: (e) => {
+      console.log(e);
       uni.showToast({ title: "扫码失败", icon: "none" });
     },
   });

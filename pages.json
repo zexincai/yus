@@ -130,19 +130,19 @@
       }
     },
     {
-      "path": "pages/device/setting/run",
+      "path": "pages/device/setting/run/index",
       "style": {
         "navigationBarTitleText": "定时开关设置"
       }
     },
     {
-      "path": "pages/device/setting/wash",
+      "path": "pages/device/setting/wash/index",
       "style": {
         "navigationBarTitleText": "定时冲洗设置"
       }
     },
     {
-      "path": "pages/device/setting/sterilize",
+      "path": "pages/device/setting/sterilize/index",
       "style": {
         "navigationBarTitleText": "定时消毒设置"
       }
@@ -206,6 +206,20 @@
       "path": "pages/index/customer/index",
       "style": {
         "navigationBarTitleText": "客户详情"
+      }
+    },
+    {
+      "path": "pages/login/agreement/index",
+      "style": {
+        "navigationBarTitleText": "用户服务协议"
+        // "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/privacy/index",
+      "style": {
+        "navigationBarTitleText": "隐私协议"
+        // "navigationStyle": "custom"
       }
     },
     {
