@@ -20,10 +20,23 @@ export const activeCmd = (data) =>
     loading: true,
   });
 
+// export const activeCmd = () =>
+//   new Promise((resolve) => {
+//     resolve({
+//       code: 0,
+//       msg: "success",
+//     });
+//   });
+
 export const activeCmdResult = (data) =>
   http.post("https://yuq.fenaor.com/ma/dealer/activeCmdResult", data, {
     loading: true,
   });
+// export const activeCmdResult = (data) =>
+//   Promise.resolve({
+//     code: 500,
+//     msg: "success",
+//   });
 
 export const activeDevice = (data) =>
   http.post("https://yuq.fenaor.com/ma/dealer/activeDevice", data, {

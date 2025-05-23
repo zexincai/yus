@@ -7,18 +7,17 @@
       dark
       fixed
       leftIcon="left"
-      rightIcon="more"
       title="设备详情"
       :left-arrow="false"
       :border="false"
     >
-      <template v-slot:right>
+      <!-- <template v-slot:right>
         <image
           src="/static/images/more.png"
           mode="aspectFit"
           class="right-icon"
         />
-      </template>
+      </template> -->
     </uni-nav-bar>
     <view class="device-header">
       <view class="device-title">
@@ -152,12 +151,10 @@
       <view class="filter-header">
         <text class="filter-title">滤芯状态</text>
         <view class="filter-actions">
-          <text class="action-btn active" @click="navigateTo('filterRecord')"
-            >换芯记录
+          <text class="action-btn active" @click="navigateTo('filterRecord')">
+            换芯记录
           </text>
-          <text class="action-btn" @click="navigateTo('filterReset')"
-            >更换滤芯</text
-          >
+          <text class="action-btn" @click="onChangeFilter"> 更换滤芯</text>
         </view>
       </view>
       <view class="filter-list">
@@ -189,7 +186,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { onLoad, onShow } from "@dcloudio/uni-app";
-import { deviceDetailInfo } from "@/api/dealer";
+import { deviceDetailInfo, loadChipSnInfo } from "@/api/dealer";
 const userType = ref("user");
 const deviceId = ref("");
 const deviceInfo = ref({
@@ -236,6 +233,28 @@ const copySn = () => {
   uni.setClipboardData({
     data: deviceInfo.value.sn,
     success: () => uni.showToast({ title: "复制成功", icon: "success" }),
+  });
+};
+const onChangeFilter = () => {
+  // 扫码获取二维码
+  uni.scanCode({
+    scanType: ["qrCode", "barCode"],
+    success: (res) => {
+      console.log(res);
+      loadChipSnInfo({ deviceId: deviceId.value, chipsn: res.result }).then(
+        (res) => {
+          uni.setStorageSync("filterResetData", res);
+          navigateTo("filterReset");
+        }
+      );
+    },
+    fail: (err) => {
+      console.log(err);
+      uni.showToast({
+        title: "扫码失败",
+        icon: "none",
+      });
+    },
   });
 };
 const navigateTo = (page) => {

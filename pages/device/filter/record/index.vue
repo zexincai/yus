@@ -2,24 +2,25 @@
   <view class="filter-record-container">
     <!-- 记录总数 -->
     <view class="record-count"> 换芯记录：{{ records.length }} </view>
-
     <!-- 换芯记录列表 -->
     <view v-for="(item, idx) in records" :key="idx" class="record-card">
       <view class="card-header">
-        <text class="filter-code">滤芯码：<text class="blue">{{ item.code }}</text></text>
-        <text class="imei">IMEI: {{ item.imei }}</text>
+        <text class="filter-code">
+          滤芯码：<text class="blue">{{ item.chipSn }}</text>
+        </text>
+        <text class="imei">SN: {{ item.sn }}</text>
       </view>
       <view class="card-body">
         <view class="label-orange">更换滤芯：</view>
         <view class="filter-list">
           <view v-for="(f, i) in item.filters" :key="i" class="filter-name">{{
             f
-            }}</view>
+          }}</view>
         </view>
       </view>
       <view class="card-footer">
-        <view>操作人：{{ item.operator }}</view>
-        <view>操作时间：{{ item.time }}</view>
+        <view>操作人：{{ item.creator }}</view>
+        <view>操作时间：{{ item.createTime }}</view>
       </view>
     </view>
   </view>
@@ -27,31 +28,36 @@
 
 <script setup>
 import { ref } from "vue";
-import { chipResetRecord } from "@/api/dealer"
-import { onLoad } from "@dcloudio/uni-app";
+import { chipResetRecord } from "@/api/dealer";
+import { onLoad, onReachBottom } from "@dcloudio/uni-app";
 
-const records = ref([
-  {
-    code: "C56498",
-    imei: "84569833450098",
-    filters: ["精密PP棉", "活性炭", "RO反渗透膜"],
-    operator: "李小梦",
-    time: "2025-04-23 16:28",
-  },
-  {
-    code: "C56498",
-    imei: "84569833450098",
-    filters: ["精密PP棉", "活性炭", "RO反渗透膜"],
-    operator: "李小梦",
-    time: "2025-04-23 16:28",
-  },
-]);
-
+const records = ref([]);
+const current = ref(1);
+let deviceId = "";
 onLoad(async ({ id }) => {
-  chipResetRecord({ deviceId: id, current: 1, size: 10 }).then(res => {
-  })
-})
+  deviceId = id;
+  getList();
+});
 
+// 触底加载
+onReachBottom(() => {
+  getList();
+});
+const getList = async () => {
+  let list = await chipResetRecord({
+    deviceId,
+    current: current.value,
+    size: 10,
+  });
+  list = list.map((item) => {
+    item.filters = item.name.split("\n");
+    return item;
+  });
+  records.value = current.value == 1 ? list : [...records.value, ...list];
+  if (list.length) {
+    current.value++;
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -72,8 +78,8 @@ onLoad(async ({ id }) => {
   padding: 32rpx 28rpx 24rpx 28rpx;
   color: #fff;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324A70FF 0%, #324A7033 100%);
-  box-shadow: 0px 4rpx 7rpx #0000003F;
+  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  box-shadow: 0px 4rpx 7rpx #0000003f;
   font-size: 22rpx;
 
   .card-header {
@@ -85,7 +91,11 @@ onLoad(async ({ id }) => {
     .filter-code {
       font-size: 25rpx;
       color: #1ecfff;
-
+      // 省略号
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 350rpx;
 
       .blue {
         color: #1ecfff;
@@ -94,12 +104,13 @@ onLoad(async ({ id }) => {
 
     .imei {
       font-size: 22rpx;
-      color: #C7C7C7FF;
+      color: #c7c7c7ff;
     }
   }
 
   .card-body {
     display: flex;
+    padding-top: 22rpx;
     margin-bottom: 12rpx;
     justify-content: space-between;
 
@@ -125,10 +136,10 @@ onLoad(async ({ id }) => {
   }
 
   .card-footer {
-    color: #C7C7C7FF;
+    color: #c7c7c7ff;
 
     view {
-      margin-bottom: 10rpx;
+      margin-bottom: 14rpx;
     }
   }
 }

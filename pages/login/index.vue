@@ -42,7 +42,7 @@
 
 			<!-- 登录按钮 -->
 			<button class="login-btn" @click="handleLogin">登录</button>
-			<button v-if="loginType == 'user'" class="register-btn" @click="handleRegister">注册</button>
+			<button v-if="loginType == 'ROLE_CUSTOMER'" class="register-btn" @click="handleRegister">注册</button>
 			<view v-else class="dealer-info">经销商申请致电详询：020-89567789</view>
 
 			<!-- 用户协议 -->

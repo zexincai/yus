@@ -5,37 +5,52 @@
     <view class="info-card">
       <view class="info-row">
         <text class="label">手机号码：</text>
-        <text class="value">13876669980</text>
+        <text class="value">{{ userInfo.phone }}</text>
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">姓名：</text>
-        <text class="value">周芸</text>
+        <text class="value">{{ userInfo.name }}</text>
       </view>
     </view>
-
     <!-- 修改密码 -->
     <view class="section-title">我的信息</view>
     <view class="info-card">
       <view class="info-row">
         <text class="label">原密码：</text>
-        <input class="input" type="password" v-model="oldPwd" placeholder="" placeholder-class="placeholder" />
+        <input
+          class="input"
+          type="password"
+          v-model="oldPwd"
+          placeholder=""
+          placeholder-class="placeholder"
+        />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">新密码：</text>
-        <input class="input" type="password" v-model="newPwd" placeholder="" placeholder-class="placeholder" />
+        <input
+          class="input"
+          type="password"
+          v-model="newPwd"
+          placeholder=""
+          placeholder-class="placeholder"
+        />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">确认新密码：</text>
-        <input class="input" type="password" v-model="confirmPwd" placeholder="" placeholder-class="placeholder" />
+        <input
+          class="input"
+          type="password"
+          v-model="confirmPwd"
+          placeholder=""
+          placeholder-class="placeholder"
+        />
       </view>
     </view>
-
     <!-- 保存按钮 -->
     <button class="save-btn" @click="handleSave">保存</button>
-
     <!-- 退出账号 -->
     <view class="logout-link" @click="handleLogout">退出当前账号>></view>
   </view>
@@ -43,11 +58,17 @@
 
 <script setup>
 import { ref } from "vue";
-
+import { onLoad } from "@dcloudio/uni-app";
 const oldPwd = ref("xxxxxxx");
 const newPwd = ref("xxxxxxx");
 const confirmPwd = ref("xxxxxxx");
-
+const userInfo = ref({});
+onLoad(() => {
+  const res = uni.getStorageSync("userInfo");
+  if (res) {
+    userInfo.value = res;
+  }
+});
 const handleBack = () => {
   uni.navigateBack();
 };
@@ -181,7 +202,6 @@ const handleLogout = () => {
   // left: 50%;
   // transform: translateX(-50%);
   margin-top: 360rpx;
-
 }
 
 .iconfont {

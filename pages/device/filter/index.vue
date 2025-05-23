@@ -4,16 +4,16 @@
     <view class="device-card">
       <view class="device-info">
         <text class="label">SN:</text>
-        <text class="sn">4533095668934</text>
-        <image class="signal-icon" src="/static/images/signal-full.png" />
+        <text class="sn">{{ detail.sn }}</text>
+        <image class="signal-icon" :src="detail.rssiUrl" />
       </view>
       <view class="imei-info">
         <text class="imei-label">IMEI:</text>
-        <text class="imei-value">34555667944903456</text>
+        <text class="imei-value">{{ detail.imei }}</text>
       </view>
       <view class="date-info">
         <text class="date-label">到期日期:</text>
-        <text class="date-value">2025-06-30</text>
+        <text class="date-value">{{ detail.expireDate }}</text>
       </view>
     </view>
 
@@ -21,26 +21,40 @@
     <view class="filter-card">
       <view class="filter-header">
         <text class="filter-title">可更换滤芯：</text>
-        <text class="filter-code">滤芯码：C56498</text>
+        <text class="filter-code">滤芯码：{{ detail.chipSn }}</text>
       </view>
       <view class="filter-list">
-        <view v-for="(item, idx) in filters" :key="idx" class="filter-item">
-          <checkbox activeBackgroundColor="#13337CFF" style="transform:scale(0.6)" :checked="item.checked"
-            :disabled="item.disabled" color="#fff" @click="toggleCheck(idx)" />
+        <view
+          v-for="(item, idx) in detail.chips"
+          :key="idx"
+          class="filter-item"
+        >
+          <checkbox
+            activeBackgroundColor="#13337CFF"
+            style="transform: scale(0.6)"
+            :checked="item.checked"
+            :disabled="item.disabled"
+            color="#fff"
+            @click="toggleCheck(idx)"
+          />
           <view class="filter-info">
-            <text class="filter-name">{{ item.name }}</text>
+            <text class="filter-name">{{ item.chipName }}</text>
             <view class="progress-bar">
-              <view class="progress-inner" :class="{
-                'progress-yellow': item.percent < 30,
-              }" :style="{ width: item.percent + '%' }"></view>
+              <view
+                class="progress-inner"
+                :class="{
+                  'progress-yellow': item.red,
+                }"
+                :style="{ width: item.percent + '%' }"
+              ></view>
             </view>
           </view>
-          <text class="percent" :class="{ disabled: item.disabled }">{{ item.percent }}%</text>
+          <text class="percent" :class="{ disabled: item.disabled }"
+            >{{ item.percent }}%</text
+          >
         </view>
       </view>
     </view>
-
-    <!-- Confirm Button -->
     <view class="button-wrapper">
       <button class="confirm-btn" @click="handleConfirm">确认重置滤芯</button>
     </view>
@@ -49,28 +63,59 @@
 
 <script setup>
 import { ref } from "vue";
+import { onLoad } from "@dcloudio/uni-app";
+import { resetChipConfig } from "@/api/dealer";
+const detail = ref({
+  deviceId: 5,
+  sn: "",
+  rssiUrl: "",
+  chipSnId: "",
+  chipSn: "",
+  imei: "",
+  buyout: "",
+  expireDate: "",
+  chips: [{}],
+});
 
-const filters = ref([
-  { checked: true, percent: 86, disabled: false, name: "精密PP棉" },
-  { checked: true, percent: 73, disabled: false, name: '活性炭', },
-  { checked: false, percent: 8, disabled: true, name: 'RO反渗透膜' },
-]);
-
-const handleBack = () => {
-  uni.navigateBack();
-};
+onLoad(() => {
+  const filterResetData = uni.getStorageSync("filterResetData");
+  if (filterResetData) {
+    detail.value = filterResetData;
+  }
+});
 
 const toggleCheck = (idx) => {
-  if (!filters.value[idx].disabled) {
-    filters.value[idx].checked = !filters.value[idx].checked;
+  const filters = detail.value.chips;
+  if (!filters[idx].disabled) {
+    filters[idx].checked = !filters[idx].checked;
   }
+  detail.value = { ...detail.value, chips: filters };
 };
 
 const handleConfirm = () => {
-  // TODO: Implement reset logic
-  uni.showToast({
-    title: "重置成功",
-    icon: "success",
+  let chipIndex = detail.value.chips
+    .filter((v) => v.checked)
+    .map((item) => item.index);
+  if (!chipIndex.length) {
+    uni.showToast({
+      title: "请选择需要重置的滤芯",
+      icon: "none",
+    });
+    return;
+  }
+  const params = {
+    deviceId: detail.value.deviceId,
+    chipSnId: detail.value.chipSnId,
+    chipIndex,
+  };
+  resetChipConfig(params).then((res) => {
+    uni.showToast({
+      title: "重置成功",
+      icon: "success",
+    });
+    setTimeout(() => {
+      uni.navigateBack();
+    }, 1000);
   });
 };
 </script>
@@ -83,7 +128,7 @@ const handleConfirm = () => {
 }
 
 .device-card {
-  background: #F4F6F9FF;
+  background: #f4f6f9ff;
   border-radius: 18rpx;
   padding: 32rpx 30rpx 20rpx;
   position: relative;
@@ -95,12 +140,12 @@ const handleConfirm = () => {
     font-size: 25rpx;
 
     .label {
-      color: #13337C;
+      color: #13337c;
       margin-right: 20rpx;
     }
 
     .sn {
-      color: #13337C;
+      color: #13337c;
       font-weight: bold;
       margin-right: 20rpx;
     }
@@ -134,7 +179,8 @@ const handleConfirm = () => {
       margin-right: 10rpx;
     }
 
-    .date-value {}
+    .date-value {
+    }
   }
 }
 
@@ -143,7 +189,7 @@ const handleConfirm = () => {
   margin-top: 24rpx;
   padding: 30rpx;
   border-radius: 18rpx;
-  background: #F4F6F9FF;
+  background: #f4f6f9ff;
   font-size: 25rpx;
 
   .filter-header {
@@ -153,11 +199,11 @@ const handleConfirm = () => {
     margin-bottom: 18rpx;
 
     .filter-title {
-      color: #13337CFF;
+      color: #13337cff;
     }
 
     .filter-code {
-      color: #152136FF;
+      color: #152136ff;
     }
   }
 

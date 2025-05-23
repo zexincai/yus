@@ -48,7 +48,7 @@
     {
       "path": "pages/index/scan/result/index",
       "style": {
-        "navigationBarTitleText": "添加设备"
+        "navigationBarTitleText": "设备授权"
       }
     },
     {

@@ -45,7 +45,7 @@ import { onLoad } from "@dcloudio/uni-app";
 
 // 表单数据
 const form = reactive({
-  endDate: "2025-06-30",
+  endDate: "",
   deviceId: "",
   expireDate: "",
   activeDate: "",
@@ -57,6 +57,7 @@ onLoad(async () => {
   form.deviceId = res.deviceId;
   form.activeDate = res.activeDate;
   form.expireDate = res.expireDate;
+  form.endDate = res.expireDate;
   form.rssiUrl = res.rssiUrl;
   form.sn = res.sn;
 });
@@ -70,6 +71,21 @@ const goToDetail = () => {
 };
 // 确认续期
 const handleConfirm = async () => {
+  if (!form.endDate) {
+    uni.showToast({
+      title: "请选择截止日期",
+      icon: "none",
+    });
+    return;
+  }
+  // 截止日期不能小于当前日期
+  if (new Date(form.endDate).getTime() < new Date().getTime()) {
+    uni.showToast({
+      title: "截止日期不能小于当前日期",
+      icon: "none",
+    });
+    return;
+  }
   const resp = await deviceCmdSet(
     {
       key: "EnableDate",

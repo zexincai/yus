@@ -1,86 +1,92 @@
 <template>
-    <view class="container">
-        <view v-if="from == 'success'" class="result-content">
-            <!-- 成功图标 -->
-            <image class="success-icon" src="/static/images/icon-success.png" mode="aspectFit" />
-            <!-- 成功提示文本 -->
-            <text class="success-title">绑定成功</text>
-            <button class="login-btn" @click="goToLogin">
-                返回首页
-            </button>
-        </view>
-        <view v-if="from == 'register'" class="result-content">
-            <!-- 成功图标 -->
-            <image class="success-icon" src="/static/images/login-register-success.png" mode="aspectFit" />
-            <!-- 成功提示文本 -->
-            <text class="success-title">注册成功</text>
-            <text class="success-desc">请使用手机号码与密码登录</text>ƒ
-            <!-- 登录按钮 -->
-            <button class="login-btn" @click="goToLogin">
-                去登录
-            </button>
-        </view>
+  <view class="container">
+    <view v-if="from == 'success'" class="result-content">
+      <!-- 成功图标 -->
+      <image
+        class="success-icon"
+        src="/static/images/icon-success.png"
+        mode="aspectFit"
+      />
+      <!-- 成功提示文本 -->
+      <text class="success-title">绑定成功</text>
+      <button class="login-btn" @click="goToLogin">返回首页</button>
     </view>
+    <view v-if="from == 'fail'" class="result-content">
+      <!-- 成功图标 -->
+      <image
+        class="success-icon"
+        src="/static/images/icon-danger.png"
+        mode="aspectFit"
+      />
+      <!-- 成功提示文本 -->
+      <text class="success-title">绑定失败</text>
+      <text class="success-desc">{{ msg }}</text>
+      <!-- 登录按钮 -->
+      <button class="login-btn" @click="goToLogin">返回首页</button>
+    </view>
+  </view>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-const route = useRoute()
-const from = ref(route.query.from)
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
+const from = ref(route.query.from);
+console.log(from.value);
+const msg = ref(route.query.msg);
 const goToLogin = () => {
-    uni.redirectTo({
-        url: '/pages/login/index'
-    })
-}
+  uni.switchTab({
+    url: "/pages/index/index",
+  });
+};
 </script>
 
 <style lang="scss" scoped>
 .container {
-    min-height: 100vh;
-    background-color: $bg-color;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  min-height: 100vh;
+  background-color: $bg-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .result-content {
-    flex: 1;
-    margin-top: 200rpx;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    // justify-content: center;
-    width: 100%;
+  flex: 1;
+  margin-top: 200rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
+  width: 100%;
 
-    .success-icon {
-        width: 217rpx;
-        height: 217rpx;
-        margin-bottom: 40rpx;
-    }
+  .success-icon {
+    width: 180rpx;
+    height: 180rpx;
+    margin-bottom: 40rpx;
+  }
 
-    .success-title {
-        font-size: 36rpx;
-        color: rgba(255, 255, 255, 1);
-    }
+  .success-title {
+    font-size: 36rpx;
+    color: rgba(255, 255, 255, 1);
+  }
 
-    .success-desc {
-        font-size: 29rpx;
-        color: #fff;
-        margin-bottom: 491rpx;
-    }
+  .success-desc {
+    margin-top: 30rpx;
+    font-size: 29rpx;
+    color: rgba(14, 203, 247, 1);
+  }
 
-    .login-btn {
-        margin-top: 125rpx;
-        line-height: 72rpx;
-        background: $active-color;
-        font-size: 29rpx;
-        color: #fff;
-        width: 181rpx;
-        height: 72rpx;
-        border-radius: 90rpx;
-        background: #D68F01FF;
-    }
+  .login-btn {
+    margin-top: 60rpx;
+    line-height: 72rpx;
+    background: $active-color;
+    font-size: 29rpx;
+    color: #fff;
+    width: 181rpx;
+    height: 72rpx;
+    border-radius: 90rpx;
+    background: #d68f01ff;
+  }
 }
 </style>

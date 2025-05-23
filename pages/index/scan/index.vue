@@ -8,7 +8,12 @@
 
     <!-- SN码输入 -->
     <view class="sn-row">
-      <input class="sn-input" v-model="sn" placeholder="输入设备SN码" placeholder-class="placeholder" />
+      <input
+        class="sn-input"
+        v-model="sn"
+        placeholder="输入设备SN码"
+        placeholder-class="placeholder"
+      />
       <button class="confirm-btn" @click="handleConfirm">确定</button>
     </view>
   </view>
@@ -16,7 +21,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { loadDeviceBaseInfo } from '@/api/dealer'
+import { loadDeviceBaseInfo } from "@/api/dealer";
 const sn = ref("");
 
 const handleBack = () => {
@@ -39,18 +44,18 @@ const handleScan = () => {
 
 const handleConfirm = () => {
   loadDeviceBaseInfo({ mes: sn.value }).then((res) => {
-    if (res.activeState !== 2) {
+    if (res.activeState == 2) {
       uni.showToast({
-        title: '设备已激活',
-        icon: 'none'
-      })
+        title: "设备已激活",
+        icon: "none",
+      });
     } else {
-      uni.setStorageSync('deviceInfo', res)
+      uni.setStorageSync("deviceInfo", res);
       uni.navigateTo({
-        url: '/pages/device/authorize/index'
-      })
+        url: "/pages/device/authorize/index",
+      });
     }
-  })
+  });
 
   // if (!sn.value.trim()) {
   //   uni.showToast({ title: "请输入SN码", icon: "none" });
@@ -74,7 +79,7 @@ const handleConfirm = () => {
   align-items: center;
   justify-content: center;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324A70FF 0%, #324A7033 100%);
+  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
   height: 434rpx;
 
   .scan-icon {

@@ -58,8 +58,8 @@ onPullDownRefresh(async () => {
 const getList = async () => {
   // 分页
   const res = await expireRenewalRecord({
-    page: page.value,
-    pageSize: 10,
+    current: page.value,
+    size: 10,
     deviceId: deviceId.value,
   });
   records.value = page.value === 1 ? res : [...records.value, ...res];

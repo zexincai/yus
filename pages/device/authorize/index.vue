@@ -2,7 +2,11 @@
   <view class="authorize-container">
     <!-- 设备信息卡片 -->
     <view class="device-card">
-      <image class="device-img" src="/static/images/device.png" mode="aspectFit"></image>
+      <image
+        class="device-img"
+        src="/static/images/device.png"
+        mode="aspectFit"
+      ></image>
       <view class="device-info">
         <view class="sn-row">
           <text class="sn-label">SN：</text>
@@ -17,14 +21,16 @@
           <text class="imei-value gray">{{ deviceData.imei }}</text>
         </view>
       </view>
-      <image v-if="deviceData.rssiUrl" class="signal-icon" :src="deviceData.rssiUrl" />
+      <image
+        v-if="deviceData.rssiUrl"
+        class="signal-icon"
+        :src="deviceData.rssiUrl"
+      />
     </view>
     <view class="info-tip" v-if="deviceData.online == 0">
       <view>设备离线</view>
       <view> 请检查设备的联网情况</view>
-      <view @click="onRefresh" class="refresh-btn">
-        刷新网络
-      </view>
+      <view @click="onRefresh" class="refresh-btn"> 刷新网络 </view>
     </view>
 
     <!-- 授权表单 -->
@@ -32,35 +38,67 @@
       <view class="form-card">
         <view class="form-item">
           <text class="label">手机号码：</text>
-          <input class="input" type="text" v-model="form.customerPhone" placeholder="请输入"
-            placeholder-class="placeholder" />
+          <input
+            class="input"
+            type="text"
+            v-model="form.customerPhone"
+            placeholder="请输入"
+            placeholder-class="placeholder"
+          />
         </view>
         <view class="form-item">
           <text class="label">客户姓名：</text>
-          <input class="input" type="text" v-model="form.name" placeholder="请输入" placeholder-class="placeholder" />
+          <input
+            class="input"
+            type="text"
+            v-model="form.name"
+            placeholder="请输入"
+            placeholder-class="placeholder"
+          />
         </view>
         <view class="form-item">
           <text class="label">客户备注：</text>
-          <input class="input" type="text" v-model="form.customerRemark" placeholder="请输入"
-            placeholder-class="placeholder" />
+          <input
+            class="input"
+            type="text"
+            v-model="form.customerRemark"
+            placeholder="请输入"
+            placeholder-class="placeholder"
+          />
         </view>
         <view @click="cityVisible = true" class="form-item">
           <text class="label">所在地区：</text>
-          <text :style="!form.area ? 'color:#333' : ''" class="value">{{ form.area || '请选择' }}</text>
+          <text
+            :style="!form.area ? 'color:rgb(191 191 191)' : ''"
+            class="value"
+            >{{ form.area || "请选择" }}</text
+          >
         </view>
         <view class="form-item">
           <text class="label">详细地址：</text>
-          <input class="input" type="text" v-model="form.address" placeholder="请输入" placeholder-class="placeholder" />
+          <input
+            class="input"
+            type="text"
+            v-model="form.address"
+            placeholder="请输入"
+            placeholder-class="placeholder"
+          />
         </view>
         <view class="form-item">
           <text class="label">安装位置：</text>
-          <input class="input" type="text" v-model="form.location" placeholder="请输入" placeholder-class="placeholder" />
+          <input
+            class="input"
+            type="text"
+            v-model="form.location"
+            placeholder="请输入"
+            placeholder-class="placeholder"
+          />
         </view>
       </view>
       <view class="form-card">
         <view class="form-item sale-mode">
           <text class="label">销售模式：</text>
-          <view style="display: flex;">
+          <view style="display: flex">
             <label @click="form.saleMode = '租赁'" class="radio-label">
               <text :class="{ active: form.saleMode === '租赁' }"></text>
               租赁
@@ -73,12 +111,20 @@
         </view>
       </view>
       <view v-if="form.saleMode == '租赁'" class="form-card">
-        <picker mode="date" :value="date" :start="startDate" @change="hanldeDateChange">
+        <picker
+          mode="date"
+          :value="date"
+          :start="startDate"
+          @change="hanldeDateChange"
+        >
           <view class="form-item date-picker-row">
             <text class="label">到期日期：</text>
-            <view class="date-picker"> <text v-if="form.expireDate" class="value">{{ form.expireDate }}</text>
-              <text v-else style="font-size: 25rpx;" class="value">请选择</text>
-              <text class="iconfont icon-arrow">&#xe65c;</text>
+            <view class="date-picker">
+              <text v-if="form.expireDate" class="value">{{
+                form.expireDate
+              }}</text>
+              <text v-else style="font-size: 25rpx" class="value">请选择</text>
+              <text class="icon-arrow"></text>
             </view>
           </view>
         </picker>
@@ -86,32 +132,53 @@
       <!-- 滤芯更换周期 -->
       <view class="section-title">滤芯更换周期（天）：</view>
       <view class="filter-cycle-card">
-        <view class="filter-row" v-for="(cycle, idx) in filterCycles" :key="idx">
+        <view
+          class="filter-row"
+          v-for="(cycle, idx) in filterCycles"
+          :key="idx"
+        >
           <text class="filter-label">{{ cycle.name }}：</text>
-          <input class="filter-input" type="number" v-model="cycle.value" placeholder="请输入"
-            placeholder-class="placeholder" />
+          <input
+            class="filter-input"
+            type="number"
+            v-model="cycle.periodValue"
+            placeholder="请输入"
+            placeholder-class="placeholder"
+          />
         </view>
       </view>
       <!-- 确认按钮 -->
       <view class="confirm-btn" @click="handleConfirm">确认授权</view>
     </template>
-    <CityPicker :column="3" :default-value="defaultValue" :mask-close-able="true" @confirm="onCityConfirm"
-      @cancel="onCityCancel" :visible="cityVisible" />
+    <CityPicker
+      :column="3"
+      :default-value="defaultValue"
+      :mask-close-able="true"
+      @confirm="onCityConfirm"
+      @cancel="onCityCancel"
+      :visible="cityVisible"
+    />
   </view>
 </template>
 
 <script setup>
 import CityPicker from "@/components/cityPicker/index.vue";
-import DateUtil from '@/utils/date.js';
+import DateUtil from "@/utils/date.js";
 import { ref, reactive, watch } from "vue";
-import { onLoad } from '@dcloudio/uni-app'
-import { activeCmd, activeCmdResult, activeDevice, loadDeviceBaseInfo, searchCustomerByPhone } from '@/api/dealer'
+import { onLoad } from "@dcloudio/uni-app";
+import {
+  activeCmd,
+  activeCmdResult,
+  activeDevice,
+  loadDeviceBaseInfo,
+  searchCustomerByPhone,
+} from "@/api/dealer";
 const defaultValue = ref("");
 const cityVisible = ref(false);
-
+let interval = null;
 const form = reactive({
-  name: '',
-  customerRemark: '',
+  name: "",
+  customerRemark: "",
   saleMode: "租赁",
   expireDate: "",
   area: "",
@@ -121,44 +188,43 @@ const form = reactive({
 });
 // const startDate = new Date();
 // 今天格式化为 yyyy-MM-dd
-const startDate = DateUtil.format(new Date(), 'yyyy-MM-dd');
+const startDate = DateUtil.format(new Date(), "yyyy-MM-dd");
 
-const deviceData = ref({})
+const deviceData = ref({});
 const filterCycles = ref([
-  { name: "精密PP棉", value: '' },
-  { name: "活性炭", value: '' },
-  { name: "RO反渗透膜", value: '' },
+  // { name: "精密PP棉", value: '' },
+  // { name: "活性炭", value: '' },
+  // { name: "RO反渗透膜", value: '' },
 ]);
 onLoad(() => {
   // 从缓存中获取设备信息
-  const deviceInfo = uni.getStorageSync('deviceInfo')
+  const deviceInfo = uni.getStorageSync("deviceInfo");
   if (deviceInfo) {
-    deviceData.value = deviceInfo
+    deviceData.value = deviceInfo;
+    filterCycles.value = deviceInfo.chipList.map((v, i) => ({
+      name: v.name,
+      periodValue: v.periodValue,
+      index: v.index,
+    }));
   }
-})
+});
 
-watch(() => form.customerPhone, (newValue, oldValue) => {
-  if (newValue.length == 11) {
-    searchCustomerByPhone({ phone: form.customerPhone }, { noTip: true }).then((res) => {
-      form.name = res.name
-    })
+watch(
+  () => form.customerPhone,
+  (newValue, oldValue) => {
+    if (newValue.length == 11) {
+      searchCustomerByPhone(
+        { phone: form.customerPhone },
+        { noTip: true }
+      ).then((res) => {
+        form.name = res.name;
+      });
+    }
   }
-})
+);
 
-const handleBack = () => {
-  uni.navigateBack();
-};
 const hanldeDateChange = (e) => {
   form.expireDate = e.detail.value;
-};
-const showDatePicker = () => {
-  uni.showDatePicker({
-    mode: "date",
-    value: form.expireDate,
-    success: (res) => {
-      form.expireDate = res.value;
-    },
-  });
 };
 const onCityConfirm = (e) => {
   form.area = `${e.provinceName},${e.cityName},${e.areaName}`;
@@ -200,59 +266,77 @@ const handleConfirm = () => {
     uni.showToast({
       title: "请输入安装位置",
       icon: "none",
-    })
+    });
   }
-  if (!form.expireDate && form.saleMode == '租赁') {
+  if (!form.expireDate && form.saleMode == "租赁") {
     uni.showToast({
       title: "请选择到期日期",
       icon: "none",
     });
     return;
   }
-  if (filterCycles.value.some(v => !v.value)) {
+  if (filterCycles.value.some((v) => !v.periodValue)) {
     uni.showToast({
       title: "请输入滤芯更换周期",
       icon: "none",
-    })
-    return
+    });
+    return;
   }
   const params = {
     deviceId: deviceData.value.deviceId,
-    buyout: form.saleMode === '租赁' ? 1 : 0,
+    buyout: form.saleMode === "租赁" ? 1 : 0,
     expireDate: form.expireDate,
-    chipLifeJson: JSON.stringify([filterCycles.value.map((v, i) => ({
-      index: i + 1,
-      periodValue: v.value
-    }))]),
-  }
-  activeCmd(params).then(res => {
-    // 在十秒内每隔两秒调用activeCmdResult函数，如果成功几句调用activeDevice函数，超过十秒则提示失败
-    let count = 0;
-    if (interval) clearInterval(interval);
-    const interval = setInterval(() => {
-      count++;
-      if (count <= 5) {
-        activeCmdResult(params, { noTip: count != 5 }).then(res => {
-          clearInterval(interval);
-          activeDevice({
-            deviceId: deviceData.value.deviceId,
-            ...form
-          }).then(res => {
-
+    chipLifeJson: JSON.stringify(filterCycles.value),
+  };
+  activeCmd(params)
+    .then((res) => {
+      console.log(res);
+      // 在十秒内每隔两秒调用activeCmdResult函数，如果成功几句调用activeDevice函数，超过十秒则提示失败
+      let count = 0;
+      if (interval) clearInterval(interval);
+      const func = () =>
+        activeCmdResult(params, { noTip: true })
+          .then((res) => {
+            clearInterval(interval);
+            activeDevice({
+              deviceId: deviceData.value.deviceId,
+              ...params,
+              ...form,
+            }).then((res) => {
+              handleNavToPage("success", "");
+            });
           })
-        })
-      }
-    }, 2000);
-  }).catch(err => {
-
-  })
+          .catch((err) => {
+            if (count > 3) {
+              handleNavToPage("fail", "授权失败");
+            }
+          })
+          .finally(() => {
+            count++;
+          });
+      func();
+      interval = setInterval(() => {
+        if (count < 5) {
+          func();
+        } else {
+          clearInterval(interval);
+        }
+      }, 2000);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
-
+const handleNavToPage = (type, msg) => {
+  uni.navigateTo({
+    url: `/pages/index/scan/result/index?from=${type}&msg=${msg}`,
+  });
+};
 const onRefresh = () => {
   loadDeviceBaseInfo({ mes: deviceData.value.mes }).then((res) => {
-    deviceData.value = res
-  })
-}
+    deviceData.value = res;
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -288,18 +372,18 @@ const onRefresh = () => {
       margin-bottom: 10rpx;
 
       .sn-label {
-        color: #13337CFF;
+        color: #13337cff;
         font-size: 25rpx;
       }
 
       .model-label,
       .imei-label {
-        color: #999999FF;
+        color: #999999ff;
         font-size: 22rpx;
       }
 
       .sn-value {
-        color: #13337CFF;
+        color: #13337cff;
         font-size: 25rpx;
       }
 
@@ -310,7 +394,7 @@ const onRefresh = () => {
       }
 
       .blue {
-        color: #13337CFF;
+        color: #13337cff;
       }
 
       .gray {
@@ -349,7 +433,7 @@ const onRefresh = () => {
     }
 
     .label {
-      color: #13337C;
+      color: #13337c;
       font-size: 25rpx;
       width: 180rpx;
       flex-shrink: 0;
@@ -380,7 +464,7 @@ const onRefresh = () => {
         margin-left: 60rpx;
         // margin-right: 10rpx;
         font-size: 25rpx;
-        color: #333333FF;
+        color: #333333ff;
         display: flex;
         align-items: center;
 
@@ -391,12 +475,12 @@ const onRefresh = () => {
           width: 29rpx;
           height: 29rpx;
           box-sizing: border-box;
-          background: #FFFFFFFF;
-          border: 4rpx solid #A5BFE8FF;
+          background: #ffffffff;
+          border: 4rpx solid #a5bfe8ff;
         }
 
         .active {
-          border: 10rpx solid #D68F01FF;
+          border: 10rpx solid #d68f01ff;
         }
       }
     }
@@ -420,7 +504,7 @@ const onRefresh = () => {
           height: 0;
           border-left: 10rpx solid transparent;
           border-right: 10rpx solid transparent;
-          border-top: 12rpx solid #CCCCCC;
+          border-top: 12rpx solid #cccccc;
           display: inline-block;
           vertical-align: middle;
         }
@@ -498,7 +582,7 @@ const onRefresh = () => {
 }
 
 .icon-arrow:before {
-  content: "\e65c";
+  // content: "\e65c";
 }
 
 .info-tip {
@@ -517,6 +601,6 @@ const onRefresh = () => {
   border-radius: 90rpx;
   line-height: 72rpx;
   text-align: center;
-  background: #13337CFF;
+  background: #13337cff;
 }
 </style>
