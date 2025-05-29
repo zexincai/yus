@@ -119,7 +119,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { loadWorkTime, deviceCmdSet } from "@/api/dealer";
-import { onLoad } from "@dcloudio/uni-app";
+import { onLoad, onShow, onHide, onUnload } from "@dcloudio/uni-app";
 const weekList = ref([
   {
     text: "周一",
@@ -161,10 +161,20 @@ const settings = reactive({
   workBeginDay: "",
   workEndDay: "",
 });
-
+let deviceId = ''
+let timer = null
 onLoad(async ({ id }) => {
-  const { timingPlan } = await loadWorkTime({ deviceId: id });
-  settings.deviceId = id;
+  deviceId = id
+});
+onShow(() => {
+  getDetail();
+  timer = setInterval(() => {
+    getDetail();
+  }, 5000)
+})
+const getDetail = async () => {
+  const { timingPlan } = await loadWorkTime({ deviceId: deviceId }, { loading: false });
+  settings.deviceId = deviceId;
   settings.openTime2 = timingPlan.openTime2;
   settings.openTime1 = timingPlan.openTime1;
   settings.closeTime3 = timingPlan.closeTime3;
@@ -173,8 +183,23 @@ onLoad(async ({ id }) => {
   settings.openTime3 = timingPlan.openTime3;
   settings.workBeginDay = timingPlan.workBeginDay;
   settings.workEndDay = timingPlan.workEndDay;
-});
+}
+const clearTimer = () => {
+  clearInterval(timer);
+}
+const openTimer = () => {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    getDetail();
+  }, 5000)
+}
 
+onHide(() => {
+  clearInterval(timer);
+})
+onUnload(() => {
+  clearInterval(timer)
+})
 const getText = (val) => {
   return weekList.value.find((item) => item.value == val)?.text;
 };

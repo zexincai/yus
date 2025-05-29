@@ -4,12 +4,8 @@
       <view class="temp-item">
         <text>消毒时长</text>
         <view class="temp-input">
-          <input
-            type="number"
-            v-model="settings.sterilizeTime"
-            class="input"
-            maxlength="3"
-          />
+          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.sterilizeTime" class="input"
+            maxlength="3" />
           <text class="unit">秒</text>
           <button class="save-btn" @click="handleSaveTime">保存</button>
         </view>
@@ -25,52 +21,28 @@
         </view>
         <view class="timer-link">
           <text>时间1</text>
-          <picker
-            mode="time"
-            :value="settings.sterilizing1Time"
-            @change="onTimeChange($event, 'sterilizing1Time')"
-          >
+          <picker mode="time" :value="settings.sterilizing1Time" @change="onTimeChange($event, 'sterilizing1Time')">
             <view>
               <text>{{ settings.sterilizing1Time }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
         <view class="timer-link">
           <text>时间2</text>
-          <picker
-            mode="time"
-            :value="settings.sterilizing2Time"
-            @change="onTimeChange($event, 'sterilizing2Time')"
-          >
+          <picker mode="time" :value="settings.sterilizing2Time" @change="onTimeChange($event, 'sterilizing2Time')">
             <view>
               <text>{{ settings.sterilizing2Time }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
         <view class="timer-link">
           <text>时间3</text>
-          <picker
-            mode="time"
-            :value="settings.sterilizing3Time"
-            @change="onTimeChange($event, 'sterilizing3Time')"
-          >
+          <picker mode="time" :value="settings.sterilizing3Time" @change="onTimeChange($event, 'sterilizing3Time')">
             <view>
               <text>{{ settings.sterilizing3Time }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
@@ -80,10 +52,9 @@
 </template>
 
 <script setup>
-import xSwitch from "@/components/switch/index.vue";
 import { reactive, ref } from "vue";
 import { loadWorkTime, deviceCmdSet } from "@/api/dealer";
-import { onLoad } from "@dcloudio/uni-app";
+import { onLoad, onShow, onHide, onUnload } from "@dcloudio/uni-app";
 
 // 设置数据
 const settings = reactive({
@@ -92,16 +63,41 @@ const settings = reactive({
   sterilizing2Time: "",
   sterilizing3Time: "",
 });
+let deviceId = ''
+let timer = null
+onLoad(({ id }) => {
+  deviceId = id
+});
+onShow(() => {
+  getDetail();
+  timer = setInterval(() => {
+    getDetail();
+  }, 5000)
+});
 
-onLoad(async ({ id }) => {
-  const { sterilizePlan } = await loadWorkTime({ deviceId: id });
-  settings.deviceId = id;
+const getDetail = async () => {
+  const { sterilizePlan } = await loadWorkTime({ deviceId: deviceId }, { loading: false });
+  settings.deviceId = deviceId;
   settings.sterilizeTime = sterilizePlan.sterilizeTime;
   settings.sterilizing1Time = sterilizePlan.sterilizing1Time;
   settings.sterilizing2Time = sterilizePlan.sterilizing2Time;
   settings.sterilizing3Time = sterilizePlan.sterilizing3Time;
-});
-
+}
+onHide(() => {
+  clearInterval(timer);
+})
+onUnload(() => {
+  clearInterval(timer)
+})
+const clearTimer = () => {
+  clearInterval(timer);
+}
+const openTimer = () => {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    getDetail();
+  }, 5000)
+}
 const onTimeChange = async (e, key) => {
   settings[key] = e.detail.value;
   handleSaveTime();

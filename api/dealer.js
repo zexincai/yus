@@ -96,15 +96,17 @@ export const deviceDatas = (data) =>
   });
 
 // 9-设备设置界面
-export const loadSetParams = (data) =>
+export const loadSetParams = (data, config) =>
   http.post("https://yuq.fenaor.com/ma/device/loadSetParams", data, {
     loading: true,
+    ...(config || {})
   });
 
 // 10-定时开关界面，定时消毒时间，定时冲洗时间等参数
-export const loadWorkTime = (data) =>
+export const loadWorkTime = (data, config) =>
   http.post("https://yuq.fenaor.com/ma/device/loadWorkTime", data, {
     loading: true,
+    ...(config || {})
   });
 
 // 11-设置定时开关计划 12-指令参数设置 13-设置定时消毒计划

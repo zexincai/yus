@@ -4,12 +4,8 @@
       <view class="temp-item">
         <text>换水时长</text>
         <view class="temp-input">
-          <input
-            type="number"
-            v-model="settings.sterilizeTime"
-            class="input"
-            maxlength="3"
-          />
+          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.refreshMinute" class="input"
+            maxlength="3" />
           <text class="unit">分钟</text>
           <button class="save-btn" @click="handleSaveTime">保存</button>
         </view>
@@ -19,12 +15,7 @@
       <view class="temp-item">
         <text>换水周期</text>
         <view class="temp-input">
-          <input
-            type="number"
-            v-model="settings.sterilizeTime"
-            class="input"
-            maxlength="3"
-          />
+          <input type="number" v-model="settings.refreshPeriod" class="input" maxlength="3" />
           <text class="unit">天</text>
           <button class="save-btn" @click="handleSaveTime">保存</button>
         </view>
@@ -35,18 +26,10 @@
       <view class="timer-item">
         <view class="timer-link">
           <text>换水时间</text>
-          <picker
-            mode="time"
-            :value="settings.sterilizing1Time"
-            @change="onTimeChange($event, 'sterilizing1Time')"
-          >
+          <picker mode="time" :value="settings.refreshTime" @change="onTimeChange($event, 'refreshTime')">
             <view>
-              <text>{{ settings.sterilizing1Time }}</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <text>{{ settings.refreshTime }}</text>
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </picker>
         </view>
@@ -56,39 +39,62 @@
 </template>
 
 <script setup>
-import xSwitch from "@/components/switch/index.vue";
 import { reactive, ref } from "vue";
 import { loadWorkTime, deviceCmdSet } from "@/api/dealer";
-import { onLoad } from "@dcloudio/uni-app";
+import { onLoad, onShow, onHide, onUnload } from "@dcloudio/uni-app";
 
 // 设置数据
 const settings = reactive({
-  sterilizeTime: "",
-  sterilizing1Time: "",
-  sterilizing2Time: "",
-  sterilizing3Time: "",
+  refreshTime: "",
+  refreshPeriod: "",
+  deviceId: "",
+  key: "SetRefresh",
+  refreshMinute: "",
 });
-
+let deviceId = "";
+let timer = null;
 onLoad(async ({ id }) => {
-  const { sterilizePlan } = await loadWorkTime({ deviceId: id });
-  settings.deviceId = id;
-  settings.sterilizeTime = sterilizePlan.sterilizeTime;
-  settings.sterilizing1Time = sterilizePlan.sterilizing1Time;
-  settings.sterilizing2Time = sterilizePlan.sterilizing2Time;
-  settings.sterilizing3Time = sterilizePlan.sterilizing3Time;
+  deviceId = id;
 });
+onShow(() => {
+  getDetail();
+  timer = setInterval(() => {
+    getDetail();
+  }, 5000)
+})
+onUnload(() => {
+  clearInterval(timer)
+})
+const getDetail = async () => {
+  const { refreshPlan } = await loadWorkTime({ deviceId: deviceId }, { loading: false });
+  settings.deviceId = deviceId;
+  settings.refreshTime = refreshPlan.refreshTime;
+  settings.refreshPeriod = refreshPlan.refreshPeriod;
+  settings.refreshMinute = refreshPlan.refreshMinute;
+}
+onHide(() => {
+  clearInterval(timer);
+})
 
 const onTimeChange = async (e, key) => {
   settings[key] = e.detail.value;
   handleSaveTime();
 };
+const clearTimer = () => {
+  clearInterval(timer);
+}
+const openTimer = () => {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    getDetail();
+  }, 5000)
+}
 const handleSaveTime = () => {
   setTimeout(async () => {
     const resp = await deviceCmdSet(
       {
-        key: "SetSterilizing",
+        key: "SetRefresh",
         deviceId: settings.deviceId,
-        sterilizingSeconds: settings.sterilizeTime,
         ...settings,
       },
       { raw: true }

@@ -18,7 +18,8 @@
       <view class="temp-item">
         <text>开水停止加热温度</text>
         <view class="temp-input">
-          <input type="number" v-model="settings.hotWaterTemp" class="input" maxlength="3" />
+          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.hotWaterTemp" class="input"
+            maxlength="3" />
           <text class="unit">℃</text>
           <button class="save-btn" @click="handleSaveHotTemp">保存</button>
         </view>
@@ -29,7 +30,8 @@
       <view class="temp-item">
         <text>温开水停止加热温度</text>
         <view class="temp-input">
-          <input type="number" v-model="settings.warmWaterTemp" class="input" maxlength="3" />
+          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.warmWaterTemp" class="input"
+            maxlength="3" />
           <text class="unit">℃</text>
           <button class="save-btn" @click="handleSaveWarmTemp">保存</button>
         </view>
@@ -97,7 +99,7 @@
 import xSwitch from "@/components/switch/index.vue";
 import { reactive } from "vue";
 import { loadSetParams, deviceCmdSet } from "@/api/dealer";
-import { onLoad, onShow } from "@dcloudio/uni-app";
+import { onLoad, onShow, onHide, onUnload } from "@dcloudio/uni-app";
 let deviceId = "";
 // 设置数据
 const settings = reactive({
@@ -109,13 +111,43 @@ const settings = reactive({
   timerSterilize: false,
   timerWash: true,
 });
-
+let timer = null;
 onLoad(async ({ id }) => {
   deviceId = id;
-});
 
+});
+onUnload(() => {
+  clearInterval(timer)
+})
 onShow(async () => {
-  const res = await loadSetParams({ deviceId });
+  getDetail()
+  // 隔两秒自动刷新
+  timer = setInterval(() => {
+    getDetail()
+  }, 5000)
+})
+
+const clearTimer = () => {
+  if (timer) {
+    clearInterval(timer)
+    timer = null
+  }
+}
+const openTimer = () => {
+  if (!timer) {
+    timer = setInterval(() => {
+      getDetail()
+    }, 5000)
+  }
+}
+// 清除定时器
+onHide(() => {
+  clearInterval(timer)
+})
+const getDetail = async () => {
+  const res = await loadSetParams({ deviceId }, {
+    loading: false
+  });
   settings.pause = res.stopSW === 1;
   settings.deviceId = res.deviceId;
   settings.drain = res.emptySwitch === 1;
@@ -124,7 +156,7 @@ onShow(async () => {
   settings.timerRun = res.workMode === 1;
   settings.timerSterilize = res.sterilizingSwitch === 1;
   settings.timerWash = res.washingSwitch === 1;
-})
+}
 
 // 保存开水温度
 const handleSaveHotTemp = async () => {

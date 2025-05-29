@@ -4,7 +4,7 @@
     <view class="header">
       <text class="title">消息：{{ messageCount }}</text>
       <view class="actions">
-        <view class="action-btn" @click="handleReadAll">
+        <!-- <view class="action-btn" @click="handleReadAll">
           <view class="icon-clear flex-center">
             <image src="/static/images/icon-clear.png" mode="aspectFit" class="action-icon" />
           </view>
@@ -15,12 +15,12 @@
             <image src="/static/images/icon-delete.png" mode="aspectFit" class="action-icon" />
           </view>
           <text>全部删除</text>
-        </view>
+        </view> -->
       </view>
     </view>
 
     <!-- 消息列表 -->
-    <view class="message-list">
+    <view v-if="messageList.length" class="message-list">
       <view v-for="(message, index) in messageList" :key="index" class="message-item"
         @click="handleMessageClick(message)">
         <image :src="message.icon" mode="aspectFit" class="device-icon" />
@@ -32,9 +32,13 @@
           <text class="message-time">{{ message.time }}</text>
           <view v-if="message.unread" class="unread-badge">{{
             message.unread
-          }}</view>
+            }}</view>
         </view>
       </view>
+    </view>
+    <view v-else class="empty">
+      <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+      <view class="empty-text"> 当前暂无消息 </view>
     </view>
   </view>
 </template>
@@ -43,31 +47,31 @@
 import { ref, reactive } from "vue";
 
 // 消息总数
-const messageCount = ref(4);
+const messageCount = ref(0);
 
 // 消息列表数据
 const messageList = reactive([
-  {
-    name: "一楼前台",
-    sn: "34523487679890",
-    icon: "/static/images/device1.png",
-    time: "2025-06-20 14:20",
-    unread: 3,
-  },
-  {
-    name: "企业展厅",
-    sn: "34523487679821",
-    icon: "/static/images/device1.png",
-    time: "2025-06-20 11:30",
-    unread: 1,
-  },
-  {
-    name: "会议室",
-    sn: "34523487675680",
-    icon: "/static/images/device1.png",
-    time: "2025-06-16 09:30",
-    unread: 0,
-  },
+  // {
+  //   name: "一楼前台",
+  //   sn: "34523487679890",
+  //   icon: "/static/images/device1.png",
+  //   time: "2025-06-20 14:20",
+  //   unread: 3,
+  // },
+  // {
+  //   name: "企业展厅",
+  //   sn: "34523487679821",
+  //   icon: "/static/images/device1.png",
+  //   time: "2025-06-20 11:30",
+  //   unread: 1,
+  // },
+  // {
+  //   name: "会议室",
+  //   sn: "34523487675680",
+  //   icon: "/static/images/device1.png",
+  //   time: "2025-06-16 09:30",
+  //   unread: 0,
+  // },
 ]);
 
 // 处理消息点击

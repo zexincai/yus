@@ -4,11 +4,7 @@
     <view class="device-header">
       <view class="device-title">
         <text>企业展厅</text>
-        <image
-          src="/static/images/icon-edit.png"
-          mode="aspectFit"
-          class="edit-icon"
-        />
+        <image src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
       </view>
       <view class="view-device" @click="handleViewDevice">
         <text>查看设备 >></text>
@@ -43,11 +39,7 @@
         </view>
       </view>
 
-      <image
-        src="/static/images/device.png"
-        mode="aspectFit"
-        class="device-image"
-      />
+      <image src="/static/images/device.png" mode="aspectFit" class="device-image" />
     </view>
 
     <!-- 消息列表 -->
@@ -55,20 +47,15 @@
       <view class="message-header">
         <text>消息: {{ messageCount }}</text>
         <view class="delete-all" @click="handleDeleteAll">
-          <view class="delete-icon">
+          <!-- <view class="delete-icon">
             <image src="/static/images/icon-delete.png" mode="aspectFit" />
-          </view>
-          <text>全部删除</text>
+          </view> -->
+          <!-- <text>全部删除</text> -->
         </view>
       </view>
 
-      <view class="message-list">
-        <view
-          v-for="(message, index) in messages"
-          :key="index"
-          class="message-item"
-          :class="message.type"
-        >
+      <view v-if="false" class="message-list">
+        <view v-for="(message, index) in messages" :key="index" class="message-item" :class="message.type">
           <view class="message-title">
             <text>{{ message.title }}</text>
             <text class="message-time">{{ message.time }}</text>
@@ -79,6 +66,11 @@
           <view class="message-content">{{ message.content }}</view>
         </view>
       </view>
+
+      <view v-else class="empty">
+        <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+        <view class="empty-text"> 暂无数据 </view>
+      </view>
     </view>
   </view>
 </template>
@@ -87,7 +79,7 @@
 import { ref, reactive } from "vue";
 
 // 消息数量
-const messageCount = ref(3);
+const messageCount = ref(0);
 
 // 消息列表
 const messages = reactive([
@@ -189,6 +181,7 @@ const onCopySn = () => {
     }
   }
 }
+
 .device-card {
   background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
   border-radius: 18rpx;
@@ -263,6 +256,7 @@ const onCopySn = () => {
         display: flex;
         align-items: center;
         justify-content: center;
+
         image {
           width: 22rpx;
           height: 22rpx;

@@ -1,33 +1,13 @@
 <template>
   <view class="device-detail-container">
-    <uni-nav-bar
-      @click="handleBack"
-      backgroundColor="#152136"
-      statusBar
-      dark
-      fixed
-      leftIcon="left"
-      title="设备详情"
-      :left-arrow="false"
-      :border="false"
-    >
-      <!-- <template v-slot:right>
-        <image
-          src="/static/images/more.png"
-          mode="aspectFit"
-          class="right-icon"
-        />
-      </template> -->
-    </uni-nav-bar>
+    <!-- <uni-nav-bar @click="handleBack" backgroundColor="#152136" statusBar dark fixed leftIcon="left" title="设备详情"
+      :left-arrow="false" :border="false">
+
+    </uni-nav-bar> -->
     <view class="device-header">
       <view class="device-title">
         <text>{{ deviceInfo.location }}</text>
-        <image
-          @click="navigateTo('edit')"
-          src="/static/images/icon-edit.png"
-          mode="aspectFit"
-          class="edit-icon"
-        />
+        <image @click="navigateTo('edit')" src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
       </view>
       <image :src="deviceInfo.rssiUrl" class="view-device"> </image>
     </view>
@@ -60,27 +40,14 @@
           <text class="address-value">{{ deviceInfo.address }}</text>
         </view>
       </view>
-      <image
-        class="device-img"
-        :src="deviceInfo.productUrl"
-        mode="aspectFit"
-      ></image>
+      <image class="device-img" :src="deviceInfo.productUrl" mode="aspectFit"></image>
     </view>
 
     <!-- 功能导航 -->
     <view class="function-nav">
-      <view
-        class="nav-item"
-        v-for="(item, index) in navList"
-        :key="item.text"
-        @click="navigateTo(item.page)"
-      >
+      <view class="nav-item" v-for="(item, index) in navList" :key="item.text" @click="navigateTo(item.page)">
         <view class="icon-wrapper">
-          <image
-            class="iconfont"
-            :class="{ small: index == 0 }"
-            :src="item.icon"
-          />
+          <image class="iconfont" :class="{ small: index == 0 }" :src="item.icon" />
         </view>
         <text class="nav-text">{{ item.text }}</text>
       </view>
@@ -92,20 +59,10 @@
         <text>授权时间：{{ deviceInfo.activeDate }}</text>
       </view>
       <view class="auth-row">
-        <text v-if="deviceInfo.buyout == 1"
-          >到期日期：{{ deviceInfo.expireDate }}</text
-        >
-        <text
-          v-if="deviceInfo.buyout == 1"
-          class="renewal-link"
-          @click="navigateTo('renewalLog')"
-          >续期记录 >>
+        <text v-if="deviceInfo.buyout == 1">到期日期：{{ deviceInfo.expireDate }}</text>
+        <text v-if="deviceInfo.buyout == 1" class="renewal-link" @click="navigateTo('renewalLog')">续期记录 >>
         </text>
-        <view
-          v-if="userType != 'user'"
-          class="call-btn"
-          @click="navigateTo('renewal')"
-        >
+        <view v-if="userType != 'user'" class="call-btn" @click="navigateTo('renewal')">
           <image class="icon" src="/static/images/call.png"></image>
           联系经销商
         </view>
@@ -123,10 +80,8 @@
     <!-- 水温数据 -->
     <view class="temperature">
       <view class="temperature-card">
-        <text class="temp-value"
-          >{{ deviceInfo.waterTemperature }}
-          <text class="temp-unit">℃</text></text
-        >
+        <text class="temp-value">{{ deviceInfo.waterTemperature }}
+          <text class="temp-unit">℃</text></text>
         <text class="temp-label">水温</text>
       </view>
       <view class="temperature-card waterLevel">
@@ -158,22 +113,14 @@
         </view>
       </view>
       <view class="filter-list">
-        <view
-          class="filter-item"
-          v-for="(filter, index) in deviceInfo.chips"
-          :key="index"
-        >
+        <view class="filter-item" v-for="(filter, index) in deviceInfo.chips" :key="index">
           <view class="filter-index">{{ filter.index }}</view>
           <view class="filter-info">
             <text class="filter-name">{{ filter.chipName }}</text>
             <view class="progress-bar">
-              <view
-                class="progress-inner"
-                :class="{
-                  'progress-yellow': filter.red,
-                }"
-                :style="{ width: filter.percent + '%' }"
-              ></view>
+              <view class="progress-inner" :class="{
+                'progress-yellow': filter.red,
+              }" :style="{ width: filter.percent + '%' }"></view>
             </view>
           </view>
           <view class="filter-percent">{{ filter.percent }}%</view>
@@ -563,12 +510,10 @@ const navigateTo = (page) => {
 
     &.orange {
       border-radius: 18rpx;
-      background: linear-gradient(
-        180deg,
-        #4f3500ff 0%,
-        #f1a100ff 0%,
-        #523700ff 100%
-      );
+      background: linear-gradient(180deg,
+          #4f3500ff 0%,
+          #f1a100ff 0%,
+          #523700ff 100%);
     }
 
     &.blue {
@@ -577,9 +522,11 @@ const navigateTo = (page) => {
     }
   }
 }
+
 .temperature {
   display: flex;
 }
+
 .temperature-card {
   flex: 1;
   height: 181rpx;
@@ -606,22 +553,23 @@ const navigateTo = (page) => {
     margin-top: 8rpx;
   }
 }
+
 .waterLevel {
   flex: none;
   margin-left: 14rpx;
   width: 217rpx;
   height: 181rpx;
-  background: linear-gradient(
-    180deg,
-    rgba(26, 71, 156, 1) 0%,
-    rgba(10, 25, 56, 1) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(26, 71, 156, 1) 0%,
+      rgba(10, 25, 56, 1) 100%);
   color: #fff;
   border-radius: 18rpx;
+
   .temp-label {
     color: #fff !important;
   }
 }
+
 .filter-status {
   margin-top: 20rpx;
   border-radius: 18rpx;
