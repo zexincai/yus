@@ -10,10 +10,10 @@
       >
         <!-- 时间显示 -->
         <view class="news-date" v-if="shouldShowDate(index)">
-          {{ item.date }}
+          {{ item.createTime }}
         </view>
         <!-- 新闻卡片 -->
-        <view class="news-card big" :class="{ 'big-card': item.type == 'big' }">
+        <view class="news-card big" :class="{ 'big-card': item.layout }">
           <view class="news-content">
             <text class="news-title">{{ item.title }}</text>
             <view class="news-info">
@@ -24,13 +24,13 @@
                   mode="aspectFit"
                   class="view-icon"
                 />
-                <text>{{ item.views }}</text>
+                <text>{{ item.visitNum }}</text>
               </view>
             </view>
           </view>
           <image
-            v-if="item.image"
-            :src="item.image"
+            v-if="item.imgUrl"
+            :src="item.imgUrl"
             mode="aspectFill"
             class="news-image"
           />
@@ -41,10 +41,14 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref } from "vue";
+import { getNewsList } from "@/api/dealer";
+import { onLoad, onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app";
 
+const current = ref(1);
+const pageSize = 10;
 // 新闻列表数据
-const newsList = reactive([
+const newsList = ref([
   {
     date: "2025-05-19 13:28",
     title: "10年净水器选购经验总结：看完谁都坑不了你",
@@ -69,14 +73,35 @@ const newsList = reactive([
   },
 ]);
 
+const getNewsListPage = async () => {
+  const data = await getNewsList({
+    size: pageSize,
+    current: current.value,
+  });
+  newsList.value = current.value == 1 ? data : newsList.value.concat(data);
+  current.value++;
+};
 // 判断是否显示日期
 const shouldShowDate = (index) => {
   if (index === 0) return true;
-  const currentDate = newsList[index].date.split(" ")[0];
-  const prevDate = newsList[index - 1].date.split(" ")[0];
+  const currentDate = newsList.value[index].createTime.split(" ")[0];
+  const prevDate = newsList.value[index - 1].createTime.split(" ")[0];
   return currentDate !== prevDate;
 };
 
+onLoad(async () => {
+  getNewsListPage();
+});
+// 触底加载
+onReachBottom(() => {
+  getNewsListPage();
+});
+
+onPullDownRefresh(async () => {
+  current.value = 1;
+  await getNewsListPage();
+  uni.stopPullDownRefresh();
+});
 // 处理新闻点击
 const handleNewsClick = (news) => {
   uni.navigateTo({
@@ -93,7 +118,7 @@ const handleNewsClick = (news) => {
 
 .news-list {
   .news-date {
-    color: #C7C7C7FF;
+    color: #c7c7c7ff;
     font-size: 25rpx;
     text-align: center;
     margin: 30rpx 0;

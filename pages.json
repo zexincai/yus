@@ -90,7 +90,8 @@
     {
       "path": "pages/news/index",
       "style": {
-        "navigationBarTitleText": "资讯"
+        "navigationBarTitleText": "资讯",
+        "enablePullDownRefresh": true
       }
     },
     {

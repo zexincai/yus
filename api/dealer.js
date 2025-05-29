@@ -99,14 +99,14 @@ export const deviceDatas = (data) =>
 export const loadSetParams = (data, config) =>
   http.post("https://yuq.fenaor.com/ma/device/loadSetParams", data, {
     loading: true,
-    ...(config || {})
+    ...(config || {}),
   });
 
 // 10-定时开关界面，定时消毒时间，定时冲洗时间等参数
 export const loadWorkTime = (data, config) =>
   http.post("https://yuq.fenaor.com/ma/device/loadWorkTime", data, {
     loading: true,
-    ...(config || {})
+    ...(config || {}),
   });
 
 // 11-设置定时开关计划 12-指令参数设置 13-设置定时消毒计划
@@ -143,5 +143,30 @@ export const expireRenewalRecord = (data) =>
 // 16-授权设备列表
 export const searchDevices = (data) =>
   http.post("https://yuq.fenaor.com/ma/dealer/searchDevices", data, {
+    loading: true,
+  });
+// 17-资讯列表
+export const getNewsList = (data) =>
+  http.get("https://yuq.fenaor.com/ma/home/newsList", data, {
+    loading: true,
+  });
+// 17-资讯详情
+export const getNewsDetail = (data) =>
+  http.get("https://yuq.fenaor.com/ma/home/newsDetail", data, {
+    loading: true,
+  });
+// 18-案例界面，首页轮播图
+export const getBusinessCasePage = (data) =>
+  http.get("https://yuq.fenaor.com/ma/home/businessCasePage", data, {
+    loading: true,
+  });
+// 18-案例列表
+export const getCaseList = (data) =>
+  http.get("https://yuq.fenaor.com/ma/home/caseList", data, {
+    loading: true,
+  });
+// 19-案例详情
+export const getCaseDetail = (data) =>
+  http.get("https://yuq.fenaor.com/ma/home/caseDetail", data, {
     loading: true,
   });

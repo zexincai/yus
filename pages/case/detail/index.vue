@@ -11,30 +11,31 @@
       indicator-active-color="#0ECBF7"
       indicator-color="#fff"
     >
-      <swiper-item v-for="(item, index) in bannerImages" :key="index">
+      <swiper-item v-for="(item, index) in detail.slideUrls" :key="index">
         <image :src="item" mode="aspectFill" class="banner-image" />
       </swiper-item>
     </swiper>
 
     <!-- 项目标题 -->
     <view class="project-title">
-      <text>广州白云国际机场公共净水项目</text>
+      <text>{{ detail.title }}</text>
       <view class="info">
-        <text class="date">2025-05-24 13:46</text>
+        <text class="date">{{ detail.createTime }}</text>
         <view class="view-count">
           <image
             src="/static/images/eye-open.png"
             mode="aspectFit"
             class="view-icon"
           />
-          <text>4220</text>
+          <text>{{ detail.visitNum }}</text>
         </view>
       </view>
     </view>
 
     <!-- 项目内容 -->
     <view class="project-content">
-      <view class="section">
+      <rich-text :nodes="detail.content"></rich-text>
+      <!-- <view class="section">
         <text class="section-title">用户需求：</text>
         <text class="section-text"
           >广州白云国际机场对公共区域饮水机的水质安全和量值要求很高的要求。若是发生饮水安全问题，或是机器供水量不足，需要频繁维护维修等问题导致旅客等待时间过长，均可能影响机场的运营和形象。</text
@@ -46,22 +47,22 @@
         <text class="section-text"
           >为了给旅客提供更好的服务，决定在机场内区域安装各个方面都表现优秀的商用直饮水机。水质安全方面，商用净水机拥有"专利长渗透滤芯"及其他先进技术，水质满足GB19298-2014《食品安全国家标准包装饮用水》的要求，能够为旅客提供安全、健康的饮用水。</text
         >
-      </view>
+      </view> -->
     </view>
   </view>
 </template>
 
 <script setup>
 import { ref } from "vue";
-
-// 轮播图数据
-const bannerImages = ref([
-  "/static/images/case/detail.png",
-  "/static/images/case/detail.png",
-  "/static/images/case/detail.png",
-  "/static/images/case/detail.png",
-  "/static/images/case/detail.png",
-]);
+import { getCaseDetail } from "@/api/dealer";
+import { onLoad } from "@dcloudio/uni-app";
+const detail = ref({});
+onLoad(({ id }) => {
+  getDetail(id);
+});
+const getDetail = async (id) => {
+  detail.value = await getCaseDetail({ id });
+};
 </script>
 
 <style lang="scss" scoped>
