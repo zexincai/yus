@@ -43,7 +43,7 @@
 <script setup>
 import { ref } from "vue";
 import { getNewsList } from "@/api/dealer";
-import { onLoad, onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app";
+import { onShow, onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app";
 
 const current = ref(1);
 const pageSize = 10;
@@ -89,7 +89,8 @@ const shouldShowDate = (index) => {
   return currentDate !== prevDate;
 };
 
-onLoad(async () => {
+onShow(async () => {
+  current.value = 1;
   getNewsListPage();
 });
 // 触底加载

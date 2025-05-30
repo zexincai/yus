@@ -78,10 +78,10 @@ const showPassword = ref(false);
 // 表单数据
 const form = reactive({
 	
-	phone: "18826483596",
-	password: "123456",
-	// phone: "",
-	// password: "",
+	// phone: "18826483596",
+	// password: "123456",
+	phone: "",
+	password: "",
 	remember: false,
 	agreement: false,
 });

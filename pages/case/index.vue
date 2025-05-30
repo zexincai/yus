@@ -59,7 +59,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { getBusinessCasePage, getCaseList } from "@/api/dealer";
-import { onLoad, onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app";
+import { onShow, onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app";
 const current = ref(1);
 const pageSize = 10;
 const currentBanner = ref(0);
@@ -104,7 +104,8 @@ const getBusinessCaseList = async () => {
   tabs.value = data.caseClasList;
   bannerList.value = data.caseSliderSet;
 };
-onLoad(async () => {
+onShow(async () => {
+  current.value = 1;
   await getBusinessCaseList();
   getPageList();
 });
@@ -132,6 +133,7 @@ onPullDownRefresh(async () => {
   height: 400rpx;
 
   .banner-image {
+    border-radius: 18rpx;
     width: 100%;
     height: 100%;
   }
@@ -203,6 +205,7 @@ onPullDownRefresh(async () => {
     .case-image {
       width: 100%;
       height: 250rpx;
+      border-radius: 18rpx 18rpx 0 0;
     }
 
     .case-title {
@@ -210,6 +213,10 @@ onPullDownRefresh(async () => {
       color: #fff;
       font-size: 28rpx;
       padding: 20rpx;
+      // 两行省略
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
     }
   }
 }
