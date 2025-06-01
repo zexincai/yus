@@ -72,13 +72,14 @@ import {
 } from "vue";
 
 // 登录类型
-const loginType = ref("ROLE_DEALER");
+const loginType = ref("ROLE_CUSTOMER");
 const showPassword = ref(false);
 
 // 表单数据
 const form = reactive({
-	
 	// phone: "18826483596",
+	// password: "123456",
+	// phone: "15989297809",
 	// password: "123456",
 	phone: "",
 	password: "",

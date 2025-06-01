@@ -193,7 +193,8 @@
     {
       "path": "pages/device/detail/index",
       "style": {
-        "navigationBarTitleText": "设备详情"
+        "navigationBarTitleText": "设备详情",
+        "navigationStyle": "custom"
       }
     },
     {

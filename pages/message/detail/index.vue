@@ -3,8 +3,8 @@
     <!-- 设备信息卡片 -->
     <view class="device-header">
       <view class="device-title">
-        <text>企业展厅</text>
-        <image src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
+        <text>{{ deviceInfo.location }}</text>
+        <image @click="navToEdit" src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
       </view>
       <view class="view-device" @click="handleViewDevice">
         <text>查看设备 >></text>
@@ -14,52 +14,53 @@
       <view class="device-info">
         <view class="info-item">
           <text class="label">SN:</text>
-          <text class="value">34523456712801</text>
+          <text class="value">{{ deviceInfo.sn }}</text>
           <text @click="onCopySn" class="tag">复制</text>
         </view>
         <view class="info-item">
           <text class="label">型号:</text>
-          <text class="value">S800-2</text>
+          <text class="value">{{ deviceInfo.modelName }}</text>
         </view>
         <view class="info-item">
           <text class="label">类型:</text>
-          <text class="value">商务饮水机</text>
+          <text class="value">{{ deviceInfo.brand }}</text>
         </view>
         <view class="info-item">
           <text class="label">客户:</text>
-          <text class="value">焦靖国 15677893456</text>
+          <text class="value">{{ deviceInfo.customerName }} {{ deviceInfo.customerPhone }}</text>
         </view>
         <view class="info-item">
           <text class="label">地区:</text>
-          <text class="value">广东省广州市天河区</text>
+          <text class="value">{{ deviceInfo.area }}</text>
         </view>
         <view class="info-item">
           <text class="label">地址:</text>
-          <text class="value">工业大道58号福福大厦209室</text>
+          <text class="value">{{ deviceInfo.address }}</text>
         </view>
       </view>
 
-      <image src="/static/images/device.png" mode="aspectFit" class="device-image" />
+      <image :src="deviceInfo.productUrl" mode="aspectFit" class="device-image" />
     </view>
 
     <!-- 消息列表 -->
     <view class="message-section">
       <view class="message-header">
-        <text>消息: {{ messageCount }}</text>
-        <view class="delete-all" @click="handleDeleteAll">
-          <!-- <view class="delete-icon">
+        <text>消息: {{ messages.length }}</text>
+        <view v-if="messages.length" class="delete-all" @click="handleDeleteAll">
+          <view class="delete-icon">
             <image src="/static/images/icon-delete.png" mode="aspectFit" />
-          </view> -->
-          <!-- <text>全部删除</text> -->
+          </view>
+          <text>全部删除</text>
         </view>
       </view>
 
-      <view v-if="false" class="message-list">
-        <view v-for="(message, index) in messages" :key="index" class="message-item" :class="message.type">
+      <view v-if="messages.length" class="message-list">
+        <view v-for="(message, index) in messages" :key="index" class="message-item "
+          :class="{ 'error': message.noticeType == 1, 'warning': message.noticeType == 2, 'info': message.noticeType == 4 }">
           <view class="message-title">
-            <text>{{ message.title }}</text>
-            <text class="message-time">{{ message.time }}</text>
-            <text class="delete-btn" @click="handleDeleteMessage(index)">
+            <text>{{ message.noticeTypeDesc }}</text>
+            <text class="message-time">{{ message.createTime }}</text>
+            <text class="delete-btn" @click="handleDeleteMessage(message)">
               删除
             </text>
           </view>
@@ -77,72 +78,115 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import { deviceMsgPage, operaDeviceMsg, deviceDetailInfo } from "@/api/dealer";
+import { onShow, onLoad, onReachBottom, } from "@dcloudio/uni-app";
 
+let deviceId = ''
+const current = ref(1)
+const deviceInfo = ref({});
 // 消息数量
 const messageCount = ref(0);
 
 // 消息列表
-const messages = reactive([
-  {
-    type: "error",
-    title: "故障提醒",
-    time: "2025-06-16 09:30",
-    content: "进水口缺水",
-  },
-  {
-    type: "warning",
-    title: "租赁到期提醒",
-    time: "2025-06-16 09:30",
-    content: "到期日期: 2025-06-15",
-  },
-  {
-    type: "info",
-    title: "滤芯更换提醒",
-    time: "2025-06-16 09:30",
-    content: "滤芯剩余低于10%",
-  },
-]);
+const messages = ref([]);
+const getMessageList = async () => {
+  const list = await deviceMsgPage({
+    deviceId,
+    current: current.value,
+    size: 10,
+  })
 
+  messages.value = current.value === 1 ? list : messages.value.concat(list)
+  current.value++
+}
 // 查看设备详情
 const handleViewDevice = () => {
   uni.navigateTo({
-    url: "/pages/device/detail",
+    url: "/pages/device/detail/index?id=" + deviceId,
+  });
+};
+const navToEdit = () => {
+  uni.setStorageSync("lastPageData", deviceInfo.value);
+  uni.navigateTo({
+    url: "/pages/device/edit/index?id=" + deviceId,
   });
 };
 
 // 删除单条消息
-const handleDeleteMessage = (index) => {
-  messages.splice(index, 1);
-  messageCount.value--;
-  uni.showToast({
-    title: "删除成功",
-    icon: "none",
-  });
+const handleDeleteMessage = async (item) => {
+  uni.showModal({
+    title: "提示",
+    content: "确认删除该条消息吗？",
+    success: async (res) => {
+      if (res.confirm) {
+        await operaDeviceMsg({ action: 'DEL', deviceId, msgId: item.id })
+        uni.showToast({
+          title: "操作成功",
+          icon: "none",
+        });
+        current.value = 1;
+        getMessageList();
+      }
+    }
+  })
 };
 
 // 删除全部消息
 const handleDeleteAll = () => {
-  messages.length = 0;
-  messageCount.value = 0;
-  uni.showToast({
-    title: "删除成功",
-    icon: "none",
-  });
+  uni.showModal({
+    title: "提示",
+    content: "确认删除全部消息吗？",
+    success: async (res) => {
+      if (res.confirm) {
+        await operaDeviceMsg({ action: 'DEL', deviceId, })
+        uni.showToast({
+          title: "操作成功",
+          icon: "none",
+        });
+        current.value = 1;
+        getMessageList();
+      }
+    }
+  })
 };
 
 // 复制SN
 const onCopySn = () => {
   uni.setClipboardData({
-    data: "34523456712801",
-    success: function () {
+    data: deviceInfo.value.sn,
+    success: function (e) {
+      console.log(e);
       uni.showToast({
         title: "复制成功",
         icon: "success",
         duration: 2000,
       });
     },
+    fail: function (e) {
+      console.log(e);
+      uni.showToast({
+        title: "复制失败",
+        icon: "none",
+        duration: 2000,
+      });
+    },
   });
 };
+onLoad(({ id }) => {
+  deviceId = id
+})
+onShow(() => {
+  current.value = 1;
+  getMessageList();
+  deviceDetailInfo({ deviceId }).then((res) => {
+    deviceInfo.value = res;
+  });
+});
+// 触底加载
+onReachBottom(() => {
+  getMessageList();
+});
+
 </script>
 
 <style lang="scss" scoped>

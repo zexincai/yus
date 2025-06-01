@@ -1,41 +1,21 @@
 <template>
   <view class="container">
     <!-- 轮播图 -->
-    <swiper
-      @change="onSwiperChange"
-      class="banner"
-      circular
-      autoplay
-      interval="3000"
-      duration="500"
-    >
-      <swiper-item
-        @click="handleCaseClick(item)"
-        v-for="(item, index) in bannerList"
-        :key="index"
-      >
+    <swiper @change="onSwiperChange" class="banner" circular autoplay interval="3000" duration="500">
+      <swiper-item @click="handleCaseClick(item)" v-for="(item, index) in bannerList" :key="index">
         <image :src="item.imgUrl" mode="aspectFill" class="banner-image" />
       </swiper-item>
     </swiper>
     <view class="custom-dots">
-      <view
-        v-for="(item, idx) in bannerList"
-        :key="idx"
-        :class="['dot', { active: currentBanner === idx }]"
-      >
+      <view v-for="(item, idx) in bannerList" :key="idx" :class="['dot', { active: currentBanner === idx }]">
       </view>
     </view>
 
     <!-- 分类标签 -->
     <scroll-view scroll-x class="status-tabs" :show-scrollbar="false">
       <view class="category-tabs">
-        <view
-          v-for="(tab, index) in tabs"
-          :key="index"
-          class="tab-item"
-          :class="{ active: currentTab === index }"
-          @click="handleTabClick(index)"
-        >
+        <view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === index }"
+          @click="handleTabClick(index)">
           {{ tab.title }}
         </view>
       </view>
@@ -43,12 +23,7 @@
 
     <!-- 案例列表 -->
     <view class="case-list">
-      <view
-        v-for="(item, index) in caseList"
-        :key="index"
-        class="case-item"
-        @click="handleCaseClick(item)"
-      >
+      <view v-for="(item, index) in caseList" :key="index" class="case-item" @click="handleCaseClick(item)">
         <image :src="item.imgUrl" mode="aspectFill" class="case-image" />
         <text class="case-title">{{ item.title }}</text>
       </view>
@@ -57,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, } from "vue";
 import { getBusinessCasePage, getCaseList } from "@/api/dealer";
 import { onShow, onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app";
 const current = ref(1);

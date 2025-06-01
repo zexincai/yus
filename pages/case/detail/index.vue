@@ -1,16 +1,8 @@
 <template>
   <view class="container">
     <!-- 轮播图 -->
-    <swiper
-      class="banner"
-      circular
-      autoplay
-      interval="3000"
-      duration="500"
-      :indicator-dots="true"
-      indicator-active-color="#0ECBF7"
-      indicator-color="#fff"
-    >
+    <swiper class="banner" circular autoplay interval="3000" duration="500" :indicator-dots="true"
+      indicator-active-color="#0ECBF7" indicator-color="#fff">
       <swiper-item v-for="(item, index) in detail.slideUrls" :key="index">
         <image :src="item" mode="aspectFill" class="banner-image" />
       </swiper-item>
@@ -22,11 +14,7 @@
       <view class="info">
         <text class="date">{{ detail.createTime }}</text>
         <view class="view-count">
-          <image
-            src="/static/images/eye-open.png"
-            mode="aspectFit"
-            class="view-icon"
-          />
+          <image src="/static/images/eye-open.png" mode="aspectFit" class="view-icon" />
           <text>{{ detail.visitNum }}</text>
         </view>
       </view>
@@ -67,6 +55,7 @@ const getDetail = async (id) => {
 
 <style lang="scss" scoped>
 .container {
+  min-height: 100vh;
   background-color: #fff;
   padding: 0rpx;
 }
@@ -96,12 +85,14 @@ const getDetail = async (id) => {
     color: #a6a6a6;
     font-weight: normal;
   }
+
   .info {
     margin-top: 20rpx;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+
   .view-count {
     display: flex;
     align-items: center;

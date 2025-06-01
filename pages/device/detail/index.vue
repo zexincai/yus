@@ -1,9 +1,20 @@
 <template>
   <view class="device-detail-container">
-    <!-- <uni-nav-bar @click="handleBack" backgroundColor="#152136" statusBar dark fixed leftIcon="left" title="设备详情"
-      :left-arrow="false" :border="false">
+    <uni-nav-bar @clickLeft="handleBack" @clickRight="onRightTap" backgroundColor="#152136" statusBar dark fixed
+      leftIcon="left" title="设备详情" :left-arrow="false" :border="false">
+      <template v-slot:right>
+        <image src="/static/images/more.png" mode="aspectFit" class="right-icon" />
+        <view v-if="showRightMenu" class="menu">
+          <view @click.stop="handleCancelDivice" class="menu-item line">
+            <image src="/static/images/icon-share.png"> </image> 共享设备
+          </view>
+          <view @click.stop="handleCancelDivice" class="menu-item">
+            <image src="/static/images/icon-cancel.png"> </image> 解除授权
+          </view>
+        </view>
+      </template>
+    </uni-nav-bar>
 
-    </uni-nav-bar> -->
     <view class="device-header">
       <view class="device-title">
         <text>{{ deviceInfo.location }}</text>
@@ -12,7 +23,7 @@
       <image :src="deviceInfo.rssiUrl" class="view-device"> </image>
     </view>
     <!-- 设备信息卡片 -->
-    <view class="device-card">
+    <view @click="closeMenu" class="device-card">
       <view class="device-info">
         <view class="sn-row">
           <text class="sn-label">SN：</text>
@@ -62,7 +73,7 @@
         <text v-if="deviceInfo.buyout == 1">到期日期：{{ deviceInfo.expireDate }}</text>
         <text v-if="deviceInfo.buyout == 1" class="renewal-link" @click="navigateTo('renewalLog')">续期记录 >>
         </text>
-        <view v-if="userType != 'user'" class="call-btn" @click="navigateTo('renewal')">
+        <view v-if="loginType == 'ROLE_CUSTOMER'" class="call-btn" @click="showPhonePop">
           <image class="icon" src="/static/images/call.png"></image>
           联系经销商
         </view>
@@ -78,11 +89,11 @@
       <text class="error-text">故障：{{ deviceInfo.error }}</text>
     </view>
     <!-- 水温数据 -->
-    <view class="temperature">
+    <view v-if="deviceInfo.productKey !== 'a1oPKovsK5B'" class="temperature">
       <view class="temperature-card">
         <text class="temp-value">{{ deviceInfo.waterTemperature }}
           <text class="temp-unit">℃</text></text>
-        <text class="temp-label">水温</text>
+        <text class="temp-label">开水</text>
       </view>
       <view class="temperature-card waterLevel">
         <text class="temp-value">{{ deviceInfo.waterLevel }}</text>
@@ -98,6 +109,14 @@
       <view class="data-card blue">
         <text class="data-value">{{ deviceInfo.pureTds }}</text>
         <text class="data-unit">纯水 (ppm)</text>
+      </view>
+    </view>
+
+    <view v-if="deviceInfo.productKey == 'a1oPKovsK5B'" class="temperature">
+      <view style="margin-top: 15rpx;" class="temperature-card">
+        <text class="temp-value">{{ deviceInfo.warmTemperature }}
+          <text class="temp-unit">℃</text></text>
+        <text class="temp-label">水温</text>
       </view>
     </view>
 
@@ -127,15 +146,30 @@
         </view>
       </view>
     </view>
+    <!-- 其他页面内容 -->
+    <view v-if="phonePop" class="contact-dialog-mask">
+      <view class="contact-dialog">
+        <view class="contact-dialog-close" @tap="phonePop = false">
+          <image src="/static/images/icon-close-pop.png" mode="aspectFit" style="width: 36rpx; height: 36rpx;" />
+        </view>
+        <view class="contact-dialog-title">联系经销商</view>
+        <view class="contact-dialog-info">经销商：{{ deviceInfo.dealerName }}</view>
+        <view class="contact-dialog-info">手机号码：{{ deviceInfo.dealerPhone }}</view>
+        <button class="contact-dialog-btn" @tap="callDealer">拨打电话</button>
+      </view>
+    </view>
   </view>
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
 import { onLoad, onShow } from "@dcloudio/uni-app";
-import { deviceDetailInfo, loadChipSnInfo } from "@/api/dealer";
-const userType = ref("user");
+import { deviceDetailInfo, loadChipSnInfo, cancelActive } from "@/api/dealer";
+
+const loginType = ref("");
 const deviceId = ref("");
+const showRightMenu = ref(false)
+const phonePop = ref(false)
 const deviceInfo = ref({
   name: "小芸家",
   sn: "3452345671456",
@@ -164,7 +198,10 @@ const navList = [
 // 获取路由参数
 onLoad((options) => {
   deviceId.value = options.id;
-  // userType.value = store.state.userInfo.role;
+  const data = uni.getStorageSync("userInfo");
+  if (data) {
+    loginType.value = data.role;
+  }
 });
 
 onShow(() => {
@@ -172,9 +209,30 @@ onShow(() => {
     deviceInfo.value = res;
   });
 });
-
+const callDealer = () => {
+  uni.makePhoneCall({
+    phoneNumber: deviceInfo.value.dealerPhone,
+    success: () => {
+      console.log("拨打电话成功！");
+      phonePop.value = false;
+    },
+    fail: () => {
+      console.error("拨打电话失败！");
+      phonePop.value = false;
+    }
+  });
+};
 const handleBack = () => {
   uni.navigateBack();
+};
+const closeMenu = () => {
+  if (showRightMenu.value) {
+    showRightMenu.value = false
+  }
+}
+
+const showPhonePop = () => {
+  phonePop.value = true
 };
 const copySn = () => {
   uni.setClipboardData({
@@ -204,12 +262,34 @@ const onChangeFilter = () => {
     },
   });
 };
+const onRightTap = () => {
+  console.log("onRightTap");
+  showRightMenu.value = !showRightMenu.value
+};
+const handleCancelDivice = async () => {
+  try {
+    await cancelActive({
+      deviceId: deviceId.value
+    })
+    uni.showToast({
+      title: '解除成功',
+      icon: 'success'
+    })
+    // 回到首页
+    uni.switchTab({
+      url: '/pages/index/index'
+    })
+  } catch (error) {
+
+  }
+
+}
 const navigateTo = (page) => {
   const params = {
     id: deviceId.value,
   };
   const pathMap = {
-    edit: "/pages/device/edit/index?id=",
+    edit: "/pages/device/edit/index",
     filterRecord: "/pages/device/filter/record/index",
     filterReset: "/pages/device/filter/index",
     params: "/pages/device/param/index",
@@ -236,6 +316,7 @@ const navigateTo = (page) => {
 
 <style lang="scss" scoped>
 .device-detail-container {
+  position: relative;
   padding: 0rpx 24rpx 40rpx;
   background: $bg-color;
 
@@ -401,11 +482,15 @@ const navigateTo = (page) => {
 }
 
 .auth-info {
+  min-height: 150rpx;
   margin-top: 38rpx;
   border-radius: 18rpx;
   padding: 30rpx;
   position: relative;
   background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .auth-row {
     display: flex;
@@ -418,6 +503,7 @@ const navigateTo = (page) => {
       color: $active-color;
       margin-left: 16rpx;
       font-size: 24rpx;
+      // min-height: 50rpx;
     }
 
     .call-btn {
@@ -701,5 +787,95 @@ const navigateTo = (page) => {
 
 .icon-setting:before {
   content: "\e652";
+}
+
+.menu {
+  position: absolute;
+  top: 88rpx;
+  right: 20rpx;
+  font-size: 30rpx;
+  width: 262rpx;
+  background: rgba(50, 74, 112, 1);
+  border-radius: 18rpx;
+  // overflow: hidden;
+
+  .menu-item {
+    color: #fff;
+    height: 86rpx;
+    display: flex;
+    border-radius: 18rpx;
+    align-items: center;
+    justify-content: center;
+    background: rgba(50, 74, 112, 1);
+
+    image {
+      width: 40rpx;
+      height: 40rpx;
+      margin-right: 12rpx;
+    }
+  }
+
+  .line {
+    border-bottom: 2px solid rgba(71, 105, 161, 1);
+    border-radius: 18rpx 18rpx 0 0;
+  }
+}
+
+.contact-dialog-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-dialog {
+  width: 540rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  padding: 22rpx 32rpx 32rpx 32rpx;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+}
+
+.contact-dialog-close {
+  position: absolute;
+  right: 24rpx;
+  top: 28rpx;
+  z-index: 10;
+}
+
+.contact-dialog-title {
+  font-size: 35rpx;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 32rpx;
+  color: #333333;
+}
+
+.contact-dialog-info {
+  font-size: 30rpx;
+  color: #333333;
+  margin-bottom: 16rpx;
+}
+
+.contact-dialog-btn {
+  background: #D68F01;
+  color: #fff;
+  font-size: 30rpx;
+  width: 193rpx;
+  height: 77rpx;
+  border-radius: 36rpx;
+  margin-top: 32rpx;
+  text-align: center;
+  line-height: 72rpx;
 }
 </style>

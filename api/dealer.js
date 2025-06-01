@@ -170,3 +170,44 @@ export const getCaseDetail = (data) =>
   http.get("https://yuq.fenaor.com/ma/home/caseDetail", data, {
     loading: true,
   });
+// 20-撤销授权
+export const cancelActive = (data) =>
+  http.post("https://yuq.fenaor.com/ma/dealer/cancelActive", data, {
+    loading: true,
+  });
+// 21-客户首页设备列表
+export const customerDevices = (data) =>
+  http.post("https://yuq.fenaor.com/ma/customer/customerDevices", data, {
+    loading: true,
+  });
+// 22-编辑客户信息
+export const resetPassword = (data) =>
+  http.post("https://yuq.fenaor.com/ma/customer/resetPassword", data, {
+    loading: true,
+  });
+// 23-客户扫码设备
+export const devicelLoadDeviceBaseInfo = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/loadDeviceBaseInfo", data, {
+    loading: true,
+  });
+
+// 24-客户添加设备
+export const addCustomerDevice = (data) =>
+  http.post("https://yuq.fenaor.com/ma/customer/addDevice", data, {
+    loading: true,
+  });
+// 25-消息首页
+export const deviceGroupMsg = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/deviceGroupMsg", data, {
+    loading: true,
+  });
+// 26-设备消息
+export const deviceMsgPage = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/deviceMsgPage", data, {
+    loading: true,
+  });
+// 27-设备消息
+export const operaDeviceMsg = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/operaDeviceMsg", data, {
+    loading: true,
+  });

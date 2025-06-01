@@ -8,12 +8,7 @@
 
     <!-- SN码输入 -->
     <view class="sn-row">
-      <input
-        class="sn-input"
-        v-model="sn"
-        placeholder="输入设备SN码"
-        placeholder-class="placeholder"
-      />
+      <input class="sn-input" v-model="sn" placeholder="输入设备SN码" placeholder-class="placeholder" />
       <button class="confirm-btn" @click="handleConfirm">确定</button>
     </view>
   </view>
@@ -21,12 +16,20 @@
 
 <script setup>
 import { ref } from "vue";
-import { loadDeviceBaseInfo } from "@/api/dealer";
-const sn = ref("");
+import { loadDeviceBaseInfo, devicelLoadDeviceBaseInfo } from "@/api/dealer";
+import { onLoad } from "@dcloudio/uni-app";
 
+const sn = ref("");
+const loginType = ref('')
 const handleBack = () => {
   uni.navigateBack();
 };
+onLoad(() => {
+  const data = uni.getStorageSync("userInfo");
+  if (data) {
+    loginType.value = data.role;
+  }
+})
 
 const handleScan = () => {
   uni.scanCode({
@@ -43,18 +46,32 @@ const handleScan = () => {
 };
 
 const handleConfirm = () => {
-  loadDeviceBaseInfo({ mes: sn.value }).then((res) => {
-    if (res.activeState == 2) {
-      uni.showToast({
-        title: "设备已激活",
-        icon: "none",
-      });
-    } else {
+  if (!sn.value.trim()) {
+    uni.showToast({ title: "请输入SN码", icon: "none" });
+    return;
+  }
+  const func = loginType.value === 'ROLE_CUSTOMER' ? devicelLoadDeviceBaseInfo : loadDeviceBaseInfo
+  func({ mes: sn.value }).then((res) => {
+    if (loginType.value === 'ROLE_CUSTOMER') {
       uni.setStorageSync("deviceInfo", res);
       uni.navigateTo({
-        url: "/pages/device/authorize/index",
+        url: "/pages/index/scan/detail/index",
       });
+
+    } else {
+      if (res.activeState == 2) {
+        uni.showToast({
+          title: "设备已激活",
+          icon: "none",
+        });
+      } else {
+        uni.setStorageSync("deviceInfo", res);
+        uni.navigateTo({
+          url: "/pages/device/authorize/index",
+        });
+      }
     }
+
   });
 
   // if (!sn.value.trim()) {

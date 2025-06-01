@@ -10,7 +10,8 @@
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">姓名：</text>
-        <text class="value">{{ userInfo.name }}</text>
+        <!-- <text class="value">{{ userInfo.name }}</text> -->
+        <input class="input" v-model="name" placeholder="" placeholder-class="placeholder" />
       </view>
     </view>
     <!-- 修改密码 -->
@@ -18,35 +19,17 @@
     <view class="info-card">
       <view class="info-row">
         <text class="label">原密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="oldPwd"
-          placeholder=""
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="oldPwd" placeholder="请输入" placeholder-class="placeholder" />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">新密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="newPwd"
-          placeholder=""
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="newPwd" placeholder="请输入" placeholder-class="placeholder" />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">确认新密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="confirmPwd"
-          placeholder=""
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="confirmPwd" placeholder="请输入" placeholder-class="placeholder" />
       </view>
     </view>
     <!-- 保存按钮 -->
@@ -59,23 +42,61 @@
 <script setup>
 import { ref } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
-const oldPwd = ref("xxxxxxx");
-const newPwd = ref("xxxxxxx");
-const confirmPwd = ref("xxxxxxx");
+import { resetPassword, } from "@/api/dealer";
+
+const oldPwd = ref("");
+const newPwd = ref("");
+const name = ref("");
+const confirmPwd = ref("");
 const userInfo = ref({});
 onLoad(() => {
   const res = uni.getStorageSync("userInfo");
   if (res) {
     userInfo.value = res;
+    name.value = res.name;
   }
 });
 const handleBack = () => {
   uni.navigateBack();
 };
 
-const handleSave = () => {
+const handleSave = async () => {
   // TODO: 校验和保存逻辑
-  uni.showToast({ title: "保存成功", icon: "success" });
+  // 校验
+  if (!oldPwd.value) {
+    uni.showToast({ title: "请输入原密码", icon: "none" });
+    return;
+  }
+  if (!newPwd.value) {
+    uni.showToast({ title: "请输入新密码", icon: "none" });
+    return;
+  }
+  if (!confirmPwd.value) {
+    uni.showToast({ title: "请输入确认密码", icon: "none" });
+    return;
+  }
+  if (newPwd.value !== confirmPwd.value) {
+    uni.showToast({ title: "两次输入的密码不一致", icon: "none" });
+    return;
+  }
+  try {
+    await resetPassword({
+      oldPwd: oldPwd.value,
+      newPwd: newPwd.value,
+      againPwd: confirmPwd.value,
+      name: name.value,
+    })
+    uni.showToast({ title: "保存成功", icon: "success" });
+    // uni.redirectTo({
+    //   url: '/pages/login/index'
+    // })
+    userInfo.name = name.value;
+    uni.setStorageSync("userInfo", userInfo.value);
+  } catch (error) {
+
+
+  }
+
 };
 
 const handleLogout = () => {
@@ -167,6 +188,7 @@ const handleLogout = () => {
       background: transparent;
       border: none;
       outline: none;
+      padding-right: 0;
       letter-spacing: 4rpx;
     }
 

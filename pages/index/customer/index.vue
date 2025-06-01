@@ -534,7 +534,7 @@ const onRefresh = async () => {
 .device-info .name {
   color: #fff;
   font-size: 28rpx;
-  margin-bottom: 10rpx;
+  margin-bottom: 40rpx;
   display: block;
   // 省略号
   overflow: hidden;

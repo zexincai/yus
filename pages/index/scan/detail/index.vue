@@ -5,21 +5,21 @@
             <view class="device-info">
                 <view class="row bright">
                     <text class="label">SN：</text>
-                    <text class="sn" @click="copySn">{{ device.sn }}</text>
-                    <image v-if="status == 'fail'" class="signal-icon" src="/static/images/signal-low.png" />
-                    <image v-else class="signal-icon" src="/static/images/signal-full.png" />
+                    <text class="sn" @click="copySn">{{ deviceData.mes }}</text>
+                    <image class="signal-icon" :src="deviceData.rssiUrl" />
+                    <!-- <image v-else class="signal-icon" src="/static/images/signal-full.png" /> -->
                 </view>
                 <view class="row">
                     <text class="label">型号：</text>
-                    <text class="value">{{ device.model }}</text>
+                    <text class="value">{{ deviceData.model }}</text>
                 </view>
                 <view class="row">
                     <text class="label">IMEI：</text>
-                    <text class="value">{{ device.imei }}</text>
+                    <text class="value">{{ deviceData.imei }}</text>
                 </view>
             </view>
         </view>
-        <view class="info-tip" v-if="status === 'fail'">
+        <view @click="loadData" class="info-tip" v-if="deviceData.online == 0">
             <view>设备离线</view>
             <view> 请检查设备的联网情况</view>
             <view class="refresh-btn">
@@ -31,69 +31,120 @@
             <view class="info-list">
                 <view class="info-item">
                     <text class="info-label">所在地区：</text>
-                    <text class="info-value">{{ device.region }}</text>
+                    <text @click="cityVisible = true" :style="!form.region ? 'color:#333' : ''" class="info-value">{{
+                        form.region ||
+                        '请选择'
+                        }}</text>
                 </view>
                 <view class="info-item">
                     <text class="info-label">详细地址：</text>
-                    <text class="info-value">{{ device.address }}</text>
+                    <!-- <text class="info-value">{{ device.address }}</text> -->
+                    <input class="info-value" type="text" v-model="form.address" placeholder="请输入"
+                        placeholder-class="placeholder" />
                 </view>
                 <view class="info-item">
                     <text class="info-label">安装位置：</text>
-                    <text class="info-value">{{ device.installPos }}</text>
+                    <!-- <text class="info-value">{{ device.installPos }}</text> -->
+                    <input class="info-value" type="text" v-model="form.location" placeholder="请输入"
+                        placeholder-class="placeholder" />
                 </view>
             </view>
             <view class="confirm-btn" @click="handleAdd">确认添加</view>
         </template>
-
+        <CityPicker :column="3" :default-value="defaultValue" :mask-close-able="true" @confirm="onCityConfirm"
+            @cancel="onCityCancel" :visible="cityVisible" />
     </view>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-const status = ref('success')
-const device = ref({
-    sn: '4533095668934',
-    model: '商务饮水机 S808',
-    imei: '9845789948778980',
-    region: '广东省-佛山市-禅城区',
-    address: '海运八路302号富业大厦A305',
-    installPos: '产业展厅'
+import CityPicker from "@/components/cityPicker/index.vue";
+import { addCustomerDevice, devicelLoadDeviceBaseInfo } from "@/api/dealer";
+const defaultValue = ref("");
+const cityVisible = ref(false);
+const deviceData = ref({
+    sn: '',
+    model: '',
+    imei: '',
+})
+
+const form = reactive({
+    region: '',
+    address: '',
+    location: ''
 })
 
 
 onLoad(() => {
     // 从缓存中获取设备信息
-    const deviceInfo = uni.getStorageSync('deviceInfo')
+    const deviceInfo = uni.getStorageSync("deviceInfo");
     if (deviceInfo) {
-        device.value = deviceInfo
+        deviceData.value = deviceInfo;
     }
-})
-const handleBack = () => {
-    uni.navigateBack()
-}
-
+});
 const copySn = () => {
     uni.setClipboardData({
-        data: device.value.sn,
+        data: deviceData.value.mes,
         success: () => {
             uni.showToast({ title: '已复制', icon: 'success' })
         }
     })
 }
+const loadData = () => {
+    devicelLoadDeviceBaseInfo({
+        mes: deviceData.value.mes,
+    }).then(res => {
+        deviceData.value = res
+    })
+}
+const handleAdd = async () => {
+    if (!form.region) {
+        uni.showToast({ title: '请选择所在地区', icon: 'none' })
+        return
+    }
+    if (!form.address) {
+        uni.showToast({ title: '请输入详细地址', icon: 'none' })
+        return
+    }
+    if (!form.location) {
+        uni.showToast({ title: '请输入安装位置', icon: 'none' })
+        return
+    }
+    try {
+        await addCustomerDevice({
+            deviceId: deviceData.value.deviceId,
+            area: form.region,
+            address: form.address,
+            location: form.location
+        })
+        uni.navigateTo(
+            {
+                url: '/pages/index/scan/result/index?from=success'
+            }
+        )
+    } catch (error) {
+        uni.navigateTo(
+            {
+                url: '/pages/index/scan/result/index?from=fail&msg=' + error.msg
+            }
+        )
+    }
 
-const handleAdd = () => {
-    uni.navigateTo(
-        {
-            url: '/pages/index/scan/result/index?from=success'
-        }
-    )
+
     // uni.showToast({
     //     title: '添加成功',
     //     icon: 'success'
     // })
     // 这里可以添加实际的添加逻辑
 }
+const onCityConfirm = (e) => {
+    form.region = `${e.provinceName},${e.cityName},${e.areaName}`;
+    cityVisible.value = false;
+};
+const onCityCancel = () => {
+    cityVisible.value = false;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -221,5 +272,9 @@ const handleAdd = () => {
     line-height: 72rpx;
     text-align: center;
     background: #13337CFF;
+}
+
+.placeholder {
+    color: #333;
 }
 </style>

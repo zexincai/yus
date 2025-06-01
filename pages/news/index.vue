@@ -2,12 +2,7 @@
   <view class="container">
     <!-- 资讯列表 -->
     <view class="news-list">
-      <view
-        v-for="(item, index) in newsList"
-        :key="index"
-        class="news-item"
-        @click="handleNewsClick(item)"
-      >
+      <view v-for="(item, index) in newsList" :key="index" class="news-item" @click="handleNewsClick(item)">
         <!-- 时间显示 -->
         <view class="news-date" v-if="shouldShowDate(index)">
           {{ item.createTime }}
@@ -19,21 +14,12 @@
             <view class="news-info">
               <text class="news-source">{{ item.source }}</text>
               <view class="view-count">
-                <image
-                  src="/static/images/eye-open.png"
-                  mode="aspectFit"
-                  class="view-icon"
-                />
+                <image src="/static/images/eye-open.png" mode="aspectFit" class="view-icon" />
                 <text>{{ item.visitNum }}</text>
               </view>
             </view>
           </view>
-          <image
-            v-if="item.imgUrl"
-            :src="item.imgUrl"
-            mode="aspectFill"
-            class="news-image"
-          />
+          <image v-if="item.imgUrl" :src="item.imgUrl" mode="aspectFill" class="news-image" />
         </view>
       </view>
     </view>
@@ -84,8 +70,8 @@ const getNewsListPage = async () => {
 // 判断是否显示日期
 const shouldShowDate = (index) => {
   if (index === 0) return true;
-  const currentDate = newsList.value[index].createTime.split(" ")[0];
-  const prevDate = newsList.value[index - 1].createTime.split(" ")[0];
+  const currentDate = (newsList.value[index].createTime || '')?.split(" ")[0];
+  const prevDate = (newsList.value[index - 1].createTime || '').split(" ")[0];
   return currentDate !== prevDate;
 };
 
@@ -180,12 +166,14 @@ const handleNewsClick = (news) => {
       border-radius: 8rpx;
     }
   }
+
   .big-card {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     overflow: hidden;
     padding: 0;
+
     .news-image {
       width: 100%;
       height: 280rpx;
@@ -194,6 +182,7 @@ const handleNewsClick = (news) => {
       // 排序优先级
       order: -1;
     }
+
     .news-content {
       padding: 22rpx;
     }
