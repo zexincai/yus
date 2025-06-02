@@ -79,10 +79,10 @@ const showPassword = ref(false);
 const form = reactive({
 	// phone: "18826483596",
 	// password: "123456",
-	phone: "15989297809",
-	password: "123456",
-	// phone: "",
-	// password: "",
+	// phone: "15989297809",
+	// password: "123456",
+	phone: "",
+	password: "",
 	remember: false,
 	agreement: false,
 });

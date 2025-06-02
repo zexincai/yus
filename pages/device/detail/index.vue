@@ -149,10 +149,12 @@
     <!-- 其他页面内容 -->
     <view v-if="phonePop" class="contact-dialog-mask">
       <view class="contact-dialog">
-        <view class="contact-dialog-close" @tap="phonePop = false">
-          <image src="/static/images/icon-close-pop.png" mode="aspectFit" style="width: 36rpx; height: 36rpx;" />
+
+        <view class="contact-dialog-title">联系经销商
+          <view class="contact-dialog-close" @tap="phonePop = false">
+            <image src="/static/images/icon-close-pop.png" mode="aspectFit" style="width: 36rpx; height: 36rpx;" />
+          </view>
         </view>
-        <view class="contact-dialog-title">联系经销商</view>
         <view class="contact-dialog-info">经销商：{{ deviceInfo.dealerName }}</view>
         <view class="contact-dialog-info">手机号码：{{ deviceInfo.dealerPhone }}</view>
         <button class="contact-dialog-btn" @tap="callDealer">拨打电话</button>
@@ -205,6 +207,7 @@ onLoad((options) => {
 });
 
 onShow(() => {
+  showRightMenu.value = false
   deviceDetailInfo({ deviceId: deviceId.value }).then((res) => {
     deviceInfo.value = res;
   });
@@ -801,7 +804,7 @@ const navigateTo = (page) => {
 
 .menu {
   position: absolute;
-  top: 88rpx;
+  top: 94rpx;
   right: 20rpx;
   font-size: 30rpx;
   width: 262rpx;
@@ -858,12 +861,13 @@ const navigateTo = (page) => {
 
 .contact-dialog-close {
   position: absolute;
-  right: 24rpx;
-  top: 30rpx;
+  right: 0rpx;
+  top: 4rpx;
   z-index: 10;
 }
 
 .contact-dialog-title {
+  position: relative;
   font-size: 35rpx;
   font-weight: bold;
   text-align: center;

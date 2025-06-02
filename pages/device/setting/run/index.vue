@@ -201,7 +201,7 @@ onUnload(() => {
   clearInterval(timer)
 })
 const getText = (val) => {
-  return weekList.value.find((item) => item.value == val)?.text;
+  return weekList.value.find((item) => item.value == val).text;
 };
 const onTimeChange = async (e, key) => {
   settings[key] = e.detail.value;
