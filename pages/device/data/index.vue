@@ -3,11 +3,7 @@
     <!-- 滤芯更换周期 -->
     <view class="section-title">滤芯更换周期</view>
     <view class="data-grid">
-      <view
-        :key="index"
-        v-for="(item, index) in detail.chipLifes"
-        class="data-card"
-      >
+      <view :key="index" v-for="(item, index) in detail.chipLifes" class="data-card">
         <text class="value">{{ item.periodValue }}</text>
         <text class="label">{{ item.name }}（{{ item.periodUnit }}）</text>
       </view>
@@ -15,7 +11,13 @@
 
     <!-- 设备数据 -->
     <view class="section-title">设备数据</view>
-    <view class="data-grid">
+    <view v-if="brandCode == 'JYROJSJ'" class="data-grid">
+      <view class="data-card">
+        <text class="value">{{ detail.pt }}</text>
+        <text class="label">总制水时间（min）</text>
+      </view>
+    </view>
+    <view v-else class="data-grid">
       <view class="data-card">
         <text class="value">{{ detail.totalPureWater }}</text>
         <text class="label">总制水量（L）</text>
@@ -32,7 +34,13 @@
 
     <!-- 状态数据 -->
     <view class="section-title">状态数据</view>
-    <view class="status-grid">
+    <view v-if="brandCode == 'JYROJSJ'" class="status-grid">
+      <view class="status-card">
+        <text class="status-value">{{ detail.deviceState || "--" }}</text>
+        <text class="status-label">净水机状态</text>
+      </view>
+    </view>
+    <view v-else class="status-grid">
       <view class="status-card">
         <text class="status-value">{{ detail.heatState || "--" }}</text>
         <text class="status-label">加热状态</text>
@@ -65,9 +73,16 @@
 import { deviceDatas } from "@/api/dealer";
 import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
+const brandCode = ref("");
 const detail = ref({ chipLifes: [] });
 onLoad(async ({ id }) => {
   const res = await deviceDatas({ deviceId: id });
+  if (res.brandCode == 'JYROJSJ') {
+    brandCode.value = 'JYROJSJ'
+    Object.keys(res.jyrojsjvo).forEach((key) => {
+      res[key] = res.jyrojsjvo[key]
+    })
+  }
   detail.value = res;
 });
 // 可以根据需要添加数据和方法

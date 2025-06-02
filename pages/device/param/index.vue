@@ -5,12 +5,9 @@
       <view class="param-item" v-for="(item, index) in paramList" :key="index">
         <text class="param-label">{{ item.label }}：</text>
         <view class="param-value">
-          <text
-            class="value-off"
-            :class="{
-              'value-on': item.value === '有' || item.value === '显示',
-            }"
-          >
+          <text class="value-off" :class="{
+            'value-on': item.value === '有' || item.value === '显示' || item.value === '开启',
+          }">
           </text>
           {{ item.value }}
         </view>
@@ -20,11 +17,11 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { ref } from "vue";
 import { deviceParams } from "@/api/dealer";
 import { onLoad } from "@dcloudio/uni-app";
 // 参数列表数据
-const paramList = reactive([
+const paramList = ref([
   { label: "自动冲洗功能", value: "", key: "funcWH" },
   { label: "排空功能", value: "", key: "funcEM" },
   { label: "消毒功能", value: "", key: "funcST" },
@@ -35,13 +32,28 @@ const paramList = reactive([
   { label: "滤芯寿命显示", value: "", key: "flshow" },
 ]);
 
+const paramListForHome = ref([
+  { label: "滤芯寿命屏幕显示", value: "", key: "flshow" },
+  { label: "滤芯管控功能", value: "", key: "chipCtrl" },
+  { label: "原水TDS检测", value: "", key: "detectionRawTds" },
+  { label: "纯水TDS检测", value: "", key: "detectionPureTds" },
+  { label: "上传取水记录", value: "", key: "detectionWaterRecord" },
+])
 onLoad(async ({ id }) => {
   const res = await deviceParams({ deviceId: id });
-  paramList.forEach((item) => {
+  if (res.brandCode == 'JYROJSJ') {
+    paramList.value = paramListForHome.value
+    Object.keys(res.jyrojsjvo).forEach((key) => {
+      res[key] = res.jyrojsjvo[key]
+    })
+  }
+  paramList.value.forEach((item) => {
     if (res[item.key]) {
       item.value = res[item.key];
     }
   });
+
+
 });
 </script>
 
@@ -82,6 +94,7 @@ onLoad(async ({ id }) => {
       font-size: 25rpx;
       position: relative;
       line-height: 1;
+
       .value-off {
         display: inline-block;
         width: 30rpx;
@@ -90,6 +103,7 @@ onLoad(async ({ id }) => {
         border-radius: 50%;
         margin-right: 20rpx;
       }
+
       .value-on {
         width: 30rpx;
         height: 30rpx;

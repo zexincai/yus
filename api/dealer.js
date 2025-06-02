@@ -172,7 +172,7 @@ export const getCaseDetail = (data) =>
   });
 // 20-撤销授权
 export const cancelActive = (data) =>
-  http.post("https://yuq.fenaor.com/ma/dealer/cancelActive", data, {
+  http.post("https://yuq.fenaor.com/ma/device/cancelActive", data, {
     loading: true,
   });
 // 21-客户首页设备列表

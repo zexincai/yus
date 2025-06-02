@@ -7,7 +7,7 @@
       </swiper-item>
     </swiper>
     <view class="custom-dots">
-      <view v-for="(item, idx) in bannerList" :key="idx" :class="['dot', { active: currentBanner === idx }]">
+      <view v-for="(idx) in bannerList" :key="idx" :class="['dot', { active: currentBanner === idx }]">
       </view>
     </view>
 
@@ -22,11 +22,15 @@
     </scroll-view>
 
     <!-- 案例列表 -->
-    <view class="case-list">
+    <view class="case-list" v-if="caseList.length">
       <view v-for="(item, index) in caseList" :key="index" class="case-item" @click="handleCaseClick(item)">
         <image :src="item.imgUrl" mode="aspectFill" class="case-image" />
         <text class="case-title">{{ item.title }}</text>
       </view>
+    </view>
+    <view v-else class="empty" style="margin-top: 20rpx;">
+      <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+      <view class="empty-text"> 暂无案例 </view>
     </view>
   </view>
 </template>
@@ -34,30 +38,19 @@
 <script setup>
 import { ref, } from "vue";
 import { getBusinessCasePage, getCaseList } from "@/api/dealer";
-import { onShow, onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app";
-const current = ref(1);
-const pageSize = 10;
+import { onShow, onPullDownRefresh } from "@dcloudio/uni-app";
 const currentBanner = ref(0);
 // 轮播图数据
 const bannerList = ref([]);
-
 // 分类标签
 const tabs = ref([]);
-
 const currentTab = ref(0);
-const onSwiperChange = (e) => {
-  currentBanner.value = e.detail.current;
-};
 // 案例列表数据
 const caseList = ref([]);
 
-// 处理标签点击
-const handleTabClick = (index) => {
-  currentTab.value = index;
-  current.value = 1;
-  getPageList();
+const onSwiperChange = (e) => {
+  currentBanner.value = e.detail.current;
 };
-
 // 处理案例点击
 const handleCaseClick = (item) => {
   uni.navigateTo({
@@ -67,31 +60,27 @@ const handleCaseClick = (item) => {
 
 const getPageList = async () => {
   const data = await getCaseList({
-    size: pageSize,
-    current: current.value,
-    clasId: tabs.value[currentTab.value]?.id,
+    clasId: tabs.value[currentTab.value] ? tabs.value[currentTab.value].id : '',
   });
-  caseList.value = current.value == 1 ? data : caseList.value.concat(data);
-  current.value++;
+  caseList.value = data;
 };
 const getBusinessCaseList = async () => {
   const data = await getBusinessCasePage();
   tabs.value = data.caseClasList;
   bannerList.value = data.caseSliderSet;
 };
+// 处理标签点击
+const handleTabClick = (index) => {
+  currentTab.value = index;
+  getPageList();
+};
+
 onShow(async () => {
-  current.value = 1;
   await getBusinessCaseList();
   getPageList();
 });
 
-// 触底加载
-onReachBottom(() => {
-  getPageList();
-});
-
 onPullDownRefresh(async () => {
-  current.value = 1;
   await getPageList();
   uni.stopPullDownRefresh();
 });

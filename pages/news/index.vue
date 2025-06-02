@@ -30,33 +30,10 @@
 import { ref } from "vue";
 import { getNewsList } from "@/api/dealer";
 import { onShow, onReachBottom, onPullDownRefresh } from "@dcloudio/uni-app";
-
 const current = ref(1);
 const pageSize = 10;
 // 新闻列表数据
 const newsList = ref([
-  {
-    date: "2025-05-19 13:28",
-    title: "10年净水器选购经验总结：看完谁都坑不了你",
-    source: "广州日报",
-    views: 2346,
-    image: "/static/images/news1.png",
-  },
-  {
-    date: "2025-05-24 13:46",
-    title: "国补福利催动净水器更新换代hots，普通人选哪一款净水器好？",
-    source: "中关村在线",
-    views: 4220,
-    image: "/static/images/news2.png",
-    type: "big",
-  },
-  {
-    date: "2025-05-28 14:20",
-    title: "走出认知误区：看懂这四点，你就该买净水器了",
-    source: "消费者日报",
-    views: 1283,
-    image: "/static/images/news1.png",
-  },
 ]);
 
 const getNewsListPage = async () => {
@@ -70,7 +47,7 @@ const getNewsListPage = async () => {
 // 判断是否显示日期
 const shouldShowDate = (index) => {
   if (index === 0) return true;
-  const currentDate = (newsList.value[index].createTime || '')?.split(" ")[0];
+  const currentDate = (newsList.value[index].createTime || '').split(" ")[0];
   const prevDate = (newsList.value[index - 1].createTime || '').split(" ")[0];
   return currentDate !== prevDate;
 };
@@ -125,7 +102,7 @@ const handleNewsClick = (news) => {
 
       .news-title {
         color: #fff;
-        margin-bottom: 34rpx;
+        margin-bottom: 84rpx;
         font-size: 28rpx;
         font-weight: 400;
         line-height: 50rpx;
@@ -153,6 +130,7 @@ const handleNewsClick = (news) => {
           }
 
           text {
+            line-height: 1;
             color: #c7c7c7ff;
             font-size: 25rpx;
           }
@@ -161,8 +139,8 @@ const handleNewsClick = (news) => {
     }
 
     .news-image {
-      width: 216rpx;
-      height: 162rpx;
+      width: 218rpx;
+      height: 218rpx;
       border-radius: 8rpx;
     }
   }
@@ -174,9 +152,13 @@ const handleNewsClick = (news) => {
     overflow: hidden;
     padding: 0;
 
+    .news-title {
+      margin-bottom: 10rpx !important;
+    }
+
     .news-image {
-      width: 100%;
-      height: 280rpx;
+      width: 702rpx;
+      height: 351rpx;
       border-radius: 0rpx;
       // margin-bottom: 14rpx;
       // 排序优先级

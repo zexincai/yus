@@ -29,7 +29,12 @@
           </view>
         </view>
       </view>
-      <image @click="handelbanner" src="/static/images/banner.png" mode="aspectFill" class="banner" />
+      <!-- <image @click="handelbanner" src="/static/images/banner.png" mode="aspectFill" class="banner" /> -->
+      <swiper @change="onSwiperChange" class="banner" circular autoplay interval="5000" duration="500">
+        <swiper-item @click="handleCaseClick(item)" v-for="(item, index) in bannerList" :key="index">
+          <image :src="item.imgUrl" mode="aspectFill" class="banner-image" />
+        </swiper-item>
+      </swiper>
     </view>
     <view v-if="loginType == 'ROLE_DEALER'" class="nav-list">
       <view v-for="(tab, index) in navTabs" :key="index" class="nav-item" :class="{ active: currentNav === tab.value }"
@@ -205,18 +210,16 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import store from "@/store";
 import { onShow, onLoad } from "@dcloudio/uni-app";
-import { equipmentStatistics, loadBrands, searchDevices, customerDevices } from "@/api/dealer";
+import { equipmentStatistics, getBusinessCasePage, loadBrands, searchDevices, customerDevices } from "@/api/dealer";
 // 从缓存里获取登录类型
 let loginType = ref("");
 let userInfo = ref({});
 let searchKey = ref("");
 let page = ref(1);
-let brand = ref("");
 const brandList = ref([]);
 const brandIndex = ref(0);
-
+let bannerList = ref([]);
 const tabs = ref([
   { label: "全部", value: "0", count: 12 },
   { label: "正常", value: "1", count: 8 },
@@ -231,10 +234,6 @@ const navTabs = ref([
   { label: "授权设备", value: "device" },
   { label: "出库记录", value: "log" },
 ]);
-const customers = ref([
-  { id: 1, name: "陈霞", phone: "13467458906", deviceCount: 16 },
-  { id: 2, name: "张国莉", phone: "17834902226", deviceCount: 8 },
-]);
 
 const customerData = ref({
   customerNum: 0,
@@ -246,60 +245,16 @@ const currentNav = ref("customer");
 const isAuthorized = ref(true);
 const deviceList = ref([
 ]);
-const devices = ref([
-  {
-    id: 1,
-    name: "一楼前台",
-    model: "S800-2",
-    icon: "/static/images/device.png",
-    status: "normal",
-    signalIcon: "/static/images/signal-full.png",
-    tags: [],
-  },
-  {
-    id: 2,
-    name: "茶水间",
-    model: "RO508",
-    icon: "/static/images/device.png",
-    status: "change",
-    signalIcon: "/static/images/signal-full.png",
-    tags: [{ type: "change", text: "换芯" }],
-  },
-  {
-    id: 3,
-    name: "会议室",
-    model: "S800-2",
-    icon: "/static/images/device.png",
-    status: "error",
-    signalIcon: "/static/images/signal-full.png",
-    tags: [
-      { type: "error", text: "故障" },
-      { type: "warning", text: "到期" },
-      { type: "change", text: "换芯" },
-    ],
-  },
-  {
-    id: 4,
-    name: "企业展厅",
-    model: "RO508",
-    icon: "/static/images/device.png",
-    status: "error",
-    signalIcon: "/static/images/signal-low.png",
-    tags: [{ type: "error", text: "故障" }],
-  },
-]);
-
-
 const isRefreshing = ref(false);
-
+const brandListMap = {}
 const getEquipmentStatistics = () => {
   equipmentStatistics({ tab: currentTab.value, arg: searchKey.value }).then(
     (res) => {
-      console.log("res", res);
       customerData.value = res;
     }
   );
 };
+// 获取设备列表
 const getDeviceList = () => {
   if (loginType.value === 'ROLE_DEALER') {
     searchDevices({
@@ -317,7 +272,7 @@ const getDeviceList = () => {
     customerDevices({
       tab: currentTab.value,
       arg: searchKey.value,
-      brand: brandIndex.value != 0 ? brandList.value[brandIndex.value] : "",
+      brand: brandIndex.value != 0 ? brandListMap[brandList.value[brandIndex.value]] : "",
       current: page.value,
       size: 10,
     }).then((res) => {
@@ -329,6 +284,7 @@ const getDeviceList = () => {
   }
 };
 
+
 const onSearch = () => {
   if (currentNav.value == "customer") {
     getEquipmentStatistics();
@@ -338,6 +294,7 @@ const onSearch = () => {
     getDeviceList();
   }
 };
+// 全部类型
 const onBrandPickerChange = (e) => {
   brandIndex.value = e.detail.value;
   onSearch();
@@ -389,10 +346,14 @@ const handleDeviceAuthorizeClick = (item) => {
   });
 };
 
-const handelbanner = (device) => {
-  // uni.navigateTo({
-  //   url: `/pages/device/detail/index?id=${device.id}`,
-  // });
+
+// 处理案例点击
+const handleCaseClick = (item) => {
+  if (item.caseId) {
+    uni.navigateTo({
+      url: `/pages/case/detail/index?id=${item.caseId}`,
+    });
+  }
 };
 
 const goToInfo = () => {
@@ -411,9 +372,16 @@ const onRefresh = async () => {
 };
 onLoad(() => {
   loadBrands().then((res) => {
-    brandList.value = ["全部类型", ...(res || [])];
+    brandList.value = ["全部类型", ...(res.map(v => {
+      brandListMap[v.text] = v.id
+      return v.text
+    }) || [])];
   });
 })
+const getBannerList = async () => {
+  const data = await getBusinessCasePage();
+  bannerList.value = data.homeSliderSet;
+};
 onShow(() => {
   const data = uni.getStorageSync("userInfo");
   if (data) {
@@ -422,8 +390,11 @@ onShow(() => {
   }
   if (loginType.value == 'ROLE_CUSTOMER') {
     currentNav.value = "device";
+  } else {
+    // currentNav.value = "customer";
   }
   onSearch();
+  getBannerList()
 });
 </script>
 
@@ -436,7 +407,7 @@ onShow(() => {
 }
 
 .header {
-  margin-bottom: 40rpx;
+  margin-bottom: 30rpx;
 
   .logo {
     border-bottom: 1rpx solid #fff;
@@ -513,10 +484,16 @@ onShow(() => {
 
 .banner {
   width: 100%;
-  height: 300rpx;
+  height: 320rpx;
   border-radius: 12rpx;
   margin-top: 36rpx;
   object-fit: cover;
+
+  .banner-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 12rpx;
+  }
 }
 
 .search-bar {

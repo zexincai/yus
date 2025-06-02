@@ -11,11 +11,7 @@
         <view class="time-views">
           <text class="time">{{ detail.createTime }}</text>
           <view class="view-count">
-            <image
-              src="/static/images/eye-open.png"
-              mode="aspectFit"
-              class="view-icon"
-            />
+            <image src="/static/images/eye-open.png" mode="aspectFit" class="view-icon" />
             <text>{{ detail.visitNum }}</text>
           </view>
         </view>
@@ -51,7 +47,9 @@ onLoad(({ id }) => {
   getDetail(id);
 });
 const getDetail = async (id) => {
-  detail.value = await getNewsDetail({ id });
+  const resp = await getNewsDetail({ id });
+  resp.content = (resp.content || '').replace(/<img/g, '<img style="max-width:100%;height:auto"');
+  detail.value = resp
 };
 </script>
 
@@ -78,6 +76,7 @@ const getDetail = async (id) => {
     justify-content: space-between;
     align-items: center;
     margin-top: 20rpx;
+
     .source-info {
       display: flex;
       align-items: center;
@@ -85,8 +84,7 @@ const getDetail = async (id) => {
       text {
         font-size: 24rpx;
 
-        &.source {
-        }
+        &.source {}
       }
     }
 

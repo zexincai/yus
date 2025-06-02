@@ -5,11 +5,11 @@
       <template v-slot:right>
         <image src="/static/images/more.png" mode="aspectFit" class="right-icon" />
         <view v-if="showRightMenu" class="menu">
-          <view @click.stop="handleCancelDivice" class="menu-item line">
+          <view v-if="loginType == 'ROLE_CUSTOMER'" @click.stop="handleShareDivice" class="menu-item line">
             <image src="/static/images/icon-share.png"> </image> 共享设备
           </view>
           <view @click.stop="handleCancelDivice" class="menu-item">
-            <image src="/static/images/icon-cancel.png"> </image> 解除授权
+            <image src="/static/images/icon-cancel.png"> </image> {{ loginType === 'ROLE_CUSTOMER' ? '删除设备' : '解除授权' }}
           </view>
         </view>
       </template>
@@ -266,19 +266,25 @@ const onRightTap = () => {
   console.log("onRightTap");
   showRightMenu.value = !showRightMenu.value
 };
+const handleShareDivice = () => {
+}
 const handleCancelDivice = async () => {
   try {
     await cancelActive({
       deviceId: deviceId.value
     })
+    showRightMenu.value = false
     uni.showToast({
-      title: '解除成功',
+      title: loginType.value == 'ROLE_CUSTOMER' ? '删除成功' : '解除成功',
       icon: 'success'
     })
-    // 回到首页
-    uni.switchTab({
-      url: '/pages/index/index'
-    })
+    setTimeout(() => {
+      // 回到首页
+      uni.switchTab({
+        url: '/pages/index/index'
+      })
+    }, 2000);
+
   } catch (error) {
 
   }
@@ -497,7 +503,7 @@ const navigateTo = (page) => {
     align-items: center;
     color: #fff;
     font-size: 25rpx;
-    margin-bottom: 14rpx;
+    margin-top: 14rpx;
 
     .renewal-link {
       color: $active-color;
@@ -541,7 +547,11 @@ const navigateTo = (page) => {
   }
 
   .auth-row:last-child {
-    margin-bottom: 0;
+    // margin-bottom: 0;
+  }
+
+  .auth-row:first-child {
+    margin-top: 0;
   }
 }
 
@@ -839,7 +849,7 @@ const navigateTo = (page) => {
   background: #fff;
   border-radius: 24rpx;
   box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
-  padding: 22rpx 32rpx 32rpx 32rpx;
+  padding: 20rpx 32rpx 32rpx 32rpx;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -849,7 +859,7 @@ const navigateTo = (page) => {
 .contact-dialog-close {
   position: absolute;
   right: 24rpx;
-  top: 28rpx;
+  top: 30rpx;
   z-index: 10;
 }
 
