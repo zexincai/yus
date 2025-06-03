@@ -5,11 +5,20 @@
       <view class="timer-item">
         <view class="timer-link">
           <text>开机日</text>
-          <picker mode="selector" range-key="text" :range="weekList" :value="settings.workBeginDay - 1"
-            @change="onWeekChange($event, 'workBeginDay')">
+          <picker
+            mode="selector"
+            range-key="text"
+            :range="weekList"
+            :value="settings.workBeginDay - 1"
+            @change="onWeekChange($event, 'workBeginDay')"
+          >
             <view>
               <text>{{ getText(settings.workBeginDay) }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+              <image
+                src="/static/images/arrow-right.png"
+                mode="aspectFit"
+                class="arrow-icon"
+              />
             </view>
           </picker>
         </view>
@@ -20,11 +29,20 @@
         <view class="timer-link">
           <text>停机日</text>
 
-          <picker mode="selector" range-key="text" :range="weekList" :value="settings.workEndDay - 1"
-            @change="onWeekChange($event, 'workEndDay')">
+          <picker
+            mode="selector"
+            range-key="text"
+            :range="weekList"
+            :value="settings.workEndDay - 1"
+            @change="onWeekChange($event, 'workEndDay')"
+          >
             <view>
               <text>{{ getText(settings.workEndDay) }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+              <image
+                src="/static/images/arrow-right.png"
+                mode="aspectFit"
+                class="arrow-icon"
+              />
             </view>
           </picker>
         </view>
@@ -39,22 +57,25 @@
         </view>
         <view class="timer-link">
           <text>开机</text>
-
-          <picker mode="time" :value="settings.openTime1" @change="onTimeChange($event, 'openTime1')">
-            <view>
-              <text>{{ settings.openTime1 }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
-            </view>
-          </picker>
+          <view @click="onTimeClick('openTime1')">
+            <text>{{ settings.openTime1 }}</text>
+            <image
+              src="/static/images/arrow-right.png"
+              mode="aspectFit"
+              class="arrow-icon"
+            />
+          </view>
         </view>
         <view class="timer-link">
           <text>关机</text>
-          <picker mode="time" :value="settings.closeTime1" @change="onTimeChange($event, 'closeTime1')">
-            <view>
-              <text>{{ settings.closeTime1 }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
-            </view>
-          </picker>
+          <view @click="onTimeClick('closeTime1')">
+            <text>{{ settings.closeTime1 }}</text>
+            <image
+              src="/static/images/arrow-right.png"
+              mode="aspectFit"
+              class="arrow-icon"
+            />
+          </view>
         </view>
       </view>
     </view>
@@ -68,21 +89,25 @@
         <view class="timer-link">
           <text>开机</text>
 
-          <picker mode="time" :value="settings.openTime2" @change="onTimeChange($event, 'openTime2')">
-            <view>
-              <text>{{ settings.openTime2 }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
-            </view>
-          </picker>
+          <view @click="onTimeClick('openTime2')">
+            <text>{{ settings.openTime2 }}</text>
+            <image
+              src="/static/images/arrow-right.png"
+              mode="aspectFit"
+              class="arrow-icon"
+            />
+          </view>
         </view>
         <view class="timer-link">
           <text>关机</text>
-          <picker mode="time" :value="settings.closeTime2" @change="onTimeChange($event, 'closeTime2')">
-            <view>
-              <text>{{ settings.closeTime2 }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
-            </view>
-          </picker>
+          <view @click="onTimeClick('closeTime2')">
+            <text>{{ settings.closeTime2 }}</text>
+            <image
+              src="/static/images/arrow-right.png"
+              mode="aspectFit"
+              class="arrow-icon"
+            />
+          </view>
         </view>
       </view>
     </view>
@@ -95,24 +120,32 @@
         </view>
         <view class="timer-link">
           <text>开机</text>
-          <picker mode="time" :value="settings.openTime3" @change="onTimeChange($event, 'openTime3')">
-            <view>
-              <text>{{ settings.openTime3 }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
-            </view>
-          </picker>
+
+          <view @click="onTimeClick('openTime3')">
+            <text>{{ settings.openTime3 }}</text>
+            <image
+              src="/static/images/arrow-right.png"
+              mode="aspectFit"
+              class="arrow-icon"
+            />
+          </view>
         </view>
         <view class="timer-link">
           <text>关机</text>
-          <picker mode="time" :value="settings.closeTime3" @change="onTimeChange($event, 'closeTime3')">
-            <view>
-              <text>{{ settings.closeTime3 }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
-            </view>
-          </picker>
+          <view @click="onTimeClick('closeTime3')">
+            <text>{{ settings.closeTime3 }}</text>
+            <image
+              src="/static/images/arrow-right.png"
+              mode="aspectFit"
+              class="arrow-icon"
+            />
+          </view>
         </view>
       </view>
     </view>
+    <xp-picker ref="picker" mode="hi" :value="timeStr" @confirm="onTimeConfirm">
+      <text> </text>
+    </xp-picker>
   </view>
 </template>
 
@@ -120,6 +153,10 @@
 import { reactive, ref } from "vue";
 import { loadWorkTime, deviceCmdSet } from "@/api/dealer";
 import { onLoad, onShow, onHide, onUnload } from "@dcloudio/uni-app";
+import xpPicker from "@/components/xp-picker/xp-picker.vue";
+let timeStr = ref("");
+let timeKey = "";
+let picker = ref(null);
 const weekList = ref([
   {
     text: "周一",
@@ -161,19 +198,23 @@ const settings = reactive({
   workBeginDay: "",
   workEndDay: "",
 });
-let deviceId = ''
-let timer = null
+let deviceId = "";
+let timer = null;
 onLoad(async ({ id }) => {
-  deviceId = id
+  deviceId = id;
 });
 onShow(() => {
+  clearTimer();
   getDetail();
   timer = setInterval(() => {
     getDetail();
-  }, 5000)
-})
+  }, 5000);
+});
 const getDetail = async () => {
-  const { timingPlan } = await loadWorkTime({ deviceId: deviceId }, { loading: false });
+  const { timingPlan } = await loadWorkTime(
+    { deviceId: deviceId },
+    { loading: false }
+  );
   settings.deviceId = deviceId;
   settings.openTime2 = timingPlan.openTime2;
   settings.openTime1 = timingPlan.openTime1;
@@ -183,25 +224,39 @@ const getDetail = async () => {
   settings.openTime3 = timingPlan.openTime3;
   settings.workBeginDay = timingPlan.workBeginDay;
   settings.workEndDay = timingPlan.workEndDay;
-}
+};
 const clearTimer = () => {
-  clearInterval(timer);
-}
+  if (timer) {
+    clearInterval(timer);
+  }
+};
 const openTimer = () => {
   clearInterval(timer);
   timer = setInterval(() => {
     getDetail();
-  }, 5000)
-}
+  }, 5000);
+};
+const onTimeConfirm = (e) => {
+  timeStr.value = e;
+  onTimeChange({ detail: { value: timeStr.value } }, timeKey);
+};
+const onTimeClick = (flag) => {
+  timeKey = flag;
+  timeStr.value = settings[flag];
+  setTimeout(() => {
+    picker.value.show();
+  }, 100);
+};
 
 onHide(() => {
   clearInterval(timer);
-})
+});
 onUnload(() => {
-  clearInterval(timer)
-})
+  clearInterval(timer);
+});
 const getText = (val) => {
-  return weekList.value.find((item) => item.value == val).text;
+  const item = weekList.value.find((item) => item.value == val);
+  return item ? item.text : "";
 };
 const onTimeChange = async (e, key) => {
   settings[key] = e.detail.value;

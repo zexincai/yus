@@ -4,8 +4,14 @@
       <view class="temp-item">
         <text>换水时长</text>
         <view class="temp-input">
-          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.refreshMinute" class="input"
-            maxlength="3" />
+          <input
+            @blur="openTimer"
+            @focus="clearTimer"
+            type="number"
+            v-model="settings.refreshMinute"
+            class="input"
+            maxlength="3"
+          />
           <text class="unit">分钟</text>
           <button class="save-btn" @click="handleSaveTime">保存</button>
         </view>
@@ -15,7 +21,12 @@
       <view class="temp-item">
         <text>换水周期</text>
         <view class="temp-input">
-          <input type="number" v-model="settings.refreshPeriod" class="input" maxlength="3" />
+          <input
+            type="number"
+            v-model="settings.refreshPeriod"
+            class="input"
+            maxlength="3"
+          />
           <text class="unit">天</text>
           <button class="save-btn" @click="handleSaveTime">保存</button>
         </view>
@@ -26,15 +37,20 @@
       <view class="timer-item">
         <view class="timer-link">
           <text>换水时间</text>
-          <picker mode="time" :value="settings.refreshTime" @change="onTimeChange($event, 'refreshTime')">
-            <view>
-              <text>{{ settings.refreshTime }}</text>
-              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
-            </view>
-          </picker>
+          <view @click="onTimeClick('refreshTime')">
+            <text>{{ settings.refreshTime }}</text>
+            <image
+              src="/static/images/arrow-right.png"
+              mode="aspectFit"
+              class="arrow-icon"
+            />
+          </view>
         </view>
       </view>
     </view>
+    <xp-picker ref="picker" mode="hi" :value="timeStr" @confirm="onTimeConfirm">
+      <text></text>
+    </xp-picker>
   </view>
 </template>
 
@@ -42,7 +58,10 @@
 import { reactive, ref } from "vue";
 import { loadWorkTime, deviceCmdSet } from "@/api/dealer";
 import { onLoad, onShow, onHide, onUnload } from "@dcloudio/uni-app";
-
+import xpPicker from "@/components/xp-picker/xp-picker.vue";
+let timeStr = ref("");
+let timeKey = "";
+let picker = ref(null);
 // 设置数据
 const settings = reactive({
   refreshTime: "",
@@ -60,21 +79,24 @@ onShow(() => {
   getDetail();
   timer = setInterval(() => {
     getDetail();
-  }, 5000)
-})
+  }, 5000);
+});
 onUnload(() => {
-  clearInterval(timer)
-})
+  clearInterval(timer);
+});
 const getDetail = async () => {
-  const { refreshPlan } = await loadWorkTime({ deviceId: deviceId }, { loading: false });
+  const { refreshPlan } = await loadWorkTime(
+    { deviceId: deviceId },
+    { loading: false }
+  );
   settings.deviceId = deviceId;
   settings.refreshTime = refreshPlan.refreshTime;
   settings.refreshPeriod = refreshPlan.refreshPeriod;
   settings.refreshMinute = refreshPlan.refreshMinute;
-}
+};
 onHide(() => {
   clearInterval(timer);
-})
+});
 
 const onTimeChange = async (e, key) => {
   settings[key] = e.detail.value;
@@ -82,13 +104,24 @@ const onTimeChange = async (e, key) => {
 };
 const clearTimer = () => {
   clearInterval(timer);
-}
+};
 const openTimer = () => {
   clearInterval(timer);
   timer = setInterval(() => {
     getDetail();
-  }, 5000)
-}
+  }, 5000);
+};
+const onTimeConfirm = (e) => {
+  timeStr.value = e;
+  onTimeChange({ detail: { value: timeStr.value } }, timeKey);
+};
+const onTimeClick = (flag) => {
+  timeKey = flag;
+  timeStr.value = settings[flag];
+  setTimeout(() => {
+    picker.value.show();
+  }, 100);
+};
 const handleSaveTime = () => {
   setTimeout(async () => {
     const resp = await deviceCmdSet(

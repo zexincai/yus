@@ -1,106 +1,178 @@
 <template>
   <view class="container">
-    <!-- 基础开关设置 -->
-    <view class="setting-card flex-between">
-      <view class="switch-item">
-        <text>暂停</text>
-        <xSwitch keyName="stopSW" @change="handleSave" v-model="settings.pause" />
-      </view>
-
-      <view class="switch-item">
-        <text>排空</text>
-        <xSwitch keyName="emptySwitch" @change="handleSave" v-model="settings.drain" />
-      </view>
-    </view>
-
-    <!-- 温度设置 -->
-    <view class="setting-card">
-      <view class="temp-item">
-        <text>开水停止加热温度</text>
-        <view class="temp-input">
-          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.hotWaterTemp" class="input"
-            maxlength="3" />
-          <text class="unit">℃</text>
-          <button class="save-btn" @click="handleSaveHotTemp">保存</button>
+    <template v-if="brandCode == 'JYROJSJ'">
+      <view class="setting-card">
+        <view class="temp-item">
+          <text>开关机</text>
+          <xSwitch
+            keyName="stopSW"
+            @change="handleSave"
+            v-model="settings.pause"
+          />
         </view>
       </view>
-    </view>
+    </template>
+    <template v-else>
+      <!-- 基础开关设置 -->
+      <view class="setting-card flex-between">
+        <view class="switch-item">
+          <text>暂停</text>
+          <xSwitch
+            keyName="stopSW"
+            @change="handleSave"
+            v-model="settings.pause"
+          />
+        </view>
 
-    <view class="setting-card">
-      <view class="temp-item">
-        <text>温开水停止加热温度</text>
-        <view class="temp-input">
-          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.warmWaterTemp" class="input"
-            maxlength="3" />
-          <text class="unit">℃</text>
-          <button class="save-btn" @click="handleSaveWarmTemp">保存</button>
+        <view class="switch-item">
+          <text>排空</text>
+          <xSwitch
+            keyName="emptySwitch"
+            @change="handleSave"
+            v-model="settings.drain"
+          />
         </view>
       </view>
-    </view>
 
-    <!-- 定时设置 -->
-    <view class="setting-card">
-      <view class="timer-item">
-        <view class="timer-header">
-          <view class="timer-left">
-            <text>定时运行</text>
-          </view>
-          <xSwitch @change="handleSave" keyName="workMode" v-model="settings.timerRun" />
-        </view>
-        <view class="timer-link" @click="navigateToTimerSetting">
-          <image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
-          <view>
-            <text>定时开关设置</text>
-            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+      <!-- 温度设置 -->
+      <view class="setting-card">
+        <view class="temp-item">
+          <text>开水停止加热温度</text>
+          <view class="temp-input">
+            <input
+              @blur="openTimer"
+              @focus="clearTimer"
+              type="number"
+              v-model="settings.hotWaterTemp"
+              class="input"
+              maxlength="3"
+            />
+            <text class="unit">℃</text>
+            <button class="save-btn" @click="handleSaveHotTemp">保存</button>
           </view>
         </view>
       </view>
-    </view>
 
-    <view class="setting-card">
-      <view class="timer-item">
-        <view class="timer-header">
-          <view class="timer-left">
-            <text>定时消毒</text>
-          </view>
-          <xSwitch @change="handleSave" keyName="sterilizingSwitch" v-model="settings.timerSterilize" />
-        </view>
-        <view class="timer-link" @click="navigateToSterilizeSetting">
-          <image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
-          <view>
-            <text>定时消毒设置</text>
-            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+      <view class="setting-card">
+        <view class="temp-item">
+          <text>温开水停止加热温度</text>
+          <view class="temp-input">
+            <input
+              @blur="openTimer"
+              @focus="clearTimer"
+              type="number"
+              v-model="settings.warmWaterTemp"
+              class="input"
+              maxlength="3"
+            />
+            <text class="unit">℃</text>
+            <button class="save-btn" @click="handleSaveWarmTemp">保存</button>
           </view>
         </view>
       </view>
-    </view>
 
-    <view class="setting-card">
-      <view class="timer-item">
-        <view class="timer-header">
-          <view class="timer-left">
-            <text>定时冲洗</text>
+      <!-- 定时设置 -->
+      <view class="setting-card">
+        <view class="timer-item">
+          <view class="timer-header">
+            <view class="timer-left">
+              <text>定时运行</text>
+            </view>
+            <xSwitch
+              @change="handleSave"
+              keyName="workMode"
+              v-model="settings.timerRun"
+            />
           </view>
-          <xSwitch @change="handleSave" keyName="washingSwitch" v-model="settings.timerWash" />
-        </view>
-        <view class="timer-link" @click="navigateToWashSetting">
-          <image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
-          <view>
-            <text>定时冲洗设置</text>
-            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+          <view class="timer-link" @click="navigateToTimerSetting">
+            <image
+              src="/static/images/timer.png"
+              mode="aspectFit"
+              class="timer-icon"
+            />
+            <view>
+              <text>定时开关设置</text>
+              <image
+                src="/static/images/arrow-right.png"
+                mode="aspectFit"
+                class="arrow-icon"
+              />
+            </view>
           </view>
         </view>
       </view>
-    </view>
+
+      <view class="setting-card">
+        <view class="timer-item">
+          <view class="timer-header">
+            <view class="timer-left">
+              <text>定时消毒</text>
+            </view>
+            <xSwitch
+              @change="handleSave"
+              keyName="sterilizingSwitch"
+              v-model="settings.timerSterilize"
+            />
+          </view>
+          <view class="timer-link" @click="navigateToSterilizeSetting">
+            <image
+              src="/static/images/sterilize.png"
+              mode="aspectFit"
+              class="timer-icon"
+            />
+            <view>
+              <text>定时消毒设置</text>
+              <image
+                src="/static/images/arrow-right.png"
+                mode="aspectFit"
+                class="arrow-icon"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="setting-card">
+        <view class="timer-item">
+          <view class="timer-header">
+            <view class="timer-left">
+              <text>定时冲洗</text>
+            </view>
+            <xSwitch
+              @change="handleSave"
+              keyName="washingSwitch"
+              v-model="settings.timerWash"
+            />
+          </view>
+          <view class="timer-link" @click="navigateToWashSetting">
+            <image
+              src="/static/images/wash.png"
+              mode="aspectFit"
+              class="timer-icon"
+            />
+            <view>
+              <text>定时冲洗设置</text>
+              <image
+                src="/static/images/arrow-right.png"
+                mode="aspectFit"
+                class="arrow-icon"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+    </template>
   </view>
 </template>
 
 <script setup>
 import xSwitch from "@/components/switch/index.vue";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { loadSetParams, deviceCmdSet } from "@/api/dealer";
 import { onLoad, onShow, onHide, onUnload } from "@dcloudio/uni-app";
 let deviceId = "";
+const brandCode = ref("");
+const loading = ref(false);
 // 设置数据
 const settings = reactive({
   pause: false,
@@ -114,49 +186,62 @@ const settings = reactive({
 let timer = null;
 onLoad(async ({ id }) => {
   deviceId = id;
-
 });
 onUnload(() => {
-  clearInterval(timer)
-})
+  clearInterval(timer);
+});
 onShow(async () => {
-  getDetail()
+  getDetail();
   // 隔两秒自动刷新
   timer = setInterval(() => {
-    getDetail()
-  }, 5000)
-})
+    getDetail();
+  }, 5000);
+});
 
 const clearTimer = () => {
   if (timer) {
-    clearInterval(timer)
-    timer = null
+    clearInterval(timer);
+    timer = null;
   }
-}
+};
 const openTimer = () => {
   if (!timer) {
     timer = setInterval(() => {
-      getDetail()
-    }, 5000)
+      getDetail();
+    }, 5000);
   }
-}
+};
 // 清除定时器
 onHide(() => {
-  clearInterval(timer)
-})
+  clearInterval(timer);
+});
 const getDetail = async () => {
-  const res = await loadSetParams({ deviceId }, {
-    loading: false
-  });
-  settings.pause = res.stopSW === 1;
-  settings.deviceId = res.deviceId;
-  settings.drain = res.emptySwitch === 1;
-  settings.hotWaterTemp = res.targetTemperature;
-  settings.warmWaterTemp = res.setWarmTemp;
-  settings.timerRun = res.workMode === 1;
-  settings.timerSterilize = res.sterilizingSwitch === 1;
-  settings.timerWash = res.washingSwitch === 1;
-}
+  try {
+    const res = await loadSetParams(
+      { deviceId },
+      {
+        loading: false,
+      }
+    );
+    brandCode.value = res.brandCode;
+    settings.deviceId = res.deviceId;
+    if (res.brandCode == "JYROJSJ") {
+      settings.pause = res.stopSW === 1;
+    } else {
+      settings.pause = res.stopSW === 1;
+      settings.deviceId = res.deviceId;
+      settings.drain = res.emptySwitch === 1;
+      settings.hotWaterTemp = res.targetTemperature;
+      settings.warmWaterTemp = res.setWarmTemp;
+      settings.timerRun = res.workMode === 1;
+      settings.timerSterilize = res.sterilizingSwitch === 1;
+      settings.timerWash = res.washingSwitch === 1;
+    }
+  } catch (error) {
+  } finally {
+    // loading.value = false;
+  }
+};
 
 // 保存开水温度
 const handleSaveHotTemp = async () => {
