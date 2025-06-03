@@ -28,9 +28,10 @@ export const activeCmd = (data) =>
 //     });
 //   });
 
-export const activeCmdResult = (data) =>
+export const activeCmdResult = (data, config) =>
   http.post("https://yuq.fenaor.com/ma/dealer/activeCmdResult", data, {
     loading: true,
+    ...(config || {}),
   });
 // export const activeCmdResult = (data) =>
 //   Promise.resolve({

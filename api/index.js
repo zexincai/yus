@@ -43,7 +43,6 @@ http.interceptors.response.use(
       return data;
     }
     if ([500].includes(code)) {
-
       if (!resp.config.noTip) {
         uni.showToast({
           title: msg,

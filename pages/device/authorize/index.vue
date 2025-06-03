@@ -295,9 +295,11 @@ const handleConfirm = () => {
       // 在十秒内每隔两秒调用activeCmdResult函数，如果成功几句调用activeDevice函数，超过十秒则提示失败
       let count = 0;
       if (interval) clearInterval(interval);
-      const func = () =>
-        activeCmdResult(params, { noTip: true })
+      const func = () => {
+        uni.showLoading({});
+        activeCmdResult(params, { noTip: true, loading: false })
           .then((res) => {
+            uni.hideLoading();
             clearInterval(interval);
             activeDevice({
               deviceId: deviceData.value.deviceId,
@@ -309,12 +311,15 @@ const handleConfirm = () => {
           })
           .catch((err) => {
             if (count > 3) {
+              uni.hideLoading();
               handleNavToPage("fail", "授权失败");
             }
           })
           .finally(() => {
             count++;
           });
+      };
+
       func();
       interval = setInterval(() => {
         if (count < 5) {
