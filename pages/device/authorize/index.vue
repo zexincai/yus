@@ -4,7 +4,7 @@
     <view class="device-card">
       <image
         class="device-img"
-        src="/static/images/device.png"
+        :src="deviceData.productUrl"
         mode="aspectFit"
       ></image>
       <view class="device-info">
@@ -39,6 +39,7 @@
         <view class="form-item">
           <text class="label">手机号码：</text>
           <input
+            maxlength="11"
             class="input"
             type="text"
             v-model="form.customerPhone"

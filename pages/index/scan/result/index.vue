@@ -1,16 +1,5 @@
 <template>
   <view class="container">
-    <view v-if="from == 'success'" class="result-content">
-      <!-- 成功图标 -->
-      <image
-        class="success-icon"
-        src="/static/images/icon-success.png"
-        mode="aspectFit"
-      />
-      <!-- 成功提示文本 -->
-      <text class="success-title">绑定成功</text>
-      <button class="login-btn" @click="goToLogin">返回首页</button>
-    </view>
     <view v-if="from == 'fail'" class="result-content">
       <!-- 成功图标 -->
       <image
@@ -24,21 +13,35 @@
       <!-- 登录按钮 -->
       <button class="login-btn" @click="goToLogin">返回首页</button>
     </view>
+    <view v-else class="result-content">
+      <!-- 成功图标 -->
+      <image
+        class="success-icon"
+        src="/static/images/icon-success.png"
+        mode="aspectFit"
+      />
+      <!-- 成功提示文本 -->
+      <text class="success-title">绑定成功</text>
+      <button class="login-btn" @click="goToLogin">返回首页</button>
+    </view>
   </view>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { useRoute } from "vue-router";
-const route = useRoute();
-const from = ref(route.query.from);
-console.log(from.value);
-const msg = ref(route.query.msg);
+import { onLoad } from "@dcloudio/uni-app";
+const from = ref("success");
+const msg = ref("");
 const goToLogin = () => {
   uni.switchTab({
     url: "/pages/index/index",
   });
 };
+
+onLoad((options) => {
+  from.value = options.from;
+  msg.value = options.msg;
+});
 </script>
 
 <style lang="scss" scoped>
