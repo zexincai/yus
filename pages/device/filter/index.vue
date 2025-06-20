@@ -105,9 +105,11 @@ const handleConfirm = () => {
   }
   const params = {
     deviceId: detail.value.deviceId,
-    chipSnId: detail.value.chipSnId,
     chipIndex,
   };
+  if (detail.value.chipResetType !== 0) {
+    params.chipSnId = detail.value.chipSnId;
+  }
   resetChipConfig(params).then((res) => {
     uni.showToast({
       title: "重置成功",

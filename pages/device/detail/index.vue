@@ -1,15 +1,34 @@
 <template>
   <view class="device-detail-container">
-    <uni-nav-bar @clickLeft="handleBack" @clickRight="onRightTap" backgroundColor="#152136" statusBar dark fixed
-      leftIcon="left" title="设备详情" :left-arrow="false" :border="false">
+    <uni-nav-bar
+      @clickLeft="handleBack"
+      @clickRight="onRightTap"
+      backgroundColor="#152136"
+      statusBar
+      dark
+      fixed
+      leftIcon="left"
+      title="设备详情"
+      :left-arrow="false"
+      :border="false"
+    >
       <template v-slot:right>
-        <image src="/static/images/more.png" mode="aspectFit" class="right-icon" />
+        <image
+          src="/static/images/more.png"
+          mode="aspectFit"
+          class="right-icon"
+        />
         <view v-if="showRightMenu" class="menu">
-          <view v-if="loginType == 'ROLE_CUSTOMER'" @click.stop="handleShareDivice" class="menu-item line">
+          <view
+            v-if="loginType == 'ROLE_CUSTOMER'"
+            @click.stop="handleShareDivice"
+            class="menu-item line"
+          >
             <image src="/static/images/icon-share.png"> </image> 共享设备
           </view>
           <view @click.stop="handleCancelDivice" class="menu-item">
-            <image src="/static/images/icon-cancel.png"> </image> {{ loginType === 'ROLE_CUSTOMER' ? '删除设备' : '解除授权' }}
+            <image src="/static/images/icon-cancel.png"> </image>
+            {{ loginType === "ROLE_CUSTOMER" ? "删除设备" : "解除授权" }}
           </view>
         </view>
       </template>
@@ -18,7 +37,12 @@
     <view class="device-header">
       <view class="device-title">
         <text>{{ deviceInfo.location }}</text>
-        <image @click="navigateTo('edit')" src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
+        <image
+          @click="navigateTo('edit')"
+          src="/static/images/icon-edit.png"
+          mode="aspectFit"
+          class="edit-icon"
+        />
       </view>
       <image :src="deviceInfo.rssiUrl" class="view-device"> </image>
     </view>
@@ -51,14 +75,27 @@
           <text class="address-value">{{ deviceInfo.address }}</text>
         </view>
       </view>
-      <image class="device-img" :src="deviceInfo.productUrl" mode="aspectFit"></image>
+      <image
+        class="device-img"
+        :src="deviceInfo.productUrl"
+        mode="aspectFit"
+      ></image>
     </view>
 
     <!-- 功能导航 -->
     <view class="function-nav">
-      <view class="nav-item" v-for="(item, index) in navList" :key="item.text" @click="navigateTo(item.page)">
+      <view
+        class="nav-item"
+        v-for="(item, index) in navList"
+        :key="item.text"
+        @click="navigateTo(item.page)"
+      >
         <view class="icon-wrapper">
-          <image class="iconfont" :class="{ small: index == 0 }" :src="item.icon" />
+          <image
+            class="iconfont"
+            :class="{ small: index == 0 }"
+            :src="item.icon"
+          />
         </view>
         <text class="nav-text">{{ item.text }}</text>
       </view>
@@ -70,10 +107,20 @@
         <text>授权时间：{{ deviceInfo.activeDate }}</text>
       </view>
       <view class="auth-row">
-        <text v-if="deviceInfo.buyout == 1">到期日期：{{ deviceInfo.expireDate }}</text>
-        <text v-if="deviceInfo.buyout == 1" class="renewal-link" @click="navigateTo('renewalLog')">续期记录 >>
+        <text v-if="deviceInfo.buyout == 1"
+          >到期日期：{{ deviceInfo.expireDate }}</text
+        >
+        <text
+          v-if="deviceInfo.buyout == 1"
+          class="renewal-link"
+          @click="navigateTo('renewalLog')"
+          >续期记录 >>
         </text>
-        <view v-if="loginType == 'ROLE_CUSTOMER'" class="call-btn" @click="showPhonePop">
+        <view
+          v-if="loginType == 'ROLE_CUSTOMER'"
+          class="call-btn"
+          @click="showPhonePop"
+        >
           <image class="icon" src="/static/images/call.png"></image>
           联系经销商
         </view>
@@ -91,8 +138,10 @@
     <!-- 水温数据 -->
     <view v-if="deviceInfo.productKey !== 'a1oPKovsK5B'" class="temperature">
       <view class="temperature-card">
-        <text class="temp-value">{{ deviceInfo.waterTemperature }}
-          <text class="temp-unit">℃</text></text>
+        <text class="temp-value"
+          >{{ deviceInfo.waterTemperature }}
+          <text class="temp-unit">℃</text></text
+        >
         <text class="temp-label">开水</text>
       </view>
       <view class="temperature-card waterLevel">
@@ -113,9 +162,11 @@
     </view>
 
     <view v-if="deviceInfo.productKey == 'a1oPKovsK5B'" class="temperature">
-      <view style="margin-top: 15rpx;" class="temperature-card">
-        <text class="temp-value">{{ deviceInfo.warmTemperature }}
-          <text class="temp-unit">℃</text></text>
+      <view style="margin-top: 15rpx" class="temperature-card">
+        <text class="temp-value"
+          >{{ deviceInfo.warmTemperature }}
+          <text class="temp-unit">℃</text></text
+        >
         <text class="temp-label">水温</text>
       </view>
     </view>
@@ -132,14 +183,22 @@
         </view>
       </view>
       <view class="filter-list">
-        <view class="filter-item" v-for="(filter, index) in deviceInfo.chips" :key="index">
+        <view
+          class="filter-item"
+          v-for="(filter, index) in deviceInfo.chips"
+          :key="index"
+        >
           <view class="filter-index">{{ filter.index }}</view>
           <view class="filter-info">
             <text class="filter-name">{{ filter.chipName }}</text>
             <view class="progress-bar">
-              <view class="progress-inner" :class="{
-                'progress-yellow': filter.red,
-              }" :style="{ width: filter.percent + '%' }"></view>
+              <view
+                class="progress-inner"
+                :class="{
+                  'progress-yellow': filter.red,
+                }"
+                :style="{ width: filter.percent + '%' }"
+              ></view>
             </view>
           </view>
           <view class="filter-percent">{{ filter.percent }}%</view>
@@ -149,14 +208,22 @@
     <!-- 其他页面内容 -->
     <view v-if="phonePop" class="contact-dialog-mask">
       <view class="contact-dialog">
-
-        <view class="contact-dialog-title">联系经销商
+        <view class="contact-dialog-title"
+          >联系经销商
           <view class="contact-dialog-close" @tap="phonePop = false">
-            <image src="/static/images/icon-close-pop.png" mode="aspectFit" style="width: 36rpx; height: 36rpx;" />
+            <image
+              src="/static/images/icon-close-pop.png"
+              mode="aspectFit"
+              style="width: 36rpx; height: 36rpx"
+            />
           </view>
         </view>
-        <view class="contact-dialog-info">经销商：{{ deviceInfo.dealerName }}</view>
-        <view class="contact-dialog-info">手机号码：{{ deviceInfo.dealerPhone }}</view>
+        <view class="contact-dialog-info"
+          >经销商：{{ deviceInfo.dealerName }}</view
+        >
+        <view class="contact-dialog-info"
+          >手机号码：{{ deviceInfo.dealerPhone }}</view
+        >
         <button class="contact-dialog-btn" @tap="callDealer">拨打电话</button>
       </view>
     </view>
@@ -170,8 +237,8 @@ import { deviceDetailInfo, loadChipSnInfo, cancelActive } from "@/api/dealer";
 
 const loginType = ref("");
 const deviceId = ref("");
-const showRightMenu = ref(false)
-const phonePop = ref(false)
+const showRightMenu = ref(false);
+const phonePop = ref(false);
 const deviceInfo = ref({
   name: "小芸家",
   sn: "3452345671456",
@@ -207,7 +274,7 @@ onLoad((options) => {
 });
 
 onShow(() => {
-  showRightMenu.value = false
+  showRightMenu.value = false;
   deviceDetailInfo({ deviceId: deviceId.value }).then((res) => {
     deviceInfo.value = res;
   });
@@ -222,7 +289,7 @@ const callDealer = () => {
     fail: () => {
       console.error("拨打电话失败！");
       phonePop.value = false;
-    }
+    },
   });
 };
 const handleBack = () => {
@@ -230,12 +297,12 @@ const handleBack = () => {
 };
 const closeMenu = () => {
   if (showRightMenu.value) {
-    showRightMenu.value = false
+    showRightMenu.value = false;
   }
-}
+};
 
 const showPhonePop = () => {
-  phonePop.value = true
+  phonePop.value = true;
 };
 const copySn = () => {
   uni.setClipboardData({
@@ -244,55 +311,57 @@ const copySn = () => {
   });
 };
 const onChangeFilter = () => {
-  // 扫码获取二维码
-  uni.scanCode({
-    scanType: ["qrCode", "barCode"],
-    success: (res) => {
-      console.log(res);
-      loadChipSnInfo({ deviceId: deviceId.value, chipsn: res.result }).then(
-        (res) => {
-          uni.setStorageSync("filterResetData", res);
-          navigateTo("filterReset");
-        }
-      );
-    },
-    fail: (err) => {
-      console.log(err);
-      uni.showToast({
-        title: "扫码失败",
-        icon: "none",
-      });
-    },
-  });
+  if (deviceInfo.value.chipResetType == 0) {
+    loadChipSnInfo({ deviceId: deviceId.value }).then((res) => {
+      uni.setStorageSync("filterResetData", res);
+      navigateTo("filterReset");
+    });
+  } else {
+    // 扫码获取二维码
+    uni.scanCode({
+      scanType: ["qrCode", "barCode"],
+      success: (res) => {
+        console.log(res);
+        loadChipSnInfo({ deviceId: deviceId.value, chipsn: res.result }).then(
+          (res) => {
+            uni.setStorageSync("filterResetData", res);
+            navigateTo("filterReset");
+          }
+        );
+      },
+      fail: (err) => {
+        console.log(err);
+        uni.showToast({
+          title: "扫码失败",
+          icon: "none",
+        });
+      },
+    });
+  }
 };
 const onRightTap = () => {
   console.log("onRightTap");
-  showRightMenu.value = !showRightMenu.value
+  showRightMenu.value = !showRightMenu.value;
 };
-const handleShareDivice = () => {
-}
+const handleShareDivice = () => {};
 const handleCancelDivice = async () => {
   try {
     await cancelActive({
-      deviceId: deviceId.value
-    })
-    showRightMenu.value = false
+      deviceId: deviceId.value,
+    });
+    showRightMenu.value = false;
     uni.showToast({
-      title: loginType.value == 'ROLE_CUSTOMER' ? '删除成功' : '解除成功',
-      icon: 'success'
-    })
+      title: loginType.value == "ROLE_CUSTOMER" ? "删除成功" : "解除成功",
+      icon: "success",
+    });
     setTimeout(() => {
       // 回到首页
       uni.switchTab({
-        url: '/pages/index/index'
-      })
+        url: "/pages/index/index",
+      });
     }, 2000);
-
-  } catch (error) {
-
-  }
-
-}
+  } catch (error) {}
+};
 const navigateTo = (page) => {
   const params = {
     id: deviceId.value,
@@ -609,10 +678,12 @@ const navigateTo = (page) => {
 
     &.orange {
       border-radius: 18rpx;
-      background: linear-gradient(180deg,
-          #4f3500ff 0%,
-          #f1a100ff 0%,
-          #523700ff 100%);
+      background: linear-gradient(
+        180deg,
+        #4f3500ff 0%,
+        #f1a100ff 0%,
+        #523700ff 100%
+      );
     }
 
     &.blue {
@@ -658,9 +729,11 @@ const navigateTo = (page) => {
   margin-left: 14rpx;
   width: 217rpx;
   height: 181rpx;
-  background: linear-gradient(180deg,
-      rgba(26, 71, 156, 1) 0%,
-      rgba(10, 25, 56, 1) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(26, 71, 156, 1) 0%,
+    rgba(10, 25, 56, 1) 100%
+  );
   color: #fff;
   border-radius: 18rpx;
 
@@ -882,7 +955,7 @@ const navigateTo = (page) => {
 }
 
 .contact-dialog-btn {
-  background: #D68F01;
+  background: #d68f01;
   color: #fff;
   font-size: 30rpx;
   width: 193rpx;
