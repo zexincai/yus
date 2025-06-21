@@ -136,7 +136,7 @@
       <text class="error-text">故障：{{ deviceInfo.error }}</text>
     </view>
     <!-- 水温数据 -->
-    <view v-if="deviceInfo.productKey !== 'a1oPKovsK5B'" class="temperature">
+    <view v-if="deviceInfo.brandCode !== 'JYROJSJ'" class="temperature">
       <view class="temperature-card">
         <text class="temp-value"
           >{{ deviceInfo.waterTemperature }}
@@ -161,7 +161,7 @@
       </view>
     </view>
 
-    <view v-if="deviceInfo.productKey == 'a1oPKovsK5B'" class="temperature">
+    <view v-if="deviceInfo.brandCode == 'JYROJSJ'" class="temperature">
       <view style="margin-top: 15rpx" class="temperature-card">
         <text class="temp-value"
           >{{ deviceInfo.warmTemperature }}

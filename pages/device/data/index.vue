@@ -1,14 +1,44 @@
 <template>
   <view class="container">
     <!-- 滤芯更换周期 -->
-    <view class="section-title">滤芯更换周期</view>
-    <view class="data-grid">
-      <view :key="index" v-for="(item, index) in detail.chipLifes" class="data-card">
-        <text class="value">{{ item.periodValue }}</text>
-        <text class="label">{{ item.name }}（{{ item.periodUnit }}）</text>
+    <template v-if="brandCode == 'JYROJSJ'">
+      <view v-if="detail.chipLifeType != 1" class="section-title">
+        滤芯更换周期</view
+      >
+      <view v-if="detail.chipLifeType != 1" class="data-grid">
+        <template :key="index" v-for="(item, index) in detail.chipLifes">
+          <view class="data-card">
+            <text class="value">
+              {{ detail.chipLifeType == 3 ? "--" : item.periodValue }}
+            </text>
+            <text class="label">
+              {{ item.name }}（通电时间/{{ item.periodUnit }}）
+            </text>
+          </view>
+          <view class="data-card">
+            <text class="value">
+              {{ detail.chipLifeType == 2 ? "--" : item.pumpValue }}
+            </text>
+            <text class="label"
+              >{{ item.name }}（水泵时间/{{ item.pumpUnit }}）</text
+            >
+          </view>
+        </template>
       </view>
-    </view>
-
+    </template>
+    <template v-else>
+      <view class="section-title"> 滤芯更换周期</view>
+      <view class="data-grid">
+        <view
+          :key="index"
+          v-for="(item, index) in detail.chipLifes"
+          class="data-card"
+        >
+          <text class="value">{{ item.periodValue }}</text>
+          <text class="label">{{ item.name }}（{{ item.periodUnit }}）</text>
+        </view>
+      </view>
+    </template>
     <!-- 设备数据 -->
     <view class="section-title">设备数据</view>
     <view v-if="brandCode == 'JYROJSJ'" class="data-grid">
@@ -77,11 +107,11 @@ const brandCode = ref("");
 const detail = ref({ chipLifes: [] });
 onLoad(async ({ id }) => {
   const res = await deviceDatas({ deviceId: id });
-  if (res.brandCode == 'JYROJSJ') {
-    brandCode.value = 'JYROJSJ'
+  if (res.brandCode == "JYROJSJ") {
+    brandCode.value = "JYROJSJ";
     Object.keys(res.jyrojsjvo).forEach((key) => {
-      res[key] = res.jyrojsjvo[key]
-    })
+      res[key] = res.jyrojsjvo[key];
+    });
   }
   detail.value = res;
 });
