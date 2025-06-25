@@ -212,3 +212,7 @@ export const operaDeviceMsg = (data) =>
   http.post("https://yuq.fenaor.com/ma/device/operaDeviceMsg", data, {
     loading: true,
   });
+export const getCaptcha = (data) =>
+  http.post("https://yuq.fenaor.com/ma/home/captcha", data, {
+    loading: true,
+  });

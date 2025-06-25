@@ -9,19 +9,17 @@
         <template :key="index" v-for="(item, index) in detail.chipLifes">
           <view class="data-card">
             <text class="value">
-              {{ detail.chipLifeType == 3 ? "--" : item.periodValue }}
+              {{ item.periodValue }}
             </text>
             <text class="label">
-              {{ item.name }}（通电时间/{{ item.periodUnit }}）
+              {{ item.name }}
             </text>
           </view>
           <view class="data-card">
             <text class="value">
-              {{ detail.chipLifeType == 2 ? "--" : item.pumpValue }}
+              {{ item.pumpValue }}
             </text>
-            <text class="label"
-              >{{ item.name }}（水泵时间/{{ item.pumpUnit }}）</text
-            >
+            <text class="label"> {{ item.pumpName }}</text>
           </view>
         </template>
       </view>

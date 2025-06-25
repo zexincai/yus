@@ -5,3 +5,5 @@ export const managerLogin = (data) => http.post('https://yuq.fenaor.com/ma/home/
 export const passwordReset = (data) => http.post('https://yuq.fenaor.com/ma/home/passwordReset', data)
 
 export const getCaptcha = (data) => http.post('https://yuq.fenaor.com/ma/home/captcha', data)
+
+export const appleLogin = (data) => http.post('https://yuq.fenaor.com/ma/home/appleLogin', data)
