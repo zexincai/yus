@@ -4,17 +4,11 @@
     <!-- 登录类型选择 -->
     <view class="login-type">
       <view class="type-item" @click="loginType = 'ROLE_CUSTOMER'">
-        <view
-          class="circle"
-          :class="{ active: loginType === 'ROLE_CUSTOMER' }"
-        ></view>
+        <view class="circle" :class="{ active: loginType === 'ROLE_CUSTOMER' }"></view>
         用户登录
       </view>
       <view class="type-item" @click="loginType = 'ROLE_DEALER'">
-        <view
-          class="circle"
-          :class="{ active: loginType === 'ROLE_DEALER' }"
-        ></view>
+        <view class="circle" :class="{ active: loginType === 'ROLE_DEALER' }"></view>
         经销商登录
       </view>
     </view>
@@ -23,74 +17,42 @@
     <view class="login-form">
       <view class="label">手机号码</view>
       <view class="form-item">
-        <input
-          type="text"
-          maxlength="11"
-          v-model="form.phone"
-          placeholder="手机号码"
-          placeholder-class="placeholder"
-        />
+        <input type="text" maxlength="11" v-model="form.phone" placeholder="手机号码" placeholder-class="placeholder" />
       </view>
       <view class="label">密码</view>
       <view class="form-item">
-        <input
-          :type="showPassword ? 'text' : 'password'"
-          v-model="form.password"
-          placeholder="密码"
-          placeholder-class="placeholder"
-        />
-        <image
-          v-if="!showPassword"
-          src="/static/images/eye-off.png"
-          class="eye-icon"
-          @click="showPassword = !showPassword"
-        />
-        <image
-          v-else
-          src="/static/images/eye-open.png"
-          class="eye-icon eye-open"
-          @click="showPassword = !showPassword"
-        />
+        <input :type="showPassword ? 'text' : 'password'" v-model="form.password" placeholder="密码"
+          placeholder-class="placeholder" />
+        <image v-if="!showPassword" src="/static/images/eye-off.png" class="eye-icon"
+          @click="showPassword = !showPassword" />
+        <image v-else src="/static/images/eye-open.png" class="eye-icon eye-open"
+          @click="showPassword = !showPassword" />
       </view>
 
       <!-- 记住账号和忘记密码 -->
       <view class="form-options">
         <label class="remember">
-          <checkbox
-            activeBackgroundColor="#0ECBF7"
-            style="transform: scale(0.6)"
-            :checked="form.remember"
-            @click="form.remember = !form.remember"
-            color="#000"
-          />
+          <checkbox activeBackgroundColor="#0ECBF7" style="transform: scale(0.6)" :checked="form.remember"
+            @click="form.remember = !form.remember" color="#000" />
           记住账号
         </label>
         <text class="forget" @click="handleForgetPassword">忘记密码？</text>
       </view>
-      <!-- 登录按钮 -->
-      <button class="login-btn" @click="handleLogin">登录</button>
-      <!-- <button @click="appleLogin" class="apple-login-button">
+      <button @click="onAppleLogin" class="apple-login-button">
         <image src="/static/images/apple.png" class="apple-icon" />
         <text class="apple-text">通过Apple登录</text>
-      </button> -->
-      <button
-        v-if="loginType == 'ROLE_CUSTOMER'"
-        class="register-btn"
-        @click="handleRegister"
-      >
+      </button>
+      <!-- 登录按钮 -->
+      <button class="login-btn" @click="handleLogin">登录</button>
+      <button v-if="loginType == 'ROLE_CUSTOMER'" class="register-btn" @click="handleRegister">
         注册
       </button>
       <view v-else class="dealer-info">经销商申请致电详询：020-89567789</view>
 
       <!-- 用户协议 -->
       <view class="agreement">
-        <checkbox
-          activeBackgroundColor="#0ECBF7"
-          style="transform: scale(0.6)"
-          :checked="form.agreement"
-          @click="form.agreement = !form.agreement"
-          color="#000"
-        />
+        <checkbox activeBackgroundColor="#0ECBF7" style="transform: scale(0.6)" :checked="form.agreement"
+          @click="form.agreement = !form.agreement" color="#000" />
         <text class="agreement-text">
           您已阅读并同意
           <text class="link" @click="handleViewTerms">《用户服务协议》</text>
@@ -103,7 +65,7 @@
 </template>
 
 <script setup>
-import { managerLogin } from "@/api/login";
+import { managerLogin, appleLogin } from "@/api/login";
 import store from "@/store";
 import { onLoad } from "@dcloudio/uni-app";
 import { ref, reactive } from "vue";
@@ -131,13 +93,23 @@ onLoad(() => {
     form.remember = res.remember;
   }
 });
-const appleLogin = () => {
+const onAppleLogin = () => {
   uni.login({
     provider: "apple",
     success: (res) => {
       console.log("Apple登录成功", res);
+      uni.showLoading()
       // 处理Apple登录返回的code
-      const code = res.code;
+      appleLogin({ identityToken: res.appleInfo.identityToken }).then(v => {
+        if (!v.name && res.appleInfo.fullName) {
+          v.name = res.appleInfo.fullName.giveName
+        }
+        store.commit("setUserInfo", v);
+        uni.switchTab({
+          url: "/pages/index/index",
+        });
+        uni.hideLoading()
+      })
     },
     fail: (err) => {
       console.error("Apple登录失败", err);
@@ -228,23 +200,24 @@ const handleViewPrivacy = () => {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 44px;
+  height: 90rpx;
   margin: 15px 0;
   background-color: #000;
   border-radius: 8px;
-  
+
   .apple-icon {
     margin-right: 10rpx;
     width: 32rpx;
     height: 32rpx;
   }
-  
+
   .apple-text {
     color: #fff;
     font-size: 17px;
     font-weight: 500;
   }
 }
+
 .login-container {
   background-color: $bg-color;
   min-height: 100vh;
@@ -394,5 +367,4 @@ const handleViewPrivacy = () => {
 .placeholder {
   color: #999;
 }
-
 </style>
