@@ -228,6 +228,12 @@
       "style": {
         "navigationBarTitleText": "客户备注"
       }
+    },
+    {
+      "path": "pages/index/customer/bindPhone/index",
+      "style": {
+        "navigationBarTitleText": "绑定手机号码"
+      }
     }
   ],
   "tabBar": {

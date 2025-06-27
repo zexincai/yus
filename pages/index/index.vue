@@ -3,7 +3,11 @@
     <!-- 顶部用户信息 -->
     <view class="header">
       <view class="logo">
-        <image class="logo-img" src="/static/images/header-logo.png" mode="aspectFit" />
+        <image
+          class="logo-img"
+          src="/static/images/header-logo.png"
+          mode="aspectFit"
+        />
       </view>
       <view v-if="loginType == 'ROLE_DEALER'" class="dear-info">
         <view class="greeting flex-between">
@@ -30,42 +34,101 @@
         </view>
       </view>
       <!-- <image @click="handelbanner" src="/static/images/banner.png" mode="aspectFill" class="banner" /> -->
-      <swiper @change="onSwiperChange" class="banner" circular autoplay interval="5000" duration="500">
-        <swiper-item @click="handleCaseClick(item)" v-for="(item, index) in bannerList" :key="index">
+      <swiper
+        @change="onSwiperChange"
+        class="banner"
+        circular
+        autoplay
+        interval="5000"
+        duration="500"
+      >
+        <swiper-item
+          @click="handleCaseClick(item)"
+          v-for="(item, index) in bannerList"
+          :key="index"
+        >
           <image :src="item.imgUrl" mode="aspectFill" class="banner-image" />
         </swiper-item>
       </swiper>
     </view>
     <view v-if="loginType == 'ROLE_DEALER'" class="nav-list">
-      <view v-for="(tab, index) in navTabs" :key="index" class="nav-item" :class="{ active: currentNav === tab.value }"
-        @tap="handleNavChange(tab.value)">
+      <view
+        v-for="(tab, index) in navTabs"
+        :key="index"
+        class="nav-item"
+        :class="{ active: currentNav === tab.value }"
+        @tap="handleNavChange(tab.value)"
+      >
         {{ tab.label }}
       </view>
     </view>
     <!-- 搜索和添加设备 -->
     <view v-if="loginType === 'ROLE_DEALER'" class="search-bar flex-between">
       <view class="search-input flex-center">
-        <image src="/static/images/icon-search.png" mode="aspectFit" class="icon small" />
-        <input v-model="searchKey" @confirm="onSearch" v-if="currentNav == 'customer'" type="text"
-          placeholder="客户/手机号/SN码/安装位置" placeholder-class="placeholder" />
-        <input v-model="searchKey" v-if="currentNav == 'device'" type="text" placeholder="类型/SN码/订单"
-          placeholder-class="placeholder" @confirm="onSearch" />
-        <input v-if="currentNav == 'log'" type="text" placeholder="订单" placeholder-class="placeholder" />
+        <image
+          src="/static/images/icon-search.png"
+          mode="aspectFit"
+          class="icon small"
+        />
+        <input
+          v-model="searchKey"
+          @confirm="onSearch"
+          v-if="currentNav == 'customer'"
+          type="text"
+          placeholder="客户/手机号/SN码/安装位置"
+          placeholder-class="placeholder"
+        />
+        <input
+          v-model="searchKey"
+          v-if="currentNav == 'device'"
+          type="text"
+          placeholder="类型/SN码/订单"
+          placeholder-class="placeholder"
+          @confirm="onSearch"
+        />
+        <input
+          v-if="currentNav == 'log'"
+          type="text"
+          placeholder="订单"
+          placeholder-class="placeholder"
+        />
       </view>
-      <view v-if="currentNav == 'device'" class="btn primary" style="width: 217rpx" @click="handleAddDevice">
-        <image src="/static/images/icon-scan.png" mode="aspectFit" class="icon small" />
+      <view
+        v-if="currentNav == 'device'"
+        class="btn primary"
+        style="width: 217rpx"
+        @click="handleAddDevice"
+      >
+        <image
+          src="/static/images/icon-scan.png"
+          mode="aspectFit"
+          class="icon small"
+        />
         <text>授权设备</text>
       </view>
     </view>
     <!-- 搜索和添加设备 -->
     <view v-else class="search-bar flex-between">
       <view class="search-input flex-center">
-        <image src="/static/images/icon-search.png" mode="aspectFit" class="icon small" />
-        <input v-model="searchKey" @confirm="onSearch" type="text" placeholder="SN码/安装位置"
-          placeholder-class="placeholder" />
+        <image
+          src="/static/images/icon-search.png"
+          mode="aspectFit"
+          class="icon small"
+        />
+        <input
+          v-model="searchKey"
+          @confirm="onSearch"
+          type="text"
+          placeholder="SN码/安装位置"
+          placeholder-class="placeholder"
+        />
       </view>
       <view class="btn primary" @click="handleAddDevice">
-        <image src="/static/images/icon-scan.png" mode="aspectFit" class="icon small" />
+        <image
+          src="/static/images/icon-scan.png"
+          mode="aspectFit"
+          class="icon small"
+        />
         <text>添加/前往设备</text>
       </view>
     </view>
@@ -73,28 +136,46 @@
       <view class="my"> 我的设备 </view>
       <!-- <view class="type"> 全部类型 </view> -->
 
-      <picker @change="onBrandPickerChange" :value="brandIndex" :range="brandList">
+      <picker
+        @change="onBrandPickerChange"
+        :value="brandIndex"
+        :range="brandList"
+      >
         <view class="type"> {{ brandList[brandIndex] }} </view>
       </picker>
     </view>
     <!-- 设备状态标签 -->
-    <scroll-view v-if="
-      !(
-        loginType == 'ROLE_DEALER' &&
-        (currentNav == 'device' || currentNav == 'log')
-      )
-    " scroll-x class="status-tabs" :show-scrollbar="false">
+    <scroll-view
+      v-if="
+        !(
+          loginType == 'ROLE_DEALER' &&
+          (currentNav == 'device' || currentNav == 'log')
+        )
+      "
+      scroll-x
+      class="status-tabs"
+      :show-scrollbar="false"
+    >
       <view class="tab-list">
-        <view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === tab.value }"
-          @tap="handleTabChange(tab.value)">
+        <view
+          v-for="(tab, index) in tabs"
+          :key="index"
+          class="tab-item"
+          :class="{ active: currentTab === tab.value }"
+          @tap="handleTabChange(tab.value)"
+        >
           {{ tab.label }}
         </view>
       </view>
     </scroll-view>
 
-
-    <view v-if="loginType == 'ROLE_CUSTOMER'" class="device-num">设备：{{ deviceList.length }}</view>
-    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'customer'" class="device-num">
+    <view v-if="loginType == 'ROLE_CUSTOMER'" class="device-num"
+      >设备：{{ deviceList.length }}</view
+    >
+    <view
+      v-if="loginType == 'ROLE_DEALER' && currentNav == 'customer'"
+      class="device-num"
+    >
       客户:
       <view style="display: inline-block; margin-right: 20rpx">{{
         customerData.customerNum
@@ -102,43 +183,85 @@
       设备：{{ customerData.deviceNum }}
     </view>
 
-    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'device'" class="auth-status-tabs">
+    <view
+      v-if="loginType == 'ROLE_DEALER' && currentNav == 'device'"
+      class="auth-status-tabs"
+    >
       <text v-if="!isAuthorized" class="auth-status-label">未授权设备：0</text>
-      <text v-if="isAuthorized" class="auth-status-label">已授权设备：{{ deviceList.length }}</text>
+      <text v-if="isAuthorized" class="auth-status-label"
+        >已授权设备：{{ deviceList.length }}</text
+      >
       <view class="status-btn-group">
-        <view :class="['status-btn', { active: !isAuthorized }]" @click="isAuthorized = false">未授权</view>
-        <view :class="['status-btn', { active: isAuthorized }]" @click="isAuthorized = true">已授权</view>
+        <view
+          :class="['status-btn', { active: !isAuthorized }]"
+          @click="isAuthorized = false"
+          >未授权</view
+        >
+        <view
+          :class="['status-btn', { active: isAuthorized }]"
+          @click="isAuthorized = true"
+          >已授权</view
+        >
       </view>
     </view>
-    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'log'" class="device-num">出库订单：0</view>
+    <view
+      v-if="loginType == 'ROLE_DEALER' && currentNav == 'log'"
+      class="device-num"
+      >出库订单：0</view
+    >
     <!-- 设备列表 -->
     <!-- <scroll-view  class="device-scroll" scroll-y refresher-enabled
       :refresher-triggered="isRefreshing" @refresherrefresh="onRefresh"> -->
     <view v-if="loginType == 'ROLE_CUSTOMER'" class="device-list">
-      <view v-for="(device, index) in deviceList" :key="index" class="device-item" @tap="handleDeviceClick(device)">
+      <view
+        v-for="(device, index) in deviceList"
+        :key="index"
+        class="device-item"
+        @tap="handleDeviceClick(device)"
+      >
         <image :src="device.productUrl" mode="aspectFit" class="device-icon" />
         <view class="device-info">
           <text class="name">{{ device.location }}</text>
           <text class="model">{{ device.modelName }}</text>
         </view>
         <view class="device-status">
-          <view v-if="device.labels && device.labels.length" class="status-tags">
-            <text v-for="(tag, idx) in device.labels" :key="idx" class="tag" :class="'tag-' + idx">{{ tag }}</text>
+          <view
+            v-if="device.labels && device.labels.length"
+            class="status-tags"
+          >
+            <text
+              v-for="(tag, idx) in device.labels"
+              :key="idx"
+              class="tag"
+              :class="'tag-' + idx"
+              >{{ tag }}</text
+            >
           </view>
         </view>
         <image :src="device.rssiUrl" mode="aspectFit" class="icon small" />
       </view>
     </view>
-    <view v-if="loginType == 'ROLE_CUSTOMER' && !deviceList.length" class="empty">
-      <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+    <view
+      v-if="loginType == 'ROLE_CUSTOMER' && !deviceList.length"
+      class="empty"
+    >
+      <image
+        src="/static/images/empty.png"
+        mode="aspectFit"
+        class="empty-img"
+      />
       <view class="empty-text"> 暂无数据 </view>
     </view>
     <!-- </scroll-view> -->
     <div v-if="loginType == 'ROLE_DEALER'" class="device-scroll">
       <view v-if="currentNav === 'customer'" class="customer-list">
         <template v-if="customerData.users.length">
-          <view @tap="handleCustomerClick(item)" class="customer-item" v-for="item in customerData.users"
-            :key="item.phone">
+          <view
+            @tap="handleCustomerClick(item)"
+            class="customer-item"
+            v-for="item in customerData.users"
+            :key="item.phone"
+          >
             <view class="avatar">
               <image src="/static/images/avatar.png" class="avatar-img" />
             </view>
@@ -156,20 +279,36 @@
           </view>
         </template>
         <view v-else class="empty">
-          <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+          <image
+            src="/static/images/empty.png"
+            mode="aspectFit"
+            class="empty-img"
+          />
           <view class="empty-text"> 暂无数据 </view>
         </view>
       </view>
       <view v-if="currentNav === 'device'" class="device-list1">
         <template v-if="!isAuthorized">
           <view class="empty">
-            <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+            <image
+              src="/static/images/empty.png"
+              mode="aspectFit"
+              class="empty-img"
+            />
             <view class="empty-text"> 暂无数据 </view>
           </view>
         </template>
-        <view v-else @tap="handleDeviceAuthorizeClick(item)" class="device-item1" v-for="item in deviceList"
-          :key="item.sn">
-          <image class="device-img" :src="item.productUrl || '/static/images/device.png'" />
+        <view
+          v-else
+          @tap="handleDeviceAuthorizeClick(item)"
+          class="device-item1"
+          v-for="item in deviceList"
+          :key="item.sn"
+        >
+          <image
+            class="device-img"
+            :src="item.productUrl || '/static/images/device.png'"
+          />
           <view class="device-info">
             <text class="device-title">{{ item.brand }}</text>
             <text class="device-sn">SN:{{ item.sn }}</text>
@@ -177,13 +316,22 @@
           </view>
           <image class="signal-icon" :src="item.rssiUrl" />
           <button class="auth-action-btn" v-if="!isAuthorized">授权</button>
-          <view :class="{ blue: item.buyout != 1 }" class="auth-status" v-else>{{ item.label }}</view>
+          <view
+            :class="{ blue: item.buyout != 1 }"
+            class="auth-status"
+            v-else
+            >{{ item.label }}</view
+          >
         </view>
       </view>
       <view v-if="currentNav === 'log'" class="customer-list">
         <template v-if="false">
-          <view @tap="handleCustomerClick(item)" class="customer-item" v-for="item in customerData.users"
-            :key="item.phone">
+          <view
+            @tap="handleCustomerClick(item)"
+            class="customer-item"
+            v-for="item in customerData.users"
+            :key="item.phone"
+          >
             <view class="avatar">
               <image src="/static/images/avatar.png" class="avatar-img" />
             </view>
@@ -200,7 +348,11 @@
           </view>
         </template>
         <view v-else class="empty">
-          <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+          <image
+            src="/static/images/empty.png"
+            mode="aspectFit"
+            class="empty-img"
+          />
           <view class="empty-text"> 暂无数据 </view>
         </view>
       </view>
@@ -211,7 +363,13 @@
 <script setup>
 import { ref, computed } from "vue";
 import { onShow, onLoad } from "@dcloudio/uni-app";
-import { equipmentStatistics, getBusinessCasePage, loadBrands, searchDevices, customerDevices } from "@/api/dealer";
+import {
+  equipmentStatistics,
+  getBusinessCasePage,
+  loadBrands,
+  searchDevices,
+  customerDevices,
+} from "@/api/dealer";
 // 从缓存里获取登录类型
 let loginType = ref("");
 let userInfo = ref({});
@@ -243,10 +401,9 @@ const customerData = ref({
 const currentTab = ref("0");
 const currentNav = ref("customer");
 const isAuthorized = ref(true);
-const deviceList = ref([
-]);
+const deviceList = ref([]);
 const isRefreshing = ref(false);
-const brandListMap = {}
+const brandListMap = {};
 const getEquipmentStatistics = () => {
   equipmentStatistics({ tab: currentTab.value, arg: searchKey.value }).then(
     (res) => {
@@ -256,7 +413,7 @@ const getEquipmentStatistics = () => {
 };
 // 获取设备列表
 const getDeviceList = () => {
-  if (loginType.value === 'ROLE_DEALER') {
+  if (loginType.value === "ROLE_DEALER") {
     searchDevices({
       tab: isAuthorized.value ? 1 : 0,
       arg: searchKey.value,
@@ -272,18 +429,20 @@ const getDeviceList = () => {
     customerDevices({
       tab: currentTab.value,
       arg: searchKey.value,
-      brand: brandIndex.value != 0 ? brandListMap[brandList.value[brandIndex.value]] : "",
+      brand:
+        brandIndex.value != 0
+          ? brandListMap[brandList.value[brandIndex.value]]
+          : "",
       current: page.value,
       size: 10,
     }).then((res) => {
-      deviceList.value = res
+      deviceList.value = res;
       if (res.length) {
         page.value++;
       }
-    })
+    });
   }
 };
-
 
 const onSearch = () => {
   if (currentNav.value == "customer") {
@@ -301,7 +460,7 @@ const onBrandPickerChange = (e) => {
 };
 const handleTabChange = (tab) => {
   currentTab.value = tab;
-  if (loginType.value == 'ROLE_CUSTOMER') {
+  if (loginType.value == "ROLE_CUSTOMER") {
     page.value = 1;
     getDeviceList();
   } else {
@@ -346,7 +505,6 @@ const handleDeviceAuthorizeClick = (item) => {
   });
 };
 
-
 // 处理案例点击
 const handleCaseClick = (item) => {
   if (item.caseId) {
@@ -372,12 +530,15 @@ const onRefresh = async () => {
 };
 onLoad(() => {
   loadBrands().then((res) => {
-    brandList.value = ["全部类型", ...(res.map(v => {
-      brandListMap[v.text] = v.id
-      return v.text
-    }) || [])];
+    brandList.value = [
+      "全部类型",
+      ...(res.map((v) => {
+        brandListMap[v.text] = v.id;
+        return v.text;
+      }) || []),
+    ];
   });
-})
+});
 const getBannerList = async () => {
   const data = await getBusinessCasePage();
   bannerList.value = data.homeSliderSet;
@@ -387,14 +548,19 @@ onShow(() => {
   if (data) {
     userInfo.value = data;
     loginType.value = data.role;
+    if (!data.phone && !uni.getStorageSync("navBindPhoneFlag")) {
+      uni.navigateTo({
+        url: "/pages/index/customer/bindPhone/index",
+      });
+    }
   }
-  if (loginType.value == 'ROLE_CUSTOMER') {
+  if (loginType.value == "ROLE_CUSTOMER") {
     currentNav.value = "device";
   } else {
     // currentNav.value = "customer";
   }
   onSearch();
-  getBannerList()
+  getBannerList();
 });
 </script>
 
@@ -751,8 +917,6 @@ onShow(() => {
   }
 }
 
-
-
 .device-status {
   position: absolute;
   display: flex;
@@ -777,7 +941,6 @@ onShow(() => {
   .tag.tag-2 {
     background: #629cde;
   }
-
 }
 
 .device-list1 {

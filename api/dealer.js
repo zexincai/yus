@@ -216,3 +216,7 @@ export const getCaptcha = (data) =>
   http.post("https://yuq.fenaor.com/ma/home/captcha", data, {
     loading: true,
   });
+export const resetPhone = (data) =>
+  http.post("https://yuq.fenaor.com/ma/customer/resetPhone", data, {
+    loading: true,
+  });
