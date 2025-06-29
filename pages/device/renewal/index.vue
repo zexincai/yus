@@ -42,7 +42,6 @@
 import { reactive } from "vue";
 import { deviceCmdSet } from "@/api/dealer";
 import { onLoad } from "@dcloudio/uni-app";
-
 // 表单数据
 const form = reactive({
   endDate: "",

@@ -7,3 +7,5 @@ export const passwordReset = (data) => http.post('https://yuq.fenaor.com/ma/home
 export const getCaptcha = (data) => http.post('https://yuq.fenaor.com/ma/home/captcha', data)
 
 export const appleLogin = (data) => http.post('https://yuq.fenaor.com/ma/home/appleLogin', data)
+
+export const registerUser = (data) => http.post('https://yuq.fenaor.com/ma/home/registerUser', data)

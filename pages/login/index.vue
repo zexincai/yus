@@ -80,7 +80,7 @@
       >
         注册
       </button>
-      <view v-else class="dealer-info">经销商申请致电详询：020-89567789</view>
+      <view v-else @click="callPhone" class="dealer-info">经销商申请致电详询：020-89567789</view>
 
       <!-- 用户协议 -->
       <view class="agreement">
@@ -167,6 +167,11 @@ const onAppleLogin = () => {
     },
   });
 };
+const callPhone = () => {
+  uni.makePhoneCall({
+    phoneNumber: '020-89567789',
+  })
+}
 // 处理登录
 const handleLogin = () => {
   if (!form.phone) {
@@ -221,7 +226,7 @@ const handleRegister = () => {
 const handleForgetPassword = () => {
   // TODO: 跳转到忘记密码页面
   uni.navigateTo({
-    url: `/pages/login/forget/index`,
+    url: `/pages/login/forget/index?role=${loginType.value}`,
   });
 };
 

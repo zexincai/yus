@@ -3,76 +3,35 @@
     <view class="forget-form">
       <view class="label">手机号码</view>
       <view class="form-item">
-        <input
-          type="text"
-          maxlength="11"
-          v-model="form.phone"
-          placeholder="手机号码"
-          placeholder-class="placeholder"
-        />
+        <input type="text" maxlength="11" v-model="form.phone" placeholder="手机号码" placeholder-class="placeholder" />
       </view>
       <view class="label">验证码</view>
       <view class="form-item">
-        <input
-          type="text"
-          maxlength="11"
-          v-model="form.code"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
-        <text @click="getCode" class="code">获取验证码</text>
+        <input type="text" maxlength="11" v-model="form.code" placeholder="请输入" placeholder-class="placeholder" />
+        <text v-if="timeNum" class="code">{{ timeNum }}s</text>
+        <text v-else @click="getCode" class="code">获取验证码</text>
       </view>
       <view class="label">姓名</view>
       <view class="form-item">
-        <input
-          type="text"
-          v-model="form.name"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input type="text" v-model="form.name" placeholder="请输入" placeholder-class="placeholder" />
       </view>
       <view class="label">密码</view>
       <view class="form-item">
-        <input
-          :type="showPassword ? 'text' : 'password'"
-          v-model="form.password"
-          placeholder="密码"
-          placeholder-class="placeholder"
-        />
-        <image
-          v-if="!showPassword"
-          src="/static/images/eye-off.png"
-          class="eye-icon"
-          @click="showPassword = !showPassword"
-        />
-        <image
-          v-else
-          src="/static/images/eye-open.png"
-          class="eye-icon eye-open"
-          @click="showPassword = !showPassword"
-        />
+        <input :type="showPassword ? 'text' : 'password'" v-model="form.password" placeholder="密码"
+          placeholder-class="placeholder" />
+        <image v-if="!showPassword" src="/static/images/eye-off.png" class="eye-icon"
+          @click="showPassword = !showPassword" />
+        <image v-else src="/static/images/eye-open.png" class="eye-icon eye-open"
+          @click="showPassword = !showPassword" />
       </view>
-
       <view class="label">确认密码</view>
       <view class="form-item">
-        <input
-          :type="showPasswordTwo ? 'text' : 'password'"
-          v-model="form.passwordTwo"
-          placeholder="密码"
-          placeholder-class="placeholder"
-        />
-        <image
-          v-if="!showPasswordTwo"
-          src="/static/images/eye-off.png"
-          class="eye-icon"
-          @click="showPasswordTwo = !showPasswordTwo"
-        />
-        <image
-          v-else
-          src="/static/images/eye-open.png"
-          class="eye-icon eye-open"
-          @click="showPasswordTwo = !showPasswordTwo"
-        />
+        <input :type="showPasswordTwo ? 'text' : 'password'" v-model="form.passwordTwo" placeholder="密码"
+          placeholder-class="placeholder" />
+        <image v-if="!showPasswordTwo" src="/static/images/eye-off.png" class="eye-icon"
+          @click="showPasswordTwo = !showPasswordTwo" />
+        <image v-else src="/static/images/eye-open.png" class="eye-icon eye-open"
+          @click="showPasswordTwo = !showPasswordTwo" />
       </view>
       <view class="login-tip">密码需由字母与数字组成，不少于8位</view>
       <button class="login-btn" @click="handleSubmit">确定</button>
@@ -83,11 +42,14 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { appleLogin } from "@/api/login";
+import { getCaptcha, registerUser } from "@/api/login";
+
+const timeNum = ref(0);
+let timer = null
 // 登录类型
 const showPassword = ref(false);
 const showPasswordTwo = ref(false);
-
+const role = ref('ROLE_CUSTOMER')
 // 表单数据
 const form = reactive({
   phone: "",
@@ -102,17 +64,46 @@ const goToLogin = () => {
   });
 };
 const getCode = () => {
-  // appleLogin({ identityToken: "HpjAKvLjivbJr9j9ZxfFxA" }).then((v) => {
-	// });
+  if (timeNum.value > 0) return;
+  if (!form.phone || !/^1[3456789]\d{9}$/.test(form.phone)) {
+    uni.showToast({
+      title: "请输入正确的手机号码",
+      icon: "none",
+    });
+    return;
+  }
+  getCaptcha({ phone: form.phone }).then(v => {
+    // 这里可以添加请求验证码的逻辑
+    uni.showToast({
+      title: "验证码发送成功",
+      icon: "none",
+    })
+
+    timeNum.value = 60;
+    timer = setInterval(() => {
+      timeNum.value--;
+      if (timeNum.value <= 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+  }).catch(() => {
+    clearInterval(timer);
+    timeNum.value = 0
+  })
+
 };
 // 处理登录
 const handleSubmit = () => {
-  return uni.navigateTo({
-    url: `/pages/login/result/index?from=register`,
-  });
   if (!form.phone) {
     uni.showToast({
       title: "请输入手机号码",
+      icon: "none",
+    });
+    return;
+  }
+  if (!form.code) {
+    uni.showToast({
+      title: "请输入验证码",
       icon: "none",
     });
     return;
@@ -124,6 +115,42 @@ const handleSubmit = () => {
     });
     return;
   }
+  if (!form.name) {
+    uni.showToast({
+      title: "请输入姓名",
+      icon: "none",
+    });
+    return;
+  }
+  if (form.password !== form.passwordTwo) {
+    uni.showToast({
+      title: "两次输入的密码不一致",
+      icon: "none",
+    });
+    return;
+  }
+  // 密码需由字母与数字组成，不少于8位
+  if (!/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(form.password)) {
+    uni.showToast({
+      title: "密码需由字母与数字组成，不少于8位",
+      icon: "none",
+    });
+    return;
+  }
+
+  registerUser({
+    role: role.value,
+    phone: form.phone,
+    captcha: form.code,
+    account: form.name,
+    newPassword: form.password,
+    againPassword: form.passwordTwo,
+  }).then(v => {
+    uni.navigateTo({
+      url: `/pages/login/result/index?from=register`,
+    });
+  })
+
   // TODO: 实现登录逻辑
 };
 </script>

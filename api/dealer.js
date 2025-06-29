@@ -220,3 +220,15 @@ export const resetPhone = (data) =>
   http.post("https://yuq.fenaor.com/ma/customer/resetPhone", data, {
     loading: true,
   });
+export const getStatistics = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/statistics", data, {
+    loading: true,
+  });
+export const getPrivacyPolicy = (data) =>
+  http.get("https://yuq.fenaor.com/privacyPolicy", data, {
+    loading: true,
+  });
+export const getServiceAgreement = (data) =>
+  http.get("https://yuq.fenaor.com/serviceAgreement", data, {
+    loading: true,
+  });

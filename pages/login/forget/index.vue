@@ -10,7 +10,8 @@
 			<view class="form-item">
 				<input type="text" maxlength="11" v-model="form.code" placeholder="请输入"
 					placeholder-class="placeholder" />
-				<text @click="getCode" class="code">获取验证码</text>
+				<text v-if="timeNum" class="code">{{ timeNum }}s</text>
+				<text v-else @click="getCode" class="code">获取验证码</text>
 			</view>
 			<view class="label">密码</view>
 			<view class="form-item">
@@ -21,7 +22,6 @@
 				<image v-else src="/static/images/eye-open.png" class="eye-icon eye-open"
 					@click="showPassword = !showPassword" />
 			</view>
-
 			<view class="label">确认密码</view>
 			<view class="form-item">
 				<input :type="showPasswordTwo ? 'text' : 'password'" v-model="form.passwordTwo" placeholder="密码"
@@ -40,11 +40,14 @@
 <script setup>
 import { passwordReset, getCaptcha } from '@/api/login'
 import { ref, reactive } from "vue";
+import { onLoad } from "@dcloudio/uni-app";
 
 // 登录类型
 const showPassword = ref(false);
 const showPasswordTwo = ref(false);
-
+const timeNum = ref(0);
+const role = ref('ROLE_CUSTOMER')
+let timer = null
 // 表单数据
 const form = reactive({
 	phone: "",
@@ -52,9 +55,40 @@ const form = reactive({
 	code: '',
 	passwordTwo: ""
 });
-
+onLoad((options) => {
+	role.value = options.role
+})
 const getCode = () => {
-	console.log(form.phone)
+	if (timeNum.value > 0) return;
+	if (!form.phone || !/^1[3456789]\d{9}$/.test(form.phone)) {
+		uni.showToast({
+			title: "请输入正确的手机号码",
+			icon: "none",
+		});
+		return;
+	}
+	getCaptcha({ phone: form.phone }).then(v => {
+		// 这里可以添加请求验证码的逻辑
+		uni.showToast({
+			title: "验证码发送成功",
+			icon: "none",
+		})
+		timeNum.value = 60;
+		timer = setInterval(() => {
+			timeNum.value--;
+			if (timeNum.value <= 0) {
+				clearInterval(timer);
+			}
+		}, 1000);
+	}).catch(() => {
+		clearInterval(timer);
+		timeNum.value = 0
+	})
+
+};
+
+// 处理登录
+const handleSubmit = () => {
 	if (!form.phone) {
 		uni.showToast({
 			title: "请输入手机号码",
@@ -62,22 +96,9 @@ const getCode = () => {
 		});
 		return;
 	}
-	getCaptcha({
-		phone: form.phone
-	}).then(res => {
-		console.log(res)
-	})
-
-}
-
-// 处理登录
-const handleSubmit = () => {
-	return uni.navigateTo({
-		url: `/pages/login/result/index?from=forget`
-	})
-	if (!form.phone) {
+	if (!form.code) {
 		uni.showToast({
-			title: "请输入手机号码",
+			title: "请输入验证码",
 			icon: "none",
 		});
 		return;
@@ -89,7 +110,32 @@ const handleSubmit = () => {
 		});
 		return;
 	}
-	// TODO: 实现登录逻辑
+	if (form.password !== form.passwordTwo) {
+		uni.showToast({
+			title: "两次输入的密码不一致",
+			icon: "none",
+		});
+		return;
+	}
+	// 密码需由字母与数字组成，不少于8位
+	if (!/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(form.password)) {
+		uni.showToast({
+			title: "密码需由字母与数字组成，不少于8位",
+			icon: "none",
+		});
+		return;
+	}
+	passwordReset({
+		role: role.value,
+		phone: form.phone,
+		captcha: form.code,
+		newPassword: form.password,
+		againPassword: form.passwordTwo,
+	}).then(v => {
+		return uni.navigateTo({
+			url: `/pages/login/result/index?from=forget`
+		})
+	})
 };
 </script>
 

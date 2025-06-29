@@ -5,10 +5,10 @@
       <view class="param-item" v-for="(item, index) in paramList" :key="index">
         <text class="param-label">{{ item.label }}：</text>
         <view class="param-value">
-          <text class="value-off" :class="{
+          <!-- <text class="value-off" :class="{
             'value-on': item.value === '有' || item.value === '显示' || item.value === '开启',
           }">
-          </text>
+          </text> -->
           {{ item.value }}
         </view>
       </view>
@@ -86,8 +86,10 @@ onLoad(async ({ id }) => {
     }
 
     .param-value {
+      text-align: right;
       width: 160rpx;
       display: flex;
+      justify-content: flex-end;
       align-items: center;
       color: $link-color;
       padding-right: 30rpx;

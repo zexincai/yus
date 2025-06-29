@@ -307,7 +307,15 @@ const DateUtil = {
 
         // 大于等于12个月
         return Math.floor(diff / (12 * 30 * 24 * 60 * 60 * 1000)) + '年前';
-    }
+    },
+
+    // 获取这个月的第一天，并且返回YYYY-MM-DD
+    getFirstDayOfMonth() {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = d.getMonth() + 1;
+        return `${year}-${month}-01`;
+    },
 };
 
 export default DateUtil;

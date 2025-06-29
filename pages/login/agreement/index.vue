@@ -1,8 +1,9 @@
 <template>
     <view class="agreement-container">
+        <web-view src="https://yuq.fenaor.com/serviceAgreement"></web-view>
         <!-- <view class="agreement-title">用户服务协议</view>
         <view class="agreement-date">更新日期：{{ updateDate }}</view> -->
-        <scroll-view scroll-y class="agreement-content">
+        <!-- <scroll-view scroll-y class="agreement-content">
             <view class="agreement-section">
                 <view class="section-title">一、引言</view>
                 <view class="section-content">
@@ -73,23 +74,15 @@
                     电话：[请填写您的联系电话]
                 </view>
             </view>
-        </scroll-view>
+        </scroll-view> -->
     </view>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            updateDate: '2023年12月1日'
-        }
-    },
-    onLoad() {
-        uni.setNavigationBarTitle({
-            title: '用户服务协议'
-        });
-    }
-}
+<script setup>
+import { onLoad, } from "@dcloudio/uni-app";
+onLoad(() => {
+
+})
 </script>
 
 <style lang="scss">

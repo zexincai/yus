@@ -3,26 +3,30 @@
 		<!-- 总量统计 -->
 		<view class="total-stats">
 			<view class="stat-item">
-				<text class="value">23480</text>
+				<text class="value">{{ detail.totalVolume }}</text>
 				<text class="label">总净水量（L）</text>
 			</view>
 			<view class="stat-item">
-				<text class="value">164</text>
+				<text class="value">{{ detail.totalImpurity }}</text>
 				<text class="label">总过滤杂质（g）</text>
 			</view>
 		</view>
 
 		<!-- 日期选择 -->
 		<view class="date-picker">
-			<view class="picker-item" @click="showStartDatePicker">
-				<text>{{ startDate }}</text>
-				<image src="/static/images/arrow-down.png" mode="aspectFit" class="arrow-icon" />
-			</view>
+			<picker mode="date" :valLue="startDate" @change="hanldeStartDateChange">
+				<view class="picker-item">
+					<text>{{ startDate }}</text>
+					<image src="/static/images/arrow-down.png" mode="aspectFit" class="arrow-icon" />
+				</view>
+			</picker>
 			<text class="picker-separator">至</text>
-			<view class="picker-item" @click="showEndDatePicker">
-				<text>{{ endDate }}</text>
-				<image src="/static/images/arrow-down.png" mode="aspectFit" class="arrow-icon" />
-			</view>
+			<picker mode="date" :valLue="endDate" @change="hanldeEndDateChange">
+				<view class="picker-item">
+					<text>{{ endDate }}</text>
+					<image src="/static/images/arrow-down.png" mode="aspectFit" class="arrow-icon" />
+				</view>
+			</picker>
 			<button class="confirm-btn" @click="handleConfirm">确定</button>
 		</view>
 
@@ -37,9 +41,9 @@
 
 			<!-- 表格内容 -->
 			<scroll-view scroll-y class="table-body">
-				<view v-for="(item, index) in tableData" :key="index" class="table-row">
+				<view v-for="(item, index) in detail.rows" :key="index" class="table-row">
 					<text class="table-cell">{{ item.date }}</text>
-					<text class="table-cell">{{ item.water }}</text>
+					<text class="table-cell">{{ item.volume }}</text>
 					<text class="table-cell">{{ item.impurity }}</text>
 				</view>
 			</scroll-view>
@@ -49,11 +53,19 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { onLoad, } from "@dcloudio/uni-app";
+import { getStatistics, } from "@/api/dealer";
+import DateUtil from "@/utils/date";
 
 // 日期范围
 const startDate = ref('2024-04-01')
 const endDate = ref('2024-04-30')
-
+const deviceId = ref('')
+const detail = ref({
+	totalVolume: 0,
+	totalImpurity: 0,
+	rows: []
+})
 // 表格数据
 const tableData = reactive([
 	{ date: '2025-04-09', water: 12, impurity: 1.34 },
@@ -71,6 +83,40 @@ const tableData = reactive([
 	{ date: '2025-03-27', water: 14, impurity: 1.67 }
 ])
 
+onLoad(({ id }) => {
+	deviceId.value = id
+	// 获取取这个月的第一天跟今天
+	endDate.value = DateUtil.today()
+	startDate.value = DateUtil.getFirstDayOfMonth()
+	getData()
+
+})
+const hanldeStartDateChange = (e) => {
+	startDate.value = e.detail.value;
+	if (new Date(startDate.value).getTime() > new Date(endDate.value).getTime()) {
+		endDate.value = startDate.value
+	}
+	// if (DateUtil.compare(startDate.value, endDate.value)) {
+	// 	startDate.value = endDate.value
+	// }
+	getData()
+
+};
+const hanldeEndDateChange = (e) => {
+	endDate.value = e.detail.value;
+	if (new Date(startDate.value).getTime() > new Date(endDate.value).getTime()) {
+		startDate.value = endDate.value
+	}
+	getData()
+};
+const getData = async () => {
+	const resp = await getStatistics({
+		deviceId: deviceId.value,
+		startDate: startDate.value,
+		endDate: endDate.value
+	})
+	detail.value = resp
+}
 // 显示开始日期选择器
 const showStartDatePicker = () => {
 	uni.showDatePicker({
@@ -141,6 +187,7 @@ const handleConfirm = () => {
 	margin-bottom: 30rpx;
 
 	.picker-item {
+		min-width: 200rpx;
 		flex: 1;
 		height: 65.22rpx;
 		border-radius: 12rpx;

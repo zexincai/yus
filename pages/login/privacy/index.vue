@@ -2,7 +2,8 @@
     <view class="privacy-container">
         <!-- <view class="privacy-title">隐私政策</view>
         <view class="privacy-date">更新日期：{{ updateDate }}</view> -->
-        <scroll-view scroll-y class="privacy-content">
+        <web-view src="https://yuq.fenaor.com/privacyPolicy"></web-view>
+        <!-- <scroll-view scroll-y class="privacy-content">
             <view class="privacy-section">
                 <view class="section-title">引言</view>
                 <view class="section-content">
@@ -192,7 +193,7 @@
                     </view>
                 </view>
             </view>
-        </scroll-view>
+        </scroll-view> -->
     </view>
 </template>
 
