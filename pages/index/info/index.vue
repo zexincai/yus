@@ -44,7 +44,7 @@
 import { ref } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { resetPassword, } from "@/api/dealer";
-
+import store from "@/store";
 const oldPwd = ref("");
 const newPwd = ref("");
 const name = ref("");
@@ -111,6 +111,7 @@ const handleLogout = () => {
     success: (res) => {
       if (res.confirm) {
         uni.showToast({ title: "已退出", icon: "success" });
+        store.commit("setUserInfo", {});
         uni.navigateTo({ url: "/pages/login/index" });
         // 这里可跳转到登录页
       }
