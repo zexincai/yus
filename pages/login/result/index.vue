@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view v-if="from == 'forget'" class="result-content">
+		<view v-if="fromType == 'forget'" class="result-content">
 			<!-- 成功图标 -->
 			<image class="success-icon" src="/static/images/login-reset-success.png" mode="aspectFit" />
 			<!-- 成功提示文本 -->
@@ -11,7 +11,7 @@
 				去登录
 			</button>
 		</view>
-		<view v-if="from == 'register'" class="result-content">
+		<view v-if="fromType == 'register'" class="result-content">
 			<!-- 成功图标 -->
 			<image class="success-icon" src="/static/images/login-register-success.png" mode="aspectFit" />
 			<!-- 成功提示文本 -->
@@ -27,14 +27,18 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-const route = useRoute()
-const from = ref(route.query.from)
+import { onLoad } from "@dcloudio/uni-app";
+
+const fromType = ref('forget')
+onLoad(({ from }) => {
+	fromType.value = from || 'forget'
+})
 const goToLogin = () => {
 	uni.redirectTo({
 		url: '/pages/login/index'
 	})
 }
+
 </script>
 
 <style lang="scss" scoped>

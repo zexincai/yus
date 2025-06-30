@@ -35,7 +35,8 @@
     <!-- 保存按钮 -->
     <button class="save-btn" @click="handleSave">保存</button>
     <!-- 退出账号 -->
-    <view class="logout-link" @click="handleLogout">退出当前账号>></view>
+    <view class="logout-link" @click="handleViewPrivacy">隐私政策>></view>
+    <view class="logout-link" style="margin-top: 20rpx;" @click="handleLogout">退出当前账号>></view>
   </view>
 </template>
 
@@ -87,10 +88,7 @@ const handleSave = async () => {
       name: name.value,
     })
     uni.showToast({ title: "保存成功", icon: "success" });
-    // uni.redirectTo({
-    //   url: '/pages/login/index'
-    // })
-    userInfo.name = name.value;
+    userInfo.value.name = name.value;
     uni.setStorageSync("userInfo", userInfo.value);
   } catch (error) {
 
@@ -98,7 +96,13 @@ const handleSave = async () => {
   }
 
 };
-
+// 查看隐私政策
+const handleViewPrivacy = () => {
+  // TODO: 跳转到隐私政策页面
+  uni.navigateTo({
+    url: `/pages/login/privacy/index`,
+  });
+};
 const handleLogout = () => {
   // TODO: 退出登录逻辑
   uni.showModal({
@@ -217,15 +221,9 @@ const handleLogout = () => {
 .logout-link {
   color: #1ecfff;
   font-size: 28rpx;
-  // text-align: right;
   text-align: center;
-  // position: fixed;
-  // bottom: 40rpx;
-  // left: 50%;
-  // transform: translateX(-50%);
-  margin-top: 360rpx;
+  margin-top: 140rpx;
 }
-
 .iconfont {
   font-family: "iconfont" !important;
   font-style: normal;

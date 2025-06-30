@@ -72,7 +72,9 @@ const getCode = () => {
     });
     return;
   }
+  uni.showLoading({})
   getCaptcha({ phone: form.phone }).then(v => {
+    uni.hideLoading()
     // 这里可以添加请求验证码的逻辑
     uni.showToast({
       title: "验证码发送成功",
