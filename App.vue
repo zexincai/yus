@@ -3,7 +3,6 @@ export default {
   onLaunch: function () {
     console.log("App Launch");
     let userInfo = uni.getStorageSync("userInfo");
-    console.log(' console.log("userInfo", userInfo);', userInfo);
     if (!userInfo || !userInfo.token) {
       uni.reLaunch({
         url: "/pages/login/index",
