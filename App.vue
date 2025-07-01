@@ -1,22 +1,22 @@
 <script>
 export default {
   onLaunch: function () {
-    console.log("App Launch");
-    let userInfo = uni.getStorageSync("userInfo");
-    if (!userInfo || !userInfo.token) {
-      uni.reLaunch({
-        url: "/pages/login/index",
-        success() {
-          // #ifdef APP
-          plus.navigator.closeSplashscreen();
-          // #endif
-        },
-      });
-    } else {
-      // #ifdef APP
-      plus.navigator.closeSplashscreen();
-      // #endif
-    }
+    // console.log("App Launch");
+    // let userInfo = uni.getStorageSync("userInfo");
+    // if (!userInfo || !userInfo.token) {
+    //   uni.reLaunch({
+    //     url: "/pages/login/index",
+    //     success() {
+    //       // #ifdef APP
+    //       plus.navigator.closeSplashscreen();
+    //       // #endif
+    //     },
+    //   });
+    // } else {
+    //   // #ifdef APP
+    //   plus.navigator.closeSplashscreen();
+    //   // #endif
+    // }
   },
   onShow: function () {
     console.log("App Show");
