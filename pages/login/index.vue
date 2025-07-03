@@ -96,6 +96,19 @@ onLoad(() => {
   }
   isIos.value = uni.getSystemInfoSync().platform == "ios";
   uni.setStorageSync("navBindPhoneFlag", "");
+
+
+  console.log("App Launch");
+  let userInfo = uni.getStorageSync("userInfo");
+  if (userInfo || userInfo.token) {
+    uni.switchTab({
+      url: "/pages/index/index",
+      success() {
+      },
+    });
+  } else {
+
+  }
 });
 const onAppleLogin = () => {
   if (!form.agreement) {
@@ -344,6 +357,7 @@ const handleViewPrivacy = () => {
   display: flex;
   justify-content: space-between;
 }
+
 .forget {
   color: #0ecbf7;
   font-size: 26rpx;

@@ -1,20 +1,19 @@
 {
   "pages": [
     {
-      "path": "pages/index/index",
-      "style": {
-        "navigationBarTitleText": "",
-        "navigationStyle": "custom"
-      }
-    },
-    {
       "path": "pages/login/index",
       "style": {
         "navigationBarTitleText": "登录",
         "navigationStyle": "custom"
       }
     },
-
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
     {
       "path": "pages/login/forget/index",
       "style": {
@@ -269,7 +268,7 @@
   },
   "globalStyle": {
     "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "优口",
+    "navigationBarTitleText": "优口净水",
     "navigationBarBackgroundColor": "#152136",
     "backgroundColor": "#152136"
   },
