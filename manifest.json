@@ -2,8 +2,8 @@
     "name" : "优口净水",
     "appid" : "__UNI__36205B7",
     "description" : "",
-    "versionName" : "1.1.8",
-    "versionCode" : 2025070103,
+    "versionName" : "1.1.9",
+    "versionCode" : 2025070301,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -11,9 +11,9 @@
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
-            "alwaysShowBeforeRender" : false,
-            "waiting" : false,
-            "autoclose" : false,
+            "alwaysShowBeforeRender" : true,
+            "waiting" : true,
+            "autoclose" : true,
             "delay" : 0
         },
         /* 模块配置 */
@@ -52,6 +52,11 @@
             /* ios打包配置 */
             "ios" : {
                 "dSYMs" : false,
+                "privacyDescription" : {
+                    "NSCameraUsageDescription" : "扫描产品编码，用于添加设备或更换耗材。",
+                    "NSPhotoLibraryUsageDescription" : "从相册中选择图片识别产品编码，用于添加设备或更换耗材。",
+                    "NSPhotoLibraryAddUsageDescription" : "保存二维码图像到相册"
+                },
                 "idfa" : false
             },
             /* SDK配置 */
@@ -91,6 +96,9 @@
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
                     }
                 }
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : true
             }
         }
     },

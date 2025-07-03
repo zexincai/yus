@@ -21,6 +21,12 @@
       }
     },
     {
+      "path": "pages/login/cancel/index",
+      "style": {
+        "navigationBarTitleText": "账号注销"
+      }
+    },
+    {
       "path": "pages/login/register/index",
       "style": {
         "navigationBarTitleText": "用户注册"
