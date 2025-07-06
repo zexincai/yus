@@ -50,7 +50,7 @@ onLoad(({ id }) => {
 });
 const getDetail = async (id) => {
   const resp = await getCaseDetail({ id });
-  resp.content = (resp.content || '').replace(/<img/g, '<img style="max-width:100%;height:auto"');
+  resp.content = (resp.content || '').replace(/<img/g, '<img width="100%" style="max-width:100%;height:auto"');
   detail.value = resp
 };
 </script>

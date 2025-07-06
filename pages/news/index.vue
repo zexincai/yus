@@ -97,6 +97,7 @@ const handleNewsClick = (news) => {
     align-items: center;
 
     .news-content {
+      width: 100%;
       flex: 1;
       margin-right: 24rpx;
 

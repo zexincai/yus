@@ -112,7 +112,9 @@ const handleLogout = () => {
       if (res.confirm) {
         uni.showToast({ title: "已退出", icon: "success" });
         store.commit("setUserInfo", {});
-        uni.navigateTo({ url: "/pages/login/index" });
+        // uni.setStorageSync('userInfo', {})
+        // uni.setStorageSync('token', "")
+        uni.reLaunch({ url: "/pages/login/index" });
         // 这里可跳转到登录页
       }
     },
@@ -225,6 +227,7 @@ const handleLogout = () => {
   text-align: center;
   margin-top: 140rpx;
 }
+
 .iconfont {
   font-family: "iconfont" !important;
   font-style: normal;
