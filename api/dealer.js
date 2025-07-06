@@ -227,3 +227,11 @@ export const getServiceAgreement = (data) =>
   http.get("https://app.usayuq.com/serviceAgreement", data, {
     loading: true,
   });
+export const getOrderList = (data) =>
+  http.post("https://app.usayuq.com/ma/dealer/orderList", data, {
+    loading: true,
+  });
+export const getOrderDetail = (data) =>
+  http.post("https://app.usayuq.com/ma/dealer/orderDetail", data, {
+    loading: true,
+  });

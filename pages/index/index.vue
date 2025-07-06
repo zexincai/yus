@@ -178,20 +178,25 @@
           <button class="auth-action-btn" v-if="!isAuthorized">授权</button>
           <view :class="{ blue: item.buyout != 1 }" class="auth-status" v-else>{{ item.label }}</view>
         </view>
+        <template v-else>
+          <view class="empty">
+            <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+            <view class="empty-text"> 暂无数据 </view>
+          </view>
+        </template>
       </view>
       <view v-if="currentNav === 'log'" class="customer-list">
         <template v-if="false">
           <view @tap="handleCustomerClick(item)" class="customer-item" v-for="item in customerData.users"
             :key="item.phone">
             <view class="avatar">
-              <image src="/static/images/avatar.png" class="avatar-img" />
+              <image src="/static/images/order-icon.png" class="avatar-img" />
             </view>
             <view class="customer-info">
               <view class="name-row">
-                <text class="name">订单：{{ item.name }}</text>
-                <image src="/static/images/icon-edit.png" class="edit-icon" />
+                <text class="name">订单：{{ item.orderNo }}</text>
               </view>
-              <text class="phone">出库时间：{{ item.phone }}</text>
+              <text style="margin-top: 50rpx;" class="phone">出库时间：{{ item.createTime }}</text>
             </view>
             <view class="device-count">
               <view class="right-arrow"></view>
@@ -208,15 +213,20 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { onShow, onLoad } from "@dcloudio/uni-app";
+import { ref, computed, watch } from "vue";
+import { onShow, onLoad, onReachBottom } from "@dcloudio/uni-app";
 import {
   equipmentStatistics,
   getBusinessCasePage,
   loadBrands,
   searchDevices,
   customerDevices,
+  devicelLoadDeviceBaseInfo,
+  loadDeviceBaseInfo,
+  getOrderList
 } from "@/api/dealer";
+import DateUtil from "@/utils/date";
+
 // 从缓存里获取登录类型
 let loginType = ref("");
 let userInfo = ref({});
@@ -225,6 +235,10 @@ let page = ref(1);
 const brandList = ref([]);
 const brandIndex = ref(0);
 let bannerList = ref([]);
+let logList = ref([]);
+// 日期范围
+const startDate = ref('2024-04-01')
+const endDate = ref('2024-04-30')
 const tabs = ref([
   { label: "全部", value: "0", count: 12 },
   { label: "正常", value: "1", count: 8 },
@@ -265,9 +279,13 @@ const getDeviceList = () => {
       tab: isAuthorized.value ? 1 : 0,
       arg: searchKey.value,
       current: page.value,
-      size: 10,
+      size: 20,
     }).then((res) => {
-      deviceList.value = res;
+      if (page.value == 1) {
+        deviceList.value = res;
+      } else {
+        deviceList.value = [...deviceList.value, ...res];
+      }
       if (res.length) {
         page.value++;
       }
@@ -281,7 +299,7 @@ const getDeviceList = () => {
           ? brandListMap[brandList.value[brandIndex.value]]
           : "",
       current: page.value,
-      size: 10,
+      size: 20,
     }).then((res) => {
       deviceList.value = res;
       if (res.length) {
@@ -299,6 +317,9 @@ const onSearch = () => {
     page.value = 1;
     getDeviceList();
   }
+  if (currentNav.value == "log") {
+    getLogList()
+  }
 };
 // 全部类型
 const onBrandPickerChange = (e) => {
@@ -315,6 +336,27 @@ const handleTabChange = (tab) => {
   }
 };
 
+// 监听isAuthorized变化
+watch(isAuthorized, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    page.value = 1;
+    getDeviceList();
+  }
+});
+
+onReachBottom(() => {
+  // if (currentNav.value == "log") {
+  //   getLogList()
+  // }
+  if (currentNav.value == "device") {
+    getDeviceList();
+  }
+  // if (currentNav.value == "customer") {
+  //   getEquipmentStatistics();
+  // }
+
+})
+
 const handleNavChange = (tab) => {
   currentNav.value = tab;
   searchKey.value = "";
@@ -325,6 +367,9 @@ const handleNavChange = (tab) => {
   }
   if (currentNav.value == "customer") {
     getEquipmentStatistics();
+  }
+  if (currentNav.value == "log") {
+    getLogList()
   }
 };
 
@@ -339,18 +384,76 @@ const handleDeviceClick = (device) => {
     url: `/pages/device/detail/index?id=${device.deviceId}`,
   });
 };
-
+const handleOrderClick = (item) => {
+  uni.setStorageSync("orderDetail", item);
+  uni.navigateTo({
+    url: `/pages/index/record/index`,
+  });
+};
 const handleCustomerClick = (item) => {
   uni.setStorageSync("customerDetail", item);
   uni.navigateTo({
     url: `/pages/index/customer/index?phone=${item.phone}`,
   });
 };
-const handleDeviceAuthorizeClick = (item) => {
-  uni.navigateTo({
-    url: `/pages/device/detail/index?id=${item.deviceId}`,
-  });
+
+const hanldeStartDateChange = (e) => {
+  startDate.value = e.detail.value;
+  if (new Date(startDate.value).getTime() > new Date(endDate.value).getTime()) {
+    endDate.value = startDate.value
+  }
 };
+const hanldeEndDateChange = (e) => {
+  endDate.value = e.detail.value;
+  if (new Date(startDate.value).getTime() > new Date(endDate.value).getTime()) {
+    startDate.value = endDate.value
+  }
+};
+const getLogList = () => {
+  getOrderList({
+    arg: searchKey.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
+  }).then((res) => {
+    logList.value = res;
+  });
+}
+const handleConfirm = () => {
+  page.value = 1
+  getLogList()
+}
+const handleDeviceAuthorizeClick = (item) => {
+  if (!isAuthorized.value) {
+    const func = loginType.value === 'ROLE_CUSTOMER' ? devicelLoadDeviceBaseInfo : loadDeviceBaseInfo
+    func({ mes: item.sn }).then((res) => {
+      if (loginType.value === 'ROLE_CUSTOMER') {
+        uni.setStorageSync("deviceInfo", res);
+        uni.navigateTo({
+          url: "/pages/index/scan/detail/index",
+        });
+      } else {
+        if (res.activeState == 2) {
+          uni.showToast({
+            title: "设备已激活",
+            icon: "none",
+          });
+        } else {
+          uni.setStorageSync("deviceInfo", res);
+          uni.navigateTo({
+            url: "/pages/device/authorize/index",
+          });
+        }
+      }
+
+    });
+  } else {
+    uni.navigateTo({
+      url: `/pages/device/detail/index?id=${item.deviceId}`,
+    });
+  }
+
+};
+
 
 // 处理案例点击
 const handleCaseClick = (item) => {
@@ -375,6 +478,7 @@ const onRefresh = async () => {
     isRefreshing.value = false;
   }
 };
+
 onLoad(() => {
   if (uni.getStorageSync("token")) {
     loadBrands().then((res) => {
@@ -387,6 +491,10 @@ onLoad(() => {
       ];
     });
   }
+
+  // 获取取这个月的第一天跟今天
+  endDate.value = DateUtil.today()
+  startDate.value = DateUtil.getFirstDayOfMonth()
 });
 const getBannerList = async () => {
   const data = await getBusinessCasePage();
@@ -521,7 +629,7 @@ onShow(() => {
 
 .search-input {
   flex: 1;
-  background: #2d3c58;
+  background: rgba(50, 74, 112, 1);
   height: 80rpx;
   border-radius: 90rpx;
   padding: 0 30rpx;
@@ -932,6 +1040,8 @@ onShow(() => {
       .name-row {
         display: flex;
         align-items: center;
+        margin-bottom: 10rpx;
+        margin-top: -2rpx;
 
         .name {
           color: #fff;
@@ -971,6 +1081,64 @@ onShow(() => {
         vertical-align: middle;
       }
     }
+  }
+}
+
+.date-picker {
+  // margin: 12rpx;
+  margin-top: 34rpx;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+
+  .picker-item {
+    min-width: 224rpx;
+    flex: 1;
+    height: 65.22rpx;
+    border-radius: 12rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20rpx;
+    border-radius: 9rpx;
+    background: rgba(50, 74, 112, 1);
+
+    text {
+      color: #fff;
+      font-size: 25rpx;
+    }
+
+    .arrow-icon {
+      // 箭头图标样式
+      width: 0;
+      height: 0;
+      border-left: 10rpx solid transparent;
+      border-right: 10rpx solid transparent;
+      border-top: 12rpx solid #CCCCCC;
+      margin-left: 4rpx;
+      display: inline-block;
+      vertical-align: middle;
+
+    }
+  }
+
+  .picker-separator {
+    color: #fff;
+    font-size: 28rpx;
+    padding: 0 20rpx;
+  }
+
+  .confirm-btn {
+    color: #fff;
+    font-size: 25rpx;
+    border-radius: 12rpx;
+    margin-left: 40rpx;
+    text-align: center;
+    width: 130rpx;
+    line-height: 65rpx;
+    height: 65rpx;
+    border-radius: 36rpx;
+    background: $active-color;
   }
 }
 </style>
