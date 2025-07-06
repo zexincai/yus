@@ -37,7 +37,7 @@
     <!-- 退出账号 -->
     <view class="logout-link" @click="handleViewPrivacy">隐私政策>></view>
     <view class="logout-link" style="margin-top: 20rpx;" @click="handleLogout">退出当前账号>></view>
-    <!-- <view class="logout-link" style="margin-top: 20rpx;color:#DB4E51" @click="toCancel">注销账号>></view> -->
+    <view class="logout-link" style="margin-top: 20rpx;color:#DB4E51" @click="toCancel">注销账号>></view>
   </view>
 </template>
 
