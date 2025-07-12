@@ -11,11 +11,13 @@
       <view class="info-row">
         <text class="label">姓名：</text>
         <!-- <text class="value">{{ userInfo.name }}</text> -->
-        <input class="input" v-model="name" placeholder="" placeholder-class="placeholder" />
+        <input class="input" type="text" v-model="name" placeholder="" placeholder-class="placeholder" />
       </view>
     </view>
+    <button class="save-btn-name" @click="handleSave(0)">保存</button>
+
     <!-- 修改密码 -->
-    <view class="section-title">我的信息</view>
+    <view style="margin-top: 120rpx;" class="section-title">密码</view>
     <view class="info-card">
       <view class="info-row">
         <text class="label">原密码：</text>
@@ -33,7 +35,7 @@
       </view>
     </view>
     <!-- 保存按钮 -->
-    <button class="save-btn" @click="handleSave">保存</button>
+    <button class="save-btn" @click="handleSave(1)">保存</button>
     <!-- 退出账号 -->
     <view class="logout-link" @click="handleViewPrivacy">隐私政策>></view>
     <view class="logout-link" style="margin-top: 20rpx;" @click="handleLogout">退出当前账号>></view>
@@ -62,31 +64,35 @@ const handleBack = () => {
   uni.navigateBack();
 };
 
-const handleSave = async () => {
+const handleSave = async (type) => {
   // TODO: 校验和保存逻辑
   // 校验
-  if (!oldPwd.value) {
-    uni.showToast({ title: "请输入原密码", icon: "none" });
-    return;
+  if (type == 1) {
+    if (!oldPwd.value) {
+      uni.showToast({ title: "请输入原密码", icon: "none" });
+      return;
+    }
+    if (!newPwd.value) {
+      uni.showToast({ title: "请输入新密码", icon: "none" });
+      return;
+    }
+    if (!confirmPwd.value) {
+      uni.showToast({ title: "请输入确认密码", icon: "none" });
+      return;
+    }
+    if (newPwd.value !== confirmPwd.value) {
+      uni.showToast({ title: "两次输入的密码不一致", icon: "none" });
+      return;
+    }
   }
-  if (!newPwd.value) {
-    uni.showToast({ title: "请输入新密码", icon: "none" });
-    return;
-  }
-  if (!confirmPwd.value) {
-    uni.showToast({ title: "请输入确认密码", icon: "none" });
-    return;
-  }
-  if (newPwd.value !== confirmPwd.value) {
-    uni.showToast({ title: "两次输入的密码不一致", icon: "none" });
-    return;
-  }
+
   try {
     await resetPassword({
       oldPwd: oldPwd.value,
       newPwd: newPwd.value,
       againPwd: confirmPwd.value,
       name: name.value,
+      type,
     })
     uni.showToast({ title: "保存成功", icon: "success" });
     userInfo.value.name = name.value;
@@ -221,7 +227,17 @@ const handleLogout = () => {
 }
 
 .save-btn {
-  margin: 180rpx 32rpx 0 30rpx;
+  margin: 60rpx 32rpx 0 30rpx;
+  background: $active-color;
+  color: #fff;
+  line-height: 90rpx;
+  font-size: 29rpx;
+  height: 90rpx;
+  border-radius: 18rpx;
+}
+
+.save-btn-name {
+  margin: 60rpx 32rpx 0 30rpx;
   background: $active-color;
   color: #fff;
   line-height: 90rpx;
