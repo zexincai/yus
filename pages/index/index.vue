@@ -50,8 +50,10 @@
           placeholder="客户/手机号/SN码/安装位置" placeholder-class="placeholder" />
         <input v-model="searchKey" v-if="currentNav == 'device'" type="text" placeholder="类型/SN码/订单"
           placeholder-class="placeholder" @confirm="onSearch" />
-        <input v-if="currentNav == 'log'" type="text" placeholder="订单" placeholder-class="placeholder" />
+        <input v-if="currentNav == 'log'" v-model="searchKey" @confirm="onSearch" type="text" placeholder="订单"
+          placeholder-class="placeholder" />
       </view>
+
       <view v-if="currentNav == 'device'" class="btn primary" style="width: 217rpx" @click="handleAddDevice">
         <image src="/static/images/icon-scan.png" mode="aspectFit" class="icon small" />
         <text>授权设备</text>
@@ -97,19 +99,39 @@
       客户:
       <view style="display: inline-block; margin-right: 20rpx">{{
         customerData.customerNum
-        }}</view>
+      }}</view>
       设备：{{ customerData.deviceNum }}
     </view>
 
     <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'device'" class="auth-status-tabs">
-      <text v-if="!isAuthorized" class="auth-status-label">未授权设备：0</text>
+      <text v-if="!isAuthorized" class="auth-status-label">未授权设备：{{ deviceList.length }}</text>
       <text v-if="isAuthorized" class="auth-status-label">已授权设备：{{ deviceList.length }}</text>
       <view class="status-btn-group">
         <view :class="['status-btn', { active: !isAuthorized }]" @click="isAuthorized = false">未授权</view>
         <view :class="['status-btn', { active: isAuthorized }]" @click="isAuthorized = true">已授权</view>
       </view>
     </view>
-    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'log'" class="device-num">出库订单：0</view>
+
+    <!-- 日期选择 -->
+    <view v-if="currentNav == 'log' && loginType === 'ROLE_DEALER'" class="date-picker">
+      <picker mode="date" :valLue="startDate" @change="hanldeStartDateChange">
+        <view class="picker-item">
+          <text>{{ startDate }}</text>
+          <image src="/static/images/arrow-down.png" mode="aspectFit" class="arrow-icon" />
+        </view>
+      </picker>
+      <text class="picker-separator">至</text>
+      <picker mode="date" :valLue="endDate" @change="hanldeEndDateChange">
+        <view class="picker-item">
+          <text>{{ endDate }}</text>
+          <image src="/static/images/arrow-down.png" mode="aspectFit" class="arrow-icon" />
+        </view>
+      </picker>
+      <button class="confirm-btn" @click="handleConfirm">确定</button>
+    </view>
+    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'log'" style="font-size: 29rpx;" class="device-num">出库订单：
+      {{ logList.length }}
+    </view>
     <!-- 设备列表 -->
     <!-- <scroll-view  class="device-scroll" scroll-y refresher-enabled
       :refresher-triggered="isRefreshing" @refresherrefresh="onRefresh"> -->
@@ -160,14 +182,8 @@
         </view>
       </view>
       <view v-if="currentNav === 'device'" class="device-list1">
-        <template v-if="!isAuthorized">
-          <view class="empty">
-            <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
-            <view class="empty-text"> 暂无数据 </view>
-          </view>
-        </template>
-        <view v-else @tap="handleDeviceAuthorizeClick(item)" class="device-item1" v-for="item in deviceList"
-          :key="item.sn">
+        <view v-if="deviceList.length" @tap="handleDeviceAuthorizeClick(item)" class="device-item1"
+          v-for="item in deviceList" :key="item.sn">
           <image class="device-img" :src="item.productUrl || '/static/images/device.png'" />
           <view class="device-info">
             <text class="device-title">{{ item.brand }}</text>
@@ -186,9 +202,8 @@
         </template>
       </view>
       <view v-if="currentNav === 'log'" class="customer-list">
-        <template v-if="false">
-          <view @tap="handleCustomerClick(item)" class="customer-item" v-for="item in customerData.users"
-            :key="item.phone">
+        <template v-if="logList.length">
+          <view @tap="handleOrderClick(item)" class="customer-item" v-for="item in logList" :key="item.phone">
             <view class="avatar">
               <image src="/static/images/order-icon.png" class="avatar-img" />
             </view>
@@ -505,7 +520,7 @@ onShow(() => {
   if (data) {
     userInfo.value = data;
     loginType.value = data.role;
-    // if (!data.phone && !uni.getStorageSync("navBindPhoneFlag")) {
+     // if (!data.phone && !uni.getStorageSync("navBindPhoneFlag")) {
     //   uni.navigateTo({
     //     url: "/pages/index/customer/bindPhone/index",
     //   });
