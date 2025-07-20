@@ -11,78 +11,111 @@
       <view class="info-row">
         <text class="label">姓名：</text>
         <!-- <text class="value">{{ userInfo.name }}</text> -->
-        <input class="input" type="text" v-model="name" placeholder="" placeholder-class="placeholder" />
+        <input
+          class="input"
+          type="text"
+          v-model="name"
+          placeholder=""
+          placeholder-class="placeholder"
+        />
       </view>
     </view>
     <button class="save-btn-name" @click="handleSave(0)">保存</button>
 
     <!-- 修改密码 -->
-    <view style="margin-top: 120rpx;" class="section-title">密码</view>
+    <view style="margin-top: 120rpx" class="section-title">密码</view>
     <view class="info-card">
       <view class="info-row">
         <text class="label">原密码：</text>
-        <input class="input" type="password" v-model="oldPwd" placeholder="请输入" placeholder-class="placeholder" />
+        <input
+          class="input"
+          type="password"
+          v-model="oldPwd"
+          placeholder="请输入"
+          placeholder-class="placeholder"
+        />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">新密码：</text>
-        <input class="input" type="password" v-model="newPwd" placeholder="请输入" placeholder-class="placeholder" />
+        <input
+          class="input"
+          type="password"
+          v-model="newPwd"
+          placeholder="请输入"
+          placeholder-class="placeholder"
+        />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">确认新密码：</text>
-        <input class="input" type="password" v-model="confirmPwd" placeholder="请输入" placeholder-class="placeholder" />
+        <input
+          class="input"
+          type="password"
+          v-model="confirmPwd"
+          placeholder="请输入"
+          placeholder-class="placeholder"
+        />
       </view>
     </view>
     <!-- 保存按钮 -->
     <button class="save-btn" @click="handleSave(1)">保存</button>
     <!-- 退出账号 -->
     <view class="logout-link" @click="handleViewPrivacy">隐私政策>></view>
-    <view class="logout-link" style="margin-top: 20rpx;" @click="handleLogout">退出当前账号>></view>
-    <!-- <view class="logout-link" style="margin-top: 20rpx;color:#DB4E51" @click="toCancel">注销账号>></view> -->
+    <view class="logout-link" style="margin-top: 20rpx" @click="handleLogout"
+      >退出当前账号>></view
+    >
+    <!-- #ifdef APP-IOS -->
+    <view
+      class="logout-link"
+      style="margin-top: 20rpx; color: #db4e51"
+      @click="toCancel"
+      >注销账号>>
+    </view>
+    <!-- #endif -->
   </view>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { onLoad } from "@dcloudio/uni-app";
-import { resetPassword, } from "@/api/dealer";
-import store from "@/store";
-const oldPwd = ref("");
-const newPwd = ref("");
-const name = ref("");
-const confirmPwd = ref("");
-const userInfo = ref({});
+import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import { resetPassword } from '@/api/dealer'
+import store from '@/store'
+const oldPwd = ref('')
+const newPwd = ref('')
+const name = ref('')
+const confirmPwd = ref('')
+const userInfo = ref({})
 onLoad(() => {
-  const res = uni.getStorageSync("userInfo");
+  const res = uni.getStorageSync('userInfo')
   if (res) {
-    userInfo.value = res;
-    name.value = res.name;
+    userInfo.value = res
+    name.value = res.name
   }
-});
+})
 const handleBack = () => {
-  uni.navigateBack();
-};
+  uni.navigateBack()
+}
 
 const handleSave = async (type) => {
   // TODO: 校验和保存逻辑
   // 校验
   if (type == 1) {
     if (!oldPwd.value) {
-      uni.showToast({ title: "请输入原密码", icon: "none" });
-      return;
+      uni.showToast({ title: '请输入原密码', icon: 'none' })
+      return
     }
     if (!newPwd.value) {
-      uni.showToast({ title: "请输入新密码", icon: "none" });
-      return;
+      uni.showToast({ title: '请输入新密码', icon: 'none' })
+      return
     }
     if (!confirmPwd.value) {
-      uni.showToast({ title: "请输入确认密码", icon: "none" });
-      return;
+      uni.showToast({ title: '请输入确认密码', icon: 'none' })
+      return
     }
     if (newPwd.value !== confirmPwd.value) {
-      uni.showToast({ title: "两次输入的密码不一致", icon: "none" });
-      return;
+      uni.showToast({ title: '两次输入的密码不一致', icon: 'none' })
+      return
     }
   }
 
@@ -94,47 +127,42 @@ const handleSave = async (type) => {
       name: name.value,
       type,
     })
-    uni.showToast({ title: "保存成功", icon: "success" });
-    userInfo.value.name = name.value;
-    uni.setStorageSync("userInfo", userInfo.value);
-  } catch (error) {
-
-
-  }
-
-};
+    uni.showToast({ title: '保存成功', icon: 'success' })
+    userInfo.value.name = name.value
+    uni.setStorageSync('userInfo', userInfo.value)
+  } catch (error) {}
+}
 // 查看隐私政策
 const handleViewPrivacy = () => {
   // TODO: 跳转到隐私政策页面
   uni.navigateTo({
     url: `/pages/login/privacy/index`,
-  });
-};
+  })
+}
 const toCancel = () => {
   // TODO: 跳转到隐私政策页面
   uni.navigateTo({
     url: `/pages/login/cancel/index`,
-  });
-};
-
+  })
+}
 
 const handleLogout = () => {
   // TODO: 退出登录逻辑
   uni.showModal({
-    title: "提示",
-    content: "确定要退出当前账号吗？",
+    title: '提示',
+    content: '确定要退出当前账号吗？',
     success: (res) => {
       if (res.confirm) {
-        uni.showToast({ title: "已退出", icon: "success" });
-        store.commit("setUserInfo", {});
+        uni.showToast({ title: '已退出', icon: 'success' })
+        store.commit('setUserInfo', {})
         // uni.setStorageSync('userInfo', {})
         // uni.setStorageSync('token', "")
-        uni.reLaunch({ url: "/pages/login/index" });
+        uni.reLaunch({ url: '/pages/login/index' })
         // 这里可跳转到登录页
       }
     },
-  });
-};
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -254,13 +282,13 @@ const handleLogout = () => {
 }
 
 .iconfont {
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-back:before {
-  content: "\e8ef";
+  content: '\e8ef';
 }
 </style>
