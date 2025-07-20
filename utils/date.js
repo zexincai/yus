@@ -313,7 +313,11 @@ const DateUtil = {
     getFirstDayOfMonth() {
         const d = new Date();
         const year = d.getFullYear();
-        const month = d.getMonth() + 1;
+        let month = d.getMonth() + 1; // 时间补0
+        if (month < 10) {
+            month = '0' + month;
+        }
+
         return `${year}-${month}-01`;
     },
 };

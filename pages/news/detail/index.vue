@@ -48,7 +48,7 @@ onLoad(({ id }) => {
 });
 const getDetail = async (id) => {
   const resp = await getNewsDetail({ id });
-  resp.content = (resp.content || '').replace(/<img/g, '<img style="max-width:100%;height:auto"');
+  resp.content = (resp.content || '').replace(/<img/gi, '<img width="100%" style="max-width:100%;height:auto;display:block"');
   detail.value = resp
 };
 </script>

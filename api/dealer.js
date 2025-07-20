@@ -1,10 +1,5 @@
 import http from "./index.js";
 
-export const getDeviceGroupMsg = (data) =>
-  http.post("https://fuhui.wetime520.cn/bili/ma/dealer/deviceGroupMsg", data, {
-    loading: true,
-  });
-
 export const equipmentStatistics = (data) =>
   http.post("https://yuq.fenaor.com/ma/dealer/equipmentStatistics", data, {
     loading: true,
@@ -230,5 +225,13 @@ export const getPrivacyPolicy = (data) =>
   });
 export const getServiceAgreement = (data) =>
   http.get("https://yuq.fenaor.com/serviceAgreement", data, {
+    loading: true,
+  });
+export const getOrderList = (data) =>
+  http.post("https://yuq.fenaor.com/ma/dealer/orderList", data, {
+    loading: true,
+  });
+export const getOrderDetail = (data) =>
+  http.post("https://yuq.fenaor.com/ma/dealer/orderDetail", data, {
     loading: true,
   });

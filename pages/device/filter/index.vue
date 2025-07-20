@@ -24,34 +24,18 @@
         <text class="filter-code">滤芯码：{{ detail.chipSn }}</text>
       </view>
       <view class="filter-list">
-        <view
-          v-for="(item, idx) in detail.chips"
-          :key="idx"
-          class="filter-item"
-        >
-          <checkbox
-            activeBackgroundColor="#13337CFF"
-            style="transform: scale(0.6)"
-            :checked="item.checked"
-            :disabled="item.disabled"
-            color="#fff"
-            @click="toggleCheck(idx)"
-          />
+        <view @click="toggleCheck(idx)" v-for="(item, idx) in detail.chips" :key="idx" class="filter-item">
+          <checkbox activeBackgroundColor="#13337CFF" style="transform: scale(0.6)" :checked="item.checked"
+            :disabled="item.disabled" color="#13337c" />
           <view class="filter-info">
             <text class="filter-name">{{ item.chipName }}</text>
             <view class="progress-bar">
-              <view
-                class="progress-inner"
-                :class="{
-                  'progress-yellow': item.red,
-                }"
-                :style="{ width: item.percent + '%' }"
-              ></view>
+              <view class="progress-inner" :class="{
+                'progress-yellow': item.red,
+              }" :style="{ width: item.percent + '%' }"></view>
             </view>
           </view>
-          <text class="percent" :class="{ disabled: item.disabled }"
-            >{{ item.percent }}%</text
-          >
+          <text class="percent" :class="{ disabled: item.disabled }">{{ item.percent }}%</text>
         </view>
       </view>
     </view>
@@ -181,8 +165,7 @@ const handleConfirm = () => {
       margin-right: 10rpx;
     }
 
-    .date-value {
-    }
+    .date-value {}
   }
 }
 

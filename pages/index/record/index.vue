@@ -5,67 +5,53 @@
       <text class="order-label">订单：</text>
       <text class="order-no">{{ order.orderNo }}</text>
       <button class="copy-btn" size="mini" @click="copyOrderNo">复制</button>
-      <text class="order-date">{{ order.date }}</text>
+      <text class="order-date">{{ order.createTime }}</text>
     </view>
 
     <!-- 设备数量 -->
-    <view class="device-count"> 设备：{{ devices.length }} </view>
+    <view class="device-count"> 设备：{{ logs.length }} </view>
 
     <!-- 设备列表 -->
     <view class="device-list">
-      <view class="device-card" v-for="(item, idx) in devices" :key="idx">
-        <image class="device-img" :src="item.img" mode="aspectFit"></image>
-        <view class="device-info">
-          <text class="device-title">{{ item.title }}</text>
-          <text class="device-model">{{ item.model }}</text>
-          <text class="device-sn">SN：{{ item.sn }}</text>
+      <template v-if="logs.length">
+        <view class="device-card" v-for="(item, idx) in logs" :key="idx">
+          <image class="device-img" :src="item.productUrl" mode="aspectFit"></image>
+          <view class="device-info">
+            <text class="device-title">{{ item.brand }}</text>
+            <text class="device-model">{{ item.modelName }}</text>
+            <text class="device-sn">SN：{{ item.sn }}</text>
+          </view>
         </view>
-      </view>
+      </template>
+      <template v-else>
+        <view class="empty">
+          <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
+          <view class="empty-text"> 暂无数据 </view>
+        </view>
+      </template>
     </view>
   </view>
 </template>
 
 <script setup>
+import { onLoad } from "@dcloudio/uni-app";
+import { getOrderDetail } from "@/api/dealer";
 import { ref } from "vue";
 
 const order = ref({
-  orderNo: "25052456740034",
-  date: "2025-05-24 10:38",
+  orderNo: "",
+  createTime: "",
 });
 
-const devices = ref([
-  {
-    img: "/static/images/device.png",
-    title: "家用反渗透净水机",
-    model: "RO-24",
-    sn: "34587690983566",
-  },
-  {
-    img: "/static/images/device.png",
-    title: "家用反渗透净水机",
-    model: "RO-24",
-    sn: "34587690983406",
-  },
-  {
-    img: "/static/images/device.png",
-    title: "商用饮水机",
-    model: "S800-1",
-    sn: "34529478370945",
-  },
-  {
-    img: "/static/images/device.png",
-    title: "商用饮水机",
-    model: "S800-1",
-    sn: "34529478370237",
-  },
-  {
-    img: "/static/images/device.png",
-    title: "商用饮水机",
-    model: "S800-1",
-    sn: "34529478370034",
-  },
-]);
-
+const logs = ref([]);
+onLoad(() => {
+  // 从缓存里取
+  const orderDetail = uni.getStorageSync("orderDetail");
+  if (orderDetail) {
+    order.value = orderDetail;
+  }
+  getLogList();
+})
 const handleBack = () => {
   uni.navigateBack();
 };
@@ -77,6 +63,14 @@ const copyOrderNo = () => {
       uni.showToast({ title: "已复制", icon: "success" });
     },
   });
+};
+
+const getLogList = async () => {
+  const res = await getOrderDetail({
+    orderId: order.value.id,
+  });
+
+  logs.value = res.snList;
 };
 </script>
 
@@ -93,35 +87,39 @@ const copyOrderNo = () => {
   align-items: center;
   padding: 0 30rpx;
   height: 80rpx;
-  font-size: 25rpx;
+  font-size: 26rpx;
   background: #F4F6F9FF;
 
   .order-label {
     color: #223a7a;
-    margin-right: 8rpx;
+    margin-right: 4rpx;
+    line-height: 1;
   }
 
   .order-no {
     color: #223a7a;
-    font-weight: bold;
+    line-height: 1;
+    // font-weight: bold;
     // margin-right: 16rpx;
   }
 
   .copy-btn {
     border-radius: 36rpx;
     background: #D68F01FF;
+    border: none;
     color: #fff;
     font-size: 18rpx;
     padding: 0 18rpx;
     margin-right: 16rpx;
+    margin-left: 20rpx;
     height: 36rpx;
     line-height: 36rpx;
     min-width: 60rpx;
   }
 
   .order-date {
-    font-size: 22rpx;
-    color: #bfc9d6;
+    font-size: 23rpx;
+    color: #808080;
     margin-left: auto;
   }
 }
@@ -160,13 +158,13 @@ const copyOrderNo = () => {
         color: #fff;
         font-size: 29rpx;
         font-weight: bold;
-        margin-bottom: 6rpx;
+        margin-bottom: 8rpx;
       }
 
       .device-model {
         color: #fff;
         font-size: 25rpx;
-        margin-bottom: 6rpx;
+        margin-bottom: 8rpx;
       }
 
       .device-sn {

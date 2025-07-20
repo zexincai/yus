@@ -1,6 +1,6 @@
 <template>
   <view class="login-container">
-    <image src="/static/images/login-bg.png" class="login-bg" />
+    <image src="/static/images/login-bg.jpg"  class="login-bg" />
     <!-- 登录类型选择 -->
     <view class="login-type">
       <view class="type-item" @click="loginType = 'ROLE_CUSTOMER'">
@@ -50,10 +50,6 @@
           <text class="link" @click="handleViewPrivacy">《隐私政策》</text>
         </text>
       </view>
-      <button v-if="isIos" @click="onAppleLogin" class="apple-login-button">
-        <image src="/static/images/apple.png" class="apple-icon" />
-        <text class="apple-text">通过Apple登录</text>
-      </button>
       <!-- 登录按钮 -->
       <button class="login-btn" @click="handleLogin">登录</button>
       <button v-if="loginType == 'ROLE_CUSTOMER'" class="register-btn" @click="handleRegister">
@@ -96,11 +92,8 @@ onLoad(() => {
   }
   isIos.value = uni.getSystemInfoSync().platform == "ios";
   uni.setStorageSync("navBindPhoneFlag", "");
-
-
-  console.log("App Launch");
   let userInfo = uni.getStorageSync("userInfo");
-  if (userInfo || userInfo.token) {
+  if (userInfo && userInfo.token) {
     uni.switchTab({
       url: "/pages/index/index",
       success() {
@@ -259,13 +252,13 @@ const handleViewPrivacy = () => {
 }
 
 .login-bg {
-  margin-top: 240rpx;
-  width: 420rpx;
-  height: 170rpx;
+  // margin-top: 240rpx;
+  width: 750rpx;
+  height: 500rpx;
 }
 
 .login-type {
-  margin-top: 136rpx;
+  margin-top: 58rpx;
   display: flex;
   justify-content: space-between;
   margin-bottom: 85rpx;
@@ -368,6 +361,7 @@ const handleViewPrivacy = () => {
   color: #fff;
   height: 90rpx;
   line-height: 90rpx;
+  margin-top: 80rpx;
   border-radius: 18rpx;
   margin-bottom: 30rpx;
   font-size: 29rpx;
