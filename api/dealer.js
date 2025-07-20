@@ -235,3 +235,11 @@ export const getOrderDetail = (data) =>
   http.post("https://yuq.fenaor.com/ma/dealer/orderDetail", data, {
     loading: true,
   });
+export const getShareUserPage = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/shareUserPage", data, {
+    loading: true,
+  });
+export const operShareUser = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/operShareUser", data, {
+    loading: true,
+  });

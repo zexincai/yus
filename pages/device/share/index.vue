@@ -3,10 +3,28 @@
     <!-- 当前设备共享成员 -->
     <view class="current-members-section">
       <text class="section-title">当前设备共享成员：</text>
-      <view class="empty-state">
+      <view v-if="detail.machineShares.length" class="info-list">
+        <view
+          @click="handleEditShareByPhone(item)"
+          v-for="(item, index) in detail.machineShares"
+          :key="index"
+          class="info-item"
+        >
+          <view class="info-label">
+            <image
+              class="image"
+              src="/static/images/user.png"
+              mode="aspectFit"
+            ></image>
+            {{ item.shareName }}
+          </view>
+          <text class="info-value"></text>
+        </view>
+      </view>
+      <view v-else class="empty-state">
         <image
           class="empty-image"
-          src="/static/images/empty-box.png"
+          src="/static/images/empty.png"
           mode="aspectFit"
         ></image>
         <text class="empty-text">当前尚未添加共享成员</text>
@@ -16,60 +34,74 @@
     <!-- 选择共享方式 -->
     <view class="share-method-section">
       <text class="section-title">选择共享方式：</text>
-      <view class="method-item" @click="handleShareByPhone">
-        <view class="method-icon-wrapper">
-          <text class="iconfont icon-phone">&#xe648;</text>
-        </view>
-        <text class="method-text">手机号码</text>
-        <text class="iconfont icon-arrow-right">&#xe65c;</text>
+      <view
+        v-for="(item, index) in detail.shareTypes"
+        :key="index"
+        class="method-item"
+        @click="handleShareByPhone"
+      >
+        <image
+          class="method-icon-wrapper"
+          src="/static/images/phone.png"
+          mode="aspectFit"
+        />
+        <text class="method-text">{{ item.name }}</text>
+        <text class="iconfont arrow-icon"></text>
       </view>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import { getShareUserPage } from '@/api/dealer'
 
+const deviceId = ref('')
+const detail = ref({
+  machineShares: [],
+  shareTypes: [],
+})
+const getData = async () => {
+  const resp = await getShareUserPage({
+    deviceId: deviceId.value,
+  })
+  detail.value = resp
+}
+
+onLoad(({ id }) => {
+  deviceId.value = id
+})
+
+onShow(() => {
+  getData()
+})
 // 返回上一页
 const handleBack = () => {
-  uni.navigateBack();
-};
+  uni.navigateBack()
+}
 
 // 处理通过手机号共享
 const handleShareByPhone = () => {
-  // TODO: 跳转到手机号共享页面或弹出输入框
-  uni.navigateToast({
-    title: "即将跳转到手机号共享页面",
-    icon: "none",
-  });
-};
+  uni.navigateTo({
+    url: `/pages/device/share/add/index?id=${deviceId.value}`,
+  })
+}
+
+const handleEditShareByPhone = (res) => {
+  uni.setStorageSync('shareUser', res)
+  uni.navigateTo({
+    url: `/pages/device/share/add/index?id=${deviceId.value}&action=EDIT`,
+  })
+}
 </script>
 
 <style lang="scss" scoped>
 .share-account-container {
   min-height: 100vh;
-  background-color: #1c2431; // 深蓝色背景
+  background-color: rgba(21, 33, 54, 1); // 深蓝色背景
   color: #ffffff; // 白色文字
   padding-top: var(--status-bar-height); // 适配状态栏
-}
-
-.nav-bar {
-  position: relative;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .back {
-    position: absolute;
-    left: 30rpx;
-    font-size: 40rpx;
-    color: #fff;
-  }
-
-  .title {
-    font-size: 36rpx;
-  }
 }
 
 .section-title {
@@ -97,19 +129,22 @@ const handleShareByPhone = () => {
 
     .empty-text {
       font-size: 28rpx;
-      color: #8a97a8;
+      color: #ffffff;
     }
   }
 }
 
 .share-method-section {
-  padding: 0 30rpx 30rpx;
+  padding: 0 0rpx 20rpx;
 
   .method-item {
+    margin: 40rpx 30rpx 0;
+    // width: 688rpx;
+    height: 90rpx;
+    background: rgba(244, 246, 249, 1);
     background-color: #ffffff;
     border-radius: 16rpx;
     padding: 0 30rpx;
-    height: 100rpx;
     display: flex;
     align-items: center;
     color: #333333;
@@ -118,7 +153,7 @@ const handleShareByPhone = () => {
       width: 60rpx;
       height: 60rpx;
       border-radius: 50%;
-      background-color: #4a90e2;
+      // background-color: #4a90e2;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -139,14 +174,69 @@ const handleShareByPhone = () => {
       font-size: 28rpx;
       color: #c7c7cc;
     }
+    .arrow-icon {
+      margin-left: 20rpx;
+      width: 16rpx;
+      height: 16rpx;
+      border-top: 2rpx solid #cdcdcd;
+      border-right: 2rpx solid #cdcdcd;
+      // border-left: 18rpx solid #fff;
+      transform: rotate(45deg);
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
 }
 
 // iconfont样式
 .iconfont {
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.info-list {
+  margin: 10rpx 30rpx 60rpx;
+  border-radius: 18rpx;
+  background: #f4f6f9ff;
+  // margin-top: 27rpx;
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    margin: 0 30rpx;
+    height: 89rpx;
+    border-bottom: 2rpx solid rgba(224, 215, 215, 1);
+    justify-content: space-between;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: rgba(19, 51, 124, 1);
+      font-size: 25rpx;
+      display: flex;
+      align-items: center;
+      .image {
+        margin-right: 14rpx;
+        width: 44rpx;
+        height: 44rpx;
+      }
+    }
+
+    .info-value {
+      margin-left: 20rpx;
+      width: 16rpx;
+      height: 16rpx;
+      border-top: 2rpx solid #cdcdcd;
+      border-right: 2rpx solid #cdcdcd;
+      // border-left: 18rpx solid #fff;
+      transform: rotate(45deg);
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
 }
 </style>
