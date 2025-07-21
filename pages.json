@@ -1,5 +1,22 @@
 {
   "pages": [
+    // #ifdef APP
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    // #endif
+    // #ifndef APP
     {
       "path": "pages/login/index",
       "style": {
@@ -14,6 +31,7 @@
         "navigationStyle": "custom"
       }
     },
+    // #endif
     {
       "path": "pages/login/forget/index",
       "style": {
