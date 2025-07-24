@@ -9,3 +9,8 @@ export const getCaptcha = (data) => http.post('https://app.usayuq.com/ma/home/ca
 export const appleLogin = (data) => http.post('https://app.usayuq.com/ma/home/appleLogin', data)
 
 export const registerUser = (data) => http.post('https://app.usayuq.com/ma/home/registerUser', data)
+
+export const getLoginPageConfig = (data) =>
+  http.get("https://app.usayuq.com/ma/home/loginPageConfig", data, {
+    loading: true,
+  });
