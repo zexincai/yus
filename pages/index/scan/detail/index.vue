@@ -1,21 +1,26 @@
 <template>
     <view class="add-device-container">
         <view class="device-card">
-            <image class="device-img" src="/static/images/device.png" />
+            <image
+                class="device-img"
+                :src="deviceData.productUrl || '/static/images/device.png'"
+            />
             <view class="device-info">
                 <view class="row bright">
-                    <text class="label">SN：</text>
-                    <text class="sn" @click="copySn">{{ deviceData.mes }}</text>
-                    <image class="signal-icon" :src="deviceData.rssiUrl" />
-                    <!-- <image v-else class="signal-icon" src="/static/images/signal-full.png" /> -->
+                <text class="label">SN：</text>
+                <text class="sn" @click="copySn">{{ deviceData.mes }}</text>
+                <image class="signal-icon" :src="deviceData.rssiUrl" />
+                <!-- <image v-else class="signal-icon" src="/static/images/signal-full.png" /> -->
                 </view>
                 <view class="row">
-                    <text class="label">型号：</text>
-                    <text class="value">{{ deviceData.model }}</text>
+                <text class="label">型号：</text>
+                <text class="value">{{
+                    deviceData.model || deviceData.modelName
+                }}</text>
                 </view>
                 <view class="row">
-                    <text class="label">IMEI：</text>
-                    <text class="value">{{ deviceData.imei }}</text>
+                <text class="label">IMEI：</text>
+                <text class="value">{{ deviceData.imei }}</text>
                 </view>
             </view>
         </view>
