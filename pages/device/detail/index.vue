@@ -134,7 +134,7 @@
           v-if="deviceInfo.buyout == 1"
           class="renewal-link"
           @click="navigateTo('renewalLog')"
-          >续期记录 >>
+          >续期记录 》
         </text>
         <view
           v-if="loginType == 'ROLE_CUSTOMER'"

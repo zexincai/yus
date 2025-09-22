@@ -85,12 +85,11 @@
           <text class="link" @click="handleViewPrivacy">《隐私政策》</text>
         </text>
       </view>
-      <!-- #ifdef APP-IOS  -->
-      <button v-if="isIos" @click="onAppleLogin" class="apple-login-button">
+
+      <button @click="onAppleLogin" class="apple-login-button">
         <image src="/static/images/apple.png" class="apple-icon" />
         <text class="apple-text">通过Apple登录</text>
       </button>
-      <!-- #endif -->
 
       <!-- 登录按钮 -->
       <button class="login-btn" @click="handleLogin">登录</button>
@@ -418,7 +417,7 @@ const handleViewPrivacy = () => {
   color: #fff;
   height: 90rpx;
   line-height: 90rpx;
-  margin-top: 80rpx;
+  margin-top: 10rpx;
   border-radius: 18rpx;
   margin-bottom: 30rpx;
   font-size: 29rpx;

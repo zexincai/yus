@@ -24,31 +24,35 @@
         <text class="filter-code">滤芯码：{{ detail.chipSn }}</text>
       </view>
       <view class="filter-list">
-        <view @click="toggleCheck(idx)" v-for="(item, idx) in detail.chips" :key="idx" class="filter-item">
-          <checkbox activeBackgroundColor="#13337CFF" style="transform: scale(0.6)" :checked="item.checked"
-            :disabled="item.disabled" color="#13337c" />
-          <view class="filter-info">
-            <text class="filter-name">{{ item.chipName }}</text>
-            <view class="progress-bar">
-              <view class="progress-inner" :class="{
-                'progress-yellow': item.red,
-              }" :style="{ width: item.percent + '%' }"></view>
+        <checkbox-group @change="checkBoxChange">
+          <view @click="toggleCheck(idx)" v-for="(item, idx) in detail.chips" :key="idx" class="filter-item">
+            <checkbox :value="String(idx)" activeBackgroundColor="#057f13FF" style="transform: scale(0.6)"
+              :checked="item.checked" :disabled="item.disabled" color="#fff" />
+            <view class="filter-info">
+              <text class="filter-name">{{ item.chipName }}</text>
+              <view class="progress-bar">
+                <view class="progress-inner" :class="{
+                  'progress-yellow': item.red,
+                }" :style="{ width: item.percent + '%' }"></view>
+              </view>
             </view>
+            <text class="percent" :class="{ disabled: item.disabled }">{{ item.percent }}%</text>
           </view>
-          <text class="percent" :class="{ disabled: item.disabled }">{{ item.percent }}%</text>
-        </view>
+        </checkbox-group>
       </view>
     </view>
     <view class="button-wrapper">
-      <button class="confirm-btn" @click="handleConfirm">确认重置滤芯</button>
+      <button :class="{ 'disabled': btnDisabled }" class="confirm-btn" @click="handleConfirm">确认重置滤芯</button>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { resetChipConfig } from "@/api/dealer";
+
+const btnDisabled = ref(true);
 const detail = ref({
   deviceId: 5,
   sn: "",
@@ -64,6 +68,10 @@ const detail = ref({
 onLoad(() => {
   const filterResetData = uni.getStorageSync("filterResetData");
   if (filterResetData) {
+    filterResetData.chips = (filterResetData.chips || []).map((v) => ({
+      ...v, checked: false,
+      red: Number(v.percent) <= 10,
+    }))
     detail.value = filterResetData;
   }
 });
@@ -74,8 +82,38 @@ const toggleCheck = (idx) => {
     filters[idx].checked = !filters[idx].checked;
   }
   detail.value = { ...detail.value, chips: filters };
+  isSubmitDisabled()
 };
+const checkBoxChange = (target) => {
+  console.log('checkBoxChange', target.detail.value);
+  const checkIds = target.detail.value || []
+  if (!checkIds.length) {
+    btnDisabled.value = true;
+    return;
+  }
+  // setTimeout(() => {
+  let filters = detail.value.chips;
+  filters = filters.map((v, i) => {
+    console.log('checkBoxChange', v, i, checkIds.includes(String(i)));
+    return ({
+      ...v,
+      checked: checkIds.includes(String(i)),
+    })
+  })
 
+  detail.value = { ...detail.value, chips: filters };
+  isSubmitDisabled()
+  // }, 1)
+}
+
+const isSubmitDisabled = () => {
+  const checkList = detail.value.chips.filter((v) => v.checked);
+  if (!checkList.length) {
+    btnDisabled.value = true;
+    return;
+  }
+  btnDisabled.value = checkList.some((v) => Number(v.percent) > 10);
+}
 const handleConfirm = () => {
   let chipIndex = detail.value.chips
     .filter((v) => v.checked)
@@ -87,6 +125,8 @@ const handleConfirm = () => {
     });
     return;
   }
+  if (btnDisabled.value) return
+
   const params = {
     deviceId: detail.value.deviceId,
     chipIndex,
@@ -112,6 +152,7 @@ const handleConfirm = () => {
   padding: 24rpx;
   background: $bg-color;
 }
+
 
 .device-card {
   background: #f4f6f9ff;
@@ -216,12 +257,12 @@ const handleConfirm = () => {
 
           .progress-inner {
             height: 100%;
-            background: linear-gradient(180deg, #96b0e0ff 0%, #13337cff 100%);
+            background: linear-gradient(180deg, #08d521 0%, #057f13 100%);
             border-radius: 90rpx;
           }
 
           .progress-yellow {
-            background: linear-gradient(180deg, #d68f01ff 0%, #f7e4bcff 100%);
+            background: linear-gradient(180deg, #f89090 0%, #da0707 100%);
           }
         }
       }
@@ -257,6 +298,10 @@ const handleConfirm = () => {
     font-size: 29rpx;
     border-radius: 18rpx;
     background: $active-color;
+  }
+
+  .disabled {
+    background: #ccc;
   }
 }
 </style>

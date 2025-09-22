@@ -140,10 +140,11 @@
         >
           <text class="filter-label">{{ cycle.name }}：</text>
           <input
+            :disabled="deviceData.enabledEditChip == 0"
             class="filter-input"
             type="number"
             v-model="cycle.periodValue"
-            placeholder="请输入"
+            :placeholder="deviceData.enabledEditChip == 0 ? '' : '请输入'"
             placeholder-class="placeholder"
           />
         </view>

@@ -852,7 +852,8 @@ onShow(() => {
   .device-info .name {
     color: #fff;
     font-size: 28rpx;
-    margin-bottom: 40rpx;
+    min-height: 60rpx;
+    margin-bottom: 0rpx;
     display: block;
   }
 

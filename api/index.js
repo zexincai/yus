@@ -50,7 +50,7 @@ http.interceptors.response.use(
         });
       }
       if (login) {
-        // store.dispatch('refreshToken')
+        store.commit('setUserInfo', {})
         // 跳转到登录页
         uni.reLaunch({
           url: '/pages/login/index',

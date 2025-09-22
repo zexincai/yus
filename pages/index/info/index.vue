@@ -61,18 +61,18 @@
     <!-- 保存按钮 -->
     <button class="save-btn" @click="handleSave(1)">保存</button>
     <!-- 退出账号 -->
-    <view class="logout-link" @click="handleViewPrivacy">隐私政策>></view>
-    <view class="logout-link" style="margin-top: 20rpx" @click="handleLogout"
-      >退出当前账号>></view
-    >
-    <!-- #ifdef APP-IOS -->
+    <view class="logout-link" @click="handleViewPrivacy">
+      隐私政策 <text>》</text> 
+    </view>
+    <view class="logout-link" style="margin-top: 20rpx" @click="handleLogout">
+      退出当前账号 <text>》</text> 
+    </view>
     <view
       class="logout-link"
       style="margin-top: 20rpx; color: #db4e51"
       @click="toCancel"
-      >注销账号>>
+      >注销账号 <text>》</text> 
     </view>
-    <!-- #endif -->
   </view>
 </template>
 

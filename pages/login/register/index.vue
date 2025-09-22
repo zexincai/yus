@@ -35,7 +35,7 @@
       </view>
       <view class="login-tip">密码需由字母与数字组成，不少于8位</view>
       <button class="login-btn" @click="handleSubmit">确定</button>
-      <view class="to-login-tip" @click="goToLogin">已有账号？去登录 >></view>
+      <view class="to-login-tip" @click="goToLogin">已有账号？去登录 》</view>
     </view>
   </view>
 </template>

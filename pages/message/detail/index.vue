@@ -7,7 +7,7 @@
         <image @click="navToEdit" src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
       </view>
       <view class="view-device" @click="handleViewDevice">
-        <text>查看设备 >></text>
+        <text>查看设备 》</text>
       </view>
     </view>
     <view class="device-card">
