@@ -24,21 +24,20 @@
         <text class="filter-code">滤芯码：{{ detail.chipSn }}</text>
       </view>
       <view class="filter-list">
-        <checkbox-group @change="checkBoxChange">
-          <view @click="toggleCheck(idx)" v-for="(item, idx) in detail.chips" :key="idx" class="filter-item">
-            <checkbox :value="String(idx)" activeBackgroundColor="#057f13FF" style="transform: scale(0.6)"
-              :checked="item.checked" :disabled="item.disabled" color="#fff" />
-            <view class="filter-info">
-              <text class="filter-name">{{ item.chipName }}</text>
-              <view class="progress-bar">
-                <view class="progress-inner" :class="{
-                  'progress-yellow': item.red,
-                }" :style="{ width: item.percent + '%' }"></view>
-              </view>
-            </view>
-            <text class="percent" :class="{ disabled: item.disabled }">{{ item.percent }}%</text>
+        <view @click="toggleCheck(idx)" v-for="(item, idx) in detail.chips" :key="idx" class="filter-item">
+          <image src="/static/images/check.png" class="filter-check-img" v-if="item.checked"></image>
+          <view v-else class="filter-checkbox">
           </view>
-        </checkbox-group>
+          <view class="filter-info">
+            <text class="filter-name">{{ item.chipName }}</text>
+            <view class="progress-bar">
+              <view class="progress-inner" :class="{
+                'progress-yellow': item.red,
+              }" :style="{ width: item.percent + '%' }"></view>
+            </view>
+          </view>
+          <text class="percent" :class="{ disabled: item.disabled }">{{ item.percent }}%</text>
+        </view>
       </view>
     </view>
     <view class="button-wrapper">
@@ -234,6 +233,21 @@ const handleConfirm = () => {
   }
 
   .filter-list {
+
+    // 帮我写一个复选框样式☑️的
+    .filter-checkbox {
+      width: 38rpx;
+      height: 38rpx;
+      border-radius: 6rpx;
+      border: 1rpx solid #898989;
+      margin-right: 2rpx
+    }
+
+    .filter-check-img {
+      width: 40rpx;
+      height: 40rpx;
+    }
+
     .filter-item {
       display: flex;
       align-items: center;
