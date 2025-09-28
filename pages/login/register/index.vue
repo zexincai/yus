@@ -3,11 +3,11 @@
     <view class="forget-form">
       <view class="label">手机号码</view>
       <view class="form-item">
-        <input type="text" maxlength="11" v-model="form.phone" placeholder="手机号码" placeholder-class="placeholder" />
+        <input type="number" maxlength="11" v-model="form.phone" placeholder="手机号码" placeholder-class="placeholder" />
       </view>
       <view class="label">验证码</view>
       <view class="form-item">
-        <input type="text" maxlength="11" v-model="form.code" placeholder="请输入" placeholder-class="placeholder" />
+        <input style="width: 70%;" type="text" maxlength="11" v-model="form.code" placeholder="请输入" placeholder-class="placeholder" />
         <text v-if="timeNum" class="code">{{ timeNum }}s</text>
         <text v-else @click="getCode" class="code">获取验证码</text>
       </view>
@@ -198,7 +198,11 @@ const handleSubmit = () => {
       color: $active-color;
       position: absolute;
       right: 38rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      text-align: right;
       top: 50%;
+      width: 200rpx;
       transform: translateY(-50%);
     }
 

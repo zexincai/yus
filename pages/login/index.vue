@@ -85,11 +85,11 @@
           <text class="link" @click="handleViewPrivacy">《隐私政策》</text>
         </text>
       </view>
-
+<!-- 
       <button @click="onAppleLogin" class="apple-login-button">
         <image src="/static/images/apple.png" class="apple-icon" />
         <text class="apple-text">通过Apple登录</text>
-      </button>
+      </button> -->
 
       <!-- 登录按钮 -->
       <button class="login-btn" @click="handleLogin">登录</button>

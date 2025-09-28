@@ -67,12 +67,12 @@
     <view class="logout-link" style="margin-top: 20rpx" @click="handleLogout">
       退出当前账号 <text>》</text> 
     </view>
-    <view
+    <!-- <view
       class="logout-link"
       style="margin-top: 20rpx; color: #db4e51"
       @click="toCancel"
       >注销账号 <text>》</text> 
-    </view>
+    </view> -->
   </view>
 </template>
 
