@@ -277,13 +277,13 @@ const handleConfirm = () => {
     });
     return;
   }
-  if (filterCycles.value.some((v) => !v.periodValue)) {
-    uni.showToast({
-      title: "请输入滤芯更换周期",
-      icon: "none",
-    });
-    return;
-  }
+  // if (filterCycles.value.some((v) => !v.periodValue)) {
+  //   uni.showToast({
+  //     title: "请输入滤芯更换周期",
+  //     icon: "none",
+  //   });
+  //   return;
+  // }
   const params = {
     deviceId: deviceData.value.deviceId,
     buyout: form.saleMode === "租赁" ? 1 : 0,
