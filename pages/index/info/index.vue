@@ -62,10 +62,10 @@
     <button class="save-btn" @click="handleSave(1)">保存</button>
     <!-- 退出账号 -->
     <view class="logout-link" @click="handleViewPrivacy">
-      隐私政策 <text>》</text> 
+      隐私政策 <text>》</text>
     </view>
     <view class="logout-link" style="margin-top: 20rpx" @click="handleLogout">
-      退出当前账号 <text>》</text> 
+      退出当前账号 <text>》</text>
     </view>
     <!-- <view
       class="logout-link"
@@ -79,18 +79,20 @@
 <script setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { resetPassword } from '@/api/dealer'
+import { resetPassword, resetDealerPassword } from '@/api/dealer'
 import store from '@/store'
 const oldPwd = ref('')
 const newPwd = ref('')
 const name = ref('')
 const confirmPwd = ref('')
+const loginType = ref('')
 const userInfo = ref({})
 onLoad(() => {
   const res = uni.getStorageSync('userInfo')
   if (res) {
     userInfo.value = res
     name.value = res.name
+    loginType.value = res.role
   }
 })
 const handleBack = () => {
@@ -120,13 +122,18 @@ const handleSave = async (type) => {
   }
 
   try {
-    await resetPassword({
+    const params = {
       oldPwd: oldPwd.value,
       newPwd: newPwd.value,
       againPwd: confirmPwd.value,
       name: name.value,
       type,
-    })
+    }
+    if (loginType.value == 'ROLE_DEALER') {
+      await resetDealerPassword(params)
+    } else {
+      await resetPassword(params)
+    }
     uni.showToast({ title: '保存成功', icon: 'success' })
     userInfo.value.name = name.value
     uni.setStorageSync('userInfo', userInfo.value)

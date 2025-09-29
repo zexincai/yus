@@ -181,6 +181,11 @@ export const resetPassword = (data) =>
   http.post("https://yuq.fenaor.com/ma/customer/resetPassword", data, {
     loading: true,
   });
+  // 22-编辑客户信息
+export const resetDealerPassword = (data) =>
+  http.post("https://yuq.fenaor.com/ma/dealer/resetPassword", data, {
+    loading: true,
+  });
 // 23-客户扫码设备
 export const devicelLoadDeviceBaseInfo = (data) =>
   http.post("https://yuq.fenaor.com/ma/device/loadDeviceBaseInfo", data, {
