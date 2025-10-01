@@ -177,7 +177,7 @@
       </view>
       <view class="data-card blue">
         <text class="data-value">{{ deviceInfo.pureTds }}</text>
-        <text class="data-unit">纯水 (ppm)</text>
+        <text class="data-unit">矿泉水+纯净水(ppm)</text>
       </view>
     </view>
 
