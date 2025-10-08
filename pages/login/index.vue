@@ -417,7 +417,7 @@ const handleViewPrivacy = () => {
   color: #fff;
   height: 90rpx;
   line-height: 90rpx;
-  margin-top: 10rpx;
+  margin-top: 60rpx;
   border-radius: 18rpx;
   margin-bottom: 30rpx;
   font-size: 29rpx;

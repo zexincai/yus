@@ -11,13 +11,7 @@
       <view class="info-row">
         <text class="label">姓名：</text>
         <!-- <text class="value">{{ userInfo.name }}</text> -->
-        <input
-          class="input"
-          type="text"
-          v-model="name"
-          placeholder=""
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="text" v-model="name" placeholder="" placeholder-class="placeholder" />
       </view>
     </view>
     <button class="save-btn-name" @click="handleSave(0)">保存</button>
@@ -27,35 +21,17 @@
     <view class="info-card">
       <view class="info-row">
         <text class="label">原密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="oldPwd"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="oldPwd" placeholder="请输入" placeholder-class="placeholder" />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">新密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="newPwd"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="newPwd" placeholder="请输入" placeholder-class="placeholder" />
       </view>
       <view class="divider"></view>
       <view class="info-row">
         <text class="label">确认新密码：</text>
-        <input
-          class="input"
-          type="password"
-          v-model="confirmPwd"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input class="input" type="password" v-model="confirmPwd" placeholder="请输入" placeholder-class="placeholder" />
       </view>
     </view>
     <!-- 保存按钮 -->
@@ -67,12 +43,8 @@
     <view class="logout-link" style="margin-top: 20rpx" @click="handleLogout">
       退出当前账号 <text>》</text>
     </view>
-    <!-- <view
-      class="logout-link"
-      style="margin-top: 20rpx; color: #db4e51"
-      @click="toCancel"
-      >注销账号 <text>》</text> 
-    </view> -->
+    <view class="logout-link" style="margin-top: 20rpx; color: #db4e51" @click="toCancel">注销账号 <text>》</text>
+    </view>
   </view>
 </template>
 
@@ -137,7 +109,7 @@ const handleSave = async (type) => {
     uni.showToast({ title: '保存成功', icon: 'success' })
     userInfo.value.name = name.value
     uni.setStorageSync('userInfo', userInfo.value)
-  } catch (error) {}
+  } catch (error) { }
 }
 // 查看隐私政策
 const handleViewPrivacy = () => {

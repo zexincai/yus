@@ -18,6 +18,11 @@
 import { ref } from "vue";
 import { loadDeviceBaseInfo, devicelLoadDeviceBaseInfo } from "@/api/dealer";
 import { onLoad } from "@dcloudio/uni-app";
+// #ifdef APP-PLUS
+import {
+	popup
+} from '@/utils/js_sdk/native_popup.js'
+// #endif
 
 const sn = ref("");
 const loginType = ref('')
@@ -29,6 +34,19 @@ onLoad(() => {
   if (data) {
     loginType.value = data.role;
   }
+  // #ifdef APP-PLUS
+  popup.show({
+      title: '相机权限申请说明',
+      content: '应用需要访问您的相机，以便拍摄照片或扫描二维码。'
+  })
+  
+  setTimeout(()=>{
+	  // 关闭
+	  popup.close()
+  },2000)
+  // #endif
+
+  
 })
 
 const handleScan = () => {
