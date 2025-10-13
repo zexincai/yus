@@ -8,89 +8,88 @@
 
     <!-- SN码输入 -->
     <view class="sn-row">
-      <input class="sn-input" v-model="sn" placeholder="输入设备SN码" placeholder-class="placeholder" />
+      <input
+        class="sn-input"
+        v-model="sn"
+        placeholder="输入设备SN码"
+        placeholder-class="placeholder"
+      />
       <button class="confirm-btn" @click="handleConfirm">确定</button>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { loadDeviceBaseInfo, devicelLoadDeviceBaseInfo } from "@/api/dealer";
-import { onLoad } from "@dcloudio/uni-app";
-// #ifdef APP-PLUS
-import {
-	popup
-} from '@/utils/js_sdk/native_popup.js'
-// #endif
+import { ref } from 'vue'
+import { loadDeviceBaseInfo, devicelLoadDeviceBaseInfo } from '@/api/dealer'
+import { onLoad } from '@dcloudio/uni-app'
 
-const sn = ref("");
+const sn = ref('')
 const loginType = ref('')
 const handleBack = () => {
-  uni.navigateBack();
-};
+  uni.navigateBack()
+}
 onLoad(() => {
-  const data = uni.getStorageSync("userInfo");
+  const data = uni.getStorageSync('userInfo')
   if (data) {
-    loginType.value = data.role;
+    loginType.value = data.role
   }
-  // #ifdef APP-PLUS
-  popup.show({
-      title: '相机权限申请说明',
-      content: '应用需要访问您的相机，以便拍摄照片或扫描二维码。'
-  })
-  
-  setTimeout(()=>{
-	  // 关闭
-	  popup.close()
-  },2000)
-  // #endif
-
-  
 })
 
 const handleScan = () => {
-  uni.scanCode({
-    success: (res) => {
-      sn.value = res.result;
-      uni.showToast({ title: "扫码成功", icon: "success" });
-      handleConfirm();
+  uni.showModal({
+    title: '允许App访问你的相机?',
+    content: '用于实现读取设备SN编号',
+    cancelText: '不允许',
+    confirmText: '允许',
+    success: async (res) => {
+      if (res.confirm) {
+        uni.scanCode({
+          success: (res) => {
+            sn.value = res.result
+            uni.showToast({ title: '扫码成功', icon: 'success' })
+            handleConfirm()
+          },
+          fail: (e) => {
+            console.log(e)
+            uni.showToast({ title: '扫码失败', icon: 'none' })
+          },
+        })
+      }
     },
-    fail: (e) => {
-      console.log(e);
-      uni.showToast({ title: "扫码失败", icon: "none" });
-    },
-  });
-};
+    fail: (err) => {},
+  })
+}
 
 const handleConfirm = () => {
   if (!sn.value.trim()) {
-    uni.showToast({ title: "请输入SN码", icon: "none" });
-    return;
+    uni.showToast({ title: '请输入SN码', icon: 'none' })
+    return
   }
-  const func = loginType.value === 'ROLE_CUSTOMER' ? devicelLoadDeviceBaseInfo : loadDeviceBaseInfo
+  const func =
+    loginType.value === 'ROLE_CUSTOMER'
+      ? devicelLoadDeviceBaseInfo
+      : loadDeviceBaseInfo
   func({ mes: sn.value }).then((res) => {
     if (loginType.value === 'ROLE_CUSTOMER') {
-      uni.setStorageSync("deviceInfo", res);
+      uni.setStorageSync('deviceInfo', res)
       uni.navigateTo({
-        url: "/pages/index/scan/detail/index",
-      });
-
+        url: '/pages/index/scan/detail/index',
+      })
     } else {
       if (res.activeState == 2) {
         uni.showToast({
-          title: "设备已激活",
-          icon: "none",
-        });
+          title: '设备已激活',
+          icon: 'none',
+        })
       } else {
-        uni.setStorageSync("deviceInfo", res);
+        uni.setStorageSync('deviceInfo', res)
         uni.navigateTo({
-          url: "/pages/device/authorize/index",
-        });
+          url: '/pages/device/authorize/index',
+        })
       }
     }
-
-  });
+  })
 
   // if (!sn.value.trim()) {
   //   uni.showToast({ title: "请输入SN码", icon: "none" });
@@ -98,7 +97,7 @@ const handleConfirm = () => {
   // }
   // TODO: 处理SN码逻辑
   // uni.showToast({ title: "SN码已提交", icon: "success" });
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -165,17 +164,17 @@ const handleConfirm = () => {
 }
 
 .iconfont {
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-back:before {
-  content: "\e8ef";
+  content: '\e8ef';
 }
 
 .icon-scan:before {
-  content: "\e6a1";
+  content: '\e6a1';
 }
 </style>
