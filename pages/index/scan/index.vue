@@ -8,12 +8,7 @@
 
     <!-- SN码输入 -->
     <view class="sn-row">
-      <input
-        class="sn-input"
-        v-model="sn"
-        placeholder="输入设备SN码"
-        placeholder-class="placeholder"
-      />
+      <input class="sn-input" v-model="sn" placeholder="输入设备SN码" placeholder-class="placeholder" />
       <button class="confirm-btn" @click="handleConfirm">确定</button>
     </view>
   </view>
@@ -37,28 +32,39 @@ onLoad(() => {
 })
 
 const handleScan = () => {
-  uni.showModal({
-    title: '允许App访问你的相机?',
-    content: '用于实现读取设备SN编号',
-    cancelText: '不允许',
-    confirmText: '允许',
-    success: async (res) => {
-      if (res.confirm) {
-        uni.scanCode({
-          success: (res) => {
-            sn.value = res.result
-            uni.showToast({ title: '扫码成功', icon: 'success' })
-            handleConfirm()
-          },
-          fail: (e) => {
-            console.log(e)
-            uni.showToast({ title: '扫码失败', icon: 'none' })
-          },
-        })
-      }
+  uni.scanCode({
+    success: (res) => {
+      sn.value = res.result
+      uni.showToast({ title: '扫码成功', icon: 'success' })
+      handleConfirm()
     },
-    fail: (err) => {},
+    fail: (e) => {
+      console.log(e)
+      uni.showToast({ title: '扫码失败', icon: 'none' })
+    },
   })
+  // uni.showModal({
+  //   title: '允许App访问你的相机?',
+  //   content: '用于实现读取设备SN编号',
+  //   cancelText: '不允许',
+  //   confirmText: '允许',
+  //   success: async (res) => {
+  //     if (res.confirm) {
+  //       uni.scanCode({
+  //         success: (res) => {
+  //           sn.value = res.result
+  //           uni.showToast({ title: '扫码成功', icon: 'success' })
+  //           handleConfirm()
+  //         },
+  //         fail: (e) => {
+  //           console.log(e)
+  //           uni.showToast({ title: '扫码失败', icon: 'none' })
+  //         },
+  //       })
+  //     }
+  //   },
+  //   fail: (err) => { },
+  // })
 }
 
 const handleConfirm = () => {

@@ -4,11 +4,15 @@
       <view class="setting-card">
         <view class="temp-item">
           <text>开关机</text>
-          <xSwitch
-            keyName="stopSW"
-            @change="handleSave"
-            v-model="settings.pause"
-          />
+          <xSwitch keyName="stopSW" @change="handleSave" v-model="settings.pause" />
+        </view>
+
+      </view>
+      <view class="setting-card">
+        <view class="temp-item" :class="{ 'disabled': !settings.backflow }">
+          <text>回流</text>
+          <xSwitch :disabled="!settings.backflow" keyName="Backflow" @change="handleSave"
+            v-model="settings.backflowOpen" />
         </view>
       </view>
     </template>
@@ -17,20 +21,12 @@
       <view class="setting-card flex-between">
         <view class="switch-item">
           <text>暂停</text>
-          <xSwitch
-            keyName="stopSW"
-            @change="handleSave"
-            v-model="settings.pause"
-          />
+          <xSwitch keyName="stopSW" @change="handleSave" v-model="settings.pause" />
         </view>
 
         <view class="switch-item">
           <text>排空</text>
-          <xSwitch
-            keyName="emptySwitch"
-            @change="handleSave"
-            v-model="settings.drain"
-          />
+          <xSwitch keyName="emptySwitch" @change="handleSave" v-model="settings.drain" />
         </view>
       </view>
 
@@ -39,14 +35,8 @@
         <view class="temp-item">
           <text>开水停止加热温度</text>
           <view class="temp-input">
-            <input
-              @blur="openTimer"
-              @focus="clearTimer"
-              type="number"
-              v-model="settings.hotWaterTemp"
-              class="input"
-              maxlength="3"
-            />
+            <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.hotWaterTemp" class="input"
+              maxlength="3" />
             <text class="unit">℃</text>
             <button class="save-btn" @click="handleSaveHotTemp">保存</button>
           </view>
@@ -57,14 +47,8 @@
         <view class="temp-item">
           <text>温开水停止加热温度</text>
           <view class="temp-input">
-            <input
-              @blur="openTimer"
-              @focus="clearTimer"
-              type="number"
-              v-model="settings.warmWaterTemp"
-              class="input"
-              maxlength="3"
-            />
+            <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.warmWaterTemp" class="input"
+              maxlength="3" />
             <text class="unit">℃</text>
             <button class="save-btn" @click="handleSaveWarmTemp">保存</button>
           </view>
@@ -78,25 +62,13 @@
             <view class="timer-left">
               <text>定时运行</text>
             </view>
-            <xSwitch
-              @change="handleSave"
-              keyName="workMode"
-              v-model="settings.timerRun"
-            />
+            <xSwitch @change="handleSave" keyName="workMode" v-model="settings.timerRun" />
           </view>
           <view class="timer-link" @click="navigateToTimerSetting">
-            <image
-              src="/static/images/timer.png"
-              mode="aspectFit"
-              class="timer-icon"
-            />
+            <image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
             <view>
               <text>定时开关设置</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </view>
         </view>
@@ -108,25 +80,13 @@
             <view class="timer-left">
               <text>定时消毒</text>
             </view>
-            <xSwitch
-              @change="handleSave"
-              keyName="sterilizingSwitch"
-              v-model="settings.timerSterilize"
-            />
+            <xSwitch @change="handleSave" keyName="sterilizingSwitch" v-model="settings.timerSterilize" />
           </view>
           <view class="timer-link" @click="navigateToSterilizeSetting">
-            <image
-              src="/static/images/sterilize.png"
-              mode="aspectFit"
-              class="timer-icon"
-            />
+            <image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
             <view>
               <text>定时消毒设置</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </view>
         </view>
@@ -138,25 +98,13 @@
             <view class="timer-left">
               <text>定时冲洗</text>
             </view>
-            <xSwitch
-              @change="handleSave"
-              keyName="washingSwitch"
-              v-model="settings.timerWash"
-            />
+            <xSwitch @change="handleSave" keyName="washingSwitch" v-model="settings.timerWash" />
           </view>
           <view class="timer-link" @click="navigateToWashSetting">
-            <image
-              src="/static/images/wash.png"
-              mode="aspectFit"
-              class="timer-icon"
-            />
+            <image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
             <view>
               <text>定时冲洗设置</text>
-              <image
-                src="/static/images/arrow-right.png"
-                mode="aspectFit"
-                class="arrow-icon"
-              />
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </view>
         </view>
@@ -176,6 +124,7 @@ const loading = ref(false);
 // 设置数据
 const settings = reactive({
   pause: false,
+  backflowOpen: false,
   drain: false,
   hotWaterTemp: 98,
   warmWaterTemp: 65,
@@ -225,10 +174,14 @@ const getDetail = async () => {
     );
     brandCode.value = res.brandCode;
     settings.deviceId = res.deviceId;
+
     if (res.brandCode == "JYROJSJ") {
+      settings.backflow = res.jyrojsjvo && res.jyrojsjvo.backflow == '1';
       settings.pause = res.stopSW === 1;
+      settings.backflowOpen = res.jyrojsjvo && res.jyrojsjvo.backflowOpen == 1;
     } else {
       settings.pause = res.stopSW === 1;
+      // settings.backflowOpen = res.backflowOpen == 1;
       settings.deviceId = res.deviceId;
       settings.drain = res.emptySwitch === 1;
       settings.hotWaterTemp = res.targetTemperature;
@@ -409,6 +362,10 @@ const navigateToWashSetting = () => {
         background: $active-color;
       }
     }
+  }
+
+  .disabled {
+    opacity: 0.8;
   }
 
   .timer-item {

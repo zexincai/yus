@@ -38,6 +38,8 @@ const paramListForHome = ref([
   { label: "原水TDS检测", value: "", key: "detectionRawTds" },
   { label: "纯水TDS检测", value: "", key: "detectionPureTds" },
   { label: "上传取水记录", value: "", key: "detectionWaterRecord" },
+  { label: "回流功能", value: "", key: "backflow" },
+  { label: "回流", value: "", key: "backflowOpen" },
 ])
 onLoad(async ({ id }) => {
   const res = await deviceParams({ deviceId: id });
