@@ -1,257 +1,314 @@
-import {
-	popup
-} from './native_popup.js'
 import permisionUtil from "./permission.js"
+import { popup } from './native_popup.js'
 
-let permissionListener = null
-
-const prefix = 'permisionStatus_'
+const prefix = 'permision_'
 const {
-	uniPlatform,
-	platform,
-	osAndroidAPILevel
+    uniPlatform,
+    platform,
+    osAndroidAPILevel,
+    brand
 } = uni.getSystemInfoSync()
 
-const log = (...args) => {
-	console.log(...args)
+const permisionMap = {
+    startBluetoothDevicesDiscovery: async function() {
+        try {
+            const status1 = await permisionUtil.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION')
+            const status2 = await permisionUtil.requestAndroidPermission('android.permission.BLUETOOTH_SCAN')
+            const status3 = await permisionUtil.requestAndroidPermission('android.permission.BLUETOOTH_CONNECT')
+            if (status1 == 1 && status2 == 1 && status3 == 1) {
+                return Promise.resolve(1)
+            } else {
+                return Promise.resolve(-1)
+            }
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    scanCode: async function() {
+        try {
+            const status1 = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
+            const status2 = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_IMAGES') :
+                await permisionUtil.requestAndroidPermission(
+                    'android.permission.READ_EXTERNAL_STORAGE')
+            if (status1 == 1 || status2 == 1) {
+                return Promise.resolve(1)
+            } else {
+                return Promise.resolve(-1)
+            }
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    album: async function() {
+        try {
+            const status = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_IMAGES') :
+                await permisionUtil.requestAndroidPermission(
+                    'android.permission.READ_EXTERNAL_STORAGE')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    camera: async function() {
+        try {
+            const status = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    chooseFile: async function() {
+        try {
+            const status = await permisionUtil.requestAndroidPermission('android.permission.READ_EXTERNAL_STORAGE')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    chooseImage: async function() {
+        try {
+            const status1 = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
+            const status2 = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_IMAGES') :
+                await permisionUtil.requestAndroidPermission(
+                    'android.permission.READ_EXTERNAL_STORAGE')
+            if (status1 == 1 || status2 == 1) {
+                return Promise.resolve(1)
+            } else {
+                return Promise.resolve(-1)
+            }
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    chooseVideo: async function() {
+        try {
+            const status1 = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
+            const status2 = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_VIDEO') :
+                await permisionUtil.requestAndroidPermission(
+                    'android.permission.READ_EXTERNAL_STORAGE')
+            if (status1 == 1 || status2 == 1) {
+                return Promise.resolve(1)
+            } else {
+                return Promise.resolve(-1)
+            }
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    saveImageToPhotosAlbum: async function() {
+        try {
+            const status = await permisionUtil.requestAndroidPermission('android.permission.WRITE_EXTERNAL_STORAGE')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    saveVideoToPhotosAlbum: async function() {
+        try {
+            const status = await permisionUtil.requestAndroidPermission('android.permission.WRITE_EXTERNAL_STORAGE')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    getLocation: async function() {
+        try {
+            const status = await permisionUtil.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    startLocationUpdate: async function() {
+        try {
+            const status = await permisionUtil.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    makePhoneCall: async function() {
+        try {
+            const status = await permisionUtil.requestAndroidPermission('android.permission.CALL_PHONE')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    },
+    getRecorderManager: async function() {
+        try {
+            const status = await permisionUtil.requestAndroidPermission('android.permission.RECORD_AUDIO')
+            return Promise.resolve(status)
+        } catch (e) {
+            return Promise.resolve(0)
+        }
+    }
 }
 
-// 默认权限申请说明信息
-const defaultPermissionExplainMap = {
-	'android.permission.BLUETOOTH_SCAN': {
-		title: '蓝牙扫描权限申请说明',
-		content: '应用需要扫描附近的蓝牙设备，以便进行连接或数据传输。'
-	},
-	'android.permission.BLUETOOTH_CONNECT': {
-		title: '蓝牙连接权限申请说明',
-		content: '应用需要连接蓝牙设备，以便提供音频播放或数据通信功能。'
-	},
-	'android.permission.READ_MEDIA_IMAGE': {
-		title: '读取图片权限申请说明',
-		content: '应用需要访问您的图片库，以便加载和选择照片。'
-	},
-	'android.permission.READ_MEDIA_IMAGES': {
-		title: '读取图片权限申请说明',
-		content: '应用需要访问您的图片库，以便加载和选择照片。'
-	},
-	'android.permission.READ_MEDIA_VIDEO': {
-		title: '读取视频权限申请说明',
-		content: '应用需要访问您的视频库，以便播放和选择视频文件。'
-	},
-	'android.permission.READ_MEDIA_AUDIO': {
-		title: '读取音频权限申请说明',
-		content: '应用需要访问您的音频文件，以便播放音乐或录音。'
-	},
-	'android.permission.CALL_PHONE': {
-		title: '拨打电话权限申请说明',
-		content: '应用需要拨打电话权限，以便直接拨打联系人或客服热线。'
-	},
-	'android.permission.INTERNET': {
-		title: '网络权限申请说明',
-		content: '应用需要访问网络，以提供最新的内容和服务。'
-	},
-	'android.permission.READ_EXTERNAL_STORAGE': {
-		title: '存储读取权限申请说明',
-		content: '应用需要读取您的存储，以便加载图片、视频等多媒体文件。'
-	},
-	'android.permission.WRITE_EXTERNAL_STORAGE': {
-		title: '存储写入权限申请说明',
-		content: '应用需要写入您的存储，以便保存图片、视频等多媒体文件。'
-	},
-	'android.permission.READ_PHONE_STATE': {
-		title: '设备信息权限申请说明',
-		content: '应用需要访问设备信息，以便提供更好的用户体验。'
-	},
-	'android.permission.ACCESS_NETWORK_STATE': {
-		title: '网络状态权限申请说明',
-		content: '应用需要获取网络状态，以便优化网络请求。'
-	},
-	'android.permission.ACCESS_WIFI_STATE': {
-		title: 'WiFi 状态权限申请说明',
-		content: '应用需要获取 WiFi 状态，以便优化网络连接。'
-	},
-	'android.permission.CAMERA': {
-		title: '相机权限申请说明',
-		content: '应用需要访问您的相机，以便拍摄照片或扫描二维码。'
-	},
-	'android.permission.ACCESS_COARSE_LOCATION': {
-		title: '定位权限申请说明',
-		content: '应用需要获取您的大致位置信息，以便提供基于位置的服务。'
-	},
-	'android.permission.ACCESS_FINE_LOCATION': {
-		title: '精确定位权限申请说明',
-		content: '应用需要获取您的精确位置信息，以便提供导航等精准服务。'
-	},
-	'android.permission.ACCESS_LOCATION_EXTRA_COMMANDS': {
-		title: '额外定位权限申请说明',
-		content: '应用需要使用额外的定位功能，以提升定位精度。'
-	},
-	'android.permission.ACCESS_MOCK_LOCATION': {
-		title: '模拟定位权限申请说明',
-		content: '应用需要访问模拟位置，以便进行测试或特定功能。'
-	},
-	'android.permission.READ_CONTACTS': {
-		title: '读取联系人权限申请说明',
-		content: '应用需要读取您的联系人信息，以便提供通讯录相关功能。'
-	},
-	'android.permission.WRITE_CONTACTS': {
-		title: '写入联系人权限申请说明',
-		content: '应用需要写入您的联系人信息，以便管理通讯录。'
-	},
-	'android.permission.BLUETOOTH': {
-		title: '蓝牙权限申请说明',
-		content: '应用需要访问蓝牙功能，以便连接设备或传输数据。'
-	},
-	'android.permission.BLUETOOTH_ADMIN': {
-		title: '蓝牙管理权限申请说明',
-		content: '应用需要管理蓝牙功能，以便优化连接体验。'
-	},
-	'android.permission.RECEIVE_SMS': {
-		title: '短信接收权限申请说明',
-		content: '应用需要读取短信，以便自动填充验证码或提供相关功能。'
-	},
-	'android.permission.SEND_SMS': {
-		title: '短信发送权限申请说明',
-		content: '应用需要发送短信，以便提供短信验证等功能。'
-	},
-	'android.permission.WRITE_SMS': {
-		title: '短信写入权限申请说明',
-		content: '应用需要写入短信，以便存储和管理您的短信信息。'
-	},
-	'android.permission.READ_SMS': {
-		title: '短信读取权限申请说明',
-		content: '应用需要读取短信，以便自动填充验证码或提供相关功能。'
-	},
-	'android.permission.INSTALL_PACKAGES': {
-		title: '安装应用权限申请说明',
-		content: '应用需要安装其他应用，以便提供扩展功能。'
-	},
-	'android.permission.REQUEST_INSTALL_PACKAGES': {
-		title: '安装包权限申请说明',
-		content: '应用需要请求安装应用包权限，以便下载安装更新。'
-	},
-	'com.android.launcher.permission.INSTALL_SHORTCUT': {
-		title: '创建快捷方式权限申请说明',
-		content: '应用需要创建桌面快捷方式，以便您快速访问应用。'
-	},
-	'com.android.launcher.permission.UNINSTALL_SHORTCUT': {
-		title: '删除快捷方式权限申请说明',
-		content: '应用需要删除桌面快捷方式，以便管理您的快捷方式。'
-	},
-	'android.permission.RECORD_AUDIO': {
-		title: '麦克风权限申请说明',
-		content: '应用需要访问麦克风，以便进行语音输入或语音通话。'
-	},
-	'android.permission.MODIFY_AUDIO_SETTINGS': {
-		title: '音频设置修改权限申请说明',
-		content: '应用需要修改音频设置，以便优化音量或声音效果。'
-	},
-	'android.permission.GET_ACCOUNTS': {
-		title: '账户权限申请说明',
-		content: '应用需要访问您的账户信息，以便提供个性化服务。'
-	},
-	'android.permission.USE_FINGERPRINT': {
-		title: '指纹识别权限申请说明',
-		content: '应用需要使用指纹识别，以便进行身份验证。'
-	},
-	'android.permission.USE_BIOMETRIC': {
-		title: '生物识别权限申请说明',
-		content: '应用需要使用生物识别功能（如面部识别），以便进行身份验证。'
-	},
-	'android.permission.READ_CALENDAR': {
-		title: '读取日历权限申请说明',
-		content: '应用需要读取您的日历，以便提供日程管理功能。'
-	},
-	'android.permission.WRITE_CALENDAR': {
-		title: '写入日历权限申请说明',
-		content: '应用需要写入您的日历，以便添加或修改日程。'
-	},
-	'android.permission.READ_CALL_LOG': {
-		title: '读取通话记录权限申请说明',
-		content: '应用需要访问通话记录，以便提供通话管理或统计功能。'
-	},
-	'android.permission.WRITE_CALL_LOG': {
-		title: '写入通话记录权限申请说明',
-		content: '应用需要写入通话记录，以便管理通话历史。'
-	},
-	'android.permission.PROCESS_OUTGOING_CALLS': {
-		title: '处理拨出电话权限申请说明',
-		content: '应用需要访问拨出电话，以便提供通话拦截或号码识别功能。'
-	},
-	'android.permission.BODY_SENSORS': {
-		title: '传感器权限申请说明',
-		content: '应用需要访问您的传感器数据，以便提供健康或运动相关功能。'
-	},
-	'android.permission.ACTIVITY_RECOGNITION': {
-		title: '活动识别权限申请说明',
-		content: '应用需要访问您的活动状态，以便提供运动检测等功能。'
-	},
-	'android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS': {
-		title: '电池优化忽略权限申请说明',
-		content: '应用需要忽略电池优化，以便在后台稳定运行。'
-	},
-	'android.permission.FOREGROUND_SERVICE': {
-		title: '前台服务权限申请说明',
-		content: '应用需要运行前台服务，以便提供持续运行的功能，如音乐播放、导航等。'
-	},
-	'android.permission.SYSTEM_ALERT_WINDOW': {
-		title: '悬浮窗权限申请说明',
-		content: '应用需要显示悬浮窗，以便提供浮动窗口功能，如聊天气泡、屏幕录制等。'
-	},
-	'android.permission.WRITE_SETTINGS': {
-		title: '系统设置修改权限申请说明',
-		content: '应用需要修改系统设置，以便调整亮度、铃声等个性化配置。'
-	}
-};
-
-
-let disabled = false
-
-export const createRequestPermissionListener = (permissionExplainMap = {}) => {
-	if (uniPlatform != 'app' || platform != 'android') return
-
-	if (typeof permissionExplainMap != 'object') throw Error('permissionExplainMap 类型错误')
-
-	permissionListener = permissionListener || uni.createRequestPermissionListener()
-
-	permissionListener.onRequest((e) => {
-		log('onRequest', e);
-	});
-
-	permissionListener.onConfirm((e) => {
-		log('onConfirm', e);
-		const [permissionName] = e
-
-		const status = uni.getStorageSync(prefix + permissionName)
-		log('onConfirm permissionName', permissionName, status);
-		const content = permissionExplainMap[permissionName] || defaultPermissionExplainMap[permissionName]
-		if (content && !disabled && status != 1) popup.show(content)
-	});
-
-	permissionListener.onComplete((e) => {
-		log('onComplete', e);
-		const [permissionName] = e
-
-		// const status = uni.getStorageSync(prefix + permissionName)
-		// log('onConfirm permissionName', permissionName, status);
-		if (!disabled) popup.close()
-
-		// if (!status && typeof status != 'number' && String(permissionName).includes('android')) {
-		//     setTimeout(() => {
-		//         uni.setStorageSync(prefix + permissionName, 1)
-		//         permisionUtil.requestAndroidPermission(permissionName).then(res => {
-		//             log('onConfirm permissionName', permissionName, res);
-		//             uni.setStorageSync(prefix + permissionName, res)
-		//         })
-		//     }, 500)
-		// }
-	});
+const resultHandler = function(args, err) {
+    args.fail && args.fail(err)
+    args.complete && args.complete(err)
 }
 
-export const stopRequestPermissionListener = () => {
-	if (uniPlatform != 'app' || platform != 'android') return
+let getRecorderManagerFlag = false
+const _getRecorderManager = uni.getRecorderManager
 
-	permissionListener && permissionListener.stop()
+const gotoAppPermissionSetting = function() {
+    uni.showModal({
+        title: '提示',
+        content: '当前功能需要开启相应权限，是否前往开启?',
+        cancelText: '否',
+        confirmText: '是',
+        success: (res) => {
+            if (res.confirm) {
+                permisionUtil.gotoAppPermissionSetting()
+            }
+        }
+    })
+}
+
+/**
+ * @func addPermisionInterceptor
+ * @desc 添加权限申请说明拦截
+ * @param {String} permisionName 要拦截的 uniApi 名称
+ * @param {String} content 申请权限说明信息
+ * @param {Boolean} once 只询问一次, 用户不同意申请或拒绝权限将无法使用 uniApi, 如果要继续使用 Api 先用 removePermisionInterceptor 函数移除拦截再调用 Api
+ * @return 无
+ * @Author Xingfei Xu
+ * @Email 1824159241@qq.com
+ */
+export const addPermisionInterceptor = function(permisionName, content, once) {
+    if (uniPlatform != 'app' || platform != 'android') return
+
+    const getRecorderManagerAdapter = function() {
+        const recorder = _getRecorderManager()
+        const _start = recorder.start.bind(recorder)
+        recorder.start = async function(options) {
+            const perm = uni.getStorageSync(prefix + permisionName)
+            if (perm == 1) {
+                _start(options)
+                return
+            }
+            if (once && typeof perm == 'number') {
+                console.error(`用户不同意申请或已拒绝权限`)
+                return
+            }
+            try {
+                popup.show({ content })
+                let status = 0
+                if (permisionMap[permisionName]) {
+                    status = await permisionMap[permisionName]()
+                } else {
+                    status = 1
+                    console.error(`addPermisionInterceptor fail, ${permisionName}-未配置获取权限方法`)
+                }
+                uni.setStorageSync(prefix + permisionName, status)
+                if (status === 1) {
+                    _start(options)
+                }
+                if (status === 0) {
+                    console.error(`申请麦克风权限失败`)
+                }
+                if (status === -1) {
+                    console.error(`用户已拒绝麦克风权限`)
+                    gotoAppPermissionSetting()
+                }
+            } catch (err) {
+                console.error(err)
+            } finally {
+                popup.close()
+            }
+        }
+        return recorder
+    }
+
+    if (permisionName == 'getRecorderManager') {
+        if (getRecorderManagerFlag) return
+        uni.getRecorderManager = getRecorderManagerAdapter
+        getRecorderManagerFlag = true
+        return
+    }
+
+    uni.addInterceptor(permisionName, {
+        invoke(args) {
+            // console.log(permisionName, args);
+            if (args.sourceType && Array.isArray(args.sourceType) && args.sourceType.length == 1) permisionName = args.sourceType[0]
+            return new Promise(async (resolve, reject) => {
+                const perm = uni.getStorageSync(prefix + permisionName)
+                if (perm == 1) {
+                    resolve(args)
+                    return
+                }
+                if (once && typeof perm == 'number') {
+                    reject(args)
+                    resultHandler(args, {
+                        errMsg: '用户不同意申请或已拒绝权限'
+                    })
+                    return
+                }
+                try {
+                    popup.show({ content })
+                    let status = 0
+                    if (permisionMap[permisionName]) {
+                        status = await permisionMap[permisionName]()
+                    } else {
+                        status = 1
+                        console.error(`addPermisionInterceptor fail, ${permisionName}-未配置获取权限方法`)
+                    }
+                    uni.setStorageSync(prefix + permisionName, status)
+                    if (status === 1) {
+                        resolve(args)
+                    }
+                    if (status === 0) {
+                        reject(args)
+                        resultHandler(args, {
+                            errMsg: '申请权限失败'
+                        })
+                    }
+                    if (status === -1) {
+                        reject(args)
+                        resultHandler(args, {
+                            errMsg: '用户已拒绝该权限'
+                        })
+                        gotoAppPermissionSetting()
+                    }
+                } catch (err) {
+                    reject(args)
+                    resultHandler(args, err)
+                } finally {
+                    popup.close()
+                }
+            });
+        },
+        // success: (res) => {
+        //     console.log(res);
+        // },
+        fail(err) {
+            console.log('interceptor-fail', err)
+            const errMsg = String(err?.errMsg)
+            if (errMsg.includes('fail No Permission') || (errMsg.includes('fail') && errMsg.includes('权限'))) {
+                uni.setStorageSync(prefix + permisionName, 0)
+                gotoAppPermissionSetting()
+            }
+        }
+    })
+}
+
+/**
+ * @func removePermisionInterceptor
+ * @desc 移除权限申请说明拦截
+ * @param {String} permisionName 要移除拦截的 uniApi 名称
+ * @return 无
+ * @Author Xingfei Xu
+ * @Email 1824159241@qq.com
+ */
+export const removePermisionInterceptor = function(permisionName) {
+    if (permisionName == 'getRecorderManager') {
+        getRecorderManagerFlag = false
+        uni.getRecorderManager = _getRecorderManager
+    }
+    uni.removeInterceptor(permisionName)
+    uni.removeStorageSync(prefix + permisionName)
 }
 
 
@@ -265,24 +322,17 @@ export const stopRequestPermissionListener = () => {
  * @Email 1824159241@qq.com
  */
 export const requestAndroidPermission = async (permissionName, explainContent) => {
-	try {
-		if (uniPlatform != 'app' || platform != 'android') return 1
+    try {
+        if (uniPlatform != 'app' || platform != 'android') return 1
 
-		disabled = true
+        if (explainContent) popup.show(explainContent)
 
-		const content = explainContent || defaultPermissionExplainMap[permissionName]
+        const res = await permisionUtil.requestAndroidPermission(permissionName)
 
-		if (content) popup.show(content)
-
-		const res = await permisionUtil.requestAndroidPermission(permissionName)
-
-		uni.setStorageSync(prefix + permissionName, res)
-
-		return res
-	} catch (error) {
-		return Promise.reject(error)
-	} finally {
-		disabled = false
-		popup.close()
-	}
+        return res
+    } catch (error) {
+        return Promise.reject(error)
+    } finally {
+        popup.close()
+    }
 }
