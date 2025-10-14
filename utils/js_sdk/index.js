@@ -10,7 +10,7 @@ const {
 } = uni.getSystemInfoSync()
 
 const permisionMap = {
-    startBluetoothDevicesDiscovery: async function() {
+    startBluetoothDevicesDiscovery: async function () {
         try {
             const status1 = await permisionUtil.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION')
             const status2 = await permisionUtil.requestAndroidPermission('android.permission.BLUETOOTH_SCAN')
@@ -24,7 +24,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    scanCode: async function() {
+    scanCode: async function () {
         try {
             const status1 = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
             const status2 = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_IMAGES') :
@@ -38,8 +38,21 @@ const permisionMap = {
         } catch (e) {
             return Promise.resolve(0)
         }
+        // try {
+        //     const status1 = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
+        //     const status2 = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_IMAGES') :
+        //         await permisionUtil.requestAndroidPermission(
+        //             'android.permission.READ_EXTERNAL_STORAGE')
+        //     if (status1 == 1 || status2 == 1) {
+        //         return Promise.resolve(1)
+        //     } else {
+        //         return Promise.resolve(-1)
+        //     }
+        // } catch (e) {
+        //     return Promise.resolve(0)
+        // }
     },
-    album: async function() {
+    album: async function () {
         try {
             const status = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_IMAGES') :
                 await permisionUtil.requestAndroidPermission(
@@ -49,7 +62,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    camera: async function() {
+    camera: async function () {
         try {
             const status = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
             return Promise.resolve(status)
@@ -57,7 +70,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    chooseFile: async function() {
+    chooseFile: async function () {
         try {
             const status = await permisionUtil.requestAndroidPermission('android.permission.READ_EXTERNAL_STORAGE')
             return Promise.resolve(status)
@@ -65,7 +78,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    chooseImage: async function() {
+    chooseImage: async function () {
         try {
             const status1 = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
             const status2 = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_IMAGES') :
@@ -80,7 +93,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    chooseVideo: async function() {
+    chooseVideo: async function () {
         try {
             const status1 = await permisionUtil.requestAndroidPermission('android.permission.CAMERA')
             const status2 = (osAndroidAPILevel >= 33 && !['huawei', 'xiaomi'].includes(brand)) ? await permisionUtil.requestAndroidPermission('android.permission.READ_MEDIA_VIDEO') :
@@ -95,7 +108,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    saveImageToPhotosAlbum: async function() {
+    saveImageToPhotosAlbum: async function () {
         try {
             const status = await permisionUtil.requestAndroidPermission('android.permission.WRITE_EXTERNAL_STORAGE')
             return Promise.resolve(status)
@@ -103,7 +116,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    saveVideoToPhotosAlbum: async function() {
+    saveVideoToPhotosAlbum: async function () {
         try {
             const status = await permisionUtil.requestAndroidPermission('android.permission.WRITE_EXTERNAL_STORAGE')
             return Promise.resolve(status)
@@ -111,7 +124,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    getLocation: async function() {
+    getLocation: async function () {
         try {
             const status = await permisionUtil.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION')
             return Promise.resolve(status)
@@ -119,7 +132,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    startLocationUpdate: async function() {
+    startLocationUpdate: async function () {
         try {
             const status = await permisionUtil.requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION')
             return Promise.resolve(status)
@@ -127,7 +140,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    makePhoneCall: async function() {
+    makePhoneCall: async function () {
         try {
             const status = await permisionUtil.requestAndroidPermission('android.permission.CALL_PHONE')
             return Promise.resolve(status)
@@ -135,7 +148,7 @@ const permisionMap = {
             return Promise.resolve(0)
         }
     },
-    getRecorderManager: async function() {
+    getRecorderManager: async function () {
         try {
             const status = await permisionUtil.requestAndroidPermission('android.permission.RECORD_AUDIO')
             return Promise.resolve(status)
@@ -145,7 +158,7 @@ const permisionMap = {
     }
 }
 
-const resultHandler = function(args, err) {
+const resultHandler = function (args, err) {
     args.fail && args.fail(err)
     args.complete && args.complete(err)
 }
@@ -153,7 +166,7 @@ const resultHandler = function(args, err) {
 let getRecorderManagerFlag = false
 const _getRecorderManager = uni.getRecorderManager
 
-const gotoAppPermissionSetting = function() {
+const gotoAppPermissionSetting = function () {
     uni.showModal({
         title: '提示',
         content: '当前功能需要开启相应权限，是否前往开启?',
@@ -177,13 +190,13 @@ const gotoAppPermissionSetting = function() {
  * @Author Xingfei Xu
  * @Email 1824159241@qq.com
  */
-export const addPermisionInterceptor = function(permisionName, content, once) {
+export const addPermisionInterceptor = function (permisionName, content, once) {
     if (uniPlatform != 'app' || platform != 'android') return
 
-    const getRecorderManagerAdapter = function() {
+    const getRecorderManagerAdapter = function () {
         const recorder = _getRecorderManager()
         const _start = recorder.start.bind(recorder)
-        recorder.start = async function(options) {
+        recorder.start = async function (options) {
             const perm = uni.getStorageSync(prefix + permisionName)
             if (perm == 1) {
                 _start(options)
@@ -302,7 +315,7 @@ export const addPermisionInterceptor = function(permisionName, content, once) {
  * @Author Xingfei Xu
  * @Email 1824159241@qq.com
  */
-export const removePermisionInterceptor = function(permisionName) {
+export const removePermisionInterceptor = function (permisionName) {
     if (permisionName == 'getRecorderManager') {
         getRecorderManagerFlag = false
         uni.getRecorderManager = _getRecorderManager
