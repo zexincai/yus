@@ -162,7 +162,7 @@
     {
       "path": "pages/device/setting/wash/index",
       "style": {
-        "navigationBarTitleText": "定时冲洗设置"
+        "navigationBarTitleText": "定时换水设置"
       }
     },
     {
