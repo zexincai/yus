@@ -18,7 +18,19 @@
     </template>
     <template v-else>
       <!-- 基础开关设置 -->
-      <view class="setting-card flex-between">
+      <view v-if="brandCode == 'SWJSJV002'" class="setting-card flex-between">
+        <view class="switch-item">
+          <text>开关机</text>
+          <xSwitch keyName="OpenSW" @change="handleSave" v-model="settings.drain" />
+        </view>
+
+        <view class="switch-item">
+          <text>锁机</text>
+          <xSwitch keyName="LOCK" @change="handleSave" v-model="settings.pause" />
+        </view>
+      </view>
+
+      <view v-else class="setting-card flex-between">
         <view class="switch-item">
           <text>暂停</text>
           <xSwitch keyName="stopSW" @change="handleSave" v-model="settings.pause" />
@@ -78,9 +90,9 @@
         <view class="timer-item">
           <view class="timer-header">
             <view class="timer-left">
-              <text>定时消毒</text>
+              <text>{{brandCode !== 'SWJSJV002' ? '定时' : ' '}}消毒</text>
             </view>
-            <xSwitch @change="handleSave" keyName="sterilizingSwitch" v-model="settings.timerSterilize" />
+            <xSwitch v-if="brandCode !== 'SWJSJV002'" @change="handleSave" keyName="sterilizingSwitch" v-model="settings.timerSterilize" />
           </view>
           <view class="timer-link" @click="navigateToSterilizeSetting">
             <image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
@@ -96,9 +108,9 @@
         <view class="timer-item">
           <view class="timer-header">
             <view class="timer-left">
-              <text>定时冲洗</text>
+              <text>{{brandCode !== 'SWJSJV002' ? '定时' : ' '}}冲洗</text>
             </view>
-            <xSwitch @change="handleSave" keyName="washingSwitch" v-model="settings.timerWash" />
+            <xSwitch v-if="brandCode !== 'SWJSJV002'" @change="handleSave" keyName="washingSwitch" v-model="settings.timerWash" />
           </view>
           <view class="timer-link" @click="navigateToWashSetting">
             <image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />

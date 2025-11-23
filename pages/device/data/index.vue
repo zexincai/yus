@@ -93,6 +93,10 @@
         <text class="status-value">{{ detail.prodWTStatus || "--" }}</text>
         <text class="status-label">制水状态</text>
       </view>
+      <view v-if="brandCode == 'SWJSJV002'" class="status-card">
+        <text class="status-value">{{ detail.refrigerateStatus || "--" }}</text>
+        <text class="status-label">制冷状态</text>
+      </view>
     </view>
   </view>
 </template>
@@ -105,6 +109,7 @@ const brandCode = ref("");
 const detail = ref({ chipLifes: [] });
 onLoad(async ({ id }) => {
   const res = await deviceDatas({ deviceId: id });
+  brandCode.value = res.brandCode;
   if (res.brandCode == "JYROJSJ") {
     brandCode.value = "JYROJSJ";
     Object.keys(res.jyrojsjvo).forEach((key) => {

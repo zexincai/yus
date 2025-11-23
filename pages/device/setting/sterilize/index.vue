@@ -1,24 +1,43 @@
 <template>
   <view class="container">
+    <view v-if="brandCodeValue == 'SWJSJV002'" class="weekly-card">
+      <view class="weekly-card__header">
+        <text class="weekly-card__title">定期消毒周期</text>
+        <view class="weekly-card__save" @tap="saveWeekPlan">保存</view>
+      </view>
+
+      <view class="weekly-card__grid">
+        <view class="weekly-card__item" v-for="(w, i) in weekOptions" :key="w.value" @tap="toggleWeek(i)">
+          <image v-if="w.checked" src="/static/images/icon-check.png" class="weekly-card__checkIcon" mode="widthFix" />
+          <view v-else class="weekly-card__checkbox">
+          </view>
+          <text class="weekly-card__label">{{ w.label }}</text>
+        </view>
+      </view>
+    </view>
     <view class="setting-card">
       <view class="temp-item">
         <text>消毒时长</text>
         <view class="temp-input">
-          <input
-            @blur="openTimer"
-            @focus="clearTimer"
-            type="number"
-            v-model="settings.sterilizeTime"
-            class="input"
-            maxlength="3"
-          />
+          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.sterilizeTime" class="input"
+            maxlength="3" />
           <text class="unit">秒</text>
           <button class="save-btn" @click="handleSaveTime">保存</button>
         </view>
       </view>
     </view>
-
-    <view class="setting-card">
+    <view v-if="brandCodeValue == 'SWJSJV002'" class="setting-card">
+      <view class="timer-item">
+        <view class="timer-link">
+          <text>消毒开始时间</text>
+          <view @click="onTimeClick('sterilizing2Time')">
+            <text>{{ settings.sterilizing2Time }}</text>
+            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view v-if="brandCodeValue !== 'SWJSJV002'" class="setting-card">
       <view class="timer-item">
         <view class="timer-header">
           <view class="timer-left">
@@ -29,33 +48,21 @@
           <text>时间1</text>
           <view @click="onTimeClick('sterilizing1Time')">
             <text>{{ settings.sterilizing1Time }}</text>
-            <image
-              src="/static/images/arrow-right.png"
-              mode="aspectFit"
-              class="arrow-icon"
-            />
+            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
           </view>
         </view>
         <view class="timer-link">
           <text>时间2</text>
           <view @click="onTimeClick('sterilizing2Time')">
             <text>{{ settings.sterilizing2Time }}</text>
-            <image
-              src="/static/images/arrow-right.png"
-              mode="aspectFit"
-              class="arrow-icon"
-            />
+            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
           </view>
         </view>
         <view class="timer-link">
           <text>时间3</text>
           <view @click="onTimeClick('sterilizing3Time')">
             <text>{{ settings.sterilizing3Time }}</text>
-            <image
-              src="/static/images/arrow-right.png"
-              mode="aspectFit"
-              class="arrow-icon"
-            />
+            <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
           </view>
         </view>
       </view>
@@ -74,15 +81,55 @@ import xpPicker from "@/components/xp-picker/xp-picker.vue";
 let timeStr = ref("");
 let timeKey = "";
 let picker = ref(null);
+let brandCodeValue = ref("");
 // 设置数据
 const settings = reactive({
   sterilizeTime: "",
+  sterilizingSeconds: "",
   sterilizing1Time: "",
   sterilizing2Time: "",
   sterilizing3Time: "",
 });
 let deviceId = "";
 let timer = null;
+
+let weekOptions = reactive([
+  {
+    label: "星期一",
+    value: 1,
+    checked: false,
+  },
+  {
+    label: "星期二",
+    value: 2,
+    checked: false,
+  },
+  {
+    label: "星期三",
+    value: 3,
+    checked: false,
+  },
+  {
+    label: "星期四",
+    value: 4,
+    checked: false,
+  },
+  {
+    label: "星期五",
+    value: 5,
+    checked: false,
+  },
+  {
+    label: "星期六",
+    value: 6,
+    checked: false,
+  },
+  {
+    label: "星期日",
+    value: 7,
+    checked: false,
+  },
+]);
 onLoad(({ id }) => {
   deviceId = id;
 });
@@ -94,15 +141,24 @@ onShow(() => {
 });
 
 const getDetail = async () => {
-  const { sterilizePlan } = await loadWorkTime(
+  const { sterilizePlan, brandCode } = await loadWorkTime(
     { deviceId: deviceId },
     { loading: false }
   );
+  brandCodeValue.value = brandCode;
   settings.deviceId = deviceId;
-  settings.sterilizeTime = sterilizePlan.sterilizeTime;
-  settings.sterilizing1Time = sterilizePlan.sterilizing1Time;
-  settings.sterilizing2Time = sterilizePlan.sterilizing2Time;
-  settings.sterilizing3Time = sterilizePlan.sterilizing3Time;
+  if (sterilizePlan) {
+    settings.sterilizeTime = sterilizePlan.sterilizeTime;
+    settings.sterilizingSeconds = sterilizePlan.sterilizingSeconds;
+    settings.sterilizing1Time = sterilizePlan.sterilizing1Time;
+    settings.sterilizing2Time = sterilizePlan.sterilizing2Time;
+    settings.sterilizing3Time = sterilizePlan.sterilizing3Time;
+    if (brandCodeValue.value == 'SWJSJV002') {
+      weekOptions.forEach((item) => {
+        item.checked = settings.sterilizing1Time.split(',').includes(item.value.toString());
+      });
+    }
+  }
 };
 onHide(() => {
   clearInterval(timer);
@@ -135,13 +191,17 @@ const onTimeChange = async (e, key) => {
   handleSaveTime();
 };
 const handleSaveTime = () => {
+  if (brandCodeValue.value == 'SWJSJV002') {
+    let sterilizing1Time = weekOptions.filter((item) => item.checked).map((item) => item.value).join(",");
+    settings.sterilizing1Time = sterilizing1Time;
+  }
   setTimeout(async () => {
     const resp = await deviceCmdSet(
       {
         key: "SetSterilizing",
         deviceId: settings.deviceId,
-        sterilizingSeconds: settings.sterilizeTime,
         ...settings,
+        sterilizingSeconds: settings.sterilizeTime,
       },
       { raw: true }
     );
@@ -151,6 +211,27 @@ const handleSaveTime = () => {
     });
   }, 100);
 };
+
+const saveWeekPlan = async () => {
+  let sterilizing1Time = weekOptions.filter((item) => item.checked).map((item) => item.value).join(",");
+  settings.sterilizing1Time = sterilizing1Time;
+  const resp = await deviceCmdSet(
+    {
+      key: "SetSterilizing",
+      deviceId: settings.deviceId,
+      ...settings,
+      sterilizingSeconds: settings.sterilizeTime,
+    },
+    { raw: true }
+  );
+  uni.showToast({
+    title: resp.msg,
+    icon: "none",
+  });
+}
+const toggleWeek = (index) => {
+  weekOptions[index].checked = !weekOptions[index].checked;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -303,5 +384,77 @@ const handleSaveTime = () => {
       }
     }
   }
+}
+
+.weekly-card {
+  background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+  border-radius: 18rpx;
+  padding: 30rpx 40rpx 10rpx;
+  color: #ffffff;
+  margin-bottom: 25rpx;
+  font-size: 25rpx;
+}
+
+.weekly-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+
+.weekly-card__title {
+  font-size: 25rpx;
+  font-weight: 600;
+  color: #eaf3ff;
+}
+
+.weekly-card__save {
+  height: 65rpx;
+  line-height: 80rpx;
+  background: #d68f01;
+  color: #fff;
+  font-size: 25rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  width: 130rpx;
+  line-height: 65rpx;
+  border-radius: 36rpx;
+  background: $active-color;
+}
+
+.weekly-card__grid {
+  display: flex;
+  margin-left: -10rpx;
+  flex-wrap: wrap;
+}
+
+.weekly-card__item {
+  width: 25%;
+  display: flex;
+  padding-left: 10rpx;
+  // justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.weekly-card__checkbox {
+  width: 25rpx;
+  height: 25rpx;
+  border-radius: 4rpx;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weekly-card__checkIcon {
+  width: 25rpx;
+  height: 25rpx;
+}
+
+.weekly-card__label {
+  margin-left: 24rpx;
+  font-size: 26rpx;
+  color: #dbe7f3;
 }
 </style>

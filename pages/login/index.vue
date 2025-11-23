@@ -86,10 +86,10 @@
         </text>
       </view>
 
-      <button @click="onAppleLogin" class="apple-login-button">
+      <!-- <button @click="onAppleLogin" class="apple-login-button">
         <image src="/static/images/apple.png" class="apple-icon" />
         <text class="apple-text">通过Apple登录</text>
-      </button>
+      </button> -->
 
       <!-- 登录按钮 -->
       <button class="login-btn" @click="handleLogin">登录</button>
@@ -417,7 +417,7 @@ const handleViewPrivacy = () => {
   color: #fff;
   height: 90rpx;
   line-height: 90rpx;
-  margin-top: 20rpx;
+  margin-top: 50rpx;
   border-radius: 18rpx;
   margin-bottom: 30rpx;
   font-size: 29rpx;
