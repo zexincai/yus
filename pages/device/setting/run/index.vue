@@ -35,18 +35,18 @@
         <view class="timer-item">
           <view class="timer-header">
             <view class="timer-left">
-              <text>定时计划1</text>
+              <text>计划1</text>
             </view>
           </view>
           <view class="timer-link">
-            <text>开机</text>
+            <text>开机时间</text>
             <view @click="onTimeClick('openTime1')">
               <text>{{ settings.openTime1 }}</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </view>
           <view class="timer-link">
-            <text>关机</text>
+            <text>关机时间</text>
             <view @click="onTimeClick('closeTime1')">
               <text>{{ settings.closeTime1 }}</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
@@ -58,11 +58,11 @@
         <view class="timer-item">
           <view class="timer-header">
             <view class="timer-left">
-              <text>定时计划2</text>
+              <text>计划2</text>
             </view>
           </view>
           <view class="timer-link">
-            <text>开机</text>
+            <text>开机时间</text>
 
             <view @click="onTimeClick('openTime2')">
               <text>{{ settings.openTime2 }}</text>
@@ -70,7 +70,7 @@
             </view>
           </view>
           <view class="timer-link">
-            <text>关机</text>
+            <text>关机时间</text>
             <view @click="onTimeClick('closeTime2')">
               <text>{{ settings.closeTime2 }}</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
@@ -82,11 +82,11 @@
         <view class="timer-item">
           <view class="timer-header">
             <view class="timer-left">
-              <text>定时计划3</text>
+              <text>计划3</text>
             </view>
           </view>
           <view class="timer-link">
-            <text>开机</text>
+            <text>开机时间</text>
 
             <view @click="onTimeClick('openTime3')">
               <text>{{ settings.openTime3 }}</text>
@@ -94,7 +94,7 @@
             </view>
           </view>
           <view class="timer-link">
-            <text>关机</text>
+            <text>关机时间</text>
             <view @click="onTimeClick('closeTime3')">
               <text>{{ settings.closeTime3 }}</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
@@ -106,8 +106,8 @@
     <template v-else>
       <view class="weekly-card">
         <view class="weekly-card__header">
-          <text class="weekly-card__title">计划1定时开关周期</text>
-          <view class="weekly-card__save" @tap="saveWeekPlan">保存</view>
+          <text class="weekly-card__title">计划1开关周期</text>
+          <view class="weekly-card__save" @tap="saveWeekPlan('weekOptions')">保存</view>
         </view>
 
         <view class="weekly-card__grid">
@@ -129,14 +129,14 @@
             </view>
           </view>
           <view class="timer-link">
-            <text>开机</text>
+            <text>开机时间</text>
             <view @click="onTimeClick('openTime1')">
               <text>{{ settings.openTime1 }}</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </view>
           <view class="timer-link">
-            <text>关机</text>
+            <text>关机时间</text>
             <view @click="onTimeClick('closeTime1')">
               <text>{{ settings.closeTime1 }}</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
@@ -147,8 +147,8 @@
 
       <view class="weekly-card">
         <view class="weekly-card__header">
-          <text class="weekly-card__title">计划2定时开关周期</text>
-          <view class="weekly-card__save" @tap="saveWeekPlan">保存</view>
+          <text class="weekly-card__title">计划2开关周期</text>
+          <view class="weekly-card__save" @tap="saveWeekPlan('weekOptions2')">保存</view>
         </view>
 
         <view class="weekly-card__grid">
@@ -170,7 +170,7 @@
             </view>
           </view>
           <view class="timer-link">
-            <text>开机</text>
+            <text>开机时间</text>
 
             <view @click="onTimeClick('openTime2')">
               <text>{{ settings.openTime2 }}</text>
@@ -178,7 +178,7 @@
             </view>
           </view>
           <view class="timer-link">
-            <text>关机</text>
+            <text>关机时间</text>
             <view @click="onTimeClick('closeTime2')">
               <text>{{ settings.closeTime2 }}</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
@@ -345,6 +345,10 @@ const getDetail = async () => {
     settings.openTime3 = timingPlan.openTime3;
     settings.workBeginDay = timingPlan.workBeginDay;
     settings.workEndDay = timingPlan.workEndDay;
+    if (brandType.value === 'SWJSJV002') {
+      weekOptions.forEach(w => w.checked = (timingPlan.workBeginDay1 || '').includes(w.value))
+      weekOptions2.forEach(w => w.checked = (timingPlan.workBeginDay2 || '').includes(w.value))
+    }
   }
 };
 const clearTimer = () => {
@@ -391,12 +395,15 @@ const onTimeChange = async (e, key) => {
     params = {
       key: "SetWorkTime",
       deviceId: settings.deviceId,
-      opentime1: JSON.stringify({
+    }
+    if (['openTime1', 'closeTime1'].includes(key)) {
+      params.opentime1 = JSON.stringify({
         week: weekOptions.filter(w => w.checked).map(w => w.value).join(','),
         openTime: settings.openTime1,
         closeTime: settings.closeTime1,
-      }),
-      opentime2: JSON.stringify({
+      })
+    } else {
+      params.opentime2 = JSON.stringify({
         week: weekOptions2.filter(w => w.checked).map(w => w.value).join(','),
         openTime: settings.openTime2,
         closeTime: settings.closeTime2,
@@ -435,20 +442,31 @@ const toggleWeek = (index, key) => {
     weekOptions2[index].checked = !weekOptions2[index].checked;
   }
 }
-const saveWeekPlan = async () => {
+const saveWeekPlan = async (key) => {
   let params = {
     key: "SetWorkTime",
     deviceId: settings.deviceId,
-    opentime1: JSON.stringify({
-      week: weekOptions.filter(w => w.checked).map(w => w.value).join(','),
-      openTime: settings.openTime1,
-      closeTime: settings.closeTime1,
-    }),
-    opentime2: JSON.stringify({
-      week: weekOptions2.filter(w => w.checked).map(w => w.value).join(','),
-      openTime: settings.openTime2,
-      closeTime: settings.closeTime2,
-    })
+  };
+  if (key === 'weekOptions') {
+    params = {
+      key: "SetWorkTime",
+      deviceId: settings.deviceId,
+      opentime1: JSON.stringify({
+        week: weekOptions.filter(w => w.checked).map(w => w.value).join(','),
+        openTime: settings.openTime1,
+        closeTime: settings.closeTime1,
+      }),
+    }
+  } else if (key === 'weekOptions2') {
+    params = {
+      key: "SetWorkTime",
+      deviceId: settings.deviceId,
+      opentime2: JSON.stringify({
+        week: weekOptions2.filter(w => w.checked).map(w => w.value).join(','),
+        openTime: settings.openTime2,
+        closeTime: settings.closeTime2,
+      })
+    }
   }
   const resp = await deviceCmdSet(params,
     { raw: true }

@@ -156,19 +156,19 @@
     {
       "path": "pages/device/setting/run/index",
       "style": {
-        "navigationBarTitleText": "定时开关设置"
+        "navigationBarTitleText": "开关计划设置"
       }
     },
     {
       "path": "pages/device/setting/wash/index",
       "style": {
-        "navigationBarTitleText": "定时换水设置"
+        "navigationBarTitleText": "换水计划设置"
       }
     },
     {
       "path": "pages/device/setting/sterilize/index",
       "style": {
-        "navigationBarTitleText": "定时消毒设置"
+        "navigationBarTitleText": "消毒计划设置"
       }
     },
     {

@@ -36,7 +36,7 @@
     <view class="setting-card">
       <view class="timer-item">
         <view class="timer-link">
-          <text>换水时间</text>
+          <text>换水开始时间</text>
           <view @click="onTimeClick('refreshTime')">
             <text>{{ settings.refreshTime }}</text>
             <image

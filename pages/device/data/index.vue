@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <!-- 滤芯更换周期 -->
-    <template v-if="brandCode == 'JYROJSJ'">
+    <template v-if="brandCode == 'JYROJSJ' || brandCode == 'SWJSJV002'">
       <view v-if="detail.chipLifeType != 1" class="section-title">
         滤芯更换周期</view
       >

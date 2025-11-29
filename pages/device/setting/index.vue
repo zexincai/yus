@@ -21,26 +21,39 @@
       <view v-if="brandCode == 'SWJSJV002'" class="setting-card flex-between">
         <view class="switch-item">
           <text>开关机</text>
-          <xSwitch keyName="OpenSW" @change="handleSave" v-model="settings.drain" />
+          <xSwitch keyName="OpenSW" @change="handleSave" v-model="settings.pause" />
         </view>
 
         <view class="switch-item">
           <text>锁机</text>
-          <xSwitch keyName="LOCK" @change="handleSave" v-model="settings.pause" />
+          <xSwitch keyName="LOCK" @change="handleSave" v-model="settings.drain" />
         </view>
       </view>
+      <template v-else>
+        <view class="setting-card flex-between">
+          <view class="switch-item">
+            <text>暂停</text>
+            <xSwitch keyName="StopSW" @change="handleSave" v-model="settings.pause" />
+          </view>
 
-      <view v-else class="setting-card flex-between">
-        <view class="switch-item">
-          <text>暂停</text>
-          <xSwitch keyName="stopSW" @change="handleSave" v-model="settings.pause" />
+          <view v-if="deviceParamsData.funcEM !== '无'" class="switch-item">
+            <text>排空</text>
+            <xSwitch keyName="EmptySwitch" @change="handleSave" v-model="settings.drain" />
+          </view>
         </view>
 
-        <view class="switch-item">
-          <text>排空</text>
-          <xSwitch keyName="emptySwitch" @change="handleSave" v-model="settings.drain" />
+        <view class="setting-card flex-between">
+          <view v-if="deviceParamsData.funcST !== '无'" class="switch-item">
+            <text>消毒</text>
+            <xSwitch keyName="SterilizingSwitch" @change="handleSave" v-model="settings.timerSterilize" />
+          </view>
+          <view v-if="deviceParamsData.funcWH !== '无'" class="switch-item">
+            <text>换水</text>
+            <xSwitch keyName="WashingSwitch" @change="handleSave" v-model="settings.timerWash" />
+          </view>
         </view>
-      </view>
+      </template>
+
 
       <!-- 温度设置 -->
       <view class="setting-card">
@@ -55,7 +68,7 @@
         </view>
       </view>
 
-      <view class="setting-card">
+      <view v-if="deviceParamsData.wtshow !== '不显示'" class="setting-card">
         <view class="temp-item">
           <text>温开水停止加热温度</text>
           <view class="temp-input">
@@ -67,55 +80,61 @@
         </view>
       </view>
 
+      <view class="setting-card">
+        <view class="switch-item" style="width: 100%;">
+          <text>定时运行</text>
+          <xSwitch keyName="WorkMode" @change="handleSave" v-model="settings.timerRun" />
+        </view>
+      </view>
       <!-- 定时设置 -->
       <view class="setting-card">
         <view class="timer-item">
-          <view class="timer-header">
+          <!-- <view class="timer-header">
             <view class="timer-left">
               <text>定时运行</text>
             </view>
             <xSwitch @change="handleSave" keyName="workMode" v-model="settings.timerRun" />
-          </view>
+          </view> -->
           <view class="timer-link" @click="navigateToTimerSetting">
             <image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
             <view>
-              <text>定时开关设置</text>
+              <text>开关计划设置</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </view>
         </view>
       </view>
 
-      <view class="setting-card">
+      <view v-if="deviceParamsData.funcST !== '无'" class="setting-card">
         <view class="timer-item">
-          <view class="timer-header">
+          <!-- <view class="timer-header">
             <view class="timer-left">
               <text>{{brandCode !== 'SWJSJV002' ? '定时' : ' '}}消毒</text>
             </view>
-            <xSwitch v-if="brandCode !== 'SWJSJV002'" @change="handleSave" keyName="sterilizingSwitch" v-model="settings.timerSterilize" />
-          </view>
+            <xSwitch @change="handleSave" keyName="sterilizingSwitch" v-model="settings.timerSterilize" />
+          </view> -->
           <view class="timer-link" @click="navigateToSterilizeSetting">
             <image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
             <view>
-              <text>定时消毒设置</text>
+              <text>消毒计划设置</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </view>
         </view>
       </view>
 
-      <view class="setting-card">
+      <view v-if="deviceParamsData.funcWH !== '无'" class="setting-card">
         <view class="timer-item">
-          <view class="timer-header">
+          <!-- <view class="timer-header">
             <view class="timer-left">
               <text>{{brandCode !== 'SWJSJV002' ? '定时' : ' '}}冲洗</text>
             </view>
-            <xSwitch v-if="brandCode !== 'SWJSJV002'" @change="handleSave" keyName="washingSwitch" v-model="settings.timerWash" />
-          </view>
+            <xSwitch @change="handleSave" keyName="washingSwitch" v-model="settings.timerWash" />
+          </view> -->
           <view class="timer-link" @click="navigateToWashSetting">
             <image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
             <view>
-              <text>定时冲洗设置</text>
+              <text>换水计划设置</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
             </view>
           </view>
@@ -128,7 +147,7 @@
 <script setup>
 import xSwitch from "@/components/switch/index.vue";
 import { reactive, ref } from "vue";
-import { loadSetParams, deviceCmdSet } from "@/api/dealer";
+import { loadSetParams, deviceCmdSet, deviceParams } from "@/api/dealer";
 import { onLoad, onShow, onHide, onUnload } from "@dcloudio/uni-app";
 let deviceId = "";
 const brandCode = ref("");
@@ -144,6 +163,13 @@ const settings = reactive({
   timerSterilize: false,
   timerWash: true,
 });
+const deviceParamsData = ref({
+  funcEM: '',
+  funcSW: '',
+  funcWH: '',
+  wtshow: '', // 温开水温度显示
+  funcST: '',
+});
 let timer = null;
 onLoad(async ({ id }) => {
   deviceId = id;
@@ -153,6 +179,7 @@ onUnload(() => {
 });
 onShow(async () => {
   getDetail();
+  getDeviceParams()
   // 隔两秒自动刷新
   timer = setInterval(() => {
     getDetail();
@@ -208,6 +235,13 @@ const getDetail = async () => {
   }
 };
 
+const getDeviceParams = async () => {
+  const res = await deviceParams({ deviceId: deviceId });
+  if (res) {
+    deviceParamsData.value = res;
+  }
+}
+
 // 保存开水温度
 const handleSaveHotTemp = async () => {
   const temp = Number(settings.hotWaterTemp);
@@ -220,7 +254,7 @@ const handleSaveHotTemp = async () => {
   }
   const resp = await deviceCmdSet(
     {
-      key: "targetTemperature",
+      key: "TargetTemperature",
       value: temp,
       deviceId: settings.deviceId,
     },
@@ -245,7 +279,7 @@ const handleSaveWarmTemp = async () => {
   }
   const resp = await deviceCmdSet(
     {
-      key: "setWarmTemp",
+      key: "SetWarmTemp",
       value: temp,
       deviceId: settings.deviceId,
     },
@@ -258,6 +292,10 @@ const handleSaveWarmTemp = async () => {
 };
 const handleSave = async (params) => {
   if (params.key) {
+    if (timer) {
+      clearTimer();
+      openTimer();
+    }
     const resp = await deviceCmdSet(
       {
         key: params.key,
@@ -303,11 +341,12 @@ const navigateToWashSetting = () => {
 
 .setting-card {
   margin-bottom: 25rpx;
-
+  gap: 20rpx;
   .switch-item {
-    width: 344rpx;
+    // width: 344rpx;
+    width: 100%;
     height: 144rpx;
-    border-radius: 18.12px;
+    border-radius: 18rpx;
     background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
     padding: 40rpx;
     display: flex;
@@ -386,7 +425,7 @@ const navigateToWashSetting = () => {
     flex-direction: column;
     justify-content: center;
     border-radius: 18rpx;
-    height: 235rpx;
+    height: 145rpx;
     background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
 
     .timer-header {

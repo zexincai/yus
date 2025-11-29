@@ -2,7 +2,7 @@
   <view class="container">
     <view v-if="brandCodeValue == 'SWJSJV002'" class="weekly-card">
       <view class="weekly-card__header">
-        <text class="weekly-card__title">定期消毒周期</text>
+        <text class="weekly-card__title">定时消毒周期</text>
         <view class="weekly-card__save" @tap="saveWeekPlan">保存</view>
       </view>
 
@@ -41,7 +41,7 @@
       <view class="timer-item">
         <view class="timer-header">
           <view class="timer-left">
-            <text>定时消毒时间</text>
+            <text>消毒时间</text>
           </view>
         </view>
         <view class="timer-link">
@@ -137,7 +137,7 @@ onShow(() => {
   getDetail();
   timer = setInterval(() => {
     getDetail();
-  }, 5000);
+  }, 10000);
 });
 
 const getDetail = async () => {
@@ -173,7 +173,7 @@ const openTimer = () => {
   clearInterval(timer);
   timer = setInterval(() => {
     getDetail();
-  }, 5000);
+  }, 10000);
 };
 const onTimeConfirm = (e) => {
   timeStr.value = e;
@@ -215,13 +215,17 @@ const handleSaveTime = () => {
 const saveWeekPlan = async () => {
   let sterilizing1Time = weekOptions.filter((item) => item.checked).map((item) => item.value).join(",");
   settings.sterilizing1Time = sterilizing1Time;
+  const params = {
+    key: "SetSterilizing",
+    deviceId: settings.deviceId,
+    ...settings,
+    sterilizingSeconds: settings.sterilizeTime,
+  }
+  if (brandCodeValue.value == 'SWJSJV002') {
+    delete params.sterilizing3Time;
+  }
   const resp = await deviceCmdSet(
-    {
-      key: "SetSterilizing",
-      deviceId: settings.deviceId,
-      ...settings,
-      sterilizingSeconds: settings.sterilizeTime,
-    },
+    params,
     { raw: true }
   );
   uni.showToast({
