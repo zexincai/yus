@@ -131,14 +131,14 @@
         </picker>
       </view>
       <!-- 滤芯更换周期 -->
-      <view class="section-title">滤芯更换周期（天）：</view>
+      <view class="section-title">滤芯更换周期：</view>
       <view class="filter-cycle-card">
         <view
           class="filter-row"
           v-for="(cycle, idx) in filterCycles"
           :key="idx"
         >
-          <text class="filter-label">{{ cycle.name }}：</text>
+          <text class="filter-label">{{ cycle.name }}</text>
           <input
             :disabled="deviceData.enabledEditChip == 0"
             class="filter-input"
@@ -207,6 +207,7 @@ onLoad(() => {
       name: v.name,
       periodValue: v.periodValue,
       index: v.index,
+      key: v.key,
     }));
   }
 });
@@ -546,7 +547,7 @@ const onRefresh = () => {
     .filter-label {
       color: #223a7a;
       font-size: 25rpx;
-      width: 180rpx;
+      width: 280rpx;
       flex-shrink: 0;
     }
 

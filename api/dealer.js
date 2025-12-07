@@ -248,3 +248,15 @@ export const operShareUser = (data) =>
   http.post("https://yuq.fenaor.com/ma/device/operShareUser", data, {
     loading: true,
   });
+
+export const deviceParamsV002 = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/deviceParamsV002", data, {
+    loading: true,
+  });
+
+
+// 8-设备数据
+export const deviceDatasV002 = (data) =>
+  http.post("https://yuq.fenaor.com/ma/device/deviceDatasV002", data, {
+    loading: true,
+  });

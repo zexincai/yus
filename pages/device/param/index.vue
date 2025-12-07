@@ -3,7 +3,7 @@
     <view class="param-card">
       <!-- 功能参数列表 -->
       <view class="param-item" v-for="(item, index) in paramList" :key="index">
-        <text class="param-label">{{ item.label }}：</text>
+        <text class="param-label">{{ item.title }}</text>
         <view class="param-value">
           <!-- <text class="value-off" :class="{
             'value-on': item.value === '有' || item.value === '显示' || item.value === '开启',
@@ -18,7 +18,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { deviceParams } from "@/api/dealer";
+import { deviceParams, deviceParamsV002 } from "@/api/dealer";
 import { onLoad } from "@dcloudio/uni-app";
 // 参数列表数据
 const paramList = ref([
@@ -42,20 +42,8 @@ const paramListForHome = ref([
   { label: "回流", value: "", key: "backflowOpen" },
 ])
 onLoad(async ({ id }) => {
-  const res = await deviceParams({ deviceId: id });
-  if (res.brandCode == 'JYROJSJ') {
-    paramList.value = paramListForHome.value
-    Object.keys(res.jyrojsjvo).forEach((key) => {
-      res[key] = res.jyrojsjvo[key]
-    })
-  }
-  paramList.value.forEach((item) => {
-    if (res[item.key]) {
-      item.value = res[item.key];
-    }
-  });
-
-
+  const res = await deviceParamsV002({ deviceId: id });
+  return paramList.value = res.params
 });
 </script>
 

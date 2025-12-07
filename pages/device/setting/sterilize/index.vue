@@ -19,7 +19,7 @@
       <view class="temp-item">
         <text>消毒时长</text>
         <view class="temp-input">
-          <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.sterilizeTime" class="input"
+          <input placeholder="30~180" placeholder-style="color: #999;" @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.sterilizeTime" class="input"
             maxlength="3" />
           <text class="unit">秒</text>
           <button class="save-btn" @click="handleSaveTime">保存</button>
@@ -135,9 +135,9 @@ onLoad(({ id }) => {
 });
 onShow(() => {
   getDetail();
-  timer = setInterval(() => {
-    getDetail();
-  }, 10000);
+  // timer = setInterval(() => {
+  //   getDetail();
+  // }, 10000);
 });
 
 const getDetail = async () => {

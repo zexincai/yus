@@ -323,11 +323,11 @@ onLoad(async ({ id }) => {
   deviceId = id;
 });
 onShow(() => {
-  clearTimer();
+  // clearTimer();
   getDetail();
-  timer = setInterval(() => {
-    getDetail();
-  }, 5000);
+  // timer = setInterval(() => {
+  //   getDetail();
+  // }, 5000);
 });
 const getDetail = async () => {
   const { timingPlan, brandCode } = await loadWorkTime(

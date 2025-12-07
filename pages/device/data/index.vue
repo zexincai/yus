@@ -1,122 +1,46 @@
 <template>
   <view class="container">
-    <!-- 滤芯更换周期 -->
-    <template v-if="brandCode == 'JYROJSJ' || brandCode == 'SWJSJV002'">
-      <view v-if="detail.chipLifeType != 1" class="section-title">
-        滤芯更换周期</view
-      >
-      <view v-if="detail.chipLifeType != 1" class="data-grid">
-        <template :key="index" v-for="(item, index) in detail.chipLifes">
-          <view class="data-card">
-            <text class="value">
-              {{ item.periodValue }}
-            </text>
-            <text class="label">
-              {{ item.name }}
-            </text>
-          </view>
-          <view class="data-card">
-            <text class="value">
-              {{ item.pumpValue }}
-            </text>
-            <text class="label"> {{ item.pumpName }}</text>
-          </view>
-        </template>
-      </view>
-    </template>
-    <template v-else>
-      <view class="section-title"> 滤芯更换周期</view>
-      <view class="data-grid">
-        <view
-          :key="index"
-          v-for="(item, index) in detail.chipLifes"
-          class="data-card"
-        >
-          <text class="value">{{ item.periodValue }}</text>
-          <text class="label">{{ item.name }}（{{ item.periodUnit }}）</text>
-        </view>
-      </view>
-    </template>
-    <!-- 设备数据 -->
-    <view class="section-title">设备数据</view>
-    <view v-if="brandCode == 'JYROJSJ'" class="data-grid">
-      <view class="data-card">
-        <text class="value">{{ detail.pt }}</text>
-        <text class="label">总制水时间（min）</text>
+    <view v-if="chipLifes.length" class="section-title"> 滤芯更换周期</view>
+    <view class="data-grid">
+      <view :key="index" v-for="(item, index) in chipLifes" class="data-card">
+        <text class="value">{{ item.value }}</text>
+        <text class="label">{{ item.title }}</text>
       </view>
     </view>
-    <view v-else class="data-grid">
-      <view class="data-card">
-        <text class="value">{{ detail.totalPureWater }}</text>
-        <text class="label">总制水量（L）</text>
-      </view>
-      <view class="data-card">
-        <text class="value">{{ detail.waterTemperature }}</text>
-        <text class="label">开水水温（℃）</text>
-      </view>
-      <view class="data-card">
-        <text class="value">{{ detail.warmTemp }}</text>
-        <text class="label">温开水温（℃）</text>
+    <!-- 设备数据 -->
+    <view v-if="paramList.length" class="section-title">设备数据</view>
+    <view class="data-grid">
+      <view v-for="(item, index) in paramList" :key="index" class="data-card">
+        <text class="value">{{ item.value }}</text>
+        <text class="label">{{ item.title }}</text>
       </view>
     </view>
 
     <!-- 状态数据 -->
-    <view class="section-title">状态数据</view>
-    <view v-if="brandCode == 'JYROJSJ'" class="status-grid">
-      <view class="status-card">
-        <text class="status-value">{{ detail.deviceState || "--" }}</text>
-        <text class="status-label">净水机状态</text>
-      </view>
-    </view>
-    <view v-else class="status-grid">
-      <view class="status-card">
-        <text class="status-value">{{ detail.heatState || "--" }}</text>
-        <text class="status-label">加热状态</text>
-      </view>
-      <view class="status-card">
-        <text class="status-value">{{ detail.pureState || "--" }}</text>
-        <text class="status-label">进水状态</text>
-      </view>
-      <view class="status-card">
-        <text class="status-value">{{ detail.washingState || "--" }}</text>
-        <text class="status-label">冲洗状态</text>
-      </view>
-      <view class="status-card">
-        <text class="status-value">{{ detail.emptyStatus || "--" }}</text>
-        <text class="status-label">排空状态</text>
-      </view>
-      <view class="status-card">
-        <text class="status-value">{{ detail.sterilizingStatus || "--" }}</text>
-        <text class="status-label">消毒状态</text>
-      </view>
-      <view class="status-card">
-        <text class="status-value">{{ detail.prodWTStatus || "--" }}</text>
-        <text class="status-label">制水状态</text>
-      </view>
-      <view v-if="brandCode == 'SWJSJV002'" class="status-card">
-        <text class="status-value">{{ detail.refrigerateStatus || "--" }}</text>
-        <text class="status-label">制冷状态</text>
+    <view v-if="stateList.length" class="section-title">状态数据</view>
+    <view class="status-grid">
+      <view v-for="(item, index) in stateList" :key="index" class="status-card">
+        <text class="status-value">{{ item.value }}</text>
+        <text class="status-label">{{ item.title }}</text>
       </view>
     </view>
   </view>
 </template>
 
 <script setup>
-import { deviceDatas } from "@/api/dealer";
+import { deviceDatasV002 } from "@/api/dealer";
 import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
 const brandCode = ref("");
-const detail = ref({ chipLifes: [] });
+// const detail = ref({ chipLifes: [] });
+const chipLifes = ref([]);
+const paramList = ref([]);
+const stateList = ref([]);
 onLoad(async ({ id }) => {
-  const res = await deviceDatas({ deviceId: id });
-  brandCode.value = res.brandCode;
-  if (res.brandCode == "JYROJSJ") {
-    brandCode.value = "JYROJSJ";
-    Object.keys(res.jyrojsjvo).forEach((key) => {
-      res[key] = res.jyrojsjvo[key];
-    });
-  }
-  detail.value = res;
+  const res = await deviceDatasV002({ deviceId: id });
+  chipLifes.value = res.chipLifes;
+  paramList.value = res.paramList;
+  stateList.value = res.stateList;
 });
 // 可以根据需要添加数据和方法
 </script>

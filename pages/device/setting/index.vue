@@ -81,20 +81,11 @@
       </view>
 
       <view class="setting-card">
-        <view class="switch-item" style="width: 100%;">
+        <view class="switch-item" style="width: 100%;  height: 135rpx;" >
           <text>定时运行</text>
           <xSwitch keyName="WorkMode" @change="handleSave" v-model="settings.timerRun" />
         </view>
-      </view>
-      <!-- 定时设置 -->
-      <view class="setting-card">
         <view class="timer-item">
-          <!-- <view class="timer-header">
-            <view class="timer-left">
-              <text>定时运行</text>
-            </view>
-            <xSwitch @change="handleSave" keyName="workMode" v-model="settings.timerRun" />
-          </view> -->
           <view class="timer-link" @click="navigateToTimerSetting">
             <image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
             <view>
@@ -103,16 +94,7 @@
             </view>
           </view>
         </view>
-      </view>
-
-      <view v-if="deviceParamsData.funcST !== '无'" class="setting-card">
-        <view class="timer-item">
-          <!-- <view class="timer-header">
-            <view class="timer-left">
-              <text>{{brandCode !== 'SWJSJV002' ? '定时' : ' '}}消毒</text>
-            </view>
-            <xSwitch @change="handleSave" keyName="sterilizingSwitch" v-model="settings.timerSterilize" />
-          </view> -->
+        <view v-if="deviceParamsData.funcST !== '无'" class="timer-item">
           <view class="timer-link" @click="navigateToSterilizeSetting">
             <image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
             <view>
@@ -121,16 +103,7 @@
             </view>
           </view>
         </view>
-      </view>
-
-      <view v-if="deviceParamsData.funcWH !== '无'" class="setting-card">
-        <view class="timer-item">
-          <!-- <view class="timer-header">
-            <view class="timer-left">
-              <text>{{brandCode !== 'SWJSJV002' ? '定时' : ' '}}冲洗</text>
-            </view>
-            <xSwitch @change="handleSave" keyName="washingSwitch" v-model="settings.timerWash" />
-          </view> -->
+        <view v-if="deviceParamsData.funcWH !== '无'" class="timer-item">
           <view class="timer-link" @click="navigateToWashSetting">
             <image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
             <view>
@@ -140,6 +113,42 @@
           </view>
         </view>
       </view>
+      <!-- 定时设置 -->
+      <!-- <view class="setting-card">
+        <view class="timer-item">
+          <view class="timer-link" @click="navigateToTimerSetting">
+            <image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
+            <view>
+              <text>开关计划设置</text>
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+            </view>
+          </view>
+        </view>
+      </view> -->
+
+      <!-- <view v-if="deviceParamsData.funcST !== '无'" class="setting-card">
+        <view class="timer-item">
+          <view class="timer-link" @click="navigateToSterilizeSetting">
+            <image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
+            <view>
+              <text>消毒计划设置</text>
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+            </view>
+          </view>
+        </view>
+      </view> -->
+
+      <!-- <view v-if="deviceParamsData.funcWH !== '无'" class="setting-card">
+        <view class="timer-item">
+          <view class="timer-link" @click="navigateToWashSetting">
+            <image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
+            <view>
+              <text>换水计划设置</text>
+              <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
+            </view>
+          </view>
+        </view>
+      </view> -->
     </template>
   </view>
 </template>
@@ -342,12 +351,14 @@ const navigateToWashSetting = () => {
 .setting-card {
   margin-bottom: 25rpx;
   gap: 20rpx;
+  background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+  border-radius: 18rpx;
   .switch-item {
     // width: 344rpx;
     width: 100%;
     height: 144rpx;
     border-radius: 18rpx;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    // background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
     padding: 40rpx;
     display: flex;
     justify-content: space-between;
@@ -420,13 +431,14 @@ const navigateToWashSetting = () => {
   }
 
   .timer-item {
-    padding: 0rpx 40rpx;
+    padding: 0rpx 40rpx 25rpx;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-radius: 18rpx;
-    height: 145rpx;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    // border-radius: 18rpx;
+    height: 125rpx;
+
+    // background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
 
     .timer-header {
       display: flex;
@@ -459,7 +471,7 @@ const navigateToWashSetting = () => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20rpx 0;
+      padding: 10rpx 0;
 
       // border-top: 2rpx solid rgba(255, 255, 255, 0.1);
       image {
