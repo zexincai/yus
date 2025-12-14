@@ -166,7 +166,7 @@
       </view>
       <view class="temperature-card waterLevel">
         <text class="temp-value">{{ deviceInfo.waterLevel }}</text>
-        <text class="temp-label">水位</text>
+        <text class="temp-label">{{ deviceInfo.waterLevelTitle }}</text>
       </view>
     </view>
     <!-- 水质数据 -->

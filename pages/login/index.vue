@@ -37,7 +37,8 @@
       </view>
       <view class="form-item">
         <input
-          :type="showPassword ? 'text' : 'password'"
+          type="text"
+          :password="!showPassword"
           v-model="form.password"
           placeholder="密码"
           placeholder-class="placeholder"
@@ -363,13 +364,14 @@ const handleViewPrivacy = () => {
     height: 90rpx;
 
     input {
+      width: 60%;
       height: 100%;
       font-size: 25rpx;
     }
 
     .eye-icon {
-      width: 34rpx;
-      height: 26rpx;
+      width: 38rpx;
+      height: 28rpx;
       position: absolute;
       right: 38rpx;
       top: 50%;
@@ -377,8 +379,8 @@ const handleViewPrivacy = () => {
     }
 
     .eye-open {
-      width: 40rpx;
-      height: 40rpx;
+      width: 42rpx;
+      height: 42rpx;
     }
   }
 }
