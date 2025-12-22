@@ -16,6 +16,55 @@
         </view>
       </view>
     </template>
+    <template v-else-if="brandCode == 'GXYSJ'">
+      <view class="setting-card">
+        <view class="temp-item">
+          <text>开关机</text>
+          <view class="switch-group">
+            关机
+            <xSwitch keyName="OpenSW" @change="handleSave"
+              v-model="settings.gxjOpenSwitch" />
+            开机
+          </view>
+        </view>
+
+      </view>
+      <view class="setting-card">
+        <view class="temp-item">
+          <text>即时模块1</text>
+          <view class="switch-group">
+            锁止
+            <xSwitch keyName="HotMode1" @change="handleSave"
+              v-model="settings.gxjHotMode1" />
+            正常
+          </view>
+        </view>
+      </view>
+      <view class="setting-card">
+        <view class="temp-item">
+          <text>即时模块2</text>
+          <view class="switch-group">
+            锁止
+            <xSwitch keyName="HotMode2" @change="handleSave"
+              v-model="settings.gxjHotMode2" />
+            正常
+          </view>
+
+        </view>
+      </view>
+      <view class="setting-card">
+        <view class="temp-item">
+          <text>高原沸点温度</text>
+          <view class="temp-input">
+            <input @blur="openTimer" placeholder="0~100" @focus="clearTimer" type="number"
+              v-model="settings.gxjTemperature" style="width: 130rpx;" class="input" maxlength="3" />
+            <text class="unit">℃</text>
+            <button class="save-btn" style="background-color: #0ECBF7;color: #000;"
+              @click="handleSaveHotTemp">保存</button>
+          </view>
+        </view>
+      </view>
+    </template>
     <template v-else>
       <!-- 基础开关设置 -->
       <view v-if="brandCode == 'SWJSJV002'" class="setting-card flex-between">
@@ -81,7 +130,7 @@
       </view>
 
       <view class="setting-card">
-        <view class="switch-item" style="width: 100%;  height: 135rpx;" >
+        <view class="switch-item" style="width: 100%;  height: 135rpx;">
           <text>定时运行</text>
           <xSwitch keyName="WorkMode" @change="handleSave" v-model="settings.timerRun" />
         </view>
@@ -171,6 +220,10 @@ const settings = reactive({
   timerRun: true,
   timerSterilize: false,
   timerWash: true,
+  gxjTemperature: '',
+  gxjHotMode2: false,
+  gxjHotMode1: false,
+  gxjOpenSwitch: false,
 });
 const deviceParamsData = ref({
   funcEM: '',
@@ -237,6 +290,10 @@ const getDetail = async () => {
       settings.timerRun = res.workMode === 1;
       settings.timerSterilize = res.sterilizingSwitch === 1;
       settings.timerWash = res.washingSwitch === 1;
+      settings.gxjTemperature = res.gxjTemperature;
+      settings.gxjHotMode2 = res.gxjHotMode2 === 2;
+      settings.gxjHotMode1 = res.gxjHotMode1 === 2;
+      settings.gxjOpenSwitch = res.gxjOpenSwitch === 1;
     }
   } catch (error) {
   } finally {
@@ -253,7 +310,7 @@ const getDeviceParams = async () => {
 
 // 保存开水温度
 const handleSaveHotTemp = async () => {
-  const temp = Number(settings.hotWaterTemp);
+  const temp = brandCode.value == 'GXYSJ' ? Number(settings.gxjTemperature) : Number(settings.hotWaterTemp);
   if (temp < 0 || temp > 100) {
     uni.showToast({
       title: "温度范围为0-100℃",
@@ -353,6 +410,7 @@ const navigateToWashSetting = () => {
   gap: 20rpx;
   background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
   border-radius: 18rpx;
+
   .switch-item {
     // width: 344rpx;
     width: 100%;
@@ -422,6 +480,18 @@ const navigateToWashSetting = () => {
         line-height: 65rpx;
         border-radius: 36rpx;
         background: $active-color;
+      }
+    }
+
+    .switch-group {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 22rpx;
+
+      text {
+        color: #fff;
+        font-size: 22rpx;
       }
     }
   }

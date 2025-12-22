@@ -77,7 +77,7 @@ onLoad(async ({ id }) => {
 
     .param-value {
       text-align: right;
-      width: 160rpx;
+      width: 320rpx;
       display: flex;
       justify-content: flex-end;
       align-items: center;

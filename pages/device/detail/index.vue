@@ -1,17 +1,7 @@
 <template>
   <view class="device-detail-container">
-    <uni-nav-bar
-      @clickLeft="handleBack"
-      @clickRight="onRightTap"
-      backgroundColor="#152136"
-      statusBar
-      dark
-      fixed
-      leftIcon="left"
-      title="设备详情"
-      :left-arrow="false"
-      :border="false"
-    >
+    <uni-nav-bar @clickLeft="handleBack" @clickRight="onRightTap" backgroundColor="#152136" statusBar dark fixed
+      leftIcon="left" title="设备详情" :left-arrow="false" :border="false">
       <!-- <template v-slot:right>
         <image
           src="/static/images/more.png"
@@ -37,12 +27,7 @@
     <view class="device-header">
       <view class="device-title">
         <text>{{ deviceInfo.location }}</text>
-        <image
-          @click="navigateTo('edit')"
-          src="/static/images/icon-edit.png"
-          mode="aspectFit"
-          class="edit-icon"
-        />
+        <image @click="navigateTo('edit')" src="/static/images/icon-edit.png" mode="aspectFit" class="edit-icon" />
       </view>
       <image :src="deviceInfo.rssiUrl" class="view-device"> </image>
     </view>
@@ -54,21 +39,13 @@
           <text class="sn-value">{{ deviceInfo.sn }}</text>
           <button class="copy-btn" size="mini" @click="copySn">复制</button>
           <view class="menu-wrap">
-            <view
-              v-if="deviceInfo.share"
-              @click.stop="handleShareDivice"
-              class="menu-item"
-            >
+            <view v-if="deviceInfo.share" @click.stop="handleShareDivice" class="menu-item">
               <image src="/static/images/icon-share.png"> </image> 共享
             </view>
-            <view
-              v-if="
-                (loginType == 'ROLE_CUSTOMER' && deviceInfo.share) ||
-                loginType !== 'ROLE_CUSTOMER'
-              "
-              @click.stop="handleCancelDivice"
-              class="menu-item"
-            >
+            <view v-if="
+              (loginType == 'ROLE_CUSTOMER' && deviceInfo.share) ||
+              loginType !== 'ROLE_CUSTOMER'
+            " @click.stop="handleCancelDivice" class="menu-item">
               <image src="/static/images/icon-cancel.png"> </image>
               {{ loginType === 'ROLE_CUSTOMER' ? '删除' : '解除授权' }}
             </view>
@@ -95,27 +72,14 @@
           <text class="address-value">{{ deviceInfo.address }}</text>
         </view>
       </view>
-      <image
-        class="device-img"
-        :src="deviceInfo.productUrl"
-        mode="aspectFit"
-      ></image>
+      <image class="device-img" :src="deviceInfo.productUrl" mode="aspectFit"></image>
     </view>
 
     <!-- 功能导航 -->
     <view class="function-nav">
-      <view
-        class="nav-item"
-        v-for="(item, index) in navList"
-        :key="item.text"
-        @click="navigateTo(item.page)"
-      >
+      <view class="nav-item" v-for="(item, index) in navList" :key="item.text" @click="navigateTo(item.page)">
         <view class="icon-wrapper">
-          <image
-            class="iconfont"
-            :class="{ small: index == 0 }"
-            :src="item.icon"
-          />
+          <image class="iconfont" :class="{ small: index == 0 }" :src="item.icon" />
         </view>
         <text class="nav-text">{{ item.text }}</text>
       </view>
@@ -127,20 +91,10 @@
         <text>授权时间：{{ deviceInfo.activeDate }}</text>
       </view>
       <view class="auth-row">
-        <text v-if="deviceInfo.buyout == 1"
-          >到期日期：{{ deviceInfo.expireDate }}</text
-        >
-        <text
-          v-if="deviceInfo.buyout == 1"
-          class="renewal-link"
-          @click="navigateTo('renewalLog')"
-          >续期记录 》
+        <text v-if="deviceInfo.buyout == 1">到期日期：{{ deviceInfo.expireDate }}</text>
+        <text v-if="deviceInfo.buyout == 1" class="renewal-link" @click="navigateTo('renewalLog')">续期记录 》
         </text>
-        <view
-          v-if="loginType == 'ROLE_CUSTOMER'"
-          class="call-btn"
-          @click="showPhonePop"
-        >
+        <view v-if="loginType == 'ROLE_CUSTOMER'" class="call-btn" @click="showPhonePop">
           <image class="icon" src="/static/images/call.png"></image>
           联系经销商
         </view>
@@ -156,12 +110,10 @@
       <text class="error-text">故障：{{ deviceInfo.error }}</text>
     </view>
     <!-- 水温数据 -->
-    <view v-if="deviceInfo.brandCode !== 'JYROJSJ'" class="temperature">
+    <view v-if="deviceInfo.brandCode !== 'JYROJSJ' && deviceInfo.brandCode !== 'GXYSJ'" class="temperature">
       <view class="temperature-card">
-        <text class="temp-value"
-          >{{ deviceInfo.waterTemperature }}
-          <text class="temp-unit">℃</text></text
-        >
+        <text class="temp-value">{{ deviceInfo.waterTemperature }}
+          <text class="temp-unit">℃</text></text>
         <text class="temp-label">开水</text>
       </view>
       <view class="temperature-card waterLevel">
@@ -169,8 +121,52 @@
         <text class="temp-label">{{ deviceInfo.waterLevelTitle }}</text>
       </view>
     </view>
+    <view v-if="deviceInfo.brandCode == 'GXYSJ'" class="status-card">
+      <view class="status-item">
+        <image src="@/static/images/open.png" class="status-icon" mode="widthFix" />
+        <text class="status-text">{{ deviceInfo.gxjOpenState}}</text>
+      </view>
+      <view class="status-divider"></view>
+      <view class="status-item status-item--shield">
+        <view class="shield-wrap">
+          <image src="@/static/images/yijun.png" class="shield-icon" mode="widthFix" />
+        </view>
+      </view>
+      <view class="status-divider"></view>
+      <view class="status-item">
+        <image src="@/static/images/water.png" class="status-icon" mode="widthFix" />
+        <text class="status-text">{{ deviceInfo.gxjDeviceState }}</text>
+      </view>
+    </view>
+    <view v-if="deviceInfo.brandCode == 'GXYSJ'" class="water-data">
+      <view class="data-card azure">
+        <!-- <text style="font-size: 22rpx;"> ℃</text> -->
+        <view class="data-value">{{ deviceInfo.gxjWaterBoxTemp }}</view>
+        <text class="data-unit">水箱温度</text>
+      </view>
+      <view class="data-card azure">
+        <!-- <text style="font-size: 32rpx;"> ℃</text> -->
+        <view class="data-value data-value-yellow">{{ deviceInfo.gxjOutWaterTemp }}</view>
+        <text class="data-unit data-border">出水温度</text>
+      </view>
+      <view class="data-card azure">
+        <text class="data-value">{{ deviceInfo.gxjOutWaterVolume }}</text>
+        <text class="data-unit">出水量</text>
+      </view>
+    </view>
     <!-- 水质数据 -->
-    <view class="water-data">
+    <view v-if="deviceInfo.brandCode == 'GXYSJ'" class="water-data">
+      <view class="data-card green">
+        <text class="data-value">{{ deviceInfo.originTds }}</text>
+        <text class="data-unit">原水TDS</text>
+      </view>
+      <view class="data-card blue">
+        <text class="data-value">{{ deviceInfo.pureTds }}</text>
+        <text class="data-unit" style="color: #849CC4;">纯水TDS</text>
+      </view>
+    </view>
+
+    <view v-else class="water-data">
       <view class="data-card orange">
         <text class="data-value">{{ deviceInfo.originTds }}</text>
         <text class="data-unit">原水 (ppm)</text>
@@ -183,10 +179,8 @@
 
     <view v-if="deviceInfo.brandCode == 'JYROJSJ'" class="temperature">
       <view style="margin-top: 15rpx" class="temperature-card">
-        <text class="temp-value"
-          >{{ deviceInfo.warmTemperature }}
-          <text class="temp-unit">℃</text></text
-        >
+        <text class="temp-value">{{ deviceInfo.warmTemperature }}
+          <text class="temp-unit">℃</text></text>
         <text class="temp-label">水温</text>
       </view>
     </view>
@@ -203,22 +197,16 @@
         </view>
       </view>
       <view class="filter-list">
-        <view
-          class="filter-item"
-          v-for="(filter, index) in deviceInfo.chips"
-          :key="index"
-        >
+        <view class="filter-item" v-for="(filter, index) in deviceInfo.chips" :key="index">
           <view class="filter-index">{{ filter.index }}</view>
           <view class="filter-info">
             <text class="filter-name">{{ filter.chipName }}</text>
             <view class="progress-bar">
-              <view
-                class="progress-inner"
-                :class="{
-                  'progress-yellow': filter.red,
-                }"
-                :style="{ width: filter.percent + '%' }"
-              ></view>
+              <view class="progress-inner" :class="{
+                'progress-green': deviceInfo.brandCode == 'GXYSJ',
+                'progress-yellow': deviceInfo.brandCode !== 'GXYSJ' && filter.red,
+                'progress-red': deviceInfo.brandCode == 'GXYSJ' && filter.red,
+              }" :style="{ width: filter.percent + '%' }"></view>
             </view>
           </view>
           <view class="filter-percent">{{ filter.percent }}%</view>
@@ -228,22 +216,13 @@
     <!-- 其他页面内容 -->
     <view v-if="phonePop" class="contact-dialog-mask">
       <view class="contact-dialog">
-        <view class="contact-dialog-title"
-          >联系经销商
+        <view class="contact-dialog-title">联系经销商
           <view class="contact-dialog-close" @tap="phonePop = false">
-            <image
-              src="/static/images/icon-close-pop.png"
-              mode="aspectFit"
-              style="width: 36rpx; height: 36rpx"
-            />
+            <image src="/static/images/icon-close-pop.png" mode="aspectFit" style="width: 36rpx; height: 36rpx" />
           </view>
         </view>
-        <view class="contact-dialog-info"
-          >经销商：{{ deviceInfo.dealerName }}</view
-        >
-        <view class="contact-dialog-info"
-          >手机号码：{{ deviceInfo.dealerPhone }}</view
-        >
+        <view class="contact-dialog-info">经销商：{{ deviceInfo.dealerName }}</view>
+        <view class="contact-dialog-info">手机号码：{{ deviceInfo.dealerPhone }}</view>
         <button class="contact-dialog-btn" @tap="callDealer">拨打电话</button>
       </view>
     </view>
@@ -372,9 +351,8 @@ const handleCancelDivice = async () => {
   // 提示是否删除
   uni.showModal({
     title: '提示',
-    content: `是否${
-      loginType.value == 'ROLE_CUSTOMER' ? '删除' : '解除'
-    }设备？`,
+    content: `是否${loginType.value == 'ROLE_CUSTOMER' ? '删除' : '解除'
+      }设备？`,
     success: async (res) => {
       if (res.confirm) {
         try {
@@ -392,7 +370,7 @@ const handleCancelDivice = async () => {
               url: '/pages/index/index',
             })
           }, 2000)
-        } catch (error) {}
+        } catch (error) { }
       }
     },
   })
@@ -687,7 +665,7 @@ const navigateTo = (page) => {
 }
 
 .water-data {
-  margin-top: 14rpx;
+  margin-top: 22rpx;
   display: flex;
   justify-content: space-between;
 
@@ -710,23 +688,57 @@ const navigateTo = (page) => {
       color: #fff;
       margin-top: 4rpx;
     }
+    .data-value-yellow {
+      color: #CFA008 !important;
+      font-size: 65rpx !important;
+    }
+    .data-border {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 144rpx;
+      height: 44rpx;
+      font-size: 25rpx;
+      border-radius: 22rpx;
+      border: 2rpx solid #FFFFFF;
+    }
 
     &.orange {
       border-radius: 18rpx;
       // background: linear-gradient(180deg,
       //     #4f3500ff 0%,
       //     #523700ff 100%);
-      background: linear-gradient(
-        180deg,
-        rgb(241, 161, 0) 0%,
-        rgb(82, 55, 0) 100%
-      );
+      background: linear-gradient(180deg,
+          rgb(241, 161, 0) 0%,
+          rgb(82, 55, 0) 100%);
     }
 
     &.blue {
       border-radius: 18rpx;
       background: linear-gradient(180deg, #1a479cff 0%, #0a1938ff 100%);
     }
+
+    &.green {
+      border-radius: 18rpx;
+      background: linear-gradient(180deg, #019B7A 0%, #013A2D 100%);
+      .data-unit {
+        font-size: 22rpx;
+        color: #849CC4;
+      }
+    }
+
+    &.azure {
+      border-radius: 18rpx;
+      width: 228rpx;
+      height: 228rpx;
+      background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+
+      .data-value {
+        font-size: 32rpx;
+        color: #fff;
+      }
+    }
+
   }
 }
 
@@ -766,11 +778,9 @@ const navigateTo = (page) => {
   margin-left: 14rpx;
   width: 217rpx;
   height: 181rpx;
-  background: linear-gradient(
-    180deg,
-    rgba(26, 71, 156, 1) 0%,
-    rgba(10, 25, 56, 1) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(26, 71, 156, 1) 0%,
+      rgba(10, 25, 56, 1) 100%);
   color: #fff;
   border-radius: 18rpx;
 
@@ -780,7 +790,7 @@ const navigateTo = (page) => {
 }
 
 .filter-status {
-  margin-top: 20rpx;
+  margin-top: 22rpx;
   border-radius: 18rpx;
   background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
   padding: 26rpx;
@@ -864,8 +874,16 @@ const navigateTo = (page) => {
             border-radius: 90rpx;
           }
 
+          .progress-green {
+            background: linear-gradient(180deg, #08B014 0%, #05510D 100%);
+          }
+
           .progress-yellow {
             background: linear-gradient(180deg, #d68f01ff 0%, #f7e4bcff 100%);
+          }
+
+          .progress-red {
+            background: linear-gradient(180deg, #D43030 0%, #FAB0A0 100%) !important;
           }
         }
       }
@@ -1028,5 +1046,72 @@ const navigateTo = (page) => {
   margin-top: 32rpx;
   text-align: center;
   line-height: 72rpx;
+}
+
+.status-card {
+  margin-top: 22rpx;
+  padding: 26rpx 10rpx;
+  height: 181rpx;
+  border-radius: 18rpx;
+  background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: #ffffff;
+}
+
+.status-item {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-divider {
+  width: 2rpx;
+  height: 54rpx;
+  background: #fff;
+  border-radius: 2rpx;
+}
+
+.status-icon {
+  width: 65rpx;
+  height: 65rpx;
+  margin-bottom: 8rpx;
+}
+
+.status-text {
+  font-size: 29rpx;
+  color: #eaf3ff;
+}
+
+/* 中间盾牌徽标 */
+.status-item--shield {
+  width: 36%;
+}
+
+.shield-wrap {
+  position: relative;
+  width: 140rpx;
+  height: 120rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shield-icon {
+  width: 112rpx;
+  height: 112rpx;
+}
+
+.shield-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -52%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

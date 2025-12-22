@@ -846,6 +846,12 @@ onShow(() => {
 .device-info .model {
   color: #c7c7c7;
   font-size: 24rpx;
+  max-width: 160rpx;
+  // 两行省略号
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .device-list {

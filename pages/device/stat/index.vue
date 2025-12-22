@@ -1,7 +1,13 @@
 <template>
 	<view class="container">
 		<!-- 总量统计 -->
-		<view class="total-stats">
+		<view v-if="detail.brandCode === 'GXYSJ'" class="total-stats">
+			<view class="stat-item">
+				<text class="value">{{ detail.totalVolume }}</text>
+				<text class="label">总取水流量（L）</text>
+			</view>
+		</view>
+		<view v-else class="total-stats">
 			<view class="stat-item">
 				<text class="value">{{ detail.totalVolume }}</text>
 				<text class="label">总净水量（L）</text>
@@ -31,7 +37,23 @@
 		</view>
 
 		<!-- 数据表格 -->
-		<view class="data-table">
+		<view v-if="detail.brandCode === 'GXYSJ'" class="data-table">
+			<!-- 表头 -->
+			<view class="table-header">
+				<text class="header-cell">时间</text>
+				<text class="header-cell" style="flex: 0.5">取水流量（L）</text>
+			</view>
+
+			<!-- 表格内容 -->
+			<scroll-view scroll-y class="table-body">
+				<!-- detail.rows -->
+				<view v-for="(item, index) in detail.rows" :key="index" class="table-row">
+					<text class="table-cell">{{ item.date }}</text>
+					<text class="table-cell" style="flex: 0.5">{{ item.volume }}</text>
+				</view>
+			</scroll-view>
+		</view>
+		<view v-else class="data-table">
 			<!-- 表头 -->
 			<view class="table-header">
 				<text class="header-cell">日期</text>
@@ -68,19 +90,19 @@ const detail = ref({
 })
 // 表格数据
 const tableData = reactive([
-	{ date: '2025-04-09', water: 12, impurity: 1.34 },
-	{ date: '2025-04-08', water: 9, impurity: 0.76 },
-	{ date: '2025-04-07', water: 14, impurity: 1.67 },
-	{ date: '2025-04-06', water: 12, impurity: 1.34 },
-	{ date: '2025-04-05', water: 9, impurity: 0.76 },
-	{ date: '2025-04-04', water: 14, impurity: 1.67 },
-	{ date: '2025-04-03', water: 12, impurity: 1.34 },
-	{ date: '2025-04-02', water: 9, impurity: 0.76 },
-	{ date: '2025-04-01', water: 14, impurity: 1.67 },
-	{ date: '2025-03-30', water: 14, impurity: 1.67 },
-	{ date: '2025-03-29', water: 12, impurity: 1.34 },
-	{ date: '2025-03-28', water: 9, impurity: 0.76 },
-	{ date: '2025-03-27', water: 14, impurity: 1.67 }
+	{ date: '2025-04-09', volume: 12, impurity: 1.34 },
+	{ date: '2025-04-08', volume: 9, impurity: 0.76 },
+	{ date: '2025-04-07', volume: 14, impurity: 1.67 },
+	{ date: '2025-04-06', volume: 12, impurity: 1.34 },
+	{ date: '2025-04-05', volume: 9, impurity: 0.76 },
+	{ date: '2025-04-04', volume: 14, impurity: 1.67 },
+	{ date: '2025-04-03', volume: 12, impurity: 1.34 },
+	{ date: '2025-04-02', volume: 9, impurity: 0.76 },
+	{ date: '2025-04-01', volume: 14, impurity: 1.67 },
+	{ date: '2025-03-30', volume: 14, impurity: 1.67 },
+	{ date: '2025-03-29', volume: 12, impurity: 1.34 },
+	{ date: '2025-03-28', volume: 9, impurity: 0.76 },
+	{ date: '2025-03-27', volume: 14, impurity: 1.67 }
 ])
 
 onLoad(({ id }) => {

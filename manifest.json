@@ -2,8 +2,8 @@
     "name" : "优口净水",
     "appid" : "__UNI__FFDEF30",
     "description" : "",
-    "versionName" : "1.2.15",
-    "versionCode" : 2025101301,
+    "versionName" : "1.4.1",
+    "versionCode" : 2025121401,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -20,7 +20,6 @@
         "modules" : {
             "Barcode" : {},
             "Camera" : {},
-            "Contacts" : {},
             "OAuth" : {}
         },
         /* 应用发布信息 */
@@ -43,8 +42,7 @@
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
-                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>"
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>"
                 ],
                 "minSdkVersion" : 21,
                 "targetSdkVersion" : 30
