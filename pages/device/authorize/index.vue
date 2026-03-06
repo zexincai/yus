@@ -472,7 +472,7 @@ const onRefresh = () => {
         margin-left: 60rpx;
         // margin-right: 10rpx;
         font-size: 25rpx;
-        color: #333333ff;
+        color: #fff;
         display: flex;
         align-items: center;
 

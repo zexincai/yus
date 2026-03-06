@@ -1,6 +1,6 @@
 <template>
     <view class="agreement-container">
-        <web-view src="https://yuq.fenaor.com/serviceAgreement"></web-view>
+        <web-view src="https://app.usayuq.com/serviceAgreement"></web-view>
         <!-- <view class="agreement-title">用户服务协议</view>
         <view class="agreement-date">更新日期：{{ updateDate }}</view> -->
         <!-- <scroll-view scroll-y class="agreement-content">

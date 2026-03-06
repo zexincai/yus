@@ -22,31 +22,28 @@
           <text>开关机</text>
           <view class="switch-group">
             关机
-            <xSwitch keyName="OpenSW" @change="handleSave"
-              v-model="settings.gxjOpenSwitch" />
+            <xSwitch keyName="OpenSW" @change="handleSave" v-model="settings.gxjOpenSwitch" />
             开机
           </view>
         </view>
 
       </view>
-      <view class="setting-card">
+      <view v-if="!settings.isHideHotMode1" class="setting-card">
         <view class="temp-item">
-          <text>即时模块1</text>
+          <text>即热模块1</text>
           <view class="switch-group">
             锁止
-            <xSwitch keyName="HotMode1" @change="handleSave"
-              v-model="settings.gxjHotMode1" />
+            <xSwitch keyName="HotMode1" @change="handleSave" v-model="settings.gxjHotMode1" />
             正常
           </view>
         </view>
       </view>
-      <view class="setting-card">
+      <view v-if="!settings.isHideHotMode2" class="setting-card">
         <view class="temp-item">
-          <text>即时模块2</text>
+          <text>即热模块2</text>
           <view class="switch-group">
             锁止
-            <xSwitch keyName="HotMode2" @change="handleSave"
-              v-model="settings.gxjHotMode2" />
+            <xSwitch disabled keyName="HotMode2" @change="handleSave" v-model="settings.gxjHotMode2" />
             正常
           </view>
 
@@ -61,6 +58,21 @@
             <text class="unit">℃</text>
             <button class="save-btn" style="background-color: #0ECBF7;color: #000;"
               @click="handleSaveHotTemp">保存</button>
+          </view>
+        </view>
+      </view>
+      <view class="setting-card">
+        <view class="temp-item">
+          <text>即热模组工作模式</text>
+          <view style="display: flex">
+            <label @click="handleSave({ key: 'HotMode3', value: false })" class="radio-label">
+              <text :class="{ active: !settings.gxjHotMode3 }"></text>
+              单模组
+            </label>
+            <label @click="handleSave({ key: 'HotMode3', value: true })" class="radio-label">
+              <text :class="{ active: settings.gxjHotMode3 }"></text>
+              双模组
+            </label>
           </view>
         </view>
       </view>
@@ -223,6 +235,9 @@ const settings = reactive({
   gxjTemperature: '',
   gxjHotMode2: false,
   gxjHotMode1: false,
+  gxjHotMode3: false,
+  isHideHotMode1: false,
+  isHideHotMode2: false,
   gxjOpenSwitch: false,
 });
 const deviceParamsData = ref({
@@ -293,6 +308,9 @@ const getDetail = async () => {
       settings.gxjTemperature = res.gxjTemperature;
       settings.gxjHotMode2 = res.gxjHotMode2 === 2;
       settings.gxjHotMode1 = res.gxjHotMode1 === 2;
+      settings.gxjHotMode3 = res.gxjHotMode3 === 2;
+      settings.isHideHotMode1 = res.gxjHotMode1 === 0;
+      settings.isHideHotMode2 = res.gxjHotMode2 === 0;
       settings.gxjOpenSwitch = res.gxjOpenSwitch === 1;
     }
   } catch (error) {
@@ -358,22 +376,40 @@ const handleSaveWarmTemp = async () => {
 };
 const handleSave = async (params) => {
   if (params.key) {
+    if (params.key == 'HotMode3') {
+      settings.gxjHotMode3 = params.value;
+    }
     if (timer) {
       clearTimer();
       openTimer();
     }
-    const resp = await deviceCmdSet(
-      {
-        key: params.key,
-        value: params.value ? 1 : 0,
-        deviceId: settings.deviceId,
-      },
-      { raw: true }
-    );
-    uni.showToast({
-      title: resp.msg,
-      icon: "none",
-    });
+    if (['HotMode1', 'HotMode2', 'HotMode3'].includes(params.key)) {
+      const resp = await deviceCmdSet(
+        {
+          key: params.key,
+          value: params.value ? 2 : 1,
+          deviceId: settings.deviceId,
+        },
+        { raw: true }
+      );
+      uni.showToast({
+        title: resp.msg,
+        icon: "none",
+      });
+    } else {
+      const resp = await deviceCmdSet(
+        {
+          key: params.key,
+          value: params.value ? 1 : 0,
+          deviceId: settings.deviceId,
+        },
+        { raw: true }
+      );
+      uni.showToast({
+        title: resp.msg,
+        icon: "none",
+      });
+    }
   }
 };
 // 跳转到定时开关设置
@@ -492,6 +528,30 @@ const navigateToWashSetting = () => {
       text {
         color: #fff;
         font-size: 22rpx;
+      }
+    }
+
+    .radio-label {
+      margin-left: 60rpx;
+      // margin-right: 10rpx;
+      font-size: 25rpx;
+      color: #fff;
+      display: flex;
+      align-items: center;
+
+      text {
+        border-radius: 50%;
+        margin-right: 10rpx;
+        display: inline-block;
+        width: 29rpx;
+        height: 29rpx;
+        box-sizing: border-box;
+        background: #ffffffff;
+        border: 4rpx solid #a5bfe8ff;
+      }
+
+      .active {
+        border: 10rpx solid #0ECBF7;
       }
     }
   }
