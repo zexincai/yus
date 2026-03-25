@@ -71,13 +71,13 @@ onLoad((options) => {
 
   .success-title {
     font-size: 36rpx;
-    color: rgba(255, 255, 255, 1);
+    color: $text-white;
   }
 
   .success-desc {
     margin-top: 30rpx;
     font-size: 29rpx;
-    color: rgba(14, 203, 247, 1);
+    color: $link-color;
   }
 
   .login-btn {
@@ -85,11 +85,11 @@ onLoad((options) => {
     line-height: 72rpx;
     background: $active-color;
     font-size: 29rpx;
-    color: #fff;
+    color: $text-white;
     width: 181rpx;
     height: 72rpx;
     border-radius: 90rpx;
-    background: #d68f01ff;
+    background: $accent-color;
   }
 }
 </style>

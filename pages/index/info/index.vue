@@ -158,7 +158,7 @@ const handleLogout = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: $text-white;
 
   .back {
     position: absolute;
@@ -177,7 +177,7 @@ const handleLogout = () => {
 }
 
 .section-title {
-  color: #fff;
+  color: $text-white;
   font-size: 28rpx;
   font-weight: bold;
   margin: 52rpx 30rpx 16rpx 30rpx;
@@ -185,7 +185,7 @@ const handleLogout = () => {
 
 .info-card {
   margin: 0 30rpx 0 30rpx;
-  background: #f7f9fb;
+  background: $bg-color-light;
   border-radius: 20rpx;
   padding: 4rpx 0;
 
@@ -196,14 +196,14 @@ const handleLogout = () => {
     padding: 0 30rpx;
 
     .label {
-      color: #223a7a;
+      color: $nav-bg-alt;
       font-size: 28rpx;
       width: 180rpx;
       flex-shrink: 0;
     }
 
     .value {
-      color: #333;
+      color: $text-primary;
       font-size: 28rpx;
       flex: 1;
       text-align: right;
@@ -212,7 +212,7 @@ const handleLogout = () => {
     .input {
       flex: 1;
       font-size: 28rpx;
-      color: #333;
+      color: $text-primary;
       text-align: right;
       background: transparent;
       border: none;
@@ -222,13 +222,13 @@ const handleLogout = () => {
     }
 
     .placeholder {
-      color: #cccccc;
+      color: $border-color-light;
     }
   }
 
   .divider {
     height: 1rpx;
-    background: #e5e5e5;
+    background: #e5e5e5; // approx $border-color-light
     margin: 0 30rpx;
   }
 }
@@ -236,7 +236,7 @@ const handleLogout = () => {
 .save-btn {
   margin: 60rpx 32rpx 0 30rpx;
   background: $active-color;
-  color: #fff;
+  color: $text-white;
   line-height: 90rpx;
   font-size: 29rpx;
   height: 90rpx;
@@ -246,7 +246,7 @@ const handleLogout = () => {
 .save-btn-name {
   margin: 60rpx 32rpx 0 30rpx;
   background: $active-color;
-  color: #fff;
+  color: $text-white;
   line-height: 90rpx;
   font-size: 29rpx;
   height: 90rpx;
@@ -254,7 +254,7 @@ const handleLogout = () => {
 }
 
 .logout-link {
-  color: #1ecfff;
+  color: $link-color;
   font-size: 28rpx;
   text-align: center;
   margin-top: 140rpx;

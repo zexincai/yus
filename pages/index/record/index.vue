@@ -88,16 +88,16 @@ const getLogList = async () => {
   padding: 0 30rpx;
   height: 80rpx;
   font-size: 26rpx;
-  background: #F4F6F9FF;
+  background: $bg-color-light;
 
   .order-label {
-    color: #223a7a;
+    color: $nav-bg-alt;
     margin-right: 4rpx;
     line-height: 1;
   }
 
   .order-no {
-    color: #223a7a;
+    color: $nav-bg-alt;
     line-height: 1;
     // font-weight: bold;
     // margin-right: 16rpx;
@@ -105,9 +105,9 @@ const getLogList = async () => {
 
   .copy-btn {
     border-radius: 36rpx;
-    background: #D68F01FF;
+    background: $accent-color;
     border: none;
-    color: #fff;
+    color: $text-white;
     font-size: 18rpx;
     padding: 0 18rpx;
     margin-right: 16rpx;
@@ -119,13 +119,13 @@ const getLogList = async () => {
 
   .order-date {
     font-size: 23rpx;
-    color: #808080;
+    color: $text-disabled;
     margin-left: auto;
   }
 }
 
 .device-count {
-  color: #fff;
+  color: $text-white;
   margin-top: 50rpx;
   font-size: 29rpx;
 }
@@ -136,7 +136,7 @@ const getLogList = async () => {
   .device-card {
     display: flex;
     align-items: center;
-    background: linear-gradient(90deg, #324A70FF 0%, #324A7033 100%);
+    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
     box-shadow: 0px 3.62px 7.25px #0000003F;
     border-radius: 18rpx;
     margin-bottom: 27rpx;
@@ -155,20 +155,20 @@ const getLogList = async () => {
       justify-content: center;
 
       .device-title {
-        color: #fff;
+        color: $text-white;
         font-size: 29rpx;
         font-weight: bold;
         margin-bottom: 8rpx;
       }
 
       .device-model {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
         margin-bottom: 8rpx;
       }
 
       .device-sn {
-        color: #C7C7C7FF;
+        color: $border-color-light;
         font-size: 25rpx;
       }
     }

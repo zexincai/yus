@@ -119,7 +119,7 @@ const handleConfirm = () => {
   align-items: center;
   justify-content: center;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   height: 434rpx;
 
   .scan-icon {
@@ -130,7 +130,7 @@ const handleConfirm = () => {
   }
 
   .scan-text {
-    color: #1ecfff;
+    color: $link-color;
     font-size: 32rpx;
   }
 }
@@ -143,25 +143,25 @@ const handleConfirm = () => {
   .sn-input {
     flex: 1;
     height: 80rpx;
-    background: #f7f9fb;
+    background: $bg-color-light;
     border-radius: 16rpx;
     font-size: 28rpx;
-    color: #333;
+    color: $text-primary;
     padding: 0 24rpx;
     border: none;
     outline: none;
   }
 
   .placeholder {
-    color: #cccccc;
+    color: $border-color-light;
   }
 
   .confirm-btn {
     margin-left: 30rpx;
     height: 80rpx;
     width: 145rpx;
-    background: #d28b0a;
-    color: #fff;
+    background: $accent-color;
+    color: $text-white;
     font-size: 32rpx;
     border-radius: 16rpx;
     line-height: 80rpx;

@@ -520,7 +520,7 @@ onShow(() => {
   margin-bottom: 30rpx;
 
   .logo {
-    border-bottom: 1rpx solid #fff;
+    border-bottom: 1rpx solid $bg-color-white;
   }
 
   .logo-img {
@@ -539,8 +539,8 @@ onShow(() => {
 
   .user-id .tag {
     border-radius: 6rpx;
-    background: #13337cff;
-    color: #fff;
+    background: $nav-bg;
+    color: $text-white;
     font-size: 22rpx;
     padding: 4rpx 12rpx;
     border-radius: 6rpx;
@@ -567,7 +567,7 @@ onShow(() => {
 }
 
 .greeting .name {
-  color: #fff;
+  color: $text-white;
   display: flex;
   align-items: center;
   font-size: 44rpx;
@@ -579,8 +579,8 @@ onShow(() => {
 }
 
 .user-id .tag {
-  background: #d68f01;
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   font-size: 22rpx;
   padding: 4rpx 12rpx;
   border-radius: 6rpx;
@@ -588,7 +588,7 @@ onShow(() => {
 }
 
 .user-id text {
-  color: #c7c7c7;
+  color: $border-color-light;
   font-size: 28rpx;
 }
 
@@ -614,7 +614,7 @@ onShow(() => {
 
 .search-input {
   flex: 1;
-  background: rgba(50, 74, 112, 1);
+  background: $bg-color-card;
   height: 80rpx;
   border-radius: 90rpx;
   padding: 0 30rpx;
@@ -627,7 +627,7 @@ onShow(() => {
   flex: 1;
   line-height: 1;
   margin-left: 25rpx;
-  color: #fff;
+  color: $text-white;
   font-size: 26rpx;
   background: transparent;
   border: none;
@@ -638,8 +638,8 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #d68f01;
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   margin-left: 30rpx;
   font-size: 25rpx;
   border-radius: 90rpx;
@@ -656,13 +656,13 @@ onShow(() => {
 
 .my {
   margin-top: 52rpx;
-  color: #fff;
+  color: $text-white;
   font-size: 32rpx;
 }
 
 .type {
   margin-top: 52rpx;
-  color: #fff;
+  color: $text-white;
   font-size: 25rpx;
 
   &::after {
@@ -673,7 +673,7 @@ onShow(() => {
     height: 0;
     border-left: 10rpx solid transparent;
     border-right: 10rpx solid transparent;
-    border-top: 12rpx solid #61d4cc;
+    border-top: 12rpx solid #61d4cc; // chart color
     margin-left: 5rpx;
     // vertical-align: middle;
     margin-bottom: 2rpx;
@@ -702,7 +702,7 @@ onShow(() => {
     font-size: 32rpx;
     margin: 0rpx 30rpx 40rpx;
     padding: 14rpx 0;
-    color: #a5bfe8;
+    color: $text-light-blue;
     position: relative;
     cursor: pointer;
   }
@@ -730,7 +730,7 @@ onShow(() => {
   margin: 4rpx 0rpx 24rpx 0rpx;
 
   .auth-status-label {
-    color: #fff;
+    color: $text-white;
     font-size: 29rpx;
     margin-right: 32rpx;
   }
@@ -741,18 +741,18 @@ onShow(() => {
     overflow: hidden;
 
     .status-btn {
-      background: #152136ff;
-      color: #fff;
+      background: $bg-color-dark;
+      color: $text-white;
       font-size: 22rpx;
       // border-radius: 12rpx;
       padding: 0 32rpx;
       height: 56rpx;
       line-height: 52rpx;
-      border: 4rpx solid #fff;
+      border: 4rpx solid $bg-color-white;
 
       &.active {
-        background: #fff;
-        color: #152136;
+        background: $bg-color-white;
+        color: $bg-color-dark;
       }
     }
   }
@@ -760,14 +760,14 @@ onShow(() => {
 
 .tab-item {
   padding: 24rpx 30rpx;
-  color: #a5bfe8;
+  color: $text-light-blue;
   font-size: 28rpx;
   position: relative;
   cursor: pointer;
 }
 
 .tab-item .count {
-  color: #999;
+  color: $text-secondary;
   font-size: 24rpx;
   margin-left: 4rpx;
 }
@@ -788,7 +788,7 @@ onShow(() => {
 
 .device-num {
   margin-top: 33rpx;
-  color: #fff;
+  color: $text-white;
   font-size: 32rpx;
   margin-bottom: 30rpx;
 }
@@ -802,7 +802,7 @@ onShow(() => {
 
 .device-item {
   position: relative;
-  background: #2d3c58;
+  background: $bg-color-card;
   border-radius: 12rpx;
   padding: 60rpx 30rpx 30rpx;
   margin-bottom: 30rpx;
@@ -811,7 +811,7 @@ onShow(() => {
   width: 336rpx;
   height: 180rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324a70 0%, #324a70 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $bg-color-card 100%);
   box-shadow: 0px 4rpx 8rpx #000000;
 
   .icon {
@@ -837,14 +837,14 @@ onShow(() => {
 }
 
 .device-info .name {
-  color: #fff;
+  color: $text-white;
   font-size: 28rpx;
   margin-bottom: 10rpx;
   display: block;
 }
 
 .device-info .model {
-  color: #c7c7c7;
+  color: $border-color-light;
   font-size: 24rpx;
   max-width: 160rpx;
   // 两行省略号
@@ -856,7 +856,7 @@ onShow(() => {
 
 .device-list {
   .device-info .name {
-    color: #fff;
+    color: $text-white;
     font-size: 28rpx;
     min-height: 60rpx;
     margin-bottom: 0rpx;
@@ -878,25 +878,25 @@ onShow(() => {
     padding: 2rpx 12rpx;
     border-radius: 0rpx;
     font-size: 24rpx;
-    color: #fff;
+    color: $text-white;
   }
 
   .tag.tag-1 {
-    background: #cfb55f;
+    background: #cfb55f; // chart color
   }
 
   .tag.tag-0 {
-    background: #fa927a;
+    background: #fa927a; // chart color
   }
 
   .tag.tag-2 {
-    background: #629cde;
+    background: #629cde; // chart color
   }
 }
 
 .device-list1 {
   .device-item1 {
-    background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
     border-radius: 16rpx;
     display: flex;
     align-items: center;
@@ -915,14 +915,14 @@ onShow(() => {
       flex: 1;
 
       .device-title {
-        color: #fff;
+        color: $text-white;
         font-size: 29rpx;
         margin-bottom: 8rpx;
       }
 
       .device-sn,
       .device-order {
-        color: #c7c7c7ff;
+        color: $border-color-light;
         font-size: 25rpx;
         margin-top: 10rpx;
         margin-bottom: 4rpx;
@@ -930,7 +930,7 @@ onShow(() => {
       }
 
       .device-sn {
-        color: #fff;
+        color: $text-white;
         // margin-top: 10rpx;
       }
     }
@@ -944,7 +944,7 @@ onShow(() => {
 
     .auth-action-btn {
       background: $active-color;
-      color: #fff;
+      color: $text-white;
       font-size: 22rpx;
       border-radius: 12rpx;
       width: 108rpx;
@@ -957,7 +957,7 @@ onShow(() => {
     }
 
     .auth-status {
-      color: #d68f01;
+      color: $accent-color;
       font-size: 25rpx;
       position: absolute;
       right: 24rpx;
@@ -965,7 +965,7 @@ onShow(() => {
     }
 
     .blue {
-      color: #0ecbf7ff;
+      color: $link-color;
     }
   }
 }
@@ -980,30 +980,30 @@ onShow(() => {
   padding: 4rpx 12rpx;
   border-radius: 0rpx;
   font-size: 24rpx;
-  color: #fff;
+  color: $text-white;
 }
 
 .status-tags .tag.warning {
-  background: #cfb55f;
+  background: #cfb55f; // chart color
 }
 
 .status-tags .tag.error {
-  background: #fa927a;
+  background: #fa927a; // chart color
 }
 
 .status-tags .tag.change {
-  background: #629cde;
+  background: #629cde; // chart color
 }
 
 .placeholder {
-  color: #999;
+  color: $text-secondary;
 }
 
 .customer-list {
   // margin: 24rpx 24rpx 0 24rpx;
 
   .customer-item {
-    background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
     border-radius: 16rpx;
     display: flex;
     align-items: center;
@@ -1014,7 +1014,7 @@ onShow(() => {
       width: 90rpx;
       height: 90rpx;
       border-radius: 50%;
-      background: #e5e9f2;
+      background: #e5e9f2; // chart color
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1036,7 +1036,7 @@ onShow(() => {
         margin-top: -2rpx;
 
         .name {
-          color: #fff;
+          color: $text-white;
           font-size: 29rpx;
           font-weight: bold;
           margin-right: 31rpx;
@@ -1049,14 +1049,14 @@ onShow(() => {
       }
 
       .phone {
-        color: #c7c7c7ff;
+        color: $border-color-light;
         font-size: 25rpx;
         margin-top: 20rpx;
       }
     }
 
     .device-count {
-      color: #fff;
+      color: $text-white;
       font-size: 36rpx;
       display: flex;
       align-items: center;
@@ -1065,8 +1065,8 @@ onShow(() => {
         margin-left: 10rpx;
         width: 14rpx;
         height: 14rpx;
-        border-top: 2rpx solid #fff;
-        border-right: 2rpx solid #fff;
+        border-top: 2rpx solid $bg-color-white;
+        border-right: 2rpx solid $bg-color-white;
         // border-left: 18rpx solid #fff;
         transform: rotate(45deg);
         display: inline-block;
@@ -1093,10 +1093,10 @@ onShow(() => {
     justify-content: space-between;
     padding: 0 20rpx;
     border-radius: 9rpx;
-    background: rgba(50, 74, 112, 1);
+    background: $bg-color-card;
 
     text {
-      color: #fff;
+      color: $text-white;
       font-size: 25rpx;
     }
 
@@ -1106,7 +1106,7 @@ onShow(() => {
       height: 0;
       border-left: 10rpx solid transparent;
       border-right: 10rpx solid transparent;
-      border-top: 12rpx solid #cccccc;
+      border-top: 12rpx solid $border-color-light;
       margin-left: 4rpx;
       display: inline-block;
       vertical-align: middle;
@@ -1114,13 +1114,13 @@ onShow(() => {
   }
 
   .picker-separator {
-    color: #fff;
+    color: $text-white;
     font-size: 28rpx;
     padding: 0 20rpx;
   }
 
   .confirm-btn {
-    color: #fff;
+    color: $text-white;
     font-size: 25rpx;
     border-radius: 12rpx;
     margin-left: 40rpx;

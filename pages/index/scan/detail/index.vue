@@ -165,7 +165,7 @@ const onCityCancel = () => {
     align-items: flex-start;
     height: 196rx;
     border-radius: 18rpx;
-    background: #F4F6F9FF;
+    background: $bg-color-light;
 
     .device-img {
         margin-right: 30rpx;
@@ -183,7 +183,7 @@ const onCityCancel = () => {
             align-items: center;
             margin-bottom: 12rpx;
             font-size: 22rpx;
-            color: #999999FF;
+            color: $text-secondary;
 
 
             .label {}
@@ -208,14 +208,14 @@ const onCityCancel = () => {
 
         .bright {
             font-size: 25rpx;
-            color: #13337CFF !important;
+            color: $nav-bg !important;
         }
     }
 }
 
 .info-list {
     border-radius: 18rpx;
-    background: #F4F6F9FF;
+    background: $bg-color-light;
     margin-top: 27rpx;
 
     .info-item {
@@ -223,20 +223,20 @@ const onCityCancel = () => {
         align-items: center;
         padding: 0 30rpx;
         height: 89rpx;
-        border-bottom: 2rpx solid #E0D7D7FF;
+        border-bottom: 2rpx solid $border-color-input;
 
         &:last-child {
             border-bottom: none;
         }
 
         .info-label {
-            color: #13337CFF;
+            color: $nav-bg;
             font-size: 25rpx;
             width: 180rpx;
         }
 
         .info-value {
-            color: #333333FF;
+            color: $text-primary;
             font-size: 25rpx;
             flex: 1;
             text-align: right;
@@ -248,14 +248,14 @@ const onCityCancel = () => {
     margin-top: 90rpx;
     font-size: 28rpx;
     text-align: center;
-    color: rgba(14, 203, 247, 1);
+    color: $link-color;
 }
 
 .confirm-btn {
     margin-top: 179rpx;
     height: 90rpx;
-    background: #D68F01;
-    color: #fff;
+    background: $accent-color;
+    color: $text-white;
     font-size: 32rpx;
     text-align: center;
     line-height: 90rpx;
@@ -264,22 +264,22 @@ const onCityCancel = () => {
     width: 688rpx;
     height: 90rpx;
     border-radius: 18rpx;
-    background: #D68F01FF;
+    background: $accent-color;
 }
 
 .refresh-btn {
     margin: 67rpx auto 0;
     width: 181rpx;
-    color: #fff;
+    color: $text-white;
     font-size: 22rpx;
     height: 72.46rpx;
     border-radius: 90rpx;
     line-height: 72rpx;
     text-align: center;
-    background: #13337CFF;
+    background: $nav-bg;
 }
 
 .placeholder {
-    color: #333;
+    color: $text-primary;
 }
 </style>
