@@ -154,7 +154,7 @@ const handleConfirm = () => {
 
 
 .device-card {
-  background: #f4f6f9ff;
+  background: $bg-color-light;
   border-radius: 18rpx;
   padding: 32rpx 30rpx 20rpx;
   position: relative;
@@ -166,12 +166,12 @@ const handleConfirm = () => {
     font-size: 25rpx;
 
     .label {
-      color: #13337c;
+      color: $nav-bg;
       margin-right: 20rpx;
     }
 
     .sn {
-      color: #13337c;
+      color: $nav-bg;
       font-weight: bold;
       margin-right: 20rpx;
     }
@@ -187,7 +187,7 @@ const handleConfirm = () => {
 
   .imei-info,
   .date-info {
-    color: #999999;
+    color: $text-secondary;
     margin-bottom: 12rpx;
     font-size: 22rpx;
 
@@ -196,7 +196,7 @@ const handleConfirm = () => {
     }
 
     .imei-value {
-      color: #999999;
+      color: $text-secondary;
     }
   }
 
@@ -214,7 +214,7 @@ const handleConfirm = () => {
   margin-top: 24rpx;
   padding: 30rpx;
   border-radius: 18rpx;
-  background: #f4f6f9ff;
+  background: $bg-color-light;
   font-size: 25rpx;
 
   .filter-header {
@@ -224,11 +224,11 @@ const handleConfirm = () => {
     margin-bottom: 18rpx;
 
     .filter-title {
-      color: #13337cff;
+      color: $nav-bg;
     }
 
     .filter-code {
-      color: #152136ff;
+      color: $bg-color-dark;
     }
   }
 
@@ -239,7 +239,7 @@ const handleConfirm = () => {
       width: 38rpx;
       height: 38rpx;
       border-radius: 6rpx;
-      border: 1rpx solid #898989;
+      border: 1rpx solid $text-disabled;
       margin-right: 2rpx
     }
 
@@ -258,25 +258,25 @@ const handleConfirm = () => {
         margin-left: 12rpx;
 
         .filter-name {
-          color: #808080;
+          color: $text-disabled;
           font-size: 21rpx;
         }
 
         .progress-bar {
           margin-top: 8rpx;
           height: 18rpx;
-          background: #a5abb7;
+          background: $text-light-blue;
           border-radius: 90rpx;
           overflow: hidden;
 
           .progress-inner {
             height: 100%;
-            background: linear-gradient(180deg, #08d521 0%, #057f13 100%);
+            background: linear-gradient(180deg, $success-color 0%, $success-color 100%); // approx
             border-radius: 90rpx;
           }
 
           .progress-yellow {
-            background: linear-gradient(180deg, #f89090 0%, #da0707 100%);
+            background: linear-gradient(180deg, #f89090 0%, $error-color 100%); // light error
           }
         }
       }
@@ -289,7 +289,7 @@ const handleConfirm = () => {
         width: 50rpx;
         text-align: right;
         margin-left: 14rpx;
-        color: #999999;
+        color: $text-secondary;
         margin-top: 40rpx;
         font-size: 22rpx;
 
@@ -305,7 +305,7 @@ const handleConfirm = () => {
   margin-top: 140rpx;
 
   .confirm-btn {
-    color: #fff;
+    color: $text-white;
     line-height: 90rpx;
     height: 90rpx;
     line-height: 90rpx;
@@ -315,7 +315,7 @@ const handleConfirm = () => {
   }
 
   .disabled {
-    background: #ccc;
+    background: $border-color-light;
   }
 }
 </style>

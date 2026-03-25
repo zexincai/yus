@@ -356,7 +356,7 @@ const onRefresh = () => {
 
 .device-card {
   margin: 20rpx 30rpx 0 30rpx;
-  background: #f7f9fb;
+  background: $bg-color-light;
   border-radius: 20rpx;
   padding: 40rpx 30rpx 30rpx;
   display: flex;
@@ -380,33 +380,33 @@ const onRefresh = () => {
       margin-bottom: 10rpx;
 
       .sn-label {
-        color: #13337cff;
+        color: $nav-bg;
         font-size: 25rpx;
       }
 
       .model-label,
       .imei-label {
-        color: #999999ff;
+        color: $text-secondary;
         font-size: 22rpx;
       }
 
       .sn-value {
-        color: #13337cff;
+        color: $nav-bg;
         font-size: 25rpx;
       }
 
       .model-value,
       .imei-value {
-        color: #999999;
+        color: $text-secondary;
         font-size: 22rpx;
       }
 
       .blue {
-        color: #13337cff;
+        color: $nav-bg;
       }
 
       .gray {
-        color: #999999;
+        color: $text-secondary;
       }
     }
   }
@@ -422,33 +422,33 @@ const onRefresh = () => {
 
 .form-card {
   margin: 30rpx;
-  background: #f7f9fb;
+  background: $bg-color-light;
   border-radius: 18rpx;
   // padding: 0 0 10rpx 0;
 
   .form-item {
-    background-color: #f7f9fb;
+    background-color: $bg-color-light;
     border-radius: 0;
     display: flex;
     align-items: center;
     margin: 0 30rpx;
     padding: 0;
     height: 87rpx;
-    border-bottom: 1rpx solid #eee;
+    border-bottom: 1rpx solid $border-color-light; // approx
 
     &:last-child {
       border-bottom: none;
     }
 
     .label {
-      color: #13337c;
+      color: $nav-bg;
       font-size: 25rpx;
       width: 180rpx;
       flex-shrink: 0;
     }
 
     .value {
-      color: #333;
+      color: $text-primary;
       font-size: 25rpx;
       flex: 1;
       text-align: right;
@@ -457,7 +457,7 @@ const onRefresh = () => {
     .input {
       flex: 1;
       font-size: 25rpx;
-      color: #333;
+      color: $text-primary;
       padding: 0;
       text-align: right;
       background: transparent;
@@ -472,7 +472,7 @@ const onRefresh = () => {
         margin-left: 60rpx;
         // margin-right: 10rpx;
         font-size: 25rpx;
-        color: #fff;
+        color: $text-white;
         display: flex;
         align-items: center;
 
@@ -483,12 +483,12 @@ const onRefresh = () => {
           width: 29rpx;
           height: 29rpx;
           box-sizing: border-box;
-          background: #ffffffff;
-          border: 4rpx solid #a5bfe8ff;
+          background: $bg-color-white;
+          border: 4rpx solid $text-light-blue;
         }
 
         .active {
-          border: 10rpx solid #d68f01ff;
+          border: 10rpx solid $accent-color;
         }
       }
     }
@@ -501,7 +501,7 @@ const onRefresh = () => {
         justify-content: flex-end;
 
         .value {
-          color: #333;
+          color: $text-primary;
           font-size: 28rpx;
         }
 
@@ -512,7 +512,7 @@ const onRefresh = () => {
           height: 0;
           border-left: 10rpx solid transparent;
           border-right: 10rpx solid transparent;
-          border-top: 12rpx solid #cccccc;
+          border-top: 12rpx solid $border-color-light;
           display: inline-block;
           vertical-align: middle;
         }
@@ -522,14 +522,14 @@ const onRefresh = () => {
 }
 
 .section-title {
-  color: #fff;
+  color: $text-white;
   font-size: 28rpx;
   margin: 30rpx 30rpx 10rpx 30rpx;
 }
 
 .filter-cycle-card {
   margin: 0 30rpx;
-  background: #f7f9fb;
+  background: $bg-color-light;
   border-radius: 20rpx;
   padding: 10rpx 0;
 
@@ -538,14 +538,14 @@ const onRefresh = () => {
     align-items: center;
     margin: 0 30rpx;
     height: 87rpx;
-    border-bottom: 1rpx solid #eee;
+    border-bottom: 1rpx solid $border-color-light; // approx
 
     &:last-child {
       border-bottom: none;
     }
 
     .filter-label {
-      color: #223a7a;
+      color: $nav-bg-alt;
       font-size: 25rpx;
       width: 280rpx;
       flex-shrink: 0;
@@ -554,7 +554,7 @@ const onRefresh = () => {
     .filter-input {
       flex: 1;
       font-size: 25rpx;
-      color: #333;
+      color: $text-primary;
       text-align: right;
       background: transparent;
       border: none;
@@ -566,7 +566,7 @@ const onRefresh = () => {
 .confirm-btn {
   margin: 60rpx 30rpx;
   background: $active-color;
-  color: #fff;
+  color: $text-white;
   height: 90rpx;
   line-height: 90rpx;
   border-radius: 18rpx;
@@ -575,7 +575,7 @@ const onRefresh = () => {
 }
 
 .placeholder {
-  color: #cccccc;
+  color: $border-color-light;
 }
 
 .iconfont {
@@ -597,18 +597,18 @@ const onRefresh = () => {
   margin-top: 90rpx;
   font-size: 28rpx;
   text-align: center;
-  color: rgba(14, 203, 247, 1);
+  color: $link-color;
 }
 
 .refresh-btn {
   margin: 67rpx auto 0;
   width: 181rpx;
-  color: #fff;
+  color: $text-white;
   font-size: 22rpx;
   height: 72.46rpx;
   border-radius: 90rpx;
   line-height: 72rpx;
   text-align: center;
-  background: #13337cff;
+  background: $nav-bg;
 }
 </style>

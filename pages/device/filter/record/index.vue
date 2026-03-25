@@ -68,7 +68,7 @@ const getList = async () => {
 }
 
 .record-count {
-  color: #fff;
+  color: $text-white;
   font-size: 29rpx;
 }
 
@@ -76,9 +76,9 @@ const getList = async () => {
   margin-top: 24rpx;
   border-radius: 24rpx;
   padding: 32rpx 28rpx 24rpx 28rpx;
-  color: #fff;
+  color: $text-white;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   box-shadow: 0px 4rpx 7rpx #0000003f;
   font-size: 22rpx;
 
@@ -90,7 +90,7 @@ const getList = async () => {
 
     .filter-code {
       font-size: 25rpx;
-      color: #1ecfff;
+      color: $link-color;
       // 省略号
       overflow: hidden;
       text-overflow: ellipsis;
@@ -98,13 +98,13 @@ const getList = async () => {
       width: 350rpx;
 
       .blue {
-        color: #1ecfff;
+        color: $link-color;
       }
     }
 
     .imei {
       font-size: 22rpx;
-      color: #c7c7c7ff;
+      color: $border-color-light;
     }
   }
 
@@ -127,7 +127,7 @@ const getList = async () => {
 
       .filter-name {
         margin-bottom: 12rpx;
-        color: #fff;
+        color: $text-white;
         font-size: 22rpx;
         line-height: 36rpx;
         text-align: right;
@@ -136,7 +136,7 @@ const getList = async () => {
   }
 
   .card-footer {
-    color: #c7c7c7ff;
+    color: $border-color-light;
 
     view {
       margin-bottom: 14rpx;
