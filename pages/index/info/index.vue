@@ -228,7 +228,7 @@ const handleLogout = () => {
 
   .divider {
     height: 1rpx;
-    background: #e5e5e5; // approx $border-color-light
+    background: $border-color-light; // approx
     margin: 0 30rpx;
   }
 }
