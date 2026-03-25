@@ -55,7 +55,7 @@ onLoad(async ({ id }) => {
 }
 
 .param-card {
-  background: #233657;
+  background: $bg-color-medium;
   border-radius: 12rpx;
   padding: 0 28rpx;
 
@@ -64,14 +64,14 @@ onLoad(async ({ id }) => {
     justify-content: space-between;
     align-items: center;
     padding: 30rpx 0;
-    border-bottom: 2rpx solid #152136;
+    border-bottom: 2rpx solid $bg-color-dark;
 
     &:last-child {
       border-bottom: none;
     }
 
     .param-label {
-      color: #fff;
+      color: $text-white;
       font-size: 25rpx;
     }
 
@@ -91,7 +91,7 @@ onLoad(async ({ id }) => {
         display: inline-block;
         width: 30rpx;
         height: 30rpx;
-        background: #fff;
+        background: $bg-color-white;
         border-radius: 50%;
         margin-right: 20rpx;
       }
@@ -99,7 +99,7 @@ onLoad(async ({ id }) => {
       .value-on {
         width: 30rpx;
         height: 30rpx;
-        border: 10rpx solid #005cf0;
+        border: 10rpx solid $nav-bg; // approx
         box-sizing: border-box;
         border-radius: 50%;
       }

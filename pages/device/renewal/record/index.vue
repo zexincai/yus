@@ -77,16 +77,16 @@ const getList = async () => {
 }
 
 .record-count {
-  color: #fff;
+  color: $text-white;
   font-size: 29rpx;
 }
 
 .record-card {
   margin-top: 24rpx;
   padding: 32rpx 28rpx 24rpx 28rpx;
-  color: #fff;
+  color: $text-white;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   box-shadow: 0px 4rpx 7rpx #0000003f;
   font-size: 25rpx;
 
@@ -98,9 +98,9 @@ const getList = async () => {
 
     .sn {
       margin-bottom: 2rpx;
-      color: #1ecfff;
+      color: $link-color;
       .sn-blue {
-        color: #1ecfff;
+        color: $link-color;
       }
     }
 
@@ -111,7 +111,7 @@ const getList = async () => {
 
   .card-info {
     font-size: 25rpx;
-    color: #bfc9d6;
+    color: $text-light-blue; // approx
 
     view {
       margin-bottom: 8rpx;

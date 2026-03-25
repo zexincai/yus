@@ -115,7 +115,7 @@ const handleConfirm = async () => {
   padding: 30rpx 30rpx;
   height: 196rpx;
   border-radius: 18rpx;
-  background: #f4f6f9ff;
+  background: $bg-color-light;
   position: relative;
 
   .device-info {
@@ -124,15 +124,15 @@ const handleConfirm = async () => {
     margin-bottom: 20rpx;
 
     .label {
-      color: #333;
+      color: $text-primary;
       font-size: 25rpx;
-      color: rgba(19, 51, 124, 1);
+      color: $nav-bg;
       margin-right: 10rpx;
     }
 
     .value {
       font-size: 25rpx;
-      color: rgba(19, 51, 124, 1);
+      color: $nav-bg;
       font-weight: bold;
     }
 
@@ -152,12 +152,12 @@ const handleConfirm = async () => {
       font-size: 22rpx;
 
       .label {
-        color: #999999;
+        color: $text-secondary;
         width: 120rpx;
       }
 
       .value {
-        color: #999999;
+        color: $text-secondary;
       }
     }
   }
@@ -171,10 +171,10 @@ const handleConfirm = async () => {
   align-items: center;
   height: 80rpx;
   border-radius: 18rpx;
-  background: #f4f6f9ff;
+  background: $bg-color-light;
 
   .label {
-    color: #13337cff;
+    color: $nav-bg;
     margin-right: 20rpx;
     font-size: 25rpx;
   }
@@ -186,7 +186,7 @@ const handleConfirm = async () => {
     justify-content: flex-end;
 
     .value {
-      color: #152136ff;
+      color: $bg-color-dark;
       font-size: 25rpx;
       margin-right: 10rpx;
     }
@@ -199,7 +199,7 @@ const handleConfirm = async () => {
       height: 0;
       border-left: 10rpx solid transparent;
       border-right: 10rpx solid transparent;
-      border-top: 12rpx solid #cccccc;
+      border-top: 12rpx solid $border-color-light;
       margin-left: 4rpx;
       display: inline-block;
       vertical-align: middle;
@@ -209,7 +209,7 @@ const handleConfirm = async () => {
 
 .button-wrapper {
   .confirm-btn {
-    color: #fff;
+    color: $text-white;
     height: 90rpx;
     margin-top: 161rpx;
     line-height: 90rpx;
