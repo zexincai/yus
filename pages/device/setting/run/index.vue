@@ -491,14 +491,14 @@ const saveWeekPlan = async (key) => {
   .switch-item {
     width: 344rpx;
     border-radius: 18rpx;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
     padding: 40rpx;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     text {
-      color: #fff;
+      color: $text-white;
       font-size: 28rpx;
     }
 
@@ -513,11 +513,11 @@ const saveWeekPlan = async (key) => {
     align-items: center;
     border-radius: 18rpx;
     height: 145rpx;
-    background: linear-gradient(180deg, #324a70 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
 
     text {
       flex: 1;
-      color: #fff;
+      color: $text-white;
       font-size: 25rpx;
       display: block;
     }
@@ -530,7 +530,7 @@ const saveWeekPlan = async (key) => {
         width: 90rpx;
         height: 65rpx;
         border-radius: 9rpx;
-        background: #fff;
+        background: $bg-color-white;
         box-sizing: border-box;
         font-size: 25rpx;
         text-align: center;
@@ -538,7 +538,7 @@ const saveWeekPlan = async (key) => {
       }
 
       .unit {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
         margin-right: 52rpx;
       }
@@ -546,8 +546,8 @@ const saveWeekPlan = async (key) => {
       .save-btn {
         height: 65rpx;
         line-height: 80rpx;
-        background: #d68f01;
-        color: #fff;
+        background: $accent-color;
+        color: $text-white;
         font-size: 25rpx;
         border-radius: 8rpx;
         text-align: center;
@@ -566,7 +566,7 @@ const saveWeekPlan = async (key) => {
     justify-content: center;
     border-radius: 18rpx;
     // height: 144rpx;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
 
     .timer-header {
       margin-top: 20rpx;
@@ -586,7 +586,7 @@ const saveWeekPlan = async (key) => {
         }
 
         text {
-          color: #fff;
+          color: $text-white;
           font-size: 25rpx;
         }
       }
@@ -609,7 +609,7 @@ const saveWeekPlan = async (key) => {
       }
 
       text {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
       }
 
@@ -617,8 +617,8 @@ const saveWeekPlan = async (key) => {
         margin-left: 20rpx;
         width: 14rpx;
         height: 14rpx;
-        border-top: 2rpx solid #fff;
-        border-right: 2rpx solid #fff;
+        border-top: 2rpx solid $text-white;
+        border-right: 2rpx solid $text-white;
         // border-left: 18rpx solid #fff;
         transform: rotate(45deg);
         display: inline-block;
@@ -629,10 +629,10 @@ const saveWeekPlan = async (key) => {
 }
 
 .weekly-card {
-  background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
   border-radius: 18rpx;
   padding: 40rpx 40rpx 10rpx;
-  color: #ffffff;
+  color: $bg-color-white;
   margin-bottom: 25rpx;
   font-size: 25rpx;
 }
@@ -647,14 +647,14 @@ const saveWeekPlan = async (key) => {
 .weekly-card__title {
   font-size: 25rpx;
   font-weight: 600;
-  color: #eaf3ff;
+  color: $bg-color-light; // approx
 }
 
 .weekly-card__save {
   height: 65rpx;
   line-height: 80rpx;
-  background: #d68f01;
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   font-size: 25rpx;
   border-radius: 8rpx;
   text-align: center;
@@ -683,7 +683,7 @@ const saveWeekPlan = async (key) => {
   width: 25rpx;
   height: 25rpx;
   border-radius: 4rpx;
-  background-color: #fff;
+  background-color: $bg-color-white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -697,6 +697,6 @@ const saveWeekPlan = async (key) => {
 .weekly-card__label {
   margin-left: 24rpx;
   font-size: 26rpx;
-  color: #dbe7f3;
+  color: $bg-color-light; // approx
 }
 </style>

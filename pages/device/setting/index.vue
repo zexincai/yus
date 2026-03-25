@@ -444,7 +444,7 @@ const navigateToWashSetting = () => {
 .setting-card {
   margin-bottom: 25rpx;
   gap: 20rpx;
-  background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
   border-radius: 18rpx;
 
   .switch-item {
@@ -459,7 +459,7 @@ const navigateToWashSetting = () => {
     align-items: center;
 
     text {
-      color: #fff;
+      color: $text-white;
       font-size: 28rpx;
     }
 
@@ -474,11 +474,11 @@ const navigateToWashSetting = () => {
     align-items: center;
     border-radius: 18rpx;
     height: 145rpx;
-    background: linear-gradient(180deg, #324a70 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
 
     text {
       flex: 1;
-      color: #fff;
+      color: $text-white;
       font-size: 25rpx;
       display: block;
     }
@@ -491,7 +491,7 @@ const navigateToWashSetting = () => {
         width: 90rpx;
         height: 65rpx;
         border-radius: 9rpx;
-        background: #fff;
+        background: $bg-color-white;
         box-sizing: border-box;
         font-size: 25rpx;
         text-align: center;
@@ -499,7 +499,7 @@ const navigateToWashSetting = () => {
       }
 
       .unit {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
         margin-right: 52rpx;
       }
@@ -507,8 +507,8 @@ const navigateToWashSetting = () => {
       .save-btn {
         height: 65rpx;
         line-height: 80rpx;
-        background: #d68f01;
-        color: #fff;
+        background: $accent-color;
+        color: $text-white;
         font-size: 25rpx;
         border-radius: 8rpx;
         text-align: center;
@@ -522,11 +522,11 @@ const navigateToWashSetting = () => {
     .switch-group {
       display: flex;
       align-items: center;
-      color: #fff;
+      color: $text-white;
       font-size: 22rpx;
 
       text {
-        color: #fff;
+        color: $text-white;
         font-size: 22rpx;
       }
     }
@@ -535,7 +535,7 @@ const navigateToWashSetting = () => {
       margin-left: 60rpx;
       // margin-right: 10rpx;
       font-size: 25rpx;
-      color: #fff;
+      color: $text-white;
       display: flex;
       align-items: center;
 
@@ -546,12 +546,12 @@ const navigateToWashSetting = () => {
         width: 29rpx;
         height: 29rpx;
         box-sizing: border-box;
-        background: #ffffffff;
-        border: 4rpx solid #a5bfe8ff;
+        background: $bg-color-white;
+        border: 4rpx solid $text-light-blue;
       }
 
       .active {
-        border: 10rpx solid #0ECBF7;
+        border: 10rpx solid $link-color;
       }
     }
   }
@@ -587,7 +587,7 @@ const navigateToWashSetting = () => {
         }
 
         text {
-          color: #fff;
+          color: $text-white;
           font-size: 25rpx;
         }
       }
@@ -610,7 +610,7 @@ const navigateToWashSetting = () => {
       }
 
       text {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
       }
 
@@ -618,8 +618,8 @@ const navigateToWashSetting = () => {
         margin-left: 10rpx;
         width: 14rpx;
         height: 14rpx;
-        border-top: 2rpx solid #fff;
-        border-right: 2rpx solid #fff;
+        border-top: 2rpx solid $text-white;
+        border-right: 2rpx solid $text-white;
         // border-left: 18rpx solid #fff;
         transform: rotate(45deg);
         display: inline-block;

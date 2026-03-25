@@ -154,14 +154,14 @@ const handleSaveTime = () => {
     width: 344rpx;
     // height: 144rpx;
     border-radius: 18.12px;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
     padding: 40rpx;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     text {
-      color: #fff;
+      color: $text-white;
       font-size: 28rpx;
     }
 
@@ -176,11 +176,11 @@ const handleSaveTime = () => {
     align-items: center;
     border-radius: 18rpx;
     height: 145rpx;
-    background: linear-gradient(180deg, #324a70 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
 
     text {
       flex: 1;
-      color: #fff;
+      color: $text-white;
       font-size: 25rpx;
       display: block;
     }
@@ -194,7 +194,7 @@ const handleSaveTime = () => {
         padding: 0 10rpx; // 调整padding以适应输入框的大小和需要的边距
         height: 65rpx;
         border-radius: 9rpx;
-        background: #fff;
+        background: $bg-color-white;
         box-sizing: border-box;
         font-size: 25rpx;
         text-align: center;
@@ -202,7 +202,7 @@ const handleSaveTime = () => {
       }
 
       .unit {
-        color: #fff;
+        color: $text-white;
         width: 52rpx;
         font-size: 25rpx;
         margin-right: 32rpx;
@@ -211,8 +211,8 @@ const handleSaveTime = () => {
       .save-btn {
         height: 65rpx;
         line-height: 80rpx;
-        background: #d68f01;
-        color: #fff;
+        background: $accent-color;
+        color: $text-white;
         font-size: 25rpx;
         border-radius: 8rpx;
         text-align: center;
@@ -231,7 +231,7 @@ const handleSaveTime = () => {
     justify-content: center;
     border-radius: 18rpx;
     // height: 144rpx;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
 
     .timer-header {
       margin-top: 20rpx;
@@ -251,7 +251,7 @@ const handleSaveTime = () => {
         }
 
         text {
-          color: #fff;
+          color: $text-white;
           font-size: 25rpx;
         }
       }
@@ -274,7 +274,7 @@ const handleSaveTime = () => {
       }
 
       text {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
       }
 
@@ -282,8 +282,8 @@ const handleSaveTime = () => {
         margin-left: 20rpx;
         width: 14rpx;
         height: 14rpx;
-        border-top: 2rpx solid #fff;
-        border-right: 2rpx solid #fff;
+        border-top: 2rpx solid $text-white;
+        border-right: 2rpx solid $text-white;
         // border-left: 18rpx solid #fff;
         transform: rotate(45deg);
         display: inline-block;
