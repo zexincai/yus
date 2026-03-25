@@ -428,7 +428,7 @@ const navigateTo = (page) => {
       align-items: center;
 
       text {
-        color: #fff;
+        color: $text-white;
         font-size: 43rpx;
         margin-right: 34rpx;
         // 省略号
@@ -454,7 +454,7 @@ const navigateTo = (page) => {
 .device-card {
   margin-top: 24rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   border-radius: 18rpx;
   padding: 24rpx 36rpx 24rpx;
   display: flex;
@@ -480,7 +480,7 @@ const navigateTo = (page) => {
       .customer-label,
       .region-label,
       .address-label {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
         min-width: 76rpx;
       }
@@ -491,7 +491,7 @@ const navigateTo = (page) => {
       .customer-value,
       .region-value,
       .address-value {
-        color: #fff;
+        color: $text-white;
         font-size: 24rpx;
         margin-left: 6rpx;
         // 省略号
@@ -504,7 +504,7 @@ const navigateTo = (page) => {
       .online-tag {
         margin-left: 16rpx;
         background: #f39b11;
-        color: #fff;
+        color: $text-white;
         font-size: 20rpx;
         padding: 2rpx 12rpx;
         border-radius: 8rpx;
@@ -513,7 +513,7 @@ const navigateTo = (page) => {
       .copy-btn {
         margin-left: 16rpx;
         background: #f39b11;
-        color: #fff;
+        color: $text-white;
         font-size: 18rpx;
         border-radius: 8rpx;
         border-radius: 36rpx;
@@ -547,7 +547,7 @@ const navigateTo = (page) => {
       width: 90rpx;
       height: 90rpx;
       border-radius: 50%;
-      background: #13337c;
+      background: $nav-bg;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -556,7 +556,7 @@ const navigateTo = (page) => {
       .iconfont {
         width: 48rpx;
         height: 48rpx;
-        color: #fff;
+        color: $text-white;
       }
 
       .small {
@@ -567,7 +567,7 @@ const navigateTo = (page) => {
 
     .nav-text {
       font-size: 25rpx;
-      color: #fff;
+      color: $text-white;
     }
   }
 }
@@ -578,7 +578,7 @@ const navigateTo = (page) => {
   border-radius: 18rpx;
   padding: 30rpx;
   position: relative;
-  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -586,7 +586,7 @@ const navigateTo = (page) => {
   .auth-row {
     display: flex;
     align-items: center;
-    color: #fff;
+    color: $text-white;
     font-size: 25rpx;
     margin-top: 14rpx;
 
@@ -605,7 +605,7 @@ const navigateTo = (page) => {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #0ecbf7;
+      color: $link-color;
       font-size: 18rpx;
 
       .icon {
@@ -619,7 +619,7 @@ const navigateTo = (page) => {
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: $text-white;
       font-size: 25rpx;
       right: 30rpx;
       top: 45rpx;
@@ -647,7 +647,7 @@ const navigateTo = (page) => {
   display: flex;
   align-items: center;
   border-radius: 18rpx;
-  color: #152136;
+  color: $bg-color-dark;
   font-size: 25rpx;
   background: linear-gradient(90deg, #fcc9bdff 0%, #fcc9bd7f 100%);
 
@@ -658,7 +658,7 @@ const navigateTo = (page) => {
   }
 
   .error-text {
-    color: #152136;
+    color: $bg-color-dark;
     font-size: 24rpx;
     line-height: 1;
   }
@@ -680,12 +680,12 @@ const navigateTo = (page) => {
 
     .data-value {
       font-size: 43rpx;
-      color: #fff;
+      color: $text-white;
     }
 
     .data-unit {
       font-size: 21rpx;
-      color: #fff;
+      color: $text-white;
       margin-top: 4rpx;
     }
     .data-value-yellow {
@@ -700,7 +700,7 @@ const navigateTo = (page) => {
       height: 44rpx;
       font-size: 25rpx;
       border-radius: 22rpx;
-      border: 2rpx solid #FFFFFF;
+      border: 2rpx solid $bg-color-white;
     }
 
     &.orange {
@@ -715,12 +715,12 @@ const navigateTo = (page) => {
 
     &.blue {
       border-radius: 18rpx;
-      background: linear-gradient(180deg, #1a479cff 0%, #0a1938ff 100%);
+      background: linear-gradient(180deg, $nav-bg 0%, #0a1938ff 100%); // approx
     }
 
     &.green {
       border-radius: 18rpx;
-      background: linear-gradient(180deg, #019B7A 0%, #013A2D 100%);
+      background: linear-gradient(180deg, #019B7A 0%, #013A2D 100%); // status color
       .data-unit {
         font-size: 22rpx;
         color: #849CC4;
@@ -731,11 +731,11 @@ const navigateTo = (page) => {
       border-radius: 18rpx;
       width: 228rpx;
       height: 228rpx;
-      background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+      background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
 
       .data-value {
         font-size: 32rpx;
-        color: #fff;
+        color: $text-white;
       }
     }
 
@@ -751,7 +751,7 @@ const navigateTo = (page) => {
   height: 181rpx;
   margin-top: 20rpx;
   border-radius: 18rpx;
-  background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -759,7 +759,7 @@ const navigateTo = (page) => {
 
   .temp-value {
     font-size: 54rpx;
-    color: #fff;
+    color: $text-white;
 
     .temp-unit {
       font-size: 28rpx;
@@ -779,20 +779,20 @@ const navigateTo = (page) => {
   width: 217rpx;
   height: 181rpx;
   background: linear-gradient(180deg,
-      rgba(26, 71, 156, 1) 0%,
+      $nav-bg 0%, // approx
       rgba(10, 25, 56, 1) 100%);
-  color: #fff;
+  color: $text-white;
   border-radius: 18rpx;
 
   .temp-label {
-    color: #fff !important;
+    color: $text-white !important;
   }
 }
 
 .filter-status {
   margin-top: 22rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   padding: 26rpx;
 
   .filter-header {
@@ -802,7 +802,7 @@ const navigateTo = (page) => {
     margin-bottom: 20rpx;
 
     .filter-title {
-      color: #fff;
+      color: $text-white;
       font-size: 32rpx;
     }
 
@@ -810,8 +810,8 @@ const navigateTo = (page) => {
       display: flex;
 
       .action-btn {
-        color: #fff;
-        background: #13337cff;
+        color: $text-white;
+        background: $nav-bg;
         font-size: 20rpx;
         border-radius: 90rpx;
         display: flex;
@@ -823,7 +823,7 @@ const navigateTo = (page) => {
 
         &.active {
           background: #f39b11;
-          color: #fff;
+          color: $text-white;
         }
       }
     }
@@ -843,8 +843,8 @@ const navigateTo = (page) => {
       .filter-index {
         width: 54rpx;
         height: 54rpx;
-        background: linear-gradient(180deg, #6081bfff 0%, #13337cff 100%);
-        color: #fff;
+        background: linear-gradient(180deg, #6081bfff 0%, $nav-bg 100%);
+        color: $text-white;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -857,7 +857,7 @@ const navigateTo = (page) => {
         flex: 1;
 
         .filter-name {
-          color: #fff;
+          color: $text-white;
           font-size: 21rpx;
         }
 
@@ -870,26 +870,26 @@ const navigateTo = (page) => {
 
           .progress-inner {
             height: 100%;
-            background: linear-gradient(180deg, #96b0e0ff 0%, #13337cff 100%);
+            background: linear-gradient(180deg, #96b0e0ff 0%, $nav-bg 100%);
             border-radius: 90rpx;
           }
 
           .progress-green {
-            background: linear-gradient(180deg, #08B014 0%, #05510D 100%);
+            background: linear-gradient(180deg, #08B014 0%, #05510D 100%); // status color
           }
 
           .progress-yellow {
-            background: linear-gradient(180deg, #d68f01ff 0%, #f7e4bcff 100%);
+            background: linear-gradient(180deg, $accent-color 0%, #f7e4bcff 100%);
           }
 
           .progress-red {
-            background: linear-gradient(180deg, #D43030 0%, #FAB0A0 100%) !important;
+            background: linear-gradient(180deg, $error-color 0%, #FAB0A0 100%) !important;
           }
         }
       }
 
       .filter-percent {
-        color: #fff;
+        color: $text-white;
         font-size: 22rpx;
         margin-left: 12rpx;
         width: 52rpx;
@@ -938,18 +938,18 @@ const navigateTo = (page) => {
   right: 20rpx;
   font-size: 30rpx;
   width: 262rpx;
-  background: rgba(50, 74, 112, 1);
+  background: $bg-color-card;
   border-radius: 18rpx;
   // overflow: hidden;
 
   .menu-item {
-    color: #fff;
+    color: $text-white;
     height: 86rpx;
     display: flex;
     border-radius: 18rpx;
     align-items: center;
     justify-content: center;
-    background: rgba(50, 74, 112, 1);
+    background: $bg-color-card;
 
     image {
       width: 40rpx;
@@ -971,7 +971,7 @@ const navigateTo = (page) => {
   display: flex;
 
   .menu-item {
-    color: #fff;
+    color: $text-white;
     font-size: 24rpx;
     // height: 86rpx;
     display: flex;
@@ -1004,7 +1004,7 @@ const navigateTo = (page) => {
 
 .contact-dialog {
   width: 540rpx;
-  background: #fff;
+  background: $bg-color-white;
   border-radius: 24rpx;
   box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
   padding: 20rpx 32rpx 32rpx 32rpx;
@@ -1027,18 +1027,18 @@ const navigateTo = (page) => {
   font-weight: bold;
   text-align: center;
   margin-bottom: 32rpx;
-  color: #333333;
+  color: $text-primary;
 }
 
 .contact-dialog-info {
   font-size: 30rpx;
-  color: #333333;
+  color: $text-primary;
   margin-bottom: 16rpx;
 }
 
 .contact-dialog-btn {
-  background: #d68f01;
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   font-size: 30rpx;
   width: 193rpx;
   height: 77rpx;
@@ -1053,11 +1053,11 @@ const navigateTo = (page) => {
   padding: 26rpx 10rpx;
   height: 181rpx;
   border-radius: 18rpx;
-  background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  color: #ffffff;
+  color: $text-white;
 }
 
 .status-item {
@@ -1071,7 +1071,7 @@ const navigateTo = (page) => {
 .status-divider {
   width: 2rpx;
   height: 54rpx;
-  background: #fff;
+  background: $bg-color-white;
   border-radius: 2rpx;
 }
 

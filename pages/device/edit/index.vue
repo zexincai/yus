@@ -85,14 +85,14 @@ const handleSave = async () => {
 
 .info-card {
   margin-top: 20rpx;
-  background: #f7f9fb;
+  background: $bg-color-light;
   border-radius: 20rpx;
 
   .info-row {
     display: flex;
     align-items: center;
     height: 90rpx;
-    border-bottom: 1rpx solid #e0d7d7ff;
+    border-bottom: 1rpx solid $border-color-input;
     margin: 0 30rpx;
 
     &:last-child {
@@ -100,14 +100,14 @@ const handleSave = async () => {
     }
 
     .label {
-      color: #13337cff;
+      color: $nav-bg;
       font-size: 25rpx;
       width: 180rpx;
       flex-shrink: 0;
     }
 
     .value {
-      color: #333333;
+      color: $text-primary;
       font-size: 25rpx;
       flex: 1;
       text-align: right;
@@ -116,7 +116,7 @@ const handleSave = async () => {
     .input {
       flex: 1;
       font-size: 25rpx;
-      color: #333;
+      color: $text-primary;
       text-align: right;
       background: transparent;
       border: none;
@@ -125,13 +125,13 @@ const handleSave = async () => {
     }
 
     .placeholder {
-      color: #cccccc;
+      color: $border-color-light;
     }
   }
 }
 
 .save-btn {
-  color: #fff;
+  color: $text-white;
   margin-top: 172rpx;
   height: 90rpx;
   font-size: 29rpx;

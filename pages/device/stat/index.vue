@@ -189,7 +189,7 @@ const handleConfirm = () => {
 		text-align: center;
 
 		.value {
-			color: #fff;
+			color: $text-white;
 			font-size: 43rpx;
 			margin-bottom: 10rpx;
 			line-height: 1;
@@ -197,7 +197,7 @@ const handleConfirm = () => {
 		}
 
 		.label {
-			color: #A5BFE8;
+			color: $text-light-blue;
 			font-size: 21rpx;
 		}
 	}
@@ -218,10 +218,10 @@ const handleConfirm = () => {
 		justify-content: space-between;
 		padding: 0 20rpx;
 		border-radius: 9rpx;
-		background: #324A70;
+		background: $bg-color-card;
 
 		text {
-			color: #fff;
+			color: $text-white;
 			font-size: 25rpx;
 		}
 
@@ -231,7 +231,7 @@ const handleConfirm = () => {
 			height: 0;
 			border-left: 10rpx solid transparent;
 			border-right: 10rpx solid transparent;
-			border-top: 12rpx solid #CCCCCC;
+			border-top: 12rpx solid $border-color-light;
 			margin-left: 4rpx;
 			display: inline-block;
 			vertical-align: middle;
@@ -240,13 +240,13 @@ const handleConfirm = () => {
 	}
 
 	.picker-separator {
-		color: #fff;
+		color: $text-white;
 		font-size: 28rpx;
 		padding: 0 20rpx;
 	}
 
 	.confirm-btn {
-		color: #fff;
+		color: $text-white;
 		font-size: 25rpx;
 		border-radius: 12rpx;
 		margin-left: 40rpx;
@@ -260,20 +260,20 @@ const handleConfirm = () => {
 }
 
 .data-table {
-	background: #233657;
+	background: $bg-color-medium;
 	overflow: hidden;
 
 	.table-header {
 		display: flex;
 		height: 66rpx;
 		align-items: center;
-		background: #35568FFF;
+		background: $nav-bg-alt; // approx
 		border-bottom: 4rpx solid $bg-color;
 
 		.header-cell {
 			flex: 1;
 			padding-left: 25rpx;
-			color: #fff;
+			color: $text-white;
 			font-size: 25rpx;
 		}
 	}
@@ -292,7 +292,7 @@ const handleConfirm = () => {
 			.table-cell {
 				padding-left: 25rpx;
 				flex: 1;
-				color: #fff;
+				color: $text-white;
 				font-size: 25rpx;
 			}
 		}
