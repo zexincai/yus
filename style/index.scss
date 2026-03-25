@@ -1,38 +1,5 @@
 @import "./common.scss";
-
-// 主题颜色
-$bg-color: #1c2431; // 主背景色
-$secondary-color: #2d3c58; // 次背景色
-$accent-color: #d68f01; // 强调色
-$link-color: #0a84ff; // 链接色
-$success-color: #52c41a; // 成功色
-$warning-color: #faad14; // 警告色
-$error-color: #ff4d4f; // 错误色
-// 文字颜色
-$text-primary: #333333; // 主要文字
-$text-secondary: #999999; // 次要文字
-$text-disabled: #666666; // 禁用文字
-
-// 字体大小
-$font-size-small: 24rpx; // 小号字体
-$font-size-base: 28rpx; // 基础字体
-$font-size-large: 32rpx; // 大号字体
-$font-size-xlarge: 36rpx; // 特大号字体
-$font-size-xxlarge: 40rpx; // 超大号字体
-
-// 间距
-$spacing-mini: 10rpx; // 最小间距
-$spacing-small: 20rpx; // 小间距
-$spacing-base: 30rpx; // 基础间距
-$spacing-large: 40rpx; // 大间距
-
-// 圆角
-$border-radius-small: 8rpx; // 小圆角
-$border-radius-base: 12rpx; // 基础圆角
-$border-radius-large: 16rpx; // 大圆角
-
-// 边框
-$border-color: rgba(255, 255, 255, 0.1); // 边框颜色
+@import "./theme.scss";
 
 // 常用混入
 @mixin flex-center {
@@ -55,7 +22,7 @@ $border-color: rgba(255, 255, 255, 0.1); // 边框颜色
 
 // 常用卡片样式
 .card {
-  background: $secondary-color;
+  background: $bg-color-card;
   border-radius: $border-radius-base;
   padding: $spacing-base;
 }
@@ -74,7 +41,7 @@ $border-color: rgba(255, 255, 255, 0.1); // 边框颜色
   }
 
   &.default {
-    background: $secondary-color;
+    background: $bg-color-card;
     color: $text-primary;
   }
 
@@ -403,7 +370,7 @@ $border-color: rgba(255, 255, 255, 0.1); // 边框颜色
   }
 
   &-secondary {
-    background-color: $secondary-color;
+    background-color: $bg-color-card;
   }
 
   &-accent {
@@ -523,7 +490,7 @@ view {
 
 .empty {
   text-align: center;
-  color: #fff;
+  color: $text-white;
   font-size: 28rpx;
   margin-top: 100rpx;
   .empty-img {
