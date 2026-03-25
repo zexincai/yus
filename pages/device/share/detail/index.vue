@@ -116,7 +116,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .share-detail-container {
   min-height: 100vh;
-  background-color: #1c2431;
+  background-color: $bg-color;
   padding-top: var(--status-bar-height);
 }
 
@@ -126,7 +126,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: $text-white;
 
   .back {
     position: absolute;
@@ -141,7 +141,7 @@ onMounted(() => {
 
 .form-card {
   margin: 30rpx;
-  background: #fff;
+  background: $bg-color-white;
   border-radius: 16rpx;
   overflow: hidden;
 
@@ -152,7 +152,7 @@ onMounted(() => {
     height: 100rpx;
 
     .label {
-      color: #223a7a;
+      color: $nav-bg-alt;
       font-size: 30rpx;
       width: 180rpx;
     }
@@ -160,22 +160,22 @@ onMounted(() => {
     .value {
       flex: 1;
       font-size: 30rpx;
-      color: #333;
+      color: $text-primary;
       text-align: right;
     }
   }
 
   .divider {
     height: 1rpx;
-    background-color: #eeeeee;
+    background-color: $border-color-light;
     margin: 0 30rpx;
   }
 }
 
 .save-btn {
   margin: 60rpx 30rpx 30rpx;
-  background: #d28b0a;
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   height: 100rpx;
   line-height: 100rpx;
   border-radius: 12rpx;
@@ -184,8 +184,8 @@ onMounted(() => {
 
 .delete-btn {
   margin: 0 30rpx;
-  background: #f76260;
-  color: #fff;
+  background: $error-color;
+  color: $text-white;
   height: 100rpx;
   line-height: 100rpx;
   border-radius: 12rpx;

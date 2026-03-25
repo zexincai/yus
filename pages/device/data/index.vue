@@ -53,7 +53,7 @@ onLoad(async ({ id }) => {
 }
 
 .section-title {
-  color: #fff;
+  color: $text-white;
   font-size: 29rpx;
   margin-bottom: 38rpx;
 }
@@ -66,7 +66,7 @@ onLoad(async ({ id }) => {
 
   .data-card {
     border-radius: 18rpx;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
     text-align: center;
     height: 181rpx;
     display: flex;
@@ -75,14 +75,14 @@ onLoad(async ({ id }) => {
     align-items: center;
 
     .value {
-      color: #fff;
+      color: $text-white;
       font-size: 43rpx;
       margin-bottom: 12rpx;
       display: block;
     }
 
     .label {
-      color: #a5bfe8;
+      color: $text-light-blue;
       font-size: 21rpx;
     }
   }
@@ -95,7 +95,7 @@ onLoad(async ({ id }) => {
 
   .status-card {
     border-radius: 18rpx;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
     text-align: center;
     height: 181rpx;
     display: flex;
@@ -104,14 +104,14 @@ onLoad(async ({ id }) => {
     align-items: center;
 
     .status-value {
-      color: #fff;
+      color: $text-white;
       font-size: 43rpx;
       margin-bottom: 12rpx;
       display: block;
     }
 
     .status-label {
-      color: #a5bfe8;
+      color: $text-light-blue;
       font-size: 21rpx;
     }
   }

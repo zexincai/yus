@@ -130,7 +130,7 @@ const handleConfirm = (type) => {
 <style lang="scss" scoped>
 .add-share-container {
   min-height: 100vh;
-  background-color: #1c2431;
+  background-color: $bg-color;
   padding-top: var(--status-bar-height);
 }
 
@@ -140,7 +140,7 @@ const handleConfirm = (type) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: $text-white;
 
   .back {
     position: absolute;
@@ -155,7 +155,7 @@ const handleConfirm = (type) => {
 
 .form-card {
   margin: 30rpx;
-  background: #fff;
+  background: $bg-color-white;
   border-radius: 16rpx;
   overflow: hidden;
 
@@ -166,7 +166,7 @@ const handleConfirm = (type) => {
     height: 100rpx;
 
     .label {
-      color: #223a7a;
+      color: $nav-bg-alt;
       font-size: 30rpx;
       width: 180rpx;
     }
@@ -181,15 +181,15 @@ const handleConfirm = (type) => {
 
   .divider {
     height: 1rpx;
-    background-color: #eeeeee;
+    background-color: $border-color-light;
     margin: 0 30rpx;
   }
 }
 
 .confirm-btn {
   margin: 60rpx 30rpx;
-  background: rgba(214, 143, 1, 1);
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   height: 90rpx;
   line-height: 90rpx;
   border-radius: 18rpx;
@@ -198,8 +198,8 @@ const handleConfirm = (type) => {
 
 .save-btn {
   margin: 60rpx 30rpx 30rpx;
-  background: rgba(214, 143, 1, 1);
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   height: 90rpx;
   line-height: 90rpx;
   border-radius: 12rpx;
@@ -208,15 +208,15 @@ const handleConfirm = (type) => {
 
 .delete-btn {
   margin: 0 30rpx;
-  background: rgba(237, 115, 88, 1);
-  color: #fff;
+  background: $danger-color;
+  color: $text-white;
   height: 90rpx;
   line-height: 90rpx;
   border-radius: 12rpx;
   font-size: 29rpx;
 }
 .placeholder {
-  color: #cccccc;
+  color: $border-color-light;
 }
 
 // iconfont样式

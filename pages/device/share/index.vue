@@ -99,14 +99,14 @@ const handleEditShareByPhone = (res) => {
 <style lang="scss" scoped>
 .share-account-container {
   min-height: 100vh;
-  background-color: rgba(21, 33, 54, 1); // 深蓝色背景
-  color: #ffffff; // 白色文字
+  background-color: $bg-color-dark; // 深蓝色背景
+  color: $text-white; // 白色文字
   padding-top: var(--status-bar-height); // 适配状态栏
 }
 
 .section-title {
   font-size: 28rpx;
-  color: #ffffff;
+  color: $text-white;
   padding: 30rpx;
 }
 
@@ -129,7 +129,7 @@ const handleEditShareByPhone = (res) => {
 
     .empty-text {
       font-size: 28rpx;
-      color: #ffffff;
+      color: $text-white;
     }
   }
 }
@@ -141,13 +141,13 @@ const handleEditShareByPhone = (res) => {
     margin: 40rpx 30rpx 0;
     // width: 688rpx;
     height: 90rpx;
-    background: rgba(244, 246, 249, 1);
-    background-color: #ffffff;
+    background: $bg-color-light;
+    background-color: $bg-color-white;
     border-radius: 16rpx;
     padding: 0 30rpx;
     display: flex;
     align-items: center;
-    color: #333333;
+    color: $text-primary;
 
     .method-icon-wrapper {
       width: 60rpx;
@@ -161,7 +161,7 @@ const handleEditShareByPhone = (res) => {
 
       .iconfont {
         font-size: 32rpx;
-        color: #ffffff;
+        color: $text-white;
       }
     }
 
@@ -172,14 +172,14 @@ const handleEditShareByPhone = (res) => {
 
     .icon-arrow-right {
       font-size: 28rpx;
-      color: #c7c7cc;
+      color: $border-color-light;
     }
     .arrow-icon {
       margin-left: 20rpx;
       width: 16rpx;
       height: 16rpx;
-      border-top: 2rpx solid #cdcdcd;
-      border-right: 2rpx solid #cdcdcd;
+      border-top: 2rpx solid $border-color-light;
+      border-right: 2rpx solid $border-color-light;
       // border-left: 18rpx solid #fff;
       transform: rotate(45deg);
       display: inline-block;
@@ -199,7 +199,7 @@ const handleEditShareByPhone = (res) => {
 .info-list {
   margin: 10rpx 30rpx 60rpx;
   border-radius: 18rpx;
-  background: #f4f6f9ff;
+  background: $bg-color-light;
   // margin-top: 27rpx;
 
   .info-item {
@@ -207,7 +207,7 @@ const handleEditShareByPhone = (res) => {
     align-items: center;
     margin: 0 30rpx;
     height: 89rpx;
-    border-bottom: 2rpx solid rgba(224, 215, 215, 1);
+    border-bottom: 2rpx solid $border-color-input;
     justify-content: space-between;
 
     &:last-child {
@@ -215,7 +215,7 @@ const handleEditShareByPhone = (res) => {
     }
 
     .info-label {
-      color: rgba(19, 51, 124, 1);
+      color: $nav-bg;
       font-size: 25rpx;
       display: flex;
       align-items: center;
@@ -230,8 +230,8 @@ const handleEditShareByPhone = (res) => {
       margin-left: 20rpx;
       width: 16rpx;
       height: 16rpx;
-      border-top: 2rpx solid #cdcdcd;
-      border-right: 2rpx solid #cdcdcd;
+      border-top: 2rpx solid $border-color-light;
+      border-right: 2rpx solid $border-color-light;
       // border-left: 18rpx solid #fff;
       transform: rotate(45deg);
       display: inline-block;
