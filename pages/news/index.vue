@@ -82,7 +82,7 @@ const handleNewsClick = (news) => {
 
 .news-list {
   .news-date {
-    color: #c7c7c7ff;
+    color: $border-color-light;
     font-size: 25rpx;
     text-align: center;
     margin: 30rpx 0;
@@ -90,7 +90,7 @@ const handleNewsClick = (news) => {
 
   .news-card {
     border-radius: 18rpx;
-    background: linear-gradient(180deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
     padding: 22rpx;
     margin-bottom: 32rpx;
     display: flex;
@@ -102,7 +102,7 @@ const handleNewsClick = (news) => {
       margin-right: 24rpx;
 
       .news-title {
-        color: #fff;
+        color: $text-white;
         margin-bottom: 84rpx;
         font-size: 28rpx;
         font-weight: 400;
@@ -132,7 +132,7 @@ const handleNewsClick = (news) => {
 
           text {
             line-height: 1;
-            color: #c7c7c7ff;
+            color: $border-color-light;
             font-size: 25rpx;
           }
         }

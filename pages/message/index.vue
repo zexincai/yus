@@ -123,7 +123,7 @@ onShow(() => {
   font-size: 29rpx;
 
   .title {
-    color: #fff;
+    color: $text-white;
   }
 
   .actions {
@@ -154,7 +154,7 @@ onShow(() => {
       }
 
       text {
-        color: #fff;
+        color: $text-white;
       }
     }
   }
@@ -168,7 +168,7 @@ onShow(() => {
     align-items: center;
     border-radius: 18rpx;
     box-shadow: 0rpx 4rpx 8rpx #000000;
-    background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
 
     .device-icon {
       width: 106rpx;
@@ -182,14 +182,14 @@ onShow(() => {
       .device-name {
         position: relative;
         top: -4rpx;
-        color: #fff;
+        color: $text-white;
         font-size: 29rpx;
         margin-bottom: 20rpx;
         display: block;
       }
 
       .device-sn {
-        color: #ffffffff;
+        color: $text-white;
         font-size: 24rpx;
       }
     }
@@ -200,7 +200,7 @@ onShow(() => {
       text-align: right;
 
       .message-time {
-        color: #c7c7c7;
+        color: $border-color-light;
         font-size: 24rpx;
         display: block;
         margin-bottom: 28rpx;
@@ -213,7 +213,7 @@ onShow(() => {
         line-height: 42rpx;
         text-align: center;
         background: $danger-color;
-        color: #fff;
+        color: $text-white;
         font-size: 24rpx;
         border-radius: 50%;
         padding: 0 8rpx;

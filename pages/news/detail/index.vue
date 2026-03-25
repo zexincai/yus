@@ -56,16 +56,16 @@ const getDetail = async (id) => {
 <style lang="scss" scoped>
 .container {
   min-height: 100vh;
-  background-color: #fff;
+  background-color: $bg-color-white;
   padding: 30rpx;
-  color: #333333;
+  color: $text-primary;
 }
 
 .news-header {
   margin-bottom: 40rpx;
 
   .news-title {
-    color: #333333ff;
+    color: $text-primary;
     font-size: 38rpx;
     line-height: 65rpx;
     margin-bottom: 30rpx;
@@ -93,7 +93,7 @@ const getDetail = async (id) => {
       align-items: center;
 
       .time {
-        color: #a6a6a6;
+        color: $text-secondary;
         font-size: 25rpx;
         margin-right: 24rpx;
       }
@@ -109,7 +109,7 @@ const getDetail = async (id) => {
         }
 
         text {
-          color: #a6a6a6;
+          color: $text-secondary;
           font-size: 25rpx;
         }
       }
@@ -121,7 +121,7 @@ const getDetail = async (id) => {
   .paragraph {
     font-size: 28rpx;
     line-height: 32rpx;
-    color: #444444;
+    color: $text-primary; // approx
     margin-bottom: 30rpx;
     display: block;
   }

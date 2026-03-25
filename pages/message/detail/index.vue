@@ -207,7 +207,7 @@ onReachBottom(() => {
     align-items: center;
 
     text {
-      color: #fff;
+      color: $text-white;
       font-size: 43.48rpx;
       margin-right: 34rpx;
     }
@@ -227,7 +227,7 @@ onReachBottom(() => {
 }
 
 .device-card {
-  background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   border-radius: 18rpx;
   padding: 30rpx 34rpx;
   margin-bottom: 46rpx;
@@ -240,13 +240,13 @@ onReachBottom(() => {
       margin-bottom: 12rpx;
 
       .label {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
         margin-right: 20rpx;
       }
 
       .value {
-        color: #fff;
+        color: $text-white;
         font-size: 25rpx;
       }
 
@@ -254,7 +254,7 @@ onReachBottom(() => {
         margin-left: 12rpx;
         text-align: center;
         font-size: 18rpx;
-        color: #fff;
+        color: $text-white;
         // width: 72rpx;
         padding: 0 10rpx;
         height: 36rpx;
@@ -283,7 +283,7 @@ onReachBottom(() => {
     margin-bottom: 40rpx;
 
     text {
-      color: #fff;
+      color: $text-white;
       font-size: 29rpx;
     }
 
@@ -308,7 +308,7 @@ onReachBottom(() => {
       }
 
       text {
-        color: #fff;
+        color: $text-white;
         font-size: 29rpx;
       }
     }
@@ -317,7 +317,7 @@ onReachBottom(() => {
   .message-list {
     .message-item {
       border-radius: 18rpx;
-      background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+      background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
       box-shadow: 0rpx 4rpx 8rpx #0000003f;
       padding: 30rpx 30rpx 44rpx;
       margin-bottom: 20rpx;
@@ -330,11 +330,11 @@ onReachBottom(() => {
         position: relative;
 
         text {
-          color: #fff;
+          color: $text-white;
         }
 
         .message-time {
-          color: #c7c7c7ff;
+          color: $border-color-light;
           font-size: 25rpx;
           margin-top: 10rpx;
           flex: 1;
@@ -357,7 +357,7 @@ onReachBottom(() => {
 
       .message-content {
         padding-top: 20rpx;
-        color: #fff;
+        color: $text-white;
         font-size: 28rpx;
         text-align: center;
         width: 100%;
@@ -365,19 +365,19 @@ onReachBottom(() => {
 
       &.error {
         .message-title text:first-child {
-          color: #ff4d4f;
+          color: $error-color;
         }
       }
 
       &.warning {
         .message-title text:first-child {
-          color: #d68f01;
+          color: $accent-color;
         }
       }
 
       &.info {
         .message-title text:first-child {
-          color: #4a9fee;
+          color: $nav-bg; // approx
         }
       }
     }
