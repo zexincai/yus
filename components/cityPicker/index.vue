@@ -243,7 +243,7 @@
 			left: 0;
 			bottom: -315px;
 			z-index: 99999;
-			background: #fff;
+			background: $bg-color-white;
 			padding-bottom: 50px;
 			.pupop-btn{
 				height: 40px;

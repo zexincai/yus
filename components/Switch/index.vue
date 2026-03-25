@@ -59,7 +59,7 @@ const trackStyle = computed(() => ({
 }));
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .custom-switch {
   width: 108rpx;
   height: 54rpx;
@@ -80,12 +80,12 @@ const trackStyle = computed(() => ({
   width: 100%;
   height: 100%;
   border-radius: 54rpx;
-  background: #a5bfe8ff;
+  background: $text-light-blue;
   transition: background 0.2s;
 }
 
 .custom-switch.is-checked .switch-track {
-  background: #0ecbf7ff;
+  background: $link-color;
 }
 
 .switch-thumb {
@@ -95,7 +95,7 @@ const trackStyle = computed(() => ({
   width: 44rpx;
   height: 44rpx;
   border-radius: 50%;
-  background: #fff;
+  background: $bg-color-white;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
   transition: left 0.2s;
 }

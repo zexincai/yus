@@ -246,7 +246,7 @@
 	}
 
 	.is-placeholder {
-		color: #999;
+		color: $text-secondary;
 	}
 
 	.xp-picker {
@@ -265,7 +265,7 @@
 		transform: translateY(100%);
 		z-index: 999;
 		width: 100%;
-		background-color: #fff;
+		background-color: $bg-color-white;
 		visibility: hidden;
 		border-radius: 16px 16px 0 0;
 	}
@@ -279,7 +279,7 @@
 		z-index: 998;
 		width: 100%;
 		height: 100%;
-		background-color: rgb(0, 0, 0);
+		background-color: $text-primary;
 	}
 
 	.xp-picker-animation {
@@ -292,7 +292,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		color: #ff0000
+		color: $error-color
 	}
 
 	.xp-picker-action {
@@ -305,7 +305,7 @@
 		box-sizing: border-box;
 		position: relative;
 		font-size: 34rpx;
-		border-bottom: 0.5px solid #e5e5e5
+		border-bottom: 0.5px solid $border-color-light // approx
 	}
 
 	.xp-picker-btns {
@@ -335,13 +335,13 @@
 	}
 
 	.xp-button--cancel {
-		background-color: #f5f5f5;
-		color: #324a70;
+		background-color: $bg-color-light; // approx
+		color: $bg-color-card;
 	}
 
 	.xp-button--confirm {
-		background-color: #324a70;
-		color: #fff;
+		background-color: $bg-color-card;
+		color: $text-white;
 	}
 
 	.xp-picker-action--cancel {
@@ -349,7 +349,7 @@
 	}
 
 	.xp-picker-action--confirm {
-		color: #007aff;
+		color: $nav-bg; // approx
 	}
 
 	.xp-picker-column {
