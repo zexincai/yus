@@ -222,7 +222,7 @@ export default {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    background-color: $bg-color-white;
 }
 
 .privacy-title {
@@ -234,7 +234,7 @@ export default {
 
 .privacy-date {
     font-size: 26rpx;
-    color: #666;
+    color: $text-disabled;
     text-align: center;
     margin-bottom: 30rpx;
 }
@@ -252,12 +252,12 @@ export default {
     font-size: 32rpx;
     font-weight: bold;
     margin-bottom: 20rpx;
-    color: #333;
+    color: $text-primary;
 }
 
 .section-content {
     font-size: 28rpx;
-    color: #666;
+    color: $text-disabled;
     line-height: 1.6;
 }
 

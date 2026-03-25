@@ -292,7 +292,7 @@ const handleViewPrivacy = () => {
   }
 
   .apple-text {
-    color: #fff;
+    color: $text-white;
     font-size: 17px;
     font-weight: 500;
   }
@@ -301,7 +301,7 @@ const handleViewPrivacy = () => {
 .login-container {
   background-color: $bg-color;
   min-height: 100vh;
-  background-color: #1c2431;
+  background-color: $bg-color;
   display: flex;
   flex-direction: column;
   // justify-content: center;
@@ -324,20 +324,20 @@ const handleViewPrivacy = () => {
   .type-item {
     display: flex;
     align-items: center;
-    color: #fff;
+    color: $text-white;
     font-size: 36rpx;
 
     .circle {
       width: 36rpx;
       height: 36rpx;
-      background-color: #fff;
+      background-color: $bg-color-white;
       border-radius: 50%;
-      border: 2rpx solid #a5bfe8;
+      border: 2rpx solid $text-light-blue;
       margin-right: 18rpx;
       box-sizing: border-box;
 
       &.active {
-        border: 10rpx solid #d68f01;
+        border: 10rpx solid $accent-color;
       }
     }
   }
@@ -351,12 +351,12 @@ const handleViewPrivacy = () => {
   .label {
     font-size: 29rpx;
     font-weight: 500;
-    color: #fff;
+    color: $text-white;
     margin-bottom: 16rpx;
   }
 
   .form-item {
-    background: #fff;
+    background: $bg-color-white;
     margin-bottom: 30rpx;
     border-radius: 18rpx;
     padding: 0 25rpx;
@@ -392,14 +392,14 @@ const handleViewPrivacy = () => {
   margin: 20rpx 0 10rpx;
 
   .remember {
-    color: #fff;
+    color: $text-white;
     font-size: 26rpx;
     display: flex;
     align-items: center;
   }
 
   .forget {
-    color: #0ecbf7;
+    color: $link-color;
     font-size: 26rpx;
   }
 }
@@ -410,13 +410,13 @@ const handleViewPrivacy = () => {
 }
 
 .forget {
-  color: #0ecbf7;
+  color: $link-color;
   font-size: 26rpx;
 }
 
 .login-btn {
   background: $active-color;
-  color: #fff;
+  color: $text-white;
   height: 90rpx;
   line-height: 90rpx;
   margin-top: 50rpx;
@@ -437,7 +437,7 @@ const handleViewPrivacy = () => {
 }
 
 .dealer-info {
-  color: #fff;
+  color: $text-white;
   font-size: 29rpx;
   text-align: center;
   padding-top: 30rpx;
@@ -448,7 +448,7 @@ const handleViewPrivacy = () => {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  color: #fff;
+  color: $text-white;
   font-size: 25rpx;
   margin-bottom: 20rpx;
 
@@ -458,6 +458,6 @@ const handleViewPrivacy = () => {
 }
 
 .placeholder {
-  color: #999;
+  color: $text-secondary;
 }
 </style>

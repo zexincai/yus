@@ -176,12 +176,12 @@ const handleSubmit = () => {
   .label {
     font-size: 29rpx;
     font-weight: 500;
-    color: #fff;
+    color: $text-white;
     margin-bottom: 16rpx;
   }
 
   .form-item {
-    background: #fff;
+    background: $bg-color-white;
     margin-bottom: 48rpx;
     border-radius: 18rpx;
     padding: 0 25rpx;
@@ -224,7 +224,7 @@ const handleSubmit = () => {
 
 .login-btn {
   background: $active-color;
-  color: #fff;
+  color: $text-white;
   height: 90rpx;
   line-height: 90rpx;
   border-radius: 18rpx;
@@ -233,7 +233,7 @@ const handleSubmit = () => {
 }
 
 .login-tip {
-  color: #fff;
+  color: $text-white;
   font-size: 29rpx;
   text-align: center;
   padding-top: 30rpx;
@@ -251,7 +251,7 @@ const handleSubmit = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: $text-white;
   font-size: 25rpx;
 
   .link {
@@ -260,6 +260,6 @@ const handleSubmit = () => {
 }
 
 .placeholder {
-  color: #999;
+  color: $text-secondary;
 }
 </style>

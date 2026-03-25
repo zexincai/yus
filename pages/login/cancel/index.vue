@@ -76,9 +76,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
-  background: #fff;
+  background: $bg-color-white;
   height: calc(100vh - 88rpx);
   width: 100%;
   overflow: hidden;
@@ -88,7 +88,7 @@ export default {
   flex-direction: column;
   align-items: center;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-  color: #333;
+  color: $text-primary;
 }
 .logo-box {
   display: flex;
@@ -105,19 +105,19 @@ export default {
 .title {
   margin-top: 4px;
   font-size: 28rpx;
-  color: #1a3769;
+  color: $nav-bg-alt;
   font-weight: 600;
 }
 .header {
   font-size: 32rpx;
-  color: #2a64d9;
+  color: $nav-bg; // approx nav-bg
   font-weight: 600;
   margin: 30rpx 0 0rpx 0;
 }
 .notice {
   padding: 20rpx 60rpx 40rpx;
   font-size: 20rpx;
-  color: #2c405a;
+  color: $bg-color-card; // approx bg-color-card
   line-height: 1.5;
   text-align: left;
   margin-bottom: 20rpx;
@@ -128,7 +128,7 @@ export default {
 }
 .choose-tip {
   padding: 0 60rpx;
-  color: #2a64d9;
+  color: $nav-bg; // approx nav-bg
   font-weight: 600;
   font-size: 28rpx;
   margin-bottom: 20rpx;
@@ -143,7 +143,7 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 10rpx;
-  color: #333;
+  color: $text-primary;
   font-size: 16rpx;
 }
 .checkbox-item text {
@@ -152,8 +152,8 @@ export default {
 .submit-btn {
   width: 90%;
   margin-top: 100px;
-  background-color: #2a64d9;
-  color: white;
+  background-color: $nav-bg; // approx nav-bg
+  color: $text-white;
   font-size: 16rpx;
   margin: 80rpx 80rpx 0;
   padding: 12rpx 0;
