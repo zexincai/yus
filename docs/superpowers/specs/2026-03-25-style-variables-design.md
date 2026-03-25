@@ -9,14 +9,15 @@
 - 消除重复硬编码颜色值
 - 建立唯一变量真相来源（`style/theme.scss`）
 - 支持回滚：只改 `theme.scss` 即可全局切换主题
-- 不改变任何视觉效果
+- 不改变任何视觉效果（部分近似色有意合并，见注意事项）
 
 ## 文件结构变更
 
 ```
 style/
   theme.scss      ← 新建：全部变量定义
-  index.scss      ← 头部加 @import "./theme.scss"，移除原有内联变量声明
+  index.scss      ← 头部加 @import "./theme.scss"，移除原有内联变量声明，
+                     同时将内部 $secondary-color 引用替换为 $bg-color-card
   common.scss     ← 不动
 
 uni.scss          ← 移除末尾 $bg-color/$active-color/$link-color/$danger-color，
@@ -30,8 +31,8 @@ uni.scss          ← 移除末尾 $bg-color/$active-color/$link-color/$danger-c
 $bg-color:          #1c2431;                   // 主背景（深色）
 $bg-color-dark:     #152136;                   // 更深背景
 $bg-color-medium:   #233657;                   // 中间层背景
-$bg-color-card:     #324a70;                   // 卡片/容器背景
-$bg-color-light:    #f7f9fb;                   // 浅色背景（表单区域）
+$bg-color-card:     #324a70;                   // 卡片/容器背景（原 $secondary-color #2d3c58 统一为此）
+$bg-color-light:    #f7f9fb;                   // 浅色背景（表单区域，#f4f6f9 有意合并至此）
 $bg-color-white:    #ffffff;                   // 纯白背景
 
 // ─── 边框/分割 ───
@@ -41,12 +42,16 @@ $border-color-light: #cccccc;                  // 浅色场景边框
 $border-color-input: #e0d7d7;                  // 输入框边框
 
 // ─── 功能色 ───
-$accent-color:    #d68f01;   // 金色强调
-$link-color:      #0ecbf7;   // 青色链接/高亮
+$accent-color:    #d68f01;   // 金色强调（原 $active-color，全局重命名）
+$link-color:      #0ecbf7;   // 青色链接/高亮（原 uni.scss $link-color:#0ECBF7，
+                              // index.scss 旧 $link-color:#0a84ff 为未使用值，废弃）
 $success-color:   #52c41a;   // 成功绿
 $warning-color:   #faad14;   // 警告黄
 $error-color:     #ff4d4f;   // 错误红
 $danger-color:    #ed7358;   // 危险橙红
+
+// ─── 向后兼容别名（避免编译错误，后续可逐步移除）───
+$active-color:    $accent-color;   // 兼容旧 $active-color 引用
 
 // ─── 文字色 ───
 $text-primary:    #333333;   // 主要文字
@@ -87,7 +92,7 @@ $border-radius-large:  16rpx;
 | `#233657` | `$bg-color-medium` | 中层背景 |
 | `#324a70` / `#324a70ff` | `$bg-color-card` | 卡片背景 |
 | `#2d3c58` / `#2D3C58` | `$bg-color-card` | 同义，统一 |
-| `#f7f9fb` / `#f4f6f9ff` / `#F4F6F9FF` | `$bg-color-light` | 浅色背景 |
+| `#f7f9fb` / `#f4f6f9ff` / `#F4F6F9FF` | `$bg-color-light` | 有意合并（两值差3点，视觉无感知） |
 | `#fff` / `#ffffff` / `#ffffffff` / `#FFFFFF` | `$bg-color-white` 或 `$text-white` | 背景用 bg，文字色用 text |
 | `rgba(50, 74, 112, 0.2)` / `#324a7033` | `$border-color-card` | 卡片边框 |
 | `rgba(255, 255, 255, 0.1)` | `$border-color` | 深色主题分割线 |
@@ -110,6 +115,7 @@ $border-radius-large:  16rpx;
 | `#faad14` / `#f39b11` / `#CFA008` | `$warning-color` | 警告黄 |
 | `#ff4d4f` / `#D43030` / `#f76260` / `#da0707` | `$error-color` | 错误红 |
 | `#ed7358` / `#ED7358` / `rgba(237, 115, 88, 1)` | `$danger-color` | 危险橙红 |
+| `$secondary-color`（index.scss 内部引用） | `$bg-color-card` | 变量重命名，仅在 index.scss 内替换 |
 
 ## 替换文件列表（43个）
 
@@ -161,26 +167,33 @@ $border-radius-large:  16rpx;
 - `components/Switch/index.vue`
 
 ### 样式文件（2个）
-- `style/index.scss`（移除重复变量，加 import）
+
+- `style/index.scss`（移除重复变量声明，加 import，替换内部 $secondary-color，替换内部 `#fff`）
 - `uni.scss`（移除末尾4个变量，加 import）
 
 ## 执行顺序
 
-1. 新建 `style/theme.scss`，写入全部变量
-2. 修改 `style/index.scss`：头部加 `@import "./theme.scss"`，删除原有变量块
-3. 修改 `uni.scss`：删除末尾变量，加 `@import "./style/theme.scss"`
-4. 逐文件替换 43 个 vue/scss 文件中的硬编码值
+1. 新建 `style/theme.scss`，写入全部变量（含 `$active-color` 兼容别名）
+2. 修改 `uni.scss`：删除末尾 `$bg-color`/`$active-color`/`$link-color`/`$danger-color`，末尾加 `@import "./style/theme.scss"`
+   - **说明**：原 `uni.scss` 的 `$bg-color: #152136` 与 `index.scss` 的 `$bg-color: #1c2431` 存在变量遮盖，迁移后统一由 `theme.scss` 的 `#1c2431` 定义，遮盖消除，此为有意行为。
+3. 修改 `style/index.scss`：
+   - 头部加 `@import "./theme.scss"`
+   - 删除原有变量声明块（`$bg-color` ~ `$border-color` 共14行）
+   - 将文件内部 `$secondary-color` 引用替换为 `$bg-color-card`（3处：`.card`、`.btn.default`、`.bg-secondary`）
+   - 将 `.empty { color: #fff }` 替换为 `$text-white`
+4. 逐文件替换 43 个 vue 文件中的硬编码值，按模块顺序进行（login → index → device → case → message → news → components）
 
 ## 回滚方式
 
-仅需修改 `style/theme.scss` 中的变量值，全局生效。如需完全回滚：
-1. 还原 `style/index.scss` 原始内容
-2. 还原 `uni.scss` 原始内容
-3. 删除 `style/theme.scss`
+**主题回滚**（仅改颜色值）：修改 `style/theme.scss` 中对应变量值，全局生效。
+
+**完全回滚**（还原所有改动）：`git checkout` 所有被修改文件。仅还原 `style/` 和 `uni.scss` 不足以完全回滚，因为 43 个 vue 文件中的硬编码值已被替换为变量名。
 
 ## 注意事项
 
-- 部分颜色值存在大小写变体（如 `#d68f01` 和 `#D68F01`），需全部替换
-- `#fff` 作为背景色时用 `$bg-color-white`，作为文字色时用 `$text-white`
-- 少数一次性特殊颜色（如 device/detail 中的状态机颜色）保留硬编码，不强制提取
-- `style/common.scss` 中已使用 uni 内置变量（`$uni-text-color` 等），不做修改
+- `#f4f6f9`
+ 与 `#f7f9fb` 有意合并为 `$bg-color-light: #f7f9fb`，差值 3/255，视觉无感知，属于颜色规范化
+- `index.scss` 旧 `$link-color: #0a84ff` 经核查在所有 vue 文件中均无使用，废弃，不保留别名
+- `$active-color` 在 theme.scss 保留别名 `$active-color: $accent-color`，防止编译错误，后续可移除
+- 少数一次性特殊颜色（如 `device/detail` 中的状态机颜色 `#019B7A`、`#013A2D` 等）保留硬编码，不强制提取
+- 大小写变体（`#d68f01` / `#D68F01`）需全部替换
