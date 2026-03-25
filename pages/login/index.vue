@@ -301,7 +301,6 @@ const handleViewPrivacy = () => {
 .login-container {
   background-color: $bg-color;
   min-height: 100vh;
-  background-color: $bg-color;
   display: flex;
   flex-direction: column;
   // justify-content: center;
