@@ -58,7 +58,7 @@ const getDetail = async (id) => {
 <style lang="scss" scoped>
 .container {
   min-height: 100vh;
-  background-color: #fff;
+  background-color: $bg-color-white;
   padding: 0rpx;
 }
 
@@ -77,14 +77,14 @@ const getDetail = async (id) => {
   position: relative;
 
   text {
-    color: #333333;
+    color: $text-primary;
     font-size: 40rpx;
     display: block;
   }
 
   .date {
     font-size: 25rpx;
-    color: #a6a6a6;
+    color: $text-secondary;
     font-weight: normal;
   }
 
@@ -107,7 +107,7 @@ const getDetail = async (id) => {
 
     text {
       font-size: 24rpx;
-      color: #a6a6a6;
+      color: $text-secondary;
       font-weight: normal;
     }
   }
@@ -120,14 +120,14 @@ const getDetail = async (id) => {
     margin-bottom: 40rpx;
 
     .section-title {
-      color: #000000;
+      color: $text-primary;
       font-size: 26rpx;
       margin-bottom: 20rpx;
       display: block;
     }
 
     .section-text {
-      color: #444444;
+      color: $text-primary; // approx
       font-size: 26rpx;
       line-height: 60rpx;
     }

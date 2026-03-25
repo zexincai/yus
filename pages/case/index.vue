@@ -113,11 +113,11 @@ onPullDownRefresh(async () => {
     width: 16rpx;
     height: 16rpx;
     border-radius: 50%;
-    background: #a5bfe8ff;
+    background: $text-light-blue;
     margin: 0 8rpx;
 
     &.active {
-      background: #0ecbf7ff;
+      background: $link-color;
     }
   }
 }
@@ -131,7 +131,7 @@ onPullDownRefresh(async () => {
   margin-bottom: 10rpx;
 
   .tab-item {
-    color: #a5bfe8;
+    color: $text-light-blue;
     font-size: 28rpx;
     // padding: 10rpx 30rpx;
     margin-right: 32rpx;
@@ -163,7 +163,7 @@ onPullDownRefresh(async () => {
 
   .case-item {
     border-radius: 18rpx;
-    background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
     overflow: hidden;
 
     .case-image {
@@ -174,7 +174,7 @@ onPullDownRefresh(async () => {
 
     .case-title {
       display: block;
-      color: #fff;
+      color: $text-white;
       font-size: 28rpx;
       padding: 20rpx;
       // 两行省略
