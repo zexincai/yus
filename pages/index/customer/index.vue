@@ -178,7 +178,7 @@ const onRefresh = async () => {
     width: 100rpx;
     height: 100rpx;
     border-radius: 50%;
-    background: #2d3c58;
+    background: $bg-color-card;
     margin-right: 24rpx;
   }
 
@@ -188,7 +188,7 @@ const onRefresh = async () => {
     flex-direction: column;
 
     .name {
-      color: #fff;
+      color: $text-white;
       font-size: 32rpx;
       font-weight: bold;
       margin-bottom: 8rpx;
@@ -218,7 +218,7 @@ const onRefresh = async () => {
   margin-bottom: 40rpx;
 
   .logo {
-    border-bottom: 1rpx solid #fff;
+    border-bottom: 1rpx solid $bg-color-white;
   }
 
   .logo-img {
@@ -237,8 +237,8 @@ const onRefresh = async () => {
 
   .user-id .tag {
     border-radius: 6rpx;
-    background: #13337cff;
-    color: #fff;
+    background: $nav-bg;
+    color: $text-white;
     font-size: 22rpx;
     padding: 4rpx 12rpx;
     border-radius: 6rpx;
@@ -265,7 +265,7 @@ const onRefresh = async () => {
 }
 
 .greeting .name {
-  color: #fff;
+  color: $text-white;
   display: flex;
   align-items: center;
   font-size: 44rpx;
@@ -277,8 +277,8 @@ const onRefresh = async () => {
 }
 
 .user-id .tag {
-  background: #d68f01;
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   font-size: 22rpx;
   padding: 4rpx 12rpx;
   border-radius: 6rpx;
@@ -286,7 +286,7 @@ const onRefresh = async () => {
 }
 
 .user-id text {
-  color: #c7c7c7;
+  color: $border-color-light;
   font-size: 28rpx;
 }
 
@@ -306,7 +306,7 @@ const onRefresh = async () => {
 
 .search-input {
   flex: 1;
-  background: #2d3c58;
+  background: $bg-color-card;
   height: 80rpx;
   border-radius: 90rpx;
   padding: 0 30rpx;
@@ -318,7 +318,7 @@ const onRefresh = async () => {
   flex: 1;
   line-height: 1;
   margin-left: 25rpx;
-  color: #fff;
+  color: $text-white;
   font-size: 26rpx;
   background: transparent;
   border: none;
@@ -329,8 +329,8 @@ const onRefresh = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #d68f01;
-  color: #fff;
+  background: $accent-color;
+  color: $text-white;
   font-size: 25rpx;
   border-radius: 90rpx;
   height: 80rpx;
@@ -346,13 +346,13 @@ const onRefresh = async () => {
 
 .my {
   margin-top: 10rpx;
-  color: #fff;
+  color: $text-white;
   font-size: 32rpx;
 }
 
 .type {
   margin-top: 10rpx;
-  color: #fff;
+  color: $text-white;
   font-size: 25rpx;
 
   &::after {
@@ -392,7 +392,7 @@ const onRefresh = async () => {
     font-size: 32rpx;
     margin: 0rpx 30rpx 40rpx;
     padding: 14rpx 0;
-    color: #a5bfe8;
+    color: $text-light-blue;
     position: relative;
     cursor: pointer;
   }
@@ -414,14 +414,14 @@ const onRefresh = async () => {
 
 .tab-item {
   padding: 24rpx 30rpx;
-  color: #a5bfe8;
+  color: $text-light-blue;
   font-size: 28rpx;
   position: relative;
   cursor: pointer;
 }
 
 .tab-item .count {
-  color: #999;
+  color: $text-secondary;
   font-size: 24rpx;
   margin-left: 4rpx;
 }
@@ -441,7 +441,7 @@ const onRefresh = async () => {
 }
 
 .device-num {
-  color: #fff;
+  color: $text-white;
   font-size: 32rpx;
   margin-bottom: 30rpx;
 }
@@ -455,7 +455,7 @@ const onRefresh = async () => {
 
 .device-item {
   position: relative;
-  background: #2d3c58;
+  background: $bg-color-card;
   border-radius: 12rpx;
   padding: 60rpx 30rpx 30rpx;
   margin-bottom: 30rpx;
@@ -464,7 +464,7 @@ const onRefresh = async () => {
   width: 336rpx;
   height: 180rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, #324a70 0%, #324a70 100%);
+  background: linear-gradient(90deg, $bg-color-card 0%, $bg-color-card 100%);
   box-shadow: 0px 4rpx 8rpx #000000;
 
   .icon {
@@ -490,7 +490,7 @@ const onRefresh = async () => {
 }
 
 .device-info .name {
-  color: #fff;
+  color: $text-white;
   font-size: 28rpx;
   margin-bottom: 40rpx;
   display: block;
@@ -501,7 +501,7 @@ const onRefresh = async () => {
 }
 
 .device-info .model {
-  color: #c7c7c7;
+  color: $border-color-light;
   font-size: 24rpx;
 }
 
@@ -522,7 +522,7 @@ const onRefresh = async () => {
   padding: 4rpx 12rpx;
   border-radius: 0rpx;
   font-size: 24rpx;
-  color: #fff;
+  color: $text-white;
 }
 
 .status-tags .tag.tag-1 {
@@ -538,14 +538,14 @@ const onRefresh = async () => {
 }
 
 .placeholder {
-  color: #999;
+  color: $text-secondary;
 }
 
 .customer-list {
   // margin: 24rpx 24rpx 0 24rpx;
 
   .customer-item {
-    background: linear-gradient(90deg, #324a70ff 0%, #324a7033 100%);
+    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
     border-radius: 16rpx;
     display: flex;
     align-items: center;
@@ -576,7 +576,7 @@ const onRefresh = async () => {
         align-items: center;
 
         .name {
-          color: #fff;
+          color: $text-white;
           font-size: 29rpx;
           font-weight: bold;
           margin-right: 31rpx;
@@ -589,14 +589,14 @@ const onRefresh = async () => {
       }
 
       .phone {
-        color: #c7c7c7ff;
+        color: $border-color-light;
         font-size: 25rpx;
         margin-top: 20rpx;
       }
     }
 
     .device-count {
-      color: #fff;
+      color: $text-white;
       font-size: 36rpx;
       display: flex;
       align-items: center;
@@ -605,8 +605,8 @@ const onRefresh = async () => {
         margin-left: 10rpx;
         width: 14rpx;
         height: 14rpx;
-        border-top: 2rpx solid #fff;
-        border-right: 2rpx solid #fff;
+        border-top: 2rpx solid $text-white;
+        border-right: 2rpx solid $text-white;
         // border-left: 18rpx solid #fff;
         transform: rotate(45deg);
         display: inline-block;
