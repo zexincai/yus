@@ -80,12 +80,12 @@ const trackStyle = computed(() => ({
   width: 100%;
   height: 100%;
   border-radius: 54rpx;
-  background: $text-light-blue;
+  background: #A5BFE8;
   transition: background 0.2s;
 }
 
 .custom-switch.is-checked .switch-track {
-  background: $link-color;
+  background: #0ECBF7;
 }
 
 .switch-thumb {

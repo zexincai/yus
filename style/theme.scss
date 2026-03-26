@@ -1,23 +1,23 @@
 // ─── 背景色 ───
-$bg-color:          #1c2431;                   // 主背景（深色）
+$bg-color:          #fff;                   // 主背景（深色）
 $bg-color-dark:     #152136;                   // 更深背景
 $bg-color-medium:   #233657;                   // 中间层背景
-$bg-color-card:     #324a70;                   // 卡片/容器背景
+$bg-color-card:     #F4F6F9;                   // 卡片/容器背景
 $bg-color-light:    #f7f9fb;                   // 浅色背景（表单区域）
 $bg-color-white:    #ffffff;                   // 纯白背景
 
 // ─── 边框/分割 ───
 $border-color:       rgba(255, 255, 255, 0.1); // 深色主题边框
 $border-color-card:  rgba(50, 74, 112, 0.2);   // 卡片边框（原 #324a7033）
-$border-color-light: #cccccc;                  // 浅色场景边框
+$border-color-light: #E0D7D7;                  // 浅色场景边框
 $border-color-input: #e0d7d7;                  // 输入框边框
 
 // ─── 功能色 ───
-$accent-color:    #d68f01;   // 金色强调
-$link-color:      #0ecbf7;   // 青色链接/高亮
-$success-color:   #52c41a;   // 成功绿
-$warning-color:   #faad14;   // 警告黄
-$error-color:     #ff4d4f;   // 错误红
+$accent-color:    #004DA2;   // 金色强调
+$link-color:      #004DA2;   // 青色链接/高亮
+$success-color:   #26A300;   // 成功绿
+$warning-color:   #D68F01;   // 警告黄
+$error-color:     #ED1D23;   // 错误红
 $danger-color:    #ed7358;   // 危险橙红
 
 // ─── 向后兼容别名 ───
@@ -25,11 +25,12 @@ $active-color:    $accent-color;   // 兼容旧引用，后续可移除
 
 // ─── 文字色 ───
 $text-primary:    #333333;   // 主要文字
-$text-secondary:  #999999;   // 次要文字
-$text-disabled:   #666666;   // 禁用文字
-$text-white:      #ffffff;   // 白色文字
+$text-secondary:  #666666;   // 次要文字
+$text-disabled:   #999999;   // 禁用文字
+$text-white:      #fff;   // 白色文字
 $text-light-blue: #a5bfe8;   // 浅蓝说明文字
-
+$text-dark:       #000000;   // 深色文字
+$text-label:      #13337C;   // 标签文字
 // ─── 导航/头部 ───
 $nav-bg:          #13337c;   // 导航栏背景
 $nav-bg-alt:      #223a7a;   // 导航栏备用

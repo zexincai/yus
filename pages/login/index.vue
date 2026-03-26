@@ -1,20 +1,18 @@
 <template>
   <view class="login-container">
-    <image src="/static/images/login-bg.jpg" class="login-bg" />
+    <view class="app-info">
+      <image src="/static/image/app-logo.png" class="app-logo" />
+      <text class="app-name">水灵汐智慧净水平台</text>
+    </view>
+    <!-- <image src="/static/images/login-bg.jpg" class="login-bg" /> -->
     <!-- 登录类型选择 -->
     <view class="login-type">
       <view class="type-item" @click="loginType = 'ROLE_CUSTOMER'">
-        <view
-          class="circle"
-          :class="{ active: loginType === 'ROLE_CUSTOMER' }"
-        ></view>
+        <view class="circle" :class="{ active: loginType === 'ROLE_CUSTOMER' }"></view>
         用户登录
       </view>
       <view class="type-item" @click="loginType = 'ROLE_DEALER'">
-        <view
-          class="circle"
-          :class="{ active: loginType === 'ROLE_DEALER' }"
-        ></view>
+        <view class="circle" :class="{ active: loginType === 'ROLE_DEALER' }"></view>
         经销商登录
       </view>
     </view>
@@ -23,68 +21,30 @@
     <view class="login-form">
       <view class="label">手机号码</view>
       <view class="form-item">
-        <input
-          type="text"
-          maxlength="11"
-          v-model="form.phone"
-          placeholder="手机号码"
-          placeholder-class="placeholder"
-        />
+        <input type="text" maxlength="11" v-model="form.phone" placeholder="手机号码" placeholder-class="placeholder" />
       </view>
-      <view class="label flex-b"
-        >密码
-        <text class="forget" @click="handleForgetPassword">忘记密码？</text>
+      <view class="label flex-b">密码
       </view>
       <view class="form-item">
-        <input
-          type="text"
-          :password="!showPassword"
-          v-model="form.password"
-          placeholder="密码"
-          placeholder-class="placeholder"
-        />
-        <image
-          v-if="!showPassword"
-          src="/static/images/eye-off.png"
-          class="eye-icon"
-          @click="showPassword = !showPassword"
-        />
-        <image
-          v-else
-          src="/static/images/eye-open.png"
-          class="eye-icon eye-open"
-          @click="showPassword = !showPassword"
-        />
+        <input type="text" :password="!showPassword" v-model="form.password" placeholder="密码"
+          placeholder-class="placeholder" />
+        <image v-if="!showPassword" src="/static/images/eye-off.png" class="eye-icon"
+          @click="showPassword = !showPassword" />
+        <image v-else src="/static/images/eye-open.png" class="eye-icon eye-open"
+          @click="showPassword = !showPassword" />
       </view>
 
       <!-- 记住账号和忘记密码 -->
       <view class="form-options">
         <label class="remember">
-          <checkbox
-            activeBackgroundColor="#0ECBF7"
-            style="transform: scale(0.6)"
-            :checked="form.remember"
-            @click="form.remember = !form.remember"
-            color="#000"
-          />
+          <!-- 自定义 checkbox 组件，支持动态背景色和勾号颜色 -->
+          <CustomCheckbox :active-background-color="'#0ECBF7'" :check-color="'#fff'" :checked="form.remember"
+            @change="form.remember = !form.remember" style="vertical-align: middle;" />
           记住账号
         </label>
+        <text class="forget" @click="handleForgetPassword">忘记密码？</text>
+
         <!-- <text class="forget" @click="handleForgetPassword">忘记密码？</text> -->
-      </view>
-      <view class="agreement">
-        <checkbox
-          activeBackgroundColor="#0ECBF7"
-          style="transform: scale(0.6)"
-          :checked="form.agreement"
-          @click="form.agreement = !form.agreement"
-          color="#000"
-        />
-        <text class="agreement-text">
-          您已阅读并同意
-          <text class="link" @click="handleViewTerms">《用户服务协议》</text>
-          和
-          <text class="link" @click="handleViewPrivacy">《隐私政策》</text>
-        </text>
       </view>
 
       <!-- <button @click="onAppleLogin" class="apple-login-button">
@@ -94,17 +54,20 @@
 
       <!-- 登录按钮 -->
       <button class="login-btn" @click="handleLogin">登录</button>
-      <button
-        v-if="loginType == 'ROLE_CUSTOMER'"
-        class="register-btn"
-        @click="handleRegister"
-      >
+      <button v-if="loginType == 'ROLE_CUSTOMER'" class="register-btn" @click="handleRegister">
         注册
       </button>
-      <view v-else class="dealer-info"
-        >{{ customerInfo }}</view
-      >
-
+      <view v-else class="dealer-info">{{ customerInfo }}</view>
+      <view class="agreement">
+        <CustomCheckbox :active-background-color="'#004DA2'" :check-color="'#fff'" :checked="form.agreement"
+          @change="form.agreement = !form.agreement" />
+        <text class="agreement-text">
+          您已阅读并同意
+          <text class="link" @click="handleViewTerms">《用户服务协议》</text>
+          和
+          <text class="link" @click="handleViewPrivacy">《隐私政策》</text>
+        </text>
+      </view>
       <!-- 用户协议 -->
     </view>
   </view>
@@ -115,7 +78,7 @@ import { managerLogin, appleLogin, getLoginPageConfig } from '@/api/login'
 import store from '@/store'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref, reactive } from 'vue'
-
+import CustomCheckbox from '@/components/CustomCheckbox/index.vue'
 // 登录类型
 const loginType = ref('ROLE_CUSTOMER')
 const showPassword = ref(false)
@@ -153,11 +116,15 @@ onLoad(() => {
   if (userInfo && userInfo.token) {
     uni.switchTab({
       url: '/pages/index/index',
-      success() {},
+      success() { },
     })
   } else {
   }
   // #endif
+  const loginFormType = uni.getStorageSync('loginFormType')
+  if (loginFormType) {
+    loginType.value = loginFormType
+  }
 })
 
 const onAppleLogin = () => {
@@ -224,8 +191,10 @@ const handleLogin = () => {
   }
   if (form.remember) {
     uni.setStorageSync('loginForm', form)
+    uni.setStorageSync('loginFormType', loginType.value)
   } else {
     uni.removeStorageSync('loginForm')
+    uni.removeStorageSync('loginFormType')
   }
   // 账号角色 ROLE_DEALER:经销商；ROLE_CUSTOMER:客户，ROLE_EMPLOYEE:员工
   managerLogin({
@@ -292,11 +261,33 @@ const handleViewPrivacy = () => {
   }
 
   .apple-text {
-    color: $text-white;
+    color: $link-color;
     font-size: 17px;
     font-weight: 500;
   }
 }
+
+.app-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 196rpx;
+  margin-bottom: 0rpx;
+
+  .app-logo {
+    width: 217rpx;
+    height: 218rpx;
+  }
+
+  .app-name {
+    margin-top: 46rpx;
+    color: $active-color;
+    font-size: 44rpx;
+    font-weight: 500;
+  }
+
+}
+
 
 .login-container {
   background-color: $bg-color;
@@ -323,7 +314,7 @@ const handleViewPrivacy = () => {
   .type-item {
     display: flex;
     align-items: center;
-    color: $text-white;
+    color: $text-dark;
     font-size: 36rpx;
 
     .circle {
@@ -336,7 +327,7 @@ const handleViewPrivacy = () => {
       box-sizing: border-box;
 
       &.active {
-        border: 10rpx solid $accent-color;
+        border: 10rpx solid $error-color;
       }
     }
   }
@@ -350,12 +341,12 @@ const handleViewPrivacy = () => {
   .label {
     font-size: 29rpx;
     font-weight: 500;
-    color: $text-white;
+    color: $link-color;
     margin-bottom: 16rpx;
   }
 
   .form-item {
-    background: $bg-color-white;
+    background: $bg-color-card;
     margin-bottom: 30rpx;
     border-radius: 18rpx;
     padding: 0 25rpx;
@@ -391,7 +382,7 @@ const handleViewPrivacy = () => {
   margin: 20rpx 0 10rpx;
 
   .remember {
-    color: $text-white;
+    color: $link-color;
     font-size: 26rpx;
     display: flex;
     align-items: center;
@@ -431,12 +422,12 @@ const handleViewPrivacy = () => {
   color: $active-color;
   border-radius: 18rpx;
   border: 3rpx solid $active-color;
-  margin-bottom: 101rpx;
+  margin-bottom: 81rpx;
   font-size: 29rpx;
 }
 
 .dealer-info {
-  color: $text-white;
+  color: $active-color;
   font-size: 29rpx;
   text-align: center;
   padding-top: 30rpx;
@@ -446,10 +437,11 @@ const handleViewPrivacy = () => {
 .agreement {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  color: $text-white;
+  justify-content: center;
+  color: $text-secondary;
   font-size: 25rpx;
   margin-bottom: 20rpx;
+
 
   .link {
     color: $link-color;

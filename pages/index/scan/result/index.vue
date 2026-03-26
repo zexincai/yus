@@ -71,13 +71,13 @@ onLoad((options) => {
 
   .success-title {
     font-size: 36rpx;
-    color: $text-white;
+    color: $text-dark;
   }
 
   .success-desc {
     margin-top: 30rpx;
     font-size: 29rpx;
-    color: $link-color;
+    color: $accent-color;
   }
 
   .login-btn {

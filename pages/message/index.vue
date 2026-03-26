@@ -21,7 +21,7 @@
 
     <!-- 消息列表 -->
     <view v-if="messageList.length" class="message-list">
-      <view v-for="(message, index) in messageList" :key="index" class="message-item"
+      <view v-for="(message, index) in messageList" :key="index" class="message-item box-shadow"
         @click="handleMessageClick(message)">
         <image :src="message.productUrl" mode="aspectFit" class="device-icon" />
         <view class="message-info">
@@ -123,7 +123,7 @@ onShow(() => {
   font-size: 29rpx;
 
   .title {
-    color: $text-white;
+    color: $text-secondary;
   }
 
   .actions {
@@ -140,12 +140,12 @@ onShow(() => {
         width: 36.23rpx;
         height: 36.23rpx;
         border-radius: 50%;
-        background: $active-color;
+        background: $warning-color;
         margin-right: 10rpx;
       }
 
       .icon-delete {
-        background: $danger-color;
+        background: $error-color;
       }
 
       .action-icon {
@@ -154,7 +154,7 @@ onShow(() => {
       }
 
       text {
-        color: $text-white;
+        color: $text-secondary;
       }
     }
   }
@@ -167,8 +167,6 @@ onShow(() => {
     display: flex;
     align-items: center;
     border-radius: 18rpx;
-    box-shadow: 0rpx 4rpx 8rpx #000000;
-    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
 
     .device-icon {
       width: 106rpx;
@@ -182,14 +180,14 @@ onShow(() => {
       .device-name {
         position: relative;
         top: -4rpx;
-        color: $text-white;
+        color: $active-color;
         font-size: 29rpx;
         margin-bottom: 20rpx;
         display: block;
       }
 
       .device-sn {
-        color: $text-white;
+        color: $text-secondary;
         font-size: 24rpx;
       }
     }
@@ -200,7 +198,7 @@ onShow(() => {
       text-align: right;
 
       .message-time {
-        color: $border-color-light;
+        color: $text-disabled;
         font-size: 24rpx;
         display: block;
         margin-bottom: 28rpx;
@@ -212,7 +210,7 @@ onShow(() => {
         height: 42rpx;
         line-height: 42rpx;
         text-align: center;
-        background: $danger-color;
+        background: $error-color;
         color: $text-white;
         font-size: 24rpx;
         border-radius: 50%;

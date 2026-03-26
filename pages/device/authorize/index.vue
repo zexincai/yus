@@ -14,7 +14,7 @@
         </view>
         <view class="model-row">
           <text class="model-label">型号：</text>
-          <text class="model-value gray">{{ deviceData.modelName }} </text>
+          <text class="model-value gray">{{ deviceData.modelName }}</text>
         </view>
         <view class="imei-row">
           <text class="imei-label">IMEI：</text>
@@ -391,7 +391,7 @@ const onRefresh = () => {
       }
 
       .sn-value {
-        color: $nav-bg;
+        color: $accent-color;
         font-size: 25rpx;
       }
 
@@ -402,11 +402,11 @@ const onRefresh = () => {
       }
 
       .blue {
-        color: $nav-bg;
+        color: $active-color;
       }
 
       .gray {
-        color: $text-secondary;
+        color: $text-disabled;
       }
     }
   }
@@ -472,7 +472,7 @@ const onRefresh = () => {
         margin-left: 60rpx;
         // margin-right: 10rpx;
         font-size: 25rpx;
-        color: $text-white;
+        color: $text-secondary;
         display: flex;
         align-items: center;
 
@@ -484,11 +484,11 @@ const onRefresh = () => {
           height: 29rpx;
           box-sizing: border-box;
           background: $bg-color-white;
-          border: 4rpx solid $text-light-blue;
+          border: 4rpx solid #A5BFE8;
         }
 
         .active {
-          border: 10rpx solid $accent-color;
+          border: 8rpx solid $warning-color;
         }
       }
     }
@@ -529,7 +529,7 @@ const onRefresh = () => {
 
 .filter-cycle-card {
   margin: 0 30rpx;
-  background: $bg-color-light;
+  background: $bg-color-card;
   border-radius: 20rpx;
   padding: 10rpx 0;
 

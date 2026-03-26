@@ -119,7 +119,7 @@ const handleConfirm = () => {
   align-items: center;
   justify-content: center;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
+  background: $bg-color-card;
   height: 434rpx;
 
   .scan-icon {
@@ -143,7 +143,7 @@ const handleConfirm = () => {
   .sn-input {
     flex: 1;
     height: 80rpx;
-    background: $bg-color-light;
+    background: $bg-color-card;
     border-radius: 16rpx;
     font-size: 28rpx;
     color: $text-primary;

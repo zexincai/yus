@@ -15,6 +15,7 @@ export default class Request {
 		this.config = {
 			baseUrl: '',
 			header: {
+				'appId': 'wxc65bb3c6e7698487',
 				// 'content-type': 'application/json',
 				'content-type': 'application/x-www-form-urlencoded',
 			},

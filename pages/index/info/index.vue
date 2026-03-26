@@ -37,14 +37,14 @@
     <!-- 保存按钮 -->
     <button class="save-btn" @click="handleSave(1)">保存</button>
     <!-- 退出账号 -->
-    <view class="logout-link" @click="handleViewPrivacy">
+    <!-- <view class="logout-link" @click="handleViewPrivacy">
       隐私政策 <text>》</text>
-    </view>
-    <view class="logout-link" style="margin-top: 20rpx" @click="handleLogout">
+    </view> -->
+    <view class="logout-link" @click="handleLogout">
       退出当前账号 <text>》</text>
     </view>
-    <view class="logout-link" style="margin-top: 20rpx; color: #db4e51" @click="toCancel">注销账号 <text>》</text>
-    </view>
+    <!-- <view class="logout-link" style="margin-top: 20rpx; color: #db4e51" @click="toCancel">注销账号 <text>》</text>
+    </view> -->
   </view>
 </template>
 
@@ -177,9 +177,8 @@ const handleLogout = () => {
 }
 
 .section-title {
-  color: $text-white;
+  color: $active-color;
   font-size: 28rpx;
-  font-weight: bold;
   margin: 52rpx 30rpx 16rpx 30rpx;
 }
 
@@ -196,7 +195,7 @@ const handleLogout = () => {
     padding: 0 30rpx;
 
     .label {
-      color: $nav-bg-alt;
+      color: $text-label;
       font-size: 28rpx;
       width: 180rpx;
       flex-shrink: 0;
@@ -254,6 +253,7 @@ const handleLogout = () => {
 }
 
 .logout-link {
+  display: block;
   color: $link-color;
   font-size: 28rpx;
   text-align: center;

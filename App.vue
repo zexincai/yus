@@ -29,6 +29,6 @@ export default {
 @import '@/style/index.scss';
 
 page {
-  background-color: #152136;
+  background-color: $bg-color;
 }
 </style>

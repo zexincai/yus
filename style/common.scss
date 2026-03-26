@@ -7,13 +7,18 @@
     height: 90rpx;
 
     input {
-        color: $uni-text-color;
+        color: $text-primary;
         height: 100%;
         font-size: 25rpx;
 
         &::placeholder {
-            color: $uni-text-color-placeholder;
+            color: #999999;
         }
     }
 
+}
+
+
+.box-shadow {
+    box-shadow: 0rpx 4rpx 12rpx  #00000050;
 }

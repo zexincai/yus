@@ -14,7 +14,7 @@
     <!-- 设备列表 -->
     <view class="device-list">
       <template v-if="logs.length">
-        <view class="device-card" v-for="(item, idx) in logs" :key="idx">
+        <view class="device-card box-shadow" v-for="(item, idx) in logs" :key="idx">
           <image class="device-img" :src="item.productUrl" mode="aspectFit"></image>
           <view class="device-info">
             <text class="device-title">{{ item.brand }}</text>
@@ -105,9 +105,9 @@ const getLogList = async () => {
 
   .copy-btn {
     border-radius: 36rpx;
-    background: $accent-color;
-    border: none;
-    color: $text-white;
+    color: $accent-color;
+    border: 1rpx solid $accent-color;
+    background-color: $text-white;
     font-size: 18rpx;
     padding: 0 18rpx;
     margin-right: 16rpx;
@@ -125,7 +125,7 @@ const getLogList = async () => {
 }
 
 .device-count {
-  color: $text-white;
+  color: $text-secondary;
   margin-top: 50rpx;
   font-size: 29rpx;
 }
@@ -136,8 +136,7 @@ const getLogList = async () => {
   .device-card {
     display: flex;
     align-items: center;
-    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
-    box-shadow: 0px 3.62px 7.25px #0000003F;
+    background-color: $text-white;
     border-radius: 18rpx;
     margin-bottom: 27rpx;
     padding: 24rpx 24rpx;
@@ -155,20 +154,19 @@ const getLogList = async () => {
       justify-content: center;
 
       .device-title {
-        color: $text-white;
+        color: $active-color;
         font-size: 29rpx;
-        font-weight: bold;
         margin-bottom: 8rpx;
       }
 
       .device-model {
-        color: $text-white;
+        color: $text-secondary;
         font-size: 25rpx;
         margin-bottom: 8rpx;
       }
 
       .device-sn {
-        color: $border-color-light;
+        color: $text-secondary;
         font-size: 25rpx;
       }
     }

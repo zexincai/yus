@@ -491,14 +491,15 @@ const saveWeekPlan = async (key) => {
   .switch-item {
     width: 344rpx;
     border-radius: 18rpx;
-    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+    background: $text-white;
     padding: 40rpx;
     display: flex;
+    box-shadow: 0rpx 4rpx 12rpx #00000050;
     justify-content: space-between;
     align-items: center;
 
     text {
-      color: $text-white;
+      color: $text-secondary;
       font-size: 28rpx;
     }
 
@@ -513,7 +514,8 @@ const saveWeekPlan = async (key) => {
     align-items: center;
     border-radius: 18rpx;
     height: 145rpx;
-    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+    box-shadow: 0rpx 4rpx 12rpx #00000050;
+    background: $text-white;
 
     text {
       flex: 1;
@@ -566,7 +568,9 @@ const saveWeekPlan = async (key) => {
     justify-content: center;
     border-radius: 18rpx;
     // height: 144rpx;
-    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+    // background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+    box-shadow: 0rpx 4rpx 12rpx #00000050;
+
 
     .timer-header {
       margin-top: 20rpx;
@@ -586,7 +590,7 @@ const saveWeekPlan = async (key) => {
         }
 
         text {
-          color: $text-white;
+          color: $active-color;
           font-size: 25rpx;
         }
       }
@@ -609,7 +613,7 @@ const saveWeekPlan = async (key) => {
       }
 
       text {
-        color: $text-white;
+        color: $text-primary;
         font-size: 25rpx;
       }
 
@@ -617,22 +621,26 @@ const saveWeekPlan = async (key) => {
         margin-left: 20rpx;
         width: 14rpx;
         height: 14rpx;
-        border-top: 2rpx solid $text-white;
-        border-right: 2rpx solid $text-white;
+        border-top: 2rpx solid $text-disabled;
+        border-right: 2rpx solid $text-disabled;
         // border-left: 18rpx solid #fff;
         transform: rotate(45deg);
         display: inline-block;
         vertical-align: middle;
       }
     }
+
+    .timer-link>text {
+      color: $active-color;
+    }
   }
 }
 
 .weekly-card {
-  background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+  box-shadow: 0rpx 4rpx 12rpx #00000050;
   border-radius: 18rpx;
   padding: 40rpx 40rpx 10rpx;
-  color: $bg-color-white;
+  color: $text-secondary;
   margin-bottom: 25rpx;
   font-size: 25rpx;
 }
@@ -647,7 +655,7 @@ const saveWeekPlan = async (key) => {
 .weekly-card__title {
   font-size: 25rpx;
   font-weight: 600;
-  color: $bg-color-light; // approx
+  color: $active-color; // approx
 }
 
 .weekly-card__save {
@@ -684,6 +692,7 @@ const saveWeekPlan = async (key) => {
   height: 25rpx;
   border-radius: 4rpx;
   background-color: $bg-color-white;
+  border: 1rpx solid $text-disabled;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -697,6 +706,6 @@ const saveWeekPlan = async (key) => {
 .weekly-card__label {
   margin-left: 24rpx;
   font-size: 26rpx;
-  color: $bg-color-light; // approx
+  color: $text-secondary; // approx
 }
 </style>

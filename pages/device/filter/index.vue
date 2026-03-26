@@ -25,7 +25,7 @@
       </view>
       <view class="filter-list">
         <view @click="toggleCheck(idx)" v-for="(item, idx) in detail.chips" :key="idx" class="filter-item">
-          <image src="/static/images/check.png" class="filter-check-img" v-if="item.checked"></image>
+          <image src="/static/image/check.png" class="filter-check-img" v-if="item.checked"></image>
           <view v-else class="filter-checkbox">
           </view>
           <view class="filter-info">
@@ -154,7 +154,7 @@ const handleConfirm = () => {
 
 
 .device-card {
-  background: $bg-color-light;
+  background: $bg-color-card;
   border-radius: 18rpx;
   padding: 32rpx 30rpx 20rpx;
   position: relative;
@@ -214,7 +214,7 @@ const handleConfirm = () => {
   margin-top: 24rpx;
   padding: 30rpx;
   border-radius: 18rpx;
-  background: $bg-color-light;
+  background: $bg-color-card;
   font-size: 25rpx;
 
   .filter-header {
@@ -228,7 +228,7 @@ const handleConfirm = () => {
     }
 
     .filter-code {
-      color: $bg-color-dark;
+      color: $text-dark;
     }
   }
 
@@ -258,20 +258,20 @@ const handleConfirm = () => {
         margin-left: 12rpx;
 
         .filter-name {
-          color: $text-disabled;
+          color: $text-secondary;
           font-size: 21rpx;
         }
 
         .progress-bar {
           margin-top: 8rpx;
           height: 18rpx;
-          background: $text-light-blue;
+          background: #A5ABB7;
           border-radius: 90rpx;
           overflow: hidden;
 
           .progress-inner {
             height: 100%;
-            background: linear-gradient(180deg, $success-color 0%, $success-color 100%); // approx
+            background: linear-gradient(180deg, #08B014 0%, #05510D 100%);
             border-radius: 90rpx;
           }
 
@@ -289,7 +289,7 @@ const handleConfirm = () => {
         width: 50rpx;
         text-align: right;
         margin-left: 14rpx;
-        color: $text-secondary;
+        color: $text-disabled;
         margin-top: 40rpx;
         font-size: 22rpx;
 

@@ -2,7 +2,7 @@
   <view class="container">
     <view v-if="chipLifes.length" class="section-title"> 滤芯更换周期</view>
     <view class="data-grid">
-      <view :key="index" v-for="(item, index) in chipLifes" class="data-card">
+      <view :key="index" v-for="(item, index) in chipLifes" class="data-card box-shadow">
         <text class="value">{{ item.value }}</text>
         <text class="label">{{ item.title }}</text>
       </view>
@@ -10,7 +10,7 @@
     <!-- 设备数据 -->
     <view v-if="paramList.length" class="section-title">设备数据</view>
     <view class="data-grid">
-      <view v-for="(item, index) in paramList" :key="index" class="data-card">
+      <view v-for="(item, index) in paramList" :key="index" class="data-card box-shadow">
         <text class="value">{{ item.value }}</text>
         <text class="label">{{ item.title }}</text>
       </view>
@@ -19,7 +19,7 @@
     <!-- 状态数据 -->
     <view v-if="stateList.length" class="section-title">状态数据</view>
     <view class="status-grid">
-      <view v-for="(item, index) in stateList" :key="index" class="status-card">
+      <view v-for="(item, index) in stateList" :key="index" class="status-card box-shadow">
         <text class="status-value">{{ item.value }}</text>
         <text class="status-label">{{ item.title }}</text>
       </view>
@@ -53,7 +53,7 @@ onLoad(async ({ id }) => {
 }
 
 .section-title {
-  color: $text-white;
+  color: $text-secondary;
   font-size: 29rpx;
   margin-bottom: 38rpx;
 }
@@ -66,7 +66,8 @@ onLoad(async ({ id }) => {
 
   .data-card {
     border-radius: 18rpx;
-    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+    background: $text-white;
+    // box-shadow: 0rpx 3.62rpx 7.25rpx  #000000;
     text-align: center;
     height: 181rpx;
     display: flex;
@@ -75,14 +76,14 @@ onLoad(async ({ id }) => {
     align-items: center;
 
     .value {
-      color: $text-white;
+      color: $active-color;
       font-size: 43rpx;
       margin-bottom: 12rpx;
       display: block;
     }
 
     .label {
-      color: $text-light-blue;
+      color: $text-secondary;
       font-size: 21rpx;
     }
   }
@@ -95,7 +96,8 @@ onLoad(async ({ id }) => {
 
   .status-card {
     border-radius: 18rpx;
-    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+    // background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+    background-color: $text-white;
     text-align: center;
     height: 181rpx;
     display: flex;
@@ -104,14 +106,14 @@ onLoad(async ({ id }) => {
     align-items: center;
 
     .status-value {
-      color: $text-white;
+      color: $active-color;
       font-size: 43rpx;
       margin-bottom: 12rpx;
       display: block;
     }
 
     .status-label {
-      color: $text-light-blue;
+      color: $text-secondary;
       font-size: 21rpx;
     }
   }

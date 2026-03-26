@@ -55,7 +55,7 @@
       </view>
 
       <view v-if="messages.length" class="message-list">
-        <view v-for="(message, index) in messages" :key="index" class="message-item "
+        <view v-for="(message, index) in messages" :key="index" class="message-item box-shadow"
           :class="{ 'error': message.noticeType == 1, 'warning': message.noticeType == 2, 'info': message.noticeType == 4 }">
           <view class="message-title">
             <text>{{ message.noticeTypeDesc }}</text>
@@ -207,7 +207,7 @@ onReachBottom(() => {
     align-items: center;
 
     text {
-      color: $text-white;
+      color: $active-color;
       font-size: 43.48rpx;
       margin-right: 34rpx;
     }
@@ -227,8 +227,8 @@ onReachBottom(() => {
 }
 
 .device-card {
-  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   border-radius: 18rpx;
+  background-color: $bg-color-card;
   padding: 30rpx 34rpx;
   margin-bottom: 46rpx;
   position: relative;
@@ -240,13 +240,13 @@ onReachBottom(() => {
       margin-bottom: 12rpx;
 
       .label {
-        color: $text-white;
+        color: $text-secondary;
         font-size: 25rpx;
         margin-right: 20rpx;
       }
 
       .value {
-        color: $text-white;
+        color: $text-secondary;
         font-size: 25rpx;
       }
 
@@ -254,13 +254,13 @@ onReachBottom(() => {
         margin-left: 12rpx;
         text-align: center;
         font-size: 18rpx;
-        color: $text-white;
+        color: $active-color;
         // width: 72rpx;
         padding: 0 10rpx;
         height: 36rpx;
         line-height: 36rpx;
         border-radius: 36rpx;
-        background: $active-color;
+        border: 1rpx solid $active-color;
       }
     }
   }
@@ -283,7 +283,7 @@ onReachBottom(() => {
     margin-bottom: 40rpx;
 
     text {
-      color: $text-white;
+      color: $text-secondary;
       font-size: 29rpx;
     }
 
@@ -308,7 +308,7 @@ onReachBottom(() => {
       }
 
       text {
-        color: $text-white;
+        color: $text-secondary;
         font-size: 29rpx;
       }
     }
@@ -317,8 +317,7 @@ onReachBottom(() => {
   .message-list {
     .message-item {
       border-radius: 18rpx;
-      background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
-      box-shadow: 0rpx 4rpx 8rpx #0000003f;
+
       padding: 30rpx 30rpx 44rpx;
       margin-bottom: 20rpx;
       font-size: 29rpx;
@@ -330,11 +329,11 @@ onReachBottom(() => {
         position: relative;
 
         text {
-          color: $text-white;
+          color: $text-secondary;
         }
 
         .message-time {
-          color: $border-color-light;
+          color: $text-secondary;
           font-size: 25rpx;
           margin-top: 10rpx;
           flex: 1;
@@ -345,6 +344,7 @@ onReachBottom(() => {
           right: 0rpx;
           top: 20rpx;
           font-size: 25rpx;
+          color: $text-white;
           background: $danger-color;
           width: 72rpx;
           height: 36rpx;
@@ -357,7 +357,7 @@ onReachBottom(() => {
 
       .message-content {
         padding-top: 20rpx;
-        color: $text-white;
+        color: $text-dark;
         font-size: 28rpx;
         text-align: center;
         width: 100%;

@@ -176,12 +176,12 @@ const handleSubmit = () => {
   .label {
     font-size: 29rpx;
     font-weight: 500;
-    color: $text-white;
+    color: $active-color;
     margin-bottom: 16rpx;
   }
 
   .form-item {
-    background: $bg-color-white;
+    background: $bg-color-card;
     margin-bottom: 48rpx;
     border-radius: 18rpx;
     padding: 0 25rpx;
@@ -233,7 +233,7 @@ const handleSubmit = () => {
 }
 
 .login-tip {
-  color: $text-white;
+  color: $active-color;
   font-size: 29rpx;
   text-align: center;
   padding-top: 30rpx;

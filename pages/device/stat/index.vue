@@ -189,7 +189,7 @@ const handleConfirm = () => {
 		text-align: center;
 
 		.value {
-			color: $text-white;
+			color: $active-color;
 			font-size: 43rpx;
 			margin-bottom: 10rpx;
 			line-height: 1;
@@ -197,7 +197,7 @@ const handleConfirm = () => {
 		}
 
 		.label {
-			color: $text-light-blue;
+			color: $text-secondary;
 			font-size: 21rpx;
 		}
 	}
@@ -221,7 +221,7 @@ const handleConfirm = () => {
 		background: $bg-color-card;
 
 		text {
-			color: $text-white;
+			color: $text-secondary;
 			font-size: 25rpx;
 		}
 
@@ -231,7 +231,7 @@ const handleConfirm = () => {
 			height: 0;
 			border-left: 10rpx solid transparent;
 			border-right: 10rpx solid transparent;
-			border-top: 12rpx solid $border-color-light;
+			border-top: 12rpx solid $text-disabled;
 			margin-left: 4rpx;
 			display: inline-block;
 			vertical-align: middle;
@@ -240,7 +240,7 @@ const handleConfirm = () => {
 	}
 
 	.picker-separator {
-		color: $text-white;
+		color: $text-dark;
 		font-size: 28rpx;
 		padding: 0 20rpx;
 	}
@@ -260,14 +260,14 @@ const handleConfirm = () => {
 }
 
 .data-table {
-	background: $bg-color-medium;
+	background: $bg-color-card;
 	overflow: hidden;
 
 	.table-header {
 		display: flex;
 		height: 66rpx;
 		align-items: center;
-		background: $nav-bg-alt; // approx
+		background: #A0ABB8; // approx
 		border-bottom: 4rpx solid $bg-color;
 
 		.header-cell {
@@ -283,7 +283,7 @@ const handleConfirm = () => {
 			display: flex;
 			height: 66rpx;
 			align-items: center;
-			border-bottom: 4rpx solid $bg-color;
+			border-bottom: 4rpx solid $text-white;
 
 			&:last-child {
 				border-bottom: none;
@@ -292,7 +292,7 @@ const handleConfirm = () => {
 			.table-cell {
 				padding-left: 25rpx;
 				flex: 1;
-				color: $text-white;
+				color: $text-secondary;
 				font-size: 25rpx;
 			}
 		}

@@ -197,3 +197,48 @@ $border-radius-large:  16rpx;
 - `$active-color` 在 theme.scss 保留别名 `$active-color: $accent-color`，防止编译错误，后续可移除
 - 少数一次性特殊颜色（如 `device/detail` 中的状态机颜色 `#019B7A`、`#013A2D` 等）保留硬编码，不强制提取
 - 大小写变体（`#d68f01` / `#D68F01`）需全部替换
+
+
+<!-- 
+pages/index/index 【✔️】
+pages/login/index 【✔️】
+pages/login/index
+pages/index/index
+pages/login/forget/index
+pages/login/cancel/index
+pages/login/register/index
+pages/login/result/index
+pages/index/scan/index
+pages/index/scan/detail/index
+pages/index/scan/result/index
+pages/index/record/index
+pages/index/info/index
+pages/message/index
+pages/message/detail/index
+pages/case/index
+pages/case/detail/index
+pages/news/index
+pages/news/detail/index
+pages/device/edit/index
+pages/device/param/index
+pages/device/data/index
+pages/device/stat/index
+pages/device/setting/index
+pages/device/setting/run/index
+pages/device/setting/wash/index
+pages/device/setting/sterilize/index
+pages/device/renewal/index
+pages/device/renewal/record/index
+pages/device/filter/index
+pages/device/filter/record/index
+pages/device/share/index
+pages/device/share/detail/index
+pages/device/share/add/index
+pages/device/detail/index
+pages/device/authorize/index
+pages/index/customer/index
+pages/login/agreement/index
+pages/login/privacy/index
+pages/index/customer/edit/index
+pages/index/customer/bindPhone/index
+ -->

@@ -2,7 +2,7 @@
     <view class="privacy-container">
         <!-- <view class="privacy-title">隐私政策</view>
         <view class="privacy-date">更新日期：{{ updateDate }}</view> -->
-        <web-view src="https://app.usayuq.com/privacyPolicy"></web-view>
+        <web-view src="https://yuq.fenaor.com/privacyPolicy?appId=wxc65bb3c6e7698487"></web-view>
         <!-- <scroll-view scroll-y class="privacy-content">
             <view class="privacy-section">
                 <view class="section-title">引言</view>

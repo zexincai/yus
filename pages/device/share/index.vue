@@ -129,7 +129,7 @@ const handleEditShareByPhone = (res) => {
 
     .empty-text {
       font-size: 28rpx;
-      color: $text-white;
+      color: $text-dark;
     }
   }
 }

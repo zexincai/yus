@@ -55,7 +55,7 @@ onLoad(async ({ id }) => {
 }
 
 .param-card {
-  background: $bg-color-medium;
+  background: $bg-color-card;
   border-radius: 12rpx;
   padding: 0 28rpx;
 
@@ -64,14 +64,14 @@ onLoad(async ({ id }) => {
     justify-content: space-between;
     align-items: center;
     padding: 30rpx 0;
-    border-bottom: 2rpx solid $bg-color-dark;
+    border-bottom: 1rpx solid $border-color-light;
 
     &:last-child {
       border-bottom: none;
     }
 
     .param-label {
-      color: $text-white;
+      color: $active-color;
       font-size: 25rpx;
     }
 
@@ -81,7 +81,7 @@ onLoad(async ({ id }) => {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      color: $link-color;
+      color: $text-primary;
       padding-right: 30rpx;
       font-size: 25rpx;
       position: relative;

@@ -43,7 +43,7 @@
       @refresherrefresh="onRefresh"
     > -->
     <view v-if="customerData.list.length" class="device-list">
-      <view v-for="(device, index) in customerData.list" :key="index" class="device-item"
+      <view v-for="(device, index) in customerData.list" :key="index" class="device-item box-shadow" 
         @tap="handleDeviceClick(device)">
         <image :src="device.productUrl || '/static/images/device.png'" mode="aspectFit" class="device-icon" />
         <view class="device-info">
@@ -188,14 +188,14 @@ const onRefresh = async () => {
     flex-direction: column;
 
     .name {
-      color: $text-white;
+      color: $accent-color;
       font-size: 32rpx;
       font-weight: bold;
       margin-bottom: 8rpx;
     }
 
     .phone {
-      color: #bfc9d6;
+      color: $text-secondary;
       font-size: 26rpx;
     }
   }
@@ -318,7 +318,7 @@ const onRefresh = async () => {
   flex: 1;
   line-height: 1;
   margin-left: 25rpx;
-  color: $text-white;
+  color: $text-secondary;
   font-size: 26rpx;
   background: transparent;
   border: none;
@@ -346,13 +346,13 @@ const onRefresh = async () => {
 
 .my {
   margin-top: 10rpx;
-  color: $text-white;
+  color: $text-secondary;
   font-size: 32rpx;
 }
 
 .type {
   margin-top: 10rpx;
-  color: $text-white;
+  color: $accent-color;
   font-size: 25rpx;
 
   &::after {
@@ -414,7 +414,7 @@ const onRefresh = async () => {
 
 .tab-item {
   padding: 24rpx 30rpx;
-  color: $text-light-blue;
+  color: $text-secondary;
   font-size: 28rpx;
   position: relative;
   cursor: pointer;
@@ -437,11 +437,11 @@ const onRefresh = async () => {
   bottom: 0rpx;
   width: 100%;
   height: 4rpx;
-  background: $active-color;
+  background: $error-color;
 }
 
 .device-num {
-  color: $text-white;
+  color: $text-secondary;
   font-size: 32rpx;
   margin-bottom: 30rpx;
 }
@@ -455,7 +455,7 @@ const onRefresh = async () => {
 
 .device-item {
   position: relative;
-  background: $bg-color-card;
+  background: $text-white;
   border-radius: 12rpx;
   padding: 60rpx 30rpx 30rpx;
   margin-bottom: 30rpx;
@@ -464,8 +464,6 @@ const onRefresh = async () => {
   width: 336rpx;
   height: 180rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, $bg-color-card 0%, $bg-color-card 100%);
-  box-shadow: 0px 4rpx 8rpx #000000;
 
   .icon {
     position: absolute;
@@ -490,7 +488,7 @@ const onRefresh = async () => {
 }
 
 .device-info .name {
-  color: $text-white;
+  color: $accent-color;
   font-size: 28rpx;
   margin-bottom: 40rpx;
   display: block;
@@ -501,8 +499,13 @@ const onRefresh = async () => {
 }
 
 .device-info .model {
-  color: $border-color-light;
+  color: $text-secondary;
   font-size: 24rpx;
+  // 两行省略号
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .device-status {
@@ -538,14 +541,14 @@ const onRefresh = async () => {
 }
 
 .placeholder {
-  color: $text-secondary;
+  color: $text-disabled;
 }
 
 .customer-list {
   // margin: 24rpx 24rpx 0 24rpx;
 
   .customer-item {
-    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
+    background: $text-white;
     border-radius: 16rpx;
     display: flex;
     align-items: center;

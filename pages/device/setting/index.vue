@@ -2,14 +2,14 @@
   <view class="container">
     <template v-if="brandCode == 'JYROJSJ'">
       <view class="setting-card">
-        <view class="temp-item">
+        <view class="temp-item box-shadow">
           <text>开关机</text>
           <xSwitch keyName="stopSW" @change="handleSave" v-model="settings.pause" />
         </view>
 
       </view>
       <view class="setting-card">
-        <view class="temp-item" :class="{ 'disabled': !settings.backflow }">
+        <view class="temp-item box-shadow" :class="{ 'disabled': !settings.backflow }">
           <text>回流</text>
           <xSwitch :disabled="!settings.backflow" keyName="Backflow" @change="handleSave"
             v-model="settings.backflowOpen" />
@@ -18,7 +18,7 @@
     </template>
     <template v-else-if="brandCode == 'GXYSJ'">
       <view class="setting-card">
-        <view class="temp-item">
+        <view class="temp-item box-shadow">
           <text>开关机</text>
           <view class="switch-group">
             关机
@@ -29,7 +29,7 @@
 
       </view>
       <view v-if="!settings.isHideHotMode1" class="setting-card">
-        <view class="temp-item">
+        <view class="temp-item box-shadow">
           <text>即热模块1</text>
           <view class="switch-group">
             锁止
@@ -39,7 +39,7 @@
         </view>
       </view>
       <view v-if="!settings.isHideHotMode2" class="setting-card">
-        <view class="temp-item">
+        <view class="temp-item box-shadow">
           <text>即热模块2</text>
           <view class="switch-group">
             锁止
@@ -50,7 +50,7 @@
         </view>
       </view>
       <view class="setting-card">
-        <view class="temp-item">
+        <view class="temp-item box-shadow">
           <text>高原沸点温度</text>
           <view class="temp-input">
             <input @blur="openTimer" placeholder="0~100" @focus="clearTimer" type="number"
@@ -62,7 +62,7 @@
         </view>
       </view>
       <view class="setting-card">
-        <view class="temp-item">
+        <view class="temp-item box-shadow">
           <text>即热模组工作模式</text>
           <view style="display: flex">
             <label @click="handleSave({ key: 'HotMode3', value: false })" class="radio-label">
@@ -80,35 +80,35 @@
     <template v-else>
       <!-- 基础开关设置 -->
       <view v-if="brandCode == 'SWJSJV002'" class="setting-card flex-between">
-        <view class="switch-item">
+        <view class="switch-item box-shadow">
           <text>开关机</text>
           <xSwitch keyName="OpenSW" @change="handleSave" v-model="settings.pause" />
         </view>
 
-        <view class="switch-item">
+        <view class="switch-item box-shadow">
           <text>锁机</text>
           <xSwitch keyName="LOCK" @change="handleSave" v-model="settings.drain" />
         </view>
       </view>
       <template v-else>
         <view class="setting-card flex-between">
-          <view class="switch-item">
+          <view class="switch-item box-shadow">
             <text>暂停</text>
             <xSwitch keyName="StopSW" @change="handleSave" v-model="settings.pause" />
           </view>
 
-          <view v-if="deviceParamsData.funcEM !== '无'" class="switch-item">
+          <view v-if="deviceParamsData.funcEM !== '无'" class="switch-item box-shadow">
             <text>排空</text>
             <xSwitch keyName="EmptySwitch" @change="handleSave" v-model="settings.drain" />
           </view>
         </view>
 
         <view class="setting-card flex-between">
-          <view v-if="deviceParamsData.funcST !== '无'" class="switch-item">
+          <view v-if="deviceParamsData.funcST !== '无'" class="switch-item box-shadow">
             <text>消毒</text>
             <xSwitch keyName="SterilizingSwitch" @change="handleSave" v-model="settings.timerSterilize" />
           </view>
-          <view v-if="deviceParamsData.funcWH !== '无'" class="switch-item">
+          <view v-if="deviceParamsData.funcWH !== '无'" class="switch-item box-shadow">
             <text>换水</text>
             <xSwitch keyName="WashingSwitch" @change="handleSave" v-model="settings.timerWash" />
           </view>
@@ -118,7 +118,7 @@
 
       <!-- 温度设置 -->
       <view class="setting-card">
-        <view class="temp-item">
+        <view class="temp-item box-shadow">
           <text>开水停止加热温度</text>
           <view class="temp-input">
             <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.hotWaterTemp" class="input"
@@ -130,7 +130,7 @@
       </view>
 
       <view v-if="deviceParamsData.wtshow !== '不显示'" class="setting-card">
-        <view class="temp-item">
+        <view class="temp-item box-shadow">
           <text>温开水停止加热温度</text>
           <view class="temp-input">
             <input @blur="openTimer" @focus="clearTimer" type="number" v-model="settings.warmWaterTemp" class="input"
@@ -141,14 +141,14 @@
         </view>
       </view>
 
-      <view class="setting-card">
+      <view class="setting-card box-shadow">
         <view class="switch-item" style="width: 100%;  height: 135rpx;">
           <text>定时运行</text>
           <xSwitch keyName="WorkMode" @change="handleSave" v-model="settings.timerRun" />
         </view>
-        <view class="timer-item">
+        <view class="timer-item ">
           <view class="timer-link" @click="navigateToTimerSetting">
-            <image src="/static/images/timer.png" mode="aspectFit" class="timer-icon" />
+            <image src="/static/image/timer.png" mode="aspectFit" class="timer-icon" />
             <view>
               <text>开关计划设置</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
@@ -157,7 +157,7 @@
         </view>
         <view v-if="deviceParamsData.funcST !== '无'" class="timer-item">
           <view class="timer-link" @click="navigateToSterilizeSetting">
-            <image src="/static/images/sterilize.png" mode="aspectFit" class="timer-icon" />
+            <image src="/static/image/sterilize.png" mode="aspectFit" class="timer-icon" />
             <view>
               <text>消毒计划设置</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
@@ -166,7 +166,7 @@
         </view>
         <view v-if="deviceParamsData.funcWH !== '无'" class="timer-item">
           <view class="timer-link" @click="navigateToWashSetting">
-            <image src="/static/images/wash.png" mode="aspectFit" class="timer-icon" />
+            <image src="/static/image/wash.png" mode="aspectFit" class="timer-icon" />
             <view>
               <text>换水计划设置</text>
               <image src="/static/images/arrow-right.png" mode="aspectFit" class="arrow-icon" />
@@ -444,8 +444,9 @@ const navigateToWashSetting = () => {
 .setting-card {
   margin-bottom: 25rpx;
   gap: 20rpx;
-  background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+  background-color: $text-white;
   border-radius: 18rpx;
+  // box-shadow: 0rpx 4rpx 12rpx #00000050;
 
   .switch-item {
     // width: 344rpx;
@@ -459,7 +460,7 @@ const navigateToWashSetting = () => {
     align-items: center;
 
     text {
-      color: $text-white;
+      color: $active-color;
       font-size: 28rpx;
     }
 
@@ -474,11 +475,11 @@ const navigateToWashSetting = () => {
     align-items: center;
     border-radius: 18rpx;
     height: 145rpx;
-    background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+    background-color: $text-white;
 
     text {
       flex: 1;
-      color: $text-white;
+      color: $active-color;
       font-size: 25rpx;
       display: block;
     }
@@ -491,7 +492,7 @@ const navigateToWashSetting = () => {
         width: 90rpx;
         height: 65rpx;
         border-radius: 9rpx;
-        background: $bg-color-white;
+        background: $bg-color-card;
         box-sizing: border-box;
         font-size: 25rpx;
         text-align: center;
@@ -610,7 +611,7 @@ const navigateToWashSetting = () => {
       }
 
       text {
-        color: $text-white;
+        color: $active-color;
         font-size: 25rpx;
       }
 

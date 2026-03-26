@@ -126,13 +126,13 @@ const handleConfirm = async () => {
     .label {
       color: $text-primary;
       font-size: 25rpx;
-      color: $nav-bg;
+      color: $active-color;
       margin-right: 10rpx;
     }
 
     .value {
       font-size: 25rpx;
-      color: $nav-bg;
+      color: $active-color;
       font-weight: bold;
     }
 
@@ -174,7 +174,7 @@ const handleConfirm = async () => {
   background: $bg-color-light;
 
   .label {
-    color: $nav-bg;
+    color: $active-color;
     margin-right: 20rpx;
     font-size: 25rpx;
   }

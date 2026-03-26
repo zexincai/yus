@@ -3,29 +3,51 @@
     <!-- 顶部用户信息 -->
     <view class="header">
       <view class="logo">
-        <image class="logo-img" src="/static/images/header-logo.png" mode="aspectFit" />
+        <image class="logo-img" src="/static/image/app-logo.png" mode="aspectFit" />
+        <view class="logo-text">水灵汐智慧净水平台</view>
       </view>
       <view v-if="loginType == 'ROLE_DEALER'" class="dear-info">
-        <view class="greeting flex-between">
-          <view @click="goToInfo" class="name">
+        <view class="greeting">
+          <view class="name">
             Hi,{{ userInfo.name }}
-            <image class="icon" src="/static/images/setting-active.png" />
           </view>
           <view class="user-id">
             <text class="tag">经销商</text>
             <text>{{ userInfo.phone }}</text>
+            <view class="setting">
+              <view class="setting-item" @click="goToInfo">
+                设置
+                <image class="icon" src="/static/image/icon-setting-blue.png" />
+              </view>
+              <view class="setting-item" @click="goToMessage">
+                <view class="message-count">{{ messageCount }}</view>
+                消息
+                <image class="icon" src="/static/image/icon-message-warn.png" />
+              </view>
+            </view>
           </view>
         </view>
       </view>
       <view v-else class="user-info">
-        <view class="greeting flex-between">
-          <view @click="goToInfo" class="name">
+        <view class="greeting">
+          <view class="name">
             Hi,{{ userInfo.name }}
-            <image class="icon" src="/static/images/setting-active.png" />
           </view>
           <view class="user-id">
             <text class="tag">用户</text>
             <text>{{ userInfo.phone }}</text>
+
+            <view class="setting">
+              <view class="setting-item" @click="goToInfo">
+                设置
+                <image class="icon" src="/static/image/icon-setting-blue.png" />
+              </view>
+              <view class="setting-item" @click="goToMessage">
+                <view class="message-count">{{ messageCount }}</view>
+                消息
+                <image class="icon" src="/static/image/icon-message-warn.png" />
+              </view>
+            </view>
           </view>
         </view>
       </view>
@@ -37,7 +59,8 @@
       </swiper>
     </view>
     <view v-if="loginType == 'ROLE_DEALER'" class="nav-list">
-      <view v-for="(tab, index) in navTabs" :key="index" class="nav-item" :class="{ active: currentNav === tab.value }" @tap="handleNavChange(tab.value)">
+      <view v-for="(tab, index) in navTabs" :key="index" class="nav-item" :class="{ active: currentNav === tab.value }"
+        @tap="handleNavChange(tab.value)">
         {{ tab.label }}
       </view>
     </view>
@@ -45,9 +68,12 @@
     <view v-if="loginType === 'ROLE_DEALER'" class="search-bar flex-between">
       <view class="search-input flex-center">
         <image src="/static/images/icon-search.png" mode="aspectFit" class="icon small" />
-        <input v-model="searchKey" @confirm="onSearch" v-if="currentNav == 'customer'" type="text" placeholder="客户/手机号/SN码/安装位置" placeholder-class="placeholder" />
-        <input v-model="searchKey" v-if="currentNav == 'device'" type="text" placeholder="类型/SN码/订单" placeholder-class="placeholder" @confirm="onSearch" />
-        <input v-if="currentNav == 'log'" v-model="searchKey" @confirm="onSearch" type="text" placeholder="订单" placeholder-class="placeholder" />
+        <input v-model="searchKey" @confirm="onSearch" v-if="currentNav == 'customer'" type="text"
+          placeholder="客户/手机号/SN码/安装位置" placeholder-class="placeholder" />
+        <input v-model="searchKey" v-if="currentNav == 'device'" type="text" placeholder="类型/SN码/订单"
+          placeholder-class="placeholder" @confirm="onSearch" />
+        <input v-if="currentNav == 'log'" v-model="searchKey" @confirm="onSearch" type="text" placeholder="订单"
+          placeholder-class="placeholder" />
       </view>
 
       <view v-if="currentNav == 'device'" class="btn primary" style="width: 217rpx" @click="handleAddDevice">
@@ -59,7 +85,8 @@
     <view v-else class="search-bar flex-between">
       <view class="search-input flex-center">
         <image src="/static/images/icon-search.png" mode="aspectFit" class="icon small" />
-        <input v-model="searchKey" @confirm="onSearch" type="text" placeholder="SN码/安装位置" placeholder-class="placeholder" />
+        <input v-model="searchKey" @confirm="onSearch" type="text" placeholder="SN码/安装位置"
+          placeholder-class="placeholder" />
       </view>
       <view class="btn primary" @click="handleAddDevice">
         <image src="/static/images/icon-scan.png" mode="aspectFit" class="icon small" />
@@ -75,9 +102,11 @@
       </picker>
     </view>
     <!-- 设备状态标签 -->
-    <scroll-view v-if="!(loginType == 'ROLE_DEALER' && (currentNav == 'device' || currentNav == 'log'))" scroll-x class="status-tabs" :show-scrollbar="false">
+    <scroll-view v-if="!(loginType == 'ROLE_DEALER' && (currentNav == 'device' || currentNav == 'log'))" scroll-x
+      class="status-tabs" :show-scrollbar="false">
       <view class="tab-list">
-        <view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === tab.value }" @tap="handleTabChange(tab.value)">
+        <view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === tab.value }"
+          @tap="handleTabChange(tab.value)">
           {{ tab.label }}
         </view>
       </view>
@@ -116,8 +145,7 @@
       </picker>
       <button class="confirm-btn" @click="handleConfirm">确定</button>
     </view>
-    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'log'" style="font-size: 29rpx" class="device-num"
-      >出库订单：
+    <view v-if="loginType == 'ROLE_DEALER' && currentNav == 'log'" style="font-size: 29rpx" class="device-num">出库订单：
       {{ logList.length }}
     </view>
     <!-- 设备列表 -->
@@ -146,7 +174,8 @@
     <div v-if="loginType == 'ROLE_DEALER'" class="device-scroll">
       <view v-if="currentNav === 'customer'" class="customer-list">
         <template v-if="customerData.users.length">
-          <view @tap="handleCustomerClick(item)" class="customer-item" v-for="item in customerData.users" :key="item.phone">
+          <view @tap="handleCustomerClick(item)" class="customer-item box-shadow" v-for="item in customerData.users"
+            :key="item.phone">
             <view class="avatar">
               <image src="/static/images/avatar.png" class="avatar-img" />
             </view>
@@ -169,7 +198,8 @@
         </view>
       </view>
       <view v-if="currentNav === 'device'" class="device-list1">
-        <view v-if="deviceList.length" @tap="handleDeviceAuthorizeClick(item)" class="device-item1" v-for="item in deviceList" :key="item.sn">
+        <view v-if="deviceList.length" @tap="handleDeviceAuthorizeClick(item)" class="device-item1 box-shadow"
+          v-for="item in deviceList" :key="item.sn">
           <image class="device-img" :src="item.productUrl || '/static/images/device.png'" />
           <view class="device-info">
             <text class="device-title">{{ item.brand }}</text>
@@ -189,7 +219,8 @@
       </view>
       <view v-if="currentNav === 'log'" class="customer-list">
         <template v-if="logList.length">
-          <view @tap="handleOrderClick(item)" class="customer-item" v-for="item in logList" :key="item.phone">
+          <view @tap="handleOrderClick(item)" class="customer-item box-shadow" v-for="item in logList"
+            :key="item.phone">
             <view class="avatar">
               <image src="/static/images/order-icon.png" class="avatar-img" />
             </view>
@@ -216,7 +247,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { onShow, onLoad, onReachBottom } from '@dcloudio/uni-app'
-import { equipmentStatistics, getBusinessCasePage, loadBrands, searchDevices, customerDevices, devicelLoadDeviceBaseInfo, loadDeviceBaseInfo, getOrderList } from '@/api/dealer'
+import { equipmentStatistics, getBusinessCasePage, deviceGroupMsg, loadBrands, searchDevices, customerDevices, devicelLoadDeviceBaseInfo, loadDeviceBaseInfo, getOrderList } from '@/api/dealer'
 import DateUtil from '@/utils/date'
 
 // 从缓存里获取登录类型
@@ -229,6 +260,7 @@ const brandIndex = ref(0)
 let bannerList = ref([])
 let logList = ref([])
 // 日期范围
+let messageCount = ref(0)
 const startDate = ref('2024-04-01')
 const endDate = ref('2024-04-30')
 const tabs = ref([
@@ -322,6 +354,11 @@ const handleTabChange = (tab) => {
     getEquipmentStatistics()
   }
 }
+const goToMessage = () => {
+  uni.navigateTo({
+    url: '/pages/message/index',
+  })
+}
 
 // 监听isAuthorized变化
 watch(isAuthorized, (newVal, oldVal) => {
@@ -358,7 +395,7 @@ const handleNavChange = (tab) => {
     getLogList()
   }
 }
-const onSwiperChange = () => {}
+const onSwiperChange = () => { }
 const handleAddDevice = () => {
   uni.navigateTo({
     url: '/pages/index/scan/index',
@@ -473,11 +510,15 @@ onLoad(() => {
         }) || []),
       ]
     })
+    deviceGroupMsg({}, { raw: true }).then((res) => {
+      messageCount.value = res.total
+    })
   }
 
   // 获取取这个月的第一天跟今天
   endDate.value = DateUtil.today()
   startDate.value = DateUtil.getFirstDayOfMonth()
+
 })
 const getBannerList = async () => {
   const data = await getBusinessCasePage()
@@ -513,20 +554,29 @@ onShow(() => {
   min-height: 100vh;
   background-color: $bg-color;
   padding: 30rpx;
-  padding-top: calc(var(--status-bar-height) + 10rpx);
+  padding-top: calc(var(--status-bar-height) + 40rpx);
 }
 
 .header {
   margin-bottom: 30rpx;
 
   .logo {
+    display: flex;
+    align-items: center;
     border-bottom: 1rpx solid $bg-color-white;
   }
 
   .logo-img {
-    margin-left: -20rpx;
-    width: 469rpx;
-    height: 85rpx;
+    // margin-left: -20rpx;
+    width: 72.46rpx;
+    height: 72.46rpx;
+  }
+
+  .logo-text {
+    margin-left: 20rpx;
+    font-size: 29rpx;
+    color: $text-dark;
+    margin-left: 10rpx;
   }
 }
 
@@ -544,14 +594,14 @@ onShow(() => {
     font-size: 22rpx;
     padding: 4rpx 12rpx;
     border-radius: 6rpx;
-    margin-right: 10rpx;
+    margin-right: 16rpx;
   }
 }
 
 .greeting {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  // align-items: center;
 }
 
 .name {
@@ -567,19 +617,62 @@ onShow(() => {
 }
 
 .greeting .name {
-  color: $text-white;
+  color: $active-color;
   display: flex;
   align-items: center;
   font-size: 44rpx;
 }
 
 .user-id {
+  position: relative;
+  margin-top: 10rpx;
   display: flex;
   align-items: center;
 }
 
+.setting {
+  position: absolute;
+  top: 0rpx;
+  right: 0rpx;
+  display: flex;
+  align-items: center;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: $warning-color;
+  position: relative;
+
+  .message-count {
+    position: absolute;
+    top: -16rpx;
+    right: -10rpx;
+    height: 36rpx;
+    min-width: 36rpx;
+    line-height: 36rpx;
+    font-size: 22rpx;
+    border-radius: 50%;
+    padding: 0rpx 12rpx;
+    background: $error-color;
+    color: $text-white;
+  }
+}
+
+.setting-item:first-child {
+  margin-right: 20rpx;
+  color: $active-color;
+}
+
+.setting-item .icon {
+  margin-left: 10rpx;
+  width: 44rpx;
+  height: 44rpx;
+}
+
 .user-id .tag {
-  background: $accent-color;
+  background: $warning-color;
   color: $text-white;
   font-size: 22rpx;
   padding: 4rpx 12rpx;
@@ -588,7 +681,7 @@ onShow(() => {
 }
 
 .user-id text {
-  color: $border-color-light;
+  color: $text-secondary;
   font-size: 28rpx;
 }
 
@@ -627,7 +720,7 @@ onShow(() => {
   flex: 1;
   line-height: 1;
   margin-left: 25rpx;
-  color: $text-white;
+  color: $text-secondary;
   font-size: 26rpx;
   background: transparent;
   border: none;
@@ -656,13 +749,13 @@ onShow(() => {
 
 .my {
   margin-top: 52rpx;
-  color: $text-white;
+  color: $active-color;
   font-size: 32rpx;
 }
 
 .type {
   margin-top: 52rpx;
-  color: $text-white;
+  color: $active-color;
   font-size: 25rpx;
 
   &::after {
@@ -702,7 +795,7 @@ onShow(() => {
     font-size: 32rpx;
     margin: 0rpx 30rpx 40rpx;
     padding: 14rpx 0;
-    color: $text-light-blue;
+    color: $text-secondary;
     position: relative;
     cursor: pointer;
   }
@@ -718,7 +811,7 @@ onShow(() => {
     bottom: 0rpx;
     width: 100%;
     height: 4rpx;
-    background: $active-color;
+    background: $error-color;
   }
 }
 
@@ -730,7 +823,7 @@ onShow(() => {
   margin: 4rpx 0rpx 24rpx 0rpx;
 
   .auth-status-label {
-    color: $text-white;
+    color: $active-color;
     font-size: 29rpx;
     margin-right: 32rpx;
   }
@@ -741,18 +834,18 @@ onShow(() => {
     overflow: hidden;
 
     .status-btn {
-      background: $bg-color-dark;
-      color: $text-white;
+      background: $text-white;
+      color: $active-color;
       font-size: 22rpx;
       // border-radius: 12rpx;
       padding: 0 32rpx;
       height: 56rpx;
       line-height: 52rpx;
-      border: 4rpx solid $bg-color-white;
+      border: 4rpx solid $active-color;
 
       &.active {
-        background: $bg-color-white;
-        color: $bg-color-dark;
+        background: $active-color;
+        color: $text-white;
       }
     }
   }
@@ -760,7 +853,7 @@ onShow(() => {
 
 .tab-item {
   padding: 24rpx 30rpx;
-  color: $text-light-blue;
+  color: $text-secondary;
   font-size: 28rpx;
   position: relative;
   cursor: pointer;
@@ -782,13 +875,13 @@ onShow(() => {
   left: 0;
   bottom: 0rpx;
   width: 100%;
-  height: 4rpx;
-  background: $active-color;
+  height: 6rpx;
+  background: $error-color;
 }
 
 .device-num {
   margin-top: 33rpx;
-  color: $text-white;
+  color: $text-secondary;
   font-size: 32rpx;
   margin-bottom: 30rpx;
 }
@@ -811,8 +904,9 @@ onShow(() => {
   width: 336rpx;
   height: 180rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, $bg-color-card 0%, $bg-color-card 100%);
-  box-shadow: 0px 4rpx 8rpx #000000;
+  background: #fff;
+  // box-shadow: 0px 4rpx 8rpx #00000024;
+  box-shadow: 0rpx 4rpx 10rpx #00000050;
 
   .icon {
     position: absolute;
@@ -837,7 +931,7 @@ onShow(() => {
 }
 
 .device-info .name {
-  color: $text-white;
+  color: $active-color;
   font-size: 28rpx;
   margin-bottom: 10rpx;
   display: block;
@@ -856,7 +950,7 @@ onShow(() => {
 
 .device-list {
   .device-info .name {
-    color: $text-white;
+    color: $active-color;
     font-size: 28rpx;
     min-height: 60rpx;
     margin-bottom: 0rpx;
@@ -878,7 +972,7 @@ onShow(() => {
     padding: 2rpx 12rpx;
     border-radius: 0rpx;
     font-size: 24rpx;
-    color: $text-white;
+    color: $active-color;
   }
 
   .tag.tag-1 {
@@ -896,7 +990,7 @@ onShow(() => {
 
 .device-list1 {
   .device-item1 {
-    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
+    background: $text-white;
     border-radius: 16rpx;
     display: flex;
     align-items: center;
@@ -915,13 +1009,12 @@ onShow(() => {
       flex: 1;
 
       .device-title {
-        color: $text-white;
+        color: $active-color;
         font-size: 29rpx;
         margin-bottom: 8rpx;
       }
 
-      .device-sn,
-      .device-order {
+      .device-sn {
         color: $border-color-light;
         font-size: 25rpx;
         margin-top: 10rpx;
@@ -929,8 +1022,16 @@ onShow(() => {
         display: block;
       }
 
+      .device-order {
+        color: $text-secondary;
+        font-size: 25rpx;
+        margin-top: 10rpx;
+        margin-bottom: 4rpx;
+        display: block;
+      }
+
       .device-sn {
-        color: $text-white;
+        color: $text-secondary;
         // margin-top: 10rpx;
       }
     }
@@ -943,10 +1044,10 @@ onShow(() => {
     }
 
     .auth-action-btn {
-      background: $active-color;
+      background: $warning-color;
       color: $text-white;
       font-size: 22rpx;
-      border-radius: 12rpx;
+      border-radius: 36rpx;
       width: 108rpx;
       height: 54rpx;
       line-height: 54rpx;
@@ -980,7 +1081,7 @@ onShow(() => {
   padding: 4rpx 12rpx;
   border-radius: 0rpx;
   font-size: 24rpx;
-  color: $text-white;
+  color: $active-color;
 }
 
 .status-tags .tag.warning {
@@ -1003,7 +1104,7 @@ onShow(() => {
   // margin: 24rpx 24rpx 0 24rpx;
 
   .customer-item {
-    background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
+    background: $text-white;
     border-radius: 16rpx;
     display: flex;
     align-items: center;
@@ -1036,9 +1137,8 @@ onShow(() => {
         margin-top: -2rpx;
 
         .name {
-          color: $text-white;
+          color: $active-color;
           font-size: 29rpx;
-          font-weight: bold;
           margin-right: 31rpx;
         }
 
@@ -1049,14 +1149,14 @@ onShow(() => {
       }
 
       .phone {
-        color: $border-color-light;
+        color: $text-secondary;
         font-size: 25rpx;
         margin-top: 20rpx;
       }
     }
 
     .device-count {
-      color: $text-white;
+      color: $text-secondary;
       font-size: 36rpx;
       display: flex;
       align-items: center;
@@ -1065,8 +1165,8 @@ onShow(() => {
         margin-left: 10rpx;
         width: 14rpx;
         height: 14rpx;
-        border-top: 2rpx solid $bg-color-white;
-        border-right: 2rpx solid $bg-color-white;
+        border-top: 2rpx solid $text-secondary;
+        border-right: 2rpx solid $text-secondary;
         // border-left: 18rpx solid #fff;
         transform: rotate(45deg);
         display: inline-block;
@@ -1096,7 +1196,7 @@ onShow(() => {
     background: $bg-color-card;
 
     text {
-      color: $text-white;
+      color: $text-secondary;
       font-size: 25rpx;
     }
 
@@ -1114,7 +1214,7 @@ onShow(() => {
   }
 
   .picker-separator {
-    color: $text-white;
+    color: $text-secondary;
     font-size: 28rpx;
     padding: 0 20rpx;
   }

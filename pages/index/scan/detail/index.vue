@@ -14,8 +14,8 @@
                 </view>
                 <view class="row">
                 <text class="label">型号：</text>
-                <text class="value">{{
-                    deviceData.model || deviceData.modelName
+                <text class="value ">{{
+                 deviceData.model || deviceData.modelName
                 }}</text>
                 </view>
                 <view class="row">
@@ -183,7 +183,7 @@ const onCityCancel = () => {
             align-items: center;
             margin-bottom: 12rpx;
             font-size: 22rpx;
-            color: $text-secondary;
+            color: $text-disabled;
 
 
             .label {}

@@ -68,13 +68,13 @@ const goToLogin = () => {
 
 	.success-title {
 		font-size: 32rpx;
-		color: $accent-color;
+		color: $warning-color;
 		margin-bottom: 20rpx;
 	}
 
 	.success-desc {
 		font-size: 29rpx;
-		color: $text-white;
+		color: $active-color;
 		margin-bottom: 491rpx;
 	}
 

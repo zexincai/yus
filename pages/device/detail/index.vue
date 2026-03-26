@@ -1,7 +1,7 @@
 <template>
   <view class="device-detail-container">
-    <uni-nav-bar @clickLeft="handleBack" @clickRight="onRightTap" backgroundColor="#152136" statusBar dark fixed
-      leftIcon="left" title="设备详情" :left-arrow="false" :border="false">
+    <uni-nav-bar @clickLeft="handleBack" color="#000" @clickRight="onRightTap" backgroundColor="#fff" statusBar dark
+      fixed leftIcon="left" title="设备详情" :left-arrow="false" :border="false">
       <!-- <template v-slot:right>
         <image
           src="/static/images/more.png"
@@ -96,7 +96,7 @@
         </text>
         <view v-if="loginType == 'ROLE_CUSTOMER'" class="call-btn" @click="showPhonePop">
           <image class="icon" src="/static/images/call.png"></image>
-          联系经销商
+          联系厂商
         </view>
         <view v-else class="renewal-btn" @click="navigateTo('renewal')">
           续期
@@ -121,10 +121,10 @@
         <text class="temp-label">{{ deviceInfo.waterLevelTitle }}</text>
       </view>
     </view>
-    <view v-if="deviceInfo.brandCode == 'GXYSJ'" class="status-card">
+    <view v-if="deviceInfo.brandCode == 'GXYSJ'" class="status-card box-shadow">
       <view class="status-item">
         <image src="@/static/images/open.png" class="status-icon" mode="widthFix" />
-        <text class="status-text">{{ deviceInfo.gxjOpenState}}</text>
+        <text class="status-text">{{ deviceInfo.gxjOpenState }}</text>
       </view>
       <view class="status-divider"></view>
       <view class="status-item status-item--shield">
@@ -167,11 +167,11 @@
     </view>
 
     <view v-else class="water-data">
-      <view class="data-card orange">
+      <view class="data-card blue">
         <text class="data-value">{{ deviceInfo.originTds }}</text>
         <text class="data-unit">原水 (ppm)</text>
       </view>
-      <view class="data-card blue">
+      <view class="data-card green">
         <text class="data-value">{{ deviceInfo.pureTds }}</text>
         <text class="data-unit">矿泉水/纯净水(ppm)</text>
       </view>
@@ -428,7 +428,7 @@ const navigateTo = (page) => {
       align-items: center;
 
       text {
-        color: $text-white;
+        color: $active-color;
         font-size: 43rpx;
         margin-right: 34rpx;
         // 省略号
@@ -454,7 +454,7 @@ const navigateTo = (page) => {
 .device-card {
   margin-top: 24rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
+  background: $bg-color-card;
   border-radius: 18rpx;
   padding: 24rpx 36rpx 24rpx;
   display: flex;
@@ -480,7 +480,7 @@ const navigateTo = (page) => {
       .customer-label,
       .region-label,
       .address-label {
-        color: $text-white;
+        color: $text-secondary;
         font-size: 25rpx;
         min-width: 76rpx;
       }
@@ -491,7 +491,7 @@ const navigateTo = (page) => {
       .customer-value,
       .region-value,
       .address-value {
-        color: $text-white;
+        color: $text-secondary;
         font-size: 24rpx;
         margin-left: 6rpx;
         // 省略号
@@ -512,8 +512,9 @@ const navigateTo = (page) => {
 
       .copy-btn {
         margin-left: 16rpx;
-        background: #f39b11;
-        color: $text-white;
+        background: #fff;
+        border: 1rpx solid $active-color;
+        color: $active-color;
         font-size: 18rpx;
         border-radius: 8rpx;
         border-radius: 36rpx;
@@ -547,7 +548,7 @@ const navigateTo = (page) => {
       width: 90rpx;
       height: 90rpx;
       border-radius: 50%;
-      background: $nav-bg;
+      background: $active-color;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -567,7 +568,7 @@ const navigateTo = (page) => {
 
     .nav-text {
       font-size: 25rpx;
-      color: $text-white;
+      color: $active-color;
     }
   }
 }
@@ -578,7 +579,8 @@ const navigateTo = (page) => {
   border-radius: 18rpx;
   padding: 30rpx;
   position: relative;
-  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
+  // background: $bg-color-card;
+  border: 1rpx solid #CCCCCC;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -586,12 +588,12 @@ const navigateTo = (page) => {
   .auth-row {
     display: flex;
     align-items: center;
-    color: $text-white;
+    color: $text-secondary;
     font-size: 25rpx;
     margin-top: 14rpx;
 
     .renewal-link {
-      color: $active-color;
+      color: $warning-color;
       margin-left: 16rpx;
       font-size: 24rpx;
       // min-height: 50rpx;
@@ -627,7 +629,7 @@ const navigateTo = (page) => {
       width: 108rpx;
       height: 54rpx;
       border-radius: 90rpx;
-      background: $active-color;
+      background: $warning-color;
     }
   }
 
@@ -680,18 +682,20 @@ const navigateTo = (page) => {
 
     .data-value {
       font-size: 43rpx;
-      color: $text-white;
+      color: $text-secondary;
     }
 
     .data-unit {
       font-size: 21rpx;
-      color: $text-white;
+      color: $text-secondary;
       margin-top: 4rpx;
     }
+
     .data-value-yellow {
       color: #CFA008 !important;
       font-size: 65rpx !important;
     }
+
     .data-border {
       display: flex;
       align-items: center;
@@ -708,22 +712,42 @@ const navigateTo = (page) => {
       // background: linear-gradient(180deg,
       //     #4f3500ff 0%,
       //     #523700ff 100%);
-      background: linear-gradient(180deg,
-          rgb(241, 161, 0) 0%,
-          rgb(82, 55, 0) 100%);
+      background: #FFFFFF;
+      color: $warning-color;
+      border: 4rpx solid $warning-color;
+
+      .data-value {
+        font-size: 43rpx;
+        color: $warning-color;
+      }
     }
 
     &.blue {
       border-radius: 18rpx;
-      background: linear-gradient(180deg, $nav-bg 0%, #0a1938ff 100%); // approx
+      background: #FFFFFF;
+      color: $active-color;
+      border: 4rpx solid $active-color;
+
+      .data-value {
+        font-size: 43rpx;
+        color: $active-color;
+      }
     }
 
     &.green {
       border-radius: 18rpx;
-      background: linear-gradient(180deg, #019B7A 0%, #013A2D 100%); // status color
+      background: #FFFFFF;
+      color: $success-color;
+      border: 4rpx solid $success-color;
+
+      .data-value {
+        font-size: 43rpx;
+        color: $success-color;
+      }
+
       .data-unit {
         font-size: 22rpx;
-        color: #849CC4;
+        color: $text-secondary;
       }
     }
 
@@ -731,11 +755,12 @@ const navigateTo = (page) => {
       border-radius: 18rpx;
       width: 228rpx;
       height: 228rpx;
-      background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+      color: $success-color;
+      border: 4rpx solid $success-color;
 
       .data-value {
         font-size: 32rpx;
-        color: $text-white;
+        color: $success-color;
       }
     }
 
@@ -751,7 +776,9 @@ const navigateTo = (page) => {
   height: 181rpx;
   margin-top: 20rpx;
   border-radius: 18rpx;
-  background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+  background: #FFFFFF;
+  color: #A37200;
+  border: 4rpx solid #A37200;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -759,7 +786,7 @@ const navigateTo = (page) => {
 
   .temp-value {
     font-size: 54rpx;
-    color: $text-white;
+    color: #A37200;
 
     .temp-unit {
       font-size: 28rpx;
@@ -768,7 +795,7 @@ const navigateTo = (page) => {
 
   .temp-label {
     font-size: 21rpx;
-    color: $active-color;
+    color: $text-secondary;
     margin-top: 8rpx;
   }
 }
@@ -778,22 +805,21 @@ const navigateTo = (page) => {
   margin-left: 14rpx;
   width: 217rpx;
   height: 181rpx;
-  background: linear-gradient(180deg,
-      $nav-bg 0%, // approx
-      rgba(10, 25, 56, 1) 100%);
+  background: #fff;
   color: $text-white;
   border-radius: 18rpx;
 
   .temp-label {
-    color: $text-white !important;
+    color: $text-secondary !important;
   }
 }
 
 .filter-status {
   margin-top: 22rpx;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
+  // background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
   padding: 26rpx;
+  background: $bg-color-card;
 
   .filter-header {
     display: flex;
@@ -802,7 +828,7 @@ const navigateTo = (page) => {
     margin-bottom: 20rpx;
 
     .filter-title {
-      color: $text-white;
+      color: $active-color;
       font-size: 32rpx;
     }
 
@@ -810,8 +836,9 @@ const navigateTo = (page) => {
       display: flex;
 
       .action-btn {
-        color: $text-white;
-        background: $nav-bg;
+        color: #fff;
+        background: $active-color;
+        border: 2rpx solid $active-color;
         font-size: 20rpx;
         border-radius: 90rpx;
         display: flex;
@@ -822,8 +849,10 @@ const navigateTo = (page) => {
         margin-left: 16rpx;
 
         &.active {
-          background: #f39b11;
-          color: $text-white;
+
+          color: $active-color;
+          background: #fff;
+          border: 2rpx solid $active-color;
         }
       }
     }
@@ -857,7 +886,7 @@ const navigateTo = (page) => {
         flex: 1;
 
         .filter-name {
-          color: $text-white;
+          color: $text-secondary;
           font-size: 21rpx;
         }
 
@@ -870,7 +899,9 @@ const navigateTo = (page) => {
 
           .progress-inner {
             height: 100%;
-            background: linear-gradient(180deg, #96b0e0ff 0%, $nav-bg 100%);
+            // background: linear-gradient(180deg, #96b0e0ff 0%, $nav-bg 100%);
+            background: linear-gradient(180deg, #08B014 0%, #05510D 100%); // status color
+
             border-radius: 90rpx;
           }
 
@@ -889,7 +920,7 @@ const navigateTo = (page) => {
       }
 
       .filter-percent {
-        color: $text-white;
+        color: $text-secondary;
         font-size: 22rpx;
         margin-left: 12rpx;
         width: 52rpx;
@@ -943,7 +974,7 @@ const navigateTo = (page) => {
   // overflow: hidden;
 
   .menu-item {
-    color: $text-white;
+    color: $active-color;
     height: 86rpx;
     display: flex;
     border-radius: 18rpx;
@@ -971,7 +1002,7 @@ const navigateTo = (page) => {
   display: flex;
 
   .menu-item {
-    color: $text-white;
+    color: $active-color;
     font-size: 24rpx;
     // height: 86rpx;
     display: flex;
@@ -1053,7 +1084,7 @@ const navigateTo = (page) => {
   padding: 26rpx 10rpx;
   height: 181rpx;
   border-radius: 18rpx;
-  background: linear-gradient(180deg, $bg-color-card 0%, $border-color-card 100%);
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -1083,7 +1114,7 @@ const navigateTo = (page) => {
 
 .status-text {
   font-size: 29rpx;
-  color: #eaf3ff;
+  color: $text-secondary;
 }
 
 /* 中间盾牌徽标 */
