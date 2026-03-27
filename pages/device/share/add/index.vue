@@ -4,32 +4,17 @@
     <view class="form-card">
       <view class="form-item">
         <text class="label">姓名：</text>
-        <input
-          type="text"
-          v-model="form.name"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-        />
+        <input type="text" v-model="form.name" placeholder="请输入" placeholder-class="placeholder" />
       </view>
       <view class="divider"></view>
       <view class="form-item">
         <text class="label">手机号码：</text>
-        <input
-          type="number"
-          v-model="form.phone"
-          placeholder="请输入"
-          placeholder-class="placeholder"
-          maxlength="11"
-        />
+        <input type="number" v-model="form.phone" placeholder="请输入" placeholder-class="placeholder" maxlength="11" />
       </view>
     </view>
 
     <!-- 确认按钮 -->
-    <button
-      v-if="actionType == 'ADD'"
-      class="confirm-btn"
-      @click="handleConfirm('ADD')"
-    >
+    <button v-if="actionType == 'ADD'" class="confirm-btn" @click="handleConfirm('ADD')">
       确认添加
     </button>
     <template v-else>
@@ -155,19 +140,20 @@ const handleConfirm = (type) => {
 
 .form-card {
   margin: 30rpx;
-  background: $bg-color-white;
+  background: $bg-color-card;
   border-radius: 16rpx;
   overflow: hidden;
 
   .form-item {
     display: flex;
+    background-color: transparent;
     align-items: center;
     padding: 0 30rpx;
     height: 100rpx;
 
     .label {
-      color: $nav-bg-alt;
-      font-size: 30rpx;
+      color: $active-color;
+      font-size: 26rpx;
       width: 180rpx;
     }
 
@@ -175,7 +161,7 @@ const handleConfirm = (type) => {
       text-align: right;
       flex: 1;
       height: 100%;
-      font-size: 30rpx;
+      font-size: 26rpx;
     }
   }
 
@@ -208,15 +194,17 @@ const handleConfirm = (type) => {
 
 .delete-btn {
   margin: 0 30rpx;
-  background: $danger-color;
-  color: $text-white;
+  color: $active-color;
+  background-color: #fff;
+  border: 2rpx solid $active-color;
   height: 90rpx;
   line-height: 90rpx;
   border-radius: 12rpx;
   font-size: 29rpx;
 }
+
 .placeholder {
-  color: $border-color-light;
+  color: #cdcdcd !important;
 }
 
 // iconfont样式

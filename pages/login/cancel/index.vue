@@ -2,7 +2,7 @@
   <view class="container">
     <view class="logo-box">
       <image class="logo" src="/static/images/app-logo.png" mode="aspectFit" />
-      <text class="title">优口净水</text>
+      <text class="title">水灵夕</text>
     </view>
     <template v-if="!isSuccess">
       <text class="header">账号注销</text>

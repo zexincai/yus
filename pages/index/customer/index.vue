@@ -20,9 +20,9 @@
     <view class="flex-between">
       <view class="my"> 客户设备 </view>
 
-      <picker @change="onBrandPickerChange" :value="brandIndex" :range="brandList">
+      <!-- <picker @change="onBrandPickerChange" :value="brandIndex" :range="brandList">
         <view class="type"> {{ brandList[brandIndex] }} </view>
-      </picker>
+      </picker> -->
     </view>
     <!-- 设备状态标签 -->
     <scroll-view scroll-x class="status-tabs" :show-scrollbar="false">
@@ -188,9 +188,9 @@ const onRefresh = async () => {
     flex-direction: column;
 
     .name {
-      color: $accent-color;
+      color: $active-color;
       font-size: 32rpx;
-      font-weight: bold;
+      // font-weight: bold;
       margin-bottom: 8rpx;
     }
 
@@ -318,7 +318,7 @@ const onRefresh = async () => {
   flex: 1;
   line-height: 1;
   margin-left: 25rpx;
-  color: $text-secondary;
+  color: $text-dark;
   font-size: 26rpx;
   background: transparent;
   border: none;
@@ -346,7 +346,7 @@ const onRefresh = async () => {
 
 .my {
   margin-top: 10rpx;
-  color: $text-secondary;
+  color: $active-color;
   font-size: 32rpx;
 }
 
@@ -489,8 +489,9 @@ const onRefresh = async () => {
 
 .device-info .name {
   color: $accent-color;
-  font-size: 28rpx;
-  margin-bottom: 40rpx;
+  font-size: 29rpx;
+  margin-bottom: 32rpx;
+  margin-top: -4rpx;
   display: block;
   // 省略号
   overflow: hidden;
@@ -500,7 +501,7 @@ const onRefresh = async () => {
 
 .device-info .model {
   color: $text-secondary;
-  font-size: 24rpx;
+  font-size: 26rpx;
   // 两行省略号
   overflow: hidden;
   display: -webkit-box;

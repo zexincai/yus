@@ -99,14 +99,13 @@ const handleEditShareByPhone = (res) => {
 <style lang="scss" scoped>
 .share-account-container {
   min-height: 100vh;
-  background-color: $bg-color-dark; // 深蓝色背景
-  color: $text-white; // 白色文字
-  padding-top: var(--status-bar-height); // 适配状态栏
+  background-color: $bg-color; // 深蓝色背景
+  color: $text-secondary; // 白色文字
 }
 
 .section-title {
   font-size: 28rpx;
-  color: $text-white;
+  color: $text-secondary;
   padding: 30rpx;
 }
 
@@ -142,7 +141,7 @@ const handleEditShareByPhone = (res) => {
     // width: 688rpx;
     height: 90rpx;
     background: $bg-color-light;
-    background-color: $bg-color-white;
+    background-color: $bg-color-card;
     border-radius: 16rpx;
     padding: 0 30rpx;
     display: flex;
@@ -161,13 +160,14 @@ const handleEditShareByPhone = (res) => {
 
       .iconfont {
         font-size: 32rpx;
-        color: $text-white;
+        color: $text-secondary;
       }
     }
 
     .method-text {
       flex-grow: 1;
-      font-size: 30rpx;
+      font-size: 29rpx;
+      color: $text-dark;
     }
 
     .icon-arrow-right {
@@ -178,8 +178,8 @@ const handleEditShareByPhone = (res) => {
       margin-left: 20rpx;
       width: 16rpx;
       height: 16rpx;
-      border-top: 2rpx solid $border-color-light;
-      border-right: 2rpx solid $border-color-light;
+      border-top: 2rpx solid #cdcdcd;
+      border-right: 2rpx solid #cdcdcd;
       // border-left: 18rpx solid #fff;
       transform: rotate(45deg);
       display: inline-block;
@@ -199,7 +199,7 @@ const handleEditShareByPhone = (res) => {
 .info-list {
   margin: 10rpx 30rpx 60rpx;
   border-radius: 18rpx;
-  background: $bg-color-light;
+  background: $bg-color-card;
   // margin-top: 27rpx;
 
   .info-item {
@@ -207,7 +207,7 @@ const handleEditShareByPhone = (res) => {
     align-items: center;
     margin: 0 30rpx;
     height: 89rpx;
-    border-bottom: 2rpx solid $border-color-input;
+    border-bottom: 2rpx solid #e0d7d8;
     justify-content: space-between;
 
     &:last-child {
@@ -215,8 +215,8 @@ const handleEditShareByPhone = (res) => {
     }
 
     .info-label {
-      color: $nav-bg;
-      font-size: 25rpx;
+      color: $active-color;
+      font-size: 26rpx;
       display: flex;
       align-items: center;
       .image {
@@ -230,8 +230,8 @@ const handleEditShareByPhone = (res) => {
       margin-left: 20rpx;
       width: 16rpx;
       height: 16rpx;
-      border-top: 2rpx solid $border-color-light;
-      border-right: 2rpx solid $border-color-light;
+      border-top: 2rpx solid #cdcdcd;
+      border-right: 2rpx solid #cdcdcd;
       // border-left: 18rpx solid #fff;
       transform: rotate(45deg);
       display: inline-block;

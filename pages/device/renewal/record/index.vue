@@ -5,11 +5,9 @@
 
     <!-- 续期记录列表 -->
     <template v-if="records.length">
-      <view v-for="(item, idx) in records" :key="idx" class="record-card">
+      <view v-for="(item, idx) in records" :key="idx" class="record-card box-shadow">
         <view class="card-header">
-          <text class="sn"
-            >SN：<text class="sn-blue">{{ item.sn }}</text></text
-          >
+          <text class="sn">SN：<text class="sn-blue">{{ item.sn }}</text></text>
           <text class="days">续期{{ item.day }}天</text>
         </view>
         <view class="card-info">
@@ -21,11 +19,7 @@
       </view>
     </template>
     <view v-else class="empty">
-      <image
-        src="/static/images/empty.png"
-        mode="aspectFit"
-        class="empty-img"
-      />
+      <image src="/static/images/empty.png" mode="aspectFit" class="empty-img" />
       <view class="empty-text"> 暂无数据 </view>
     </view>
   </view>
@@ -72,22 +66,20 @@ const getList = async () => {
 <style lang="scss" scoped>
 .record-container {
   // min-height: 100vh;
-  padding: 24rpx;
+  padding: 24rpx 24rpx;
   background: $bg-color;
 }
 
 .record-count {
-  color: $text-white;
+  color: $text-secondary;
   font-size: 29rpx;
 }
 
 .record-card {
   margin-top: 24rpx;
   padding: 32rpx 28rpx 24rpx 28rpx;
-  color: $text-white;
+  color: $text-secondary;
   border-radius: 18rpx;
-  background: linear-gradient(90deg, $bg-color-card 0%, $border-color-card 100%);
-  box-shadow: 0px 4rpx 7rpx #0000003f;
   font-size: 25rpx;
 
   .card-header {
@@ -98,23 +90,27 @@ const getList = async () => {
 
     .sn {
       margin-bottom: 2rpx;
-      color: $link-color;
+      font-size: 26rpx;
+      color: $active-color;
+
       .sn-blue {
-        color: $link-color;
+        color: $active-color;
       }
     }
 
     .days {
       font-size: 25rpx;
+      color: $text-dark;
     }
   }
 
   .card-info {
-    font-size: 25rpx;
-    color: $text-light-blue; // approx
+    font-size: 24rpx;
+    color: $text-secondary; // approx
+    font-weight: 400;
 
     view {
-      margin-bottom: 8rpx;
+      margin-bottom: 10rpx;
     }
   }
 }

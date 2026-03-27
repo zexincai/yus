@@ -59,7 +59,7 @@
       </swiper>
     </view>
     <view v-if="loginType == 'ROLE_DEALER'" class="nav-list">
-      <view v-for="(tab, index) in navTabs" :key="index" class="nav-item" :class="{ active: currentNav === tab.value }"
+      <view v-for="(tab, index) in navTabs" :key="index" hover-class="none" class="nav-item" :class="{ active: currentNav === tab.value }"
         @tap="handleNavChange(tab.value)">
         {{ tab.label }}
       </view>
@@ -97,16 +97,16 @@
       <view class="my"> 我的设备 </view>
       <!-- <view class="type"> 全部类型 </view> -->
 
-      <picker @change="onBrandPickerChange" :value="brandIndex" :range="brandList">
+      <!-- <picker @change="onBrandPickerChange" :value="brandIndex" :range="brandList">
         <view class="type"> {{ brandList[brandIndex] }} </view>
-      </picker>
+      </picker> -->
     </view>
     <!-- 设备状态标签 -->
     <scroll-view v-if="!(loginType == 'ROLE_DEALER' && (currentNav == 'device' || currentNav == 'log'))" scroll-x
       class="status-tabs" :show-scrollbar="false">
       <view class="tab-list">
-        <view v-for="(tab, index) in tabs" :key="index" class="tab-item" :class="{ active: currentTab === tab.value }"
-          @tap="handleTabChange(tab.value)">
+        <view v-for="(tab, index) in tabs" :key="index" hover-class="none" class="tab-item"
+          :class="{ active: currentTab === tab.value }" @tap="handleTabChange(tab.value)">
           {{ tab.label }}
         </view>
       </view>
@@ -257,7 +257,9 @@ let searchKey = ref('')
 let page = ref(1)
 const brandList = ref([])
 const brandIndex = ref(0)
-let bannerList = ref([])
+let bannerList = ref([{
+  imgUrl: '/static/image/banner.png',
+}])
 let logList = ref([])
 // 日期范围
 let messageCount = ref(0)
@@ -544,7 +546,7 @@ onShow(() => {
   }
   if (data && data.token) {
     onSearch()
-    getBannerList()
+    // getBannerList()
   }
 })
 </script>
@@ -720,7 +722,7 @@ onShow(() => {
   flex: 1;
   line-height: 1;
   margin-left: 25rpx;
-  color: $text-secondary;
+  color: $text-dark;
   font-size: 26rpx;
   background: transparent;
   border: none;
@@ -779,7 +781,7 @@ onShow(() => {
 }
 
 .tab-list {
-  margin-top: 20rpx;
+  margin-top: 14rpx;
   display: inline-flex;
   // padding-bottom: 2rpx;
   // border-bottom: 2rpx solid #2D3C58;

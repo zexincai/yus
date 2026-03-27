@@ -1,9 +1,7 @@
 <template>
     <view class="privacy-container">
-        <!-- <view class="privacy-title">隐私政策</view>
-        <view class="privacy-date">更新日期：{{ updateDate }}</view> -->
-        <web-view src="https://yuq.fenaor.com/privacyPolicy?appId=wxc65bb3c6e7698487"></web-view>
-        <!-- <scroll-view scroll-y class="privacy-content">
+        <!-- <web-view src="https://yuq.fenaor.com/privacyPolicy?appId=wxc65bb3c6e7698487"></web-view> -->
+        <scroll-view scroll-y class="privacy-content">
             <view class="privacy-section">
                 <view class="section-title">引言</view>
                 <view class="section-content">
@@ -180,20 +178,20 @@
                 <view class="section-title">联系我们</view>
                 <view class="section-content">
                     <view class="paragraph">
-                        如果您对本隐私政策有任何疑问、意见或建议，请通过以下方式与我们联系：
+                        如果您对本隐私政策有任何疑问、意见或建议，请通与我们联系：
                     </view>
-                    <view class="paragraph indent">
+                    <!-- <view class="paragraph indent">
                         • 电子邮件：[您的邮箱地址]
                     </view>
                     <view class="paragraph indent">
                         • 电话：[您的联系电话]
-                    </view>
+                    </view> -->
                     <view class="paragraph">
                         我们会尽快回复您的请求。
                     </view>
                 </view>
             </view>
-        </scroll-view> -->
+        </scroll-view>
     </view>
 </template>
 

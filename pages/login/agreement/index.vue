@@ -1,9 +1,9 @@
 <template>
     <view class="agreement-container">
-        <web-view src="https://yuq.fenaor.com/serviceAgreement?appId=wxc65bb3c6e7698487"></web-view>
+        <!-- <web-view src="https://yuq.fenaor.com/serviceAgreement?appId=wxc65bb3c6e7698487"></web-view> -->
         <!-- <view class="agreement-title">用户服务协议</view>
         <view class="agreement-date">更新日期：{{ updateDate }}</view> -->
-        <!-- <scroll-view scroll-y class="agreement-content">
+        <scroll-view scroll-y class="agreement-content">
             <view class="agreement-section">
                 <view class="section-title">一、引言</view>
                 <view class="section-content">
@@ -69,12 +69,12 @@
             <view class="agreement-section">
                 <view class="section-title">十、联系方式</view>
                 <view class="section-content">
-                    如您对本协议有任何疑问、意见或建议，请通过以下方式与我们联系：<br />
-                    邮箱：[请填写您的联系邮箱]<br />
-                    电话：[请填写您的联系电话]
+                    如您对本协议有任何疑问、意见或建议，请与我们联系：<br />
+                    <!-- 邮箱：[请填写您的联系邮箱]<br />
+                    电话：[请填写您的联系电话] -->
                 </view>
             </view>
-        </scroll-view> -->
+        </scroll-view>
     </view>
 </template>
 

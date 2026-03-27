@@ -16,11 +16,13 @@
 
 <script setup>
 import { ref } from 'vue'
-import { loadDeviceBaseInfo, devicelLoadDeviceBaseInfo } from '@/api/dealer'
+import { loadDeviceBaseInfo, deviceDetailInfo, devicelLoadDeviceBaseInfo } from '@/api/dealer'
 import { onLoad } from '@dcloudio/uni-app'
 
 const sn = ref('')
 const loginType = ref('')
+const userPhone = ref('')
+
 const handleBack = () => {
   uni.navigateBack()
 }
@@ -28,6 +30,7 @@ onLoad(() => {
   const data = uni.getStorageSync('userInfo')
   if (data) {
     loginType.value = data.role
+    userPhone.value = data.phone
   }
 })
 
@@ -67,7 +70,7 @@ const handleScan = () => {
   // })
 }
 
-const handleConfirm = () => {
+const handleConfirm = async () => {
   if (!sn.value.trim()) {
     uni.showToast({ title: '请输入SN码', icon: 'none' })
     return
@@ -76,6 +79,18 @@ const handleConfirm = () => {
     loginType.value === 'ROLE_CUSTOMER'
       ? devicelLoadDeviceBaseInfo
       : loadDeviceBaseInfo
+  if (loginType.value === 'ROLE_CUSTOMER') {
+    try {
+      const res = await deviceDetailInfo({ mes: sn.value }, { noTip: true })
+      if (res.customerPhone == userPhone.value) {
+        return uni.navigateTo({
+          url: `/pages/device/detail/index?id=${res.deviceId}`,
+        })
+      }
+    } catch (error) {
+
+    }
+  }
   func({ mes: sn.value }).then((res) => {
     if (loginType.value === 'ROLE_CUSTOMER') {
       uni.setStorageSync('deviceInfo', res)

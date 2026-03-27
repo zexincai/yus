@@ -5,7 +5,7 @@
     <view class="info-card">
       <view class="info-row">
         <text class="label">手机号码：</text>
-        <text class="value">{{ userInfo.phone }}</text>
+        <text class="value phone">{{ userInfo.phone }}</text>
       </view>
       <view class="divider"></view>
       <view class="info-row">
@@ -206,6 +206,10 @@ const handleLogout = () => {
       font-size: 28rpx;
       flex: 1;
       text-align: right;
+    }
+
+    .phone {
+      color: $text-label;
     }
 
     .input {
