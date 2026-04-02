@@ -17,43 +17,37 @@
     {
       "path": "pages/findModel/index",
       "style": {
-        "navigationBarTitleText": "查找型号",
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "查找型号"
       }
     },
     {
       "path": "pages/bind/index",
       "style": {
-        "navigationBarTitleText": "设备绑定",
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "设备绑定"
       }
     },
     {
       "path": "pages/bindHistory/index",
       "style": {
-        "navigationBarTitleText": "绑定记录",
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "绑定记录"
       }
     },
     {
       "path": "pages/test/index",
       "style": {
-        "navigationBarTitleText": "产品测试",
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "产品测试"
       }
     },
     {
       "path": "pages/test/result",
       "style": {
-        "navigationBarTitleText": "产品测试",
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "产品测试"
       }
     },
     {
       "path": "pages/data/index",
       "style": {
-        "navigationBarTitleText": "电控数据",
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "电控数据"
       }
     }
   ],
@@ -61,8 +55,8 @@
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "水灵夕",
-    "navigationBarBackgroundColor": "#fff",
-    "backgroundColor": "#e8f4fd"
+    "navigationBarBackgroundColor": "#DFF1FB",
+    "backgroundColor": "#F5F5F5"
   },
   "uniIdRouter": {}
 }

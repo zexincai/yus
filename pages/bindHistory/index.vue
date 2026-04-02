@@ -1,12 +1,5 @@
 <template>
   <view class="page">
-    <view class="nav-bar">
-      <view class="nav-back" @tap="goBack">
-        <uni-icons type="left" size="20" color="#333" />
-      </view>
-      <text class="nav-title">绑定记录</text>
-    </view>
-
     <view class="search-bar">
       <uni-icons type="search" size="18" color="#999" />
       <input
@@ -107,9 +100,6 @@ function confirmDelete(item) {
   })
 }
 
-function goBack() {
-  uni.navigateBack()
-}
 
 onMounted(fetchData)
 </script>
@@ -118,26 +108,7 @@ onMounted(fetchData)
 .page {
   min-height: 100vh;
   background: #e8f4fd;
-
-  .nav-bar {
-    display: flex;
-    align-items: center;
-    padding: 80rpx 32rpx 24rpx;
-    gap: 20rpx;
-
-    .nav-back {
-      width: 60rpx;
-      height: 60rpx;
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-title {
-      font-size: 36rpx;
-      font-weight: 600;
-      color: #222;
-    }
-  }
+  padding-top: 24rpx;
 
   .search-bar {
     margin: 0 32rpx 28rpx;
@@ -146,7 +117,7 @@ onMounted(fetchData)
     padding: 20rpx 32rpx;
     display: flex;
     align-items: center;
-    gap: 16rpx;
+    gap: 16rpx#F5F5F5
     box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
 
     .search-input {

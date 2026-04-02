@@ -1,12 +1,5 @@
 <template>
   <view class="page">
-    <view class="nav-bar">
-      <view class="nav-back" @tap="goBack">
-        <uni-icons type="left" size="20" color="#333" />
-      </view>
-      <text class="nav-title">设备绑定</text>
-    </view>
-
     <view class="section-label">指定机型</view>
     <view class="model-row" @tap="toFindModel">
       <text class="model-key">型号</text>
@@ -74,10 +67,6 @@ function toHistory() {
   uni.navigateTo({ url: '/pages/bindHistory/index' })
 }
 
-function goBack() {
-  uni.navigateBack()
-}
-
 function clearScan() {
   snCode.value = ''
   imeiCode.value = ''
@@ -136,28 +125,8 @@ async function doScan() {
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
-  padding-bottom: 60rpx;
-
-  .nav-bar {
-    display: flex;
-    align-items: center;
-    padding: 80rpx 32rpx 24rpx;
-    gap: 20rpx;
-
-    .nav-back {
-      width: 60rpx;
-      height: 60rpx;
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-title {
-      font-size: 36rpx;
-      font-weight: 600;
-      color: #222;
-    }
-  }
+  background: #F5F5F5;
+  padding: 24rpx 0 60rpx;
 
   .section-label {
     padding: 0 40rpx 16rpx;

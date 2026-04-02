@@ -1,12 +1,5 @@
 <template>
   <view class="page">
-    <view class="nav-bar">
-      <view class="nav-back" @tap="goBack">
-        <uni-icons type="left" size="20" color="#333" />
-      </view>
-      <text class="nav-title">产品测试</text>
-    </view>
-
     <!-- 设备信息卡 -->
     <view v-if="deviceInfo" class="device-card">
       <view class="card-header">
@@ -132,9 +125,6 @@ function toData() {
   })
 }
 
-function goBack() {
-  uni.navigateBack()
-}
 
 onMounted(loadResult)
 </script>
@@ -143,26 +133,7 @@ onMounted(loadResult)
 .page {
   min-height: 100vh;
   background: #e8f4fd;
-
-  .nav-bar {
-    display: flex;
-    align-items: center;
-    padding: 80rpx 32rpx 24rpx;
-    gap: 20rpx;
-
-    .nav-back {
-      width: 60rpx;
-      height: 60rpx;
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-title {
-      font-size: 36rpx;
-      font-weight: 600;
-      color: #222;
-    }
-  }
+  padding-top: 24rpx;
 
   .device-card {
     margin: 0 32rpx 24rpx;
@@ -171,7 +142,7 @@ onMounted(loadResult)
     padding: 28rpx 32rpx;
     box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
 
-    .card-header {
+    .card-head#F5F5F5
       display: flex;
       align-items: center;
       justify-content: space-between;

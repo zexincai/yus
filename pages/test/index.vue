@@ -1,12 +1,5 @@
 <template>
   <view class="page">
-    <view class="nav-bar">
-      <view class="nav-back" @tap="goBack">
-        <uni-icons type="left" size="20" color="#333" />
-      </view>
-      <text class="nav-title">产品测试</text>
-    </view>
-
     <view class="scan-area">
       <view class="phone-mock">
         <uni-icons type="scan" size="80" color="#1a9de4" />
@@ -25,9 +18,6 @@
 <script setup>
 import { scanMachineMes } from '@/api/api.js'
 
-function goBack() {
-  uni.navigateBack()
-}
 
 async function doScan() {
   uni.scanCode({
@@ -54,26 +44,7 @@ async function doScan() {
 .page {
   min-height: 100vh;
   background: #e8f4fd;
-
-  .nav-bar {
-    display: flex;
-    align-items: center;
-    padding: 80rpx 32rpx 24rpx;
-    gap: 20rpx;
-
-    .nav-back {
-      width: 60rpx;
-      height: 60rpx;
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-title {
-      font-size: 36rpx;
-      font-weight: 600;
-      color: #222;
-    }
-  }
+  padding-top: 24rpx;
 
   .scan-area {
     display: flex;
@@ -82,7 +53,7 @@ async function doScan() {
     padding: 80rpx 0 60rpx;
 
     .phone-mock {
-      width: 280rpx;
+      width: 2#F5F5F5
       height: 360rpx;
       border-radius: 40rpx;
       background: rgba(26, 157, 228, 0.08);
