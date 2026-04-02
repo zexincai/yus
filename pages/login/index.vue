@@ -1,11 +1,121 @@
 <template>
-  <view class="login">
-    <view class="login-header">
-      <view class="login-header-title">
-        登录
+  <view class="login-page">
+    <view class="logo-area">
+      <image class="logo" src="/static/images/app-logo.png" mode="aspectFit" />
+      <view class="brand-name">优口净水器产品测试工具</view>
+    </view>
+
+    <view class="form-area">
+      <view class="input-row">
+        <uni-icons type="person" size="22" color="#1a9de4" />
+        <input
+          class="input"
+          v-model="account"
+          type="number"
+          placeholder="请输入手机号"
+          placeholder-style="color:#aaa"
+        />
+      </view>
+      <view class="input-row">
+        <uni-icons type="locked" size="22" color="#1a9de4" />
+        <input
+          class="input"
+          v-model="password"
+          :password="true"
+          placeholder="请输入密码"
+          placeholder-style="color:#aaa"
+        />
       </view>
     </view>
+
+    <button class="login-btn" @tap="doLogin">登录</button>
   </view>
 </template>
+
 <script setup>
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+import { prodtestLogin } from '@/api/api.js'
+
+const store = useStore()
+const account = ref('')
+const password = ref('')
+
+async function doLogin() {
+  if (!account.value || !password.value) {
+    uni.showToast({ title: '请输入账号和密码', icon: 'none' })
+    return
+  }
+  try {
+    const res = await prodtestLogin({ account: account.value, password: password.value })
+    store.commit('setUserInfo', res)
+    uni.reLaunch({ url: '/pages/index/index' })
+  } catch (e) {}
+}
 </script>
+
+<style lang="scss">
+.login-page {
+  min-height: 100vh;
+  background: #e8f4fd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 60rpx 0;
+
+  .logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 80rpx;
+
+    .logo {
+      width: 360rpx;
+      height: 120rpx;
+    }
+
+    .brand-name {
+      margin-top: 24rpx;
+      font-size: 32rpx;
+      color: #1a237e;
+      font-weight: 600;
+    }
+  }
+
+  .form-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32rpx;
+    margin-bottom: 60rpx;
+  }
+
+  .input-row {
+    background: #fff;
+    border-radius: 60rpx;
+    padding: 28rpx 40rpx;
+    display: flex;
+    align-items: center;
+    gap: 20rpx;
+    box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+
+    .input {
+      flex: 1;
+      font-size: 30rpx;
+      color: #222;
+    }
+  }
+
+  .login-btn {
+    width: 100%;
+    background: #1a9de4;
+    color: #fff;
+    border-radius: 60rpx;
+    font-size: 34rpx;
+    font-weight: 600;
+    padding: 28rpx 0;
+    border: none;
+    box-shadow: 0 4rpx 16rpx rgba(26,157,228,0.4);
+  }
+}
+</style>

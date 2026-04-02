@@ -6,6 +6,55 @@
         "navigationBarTitleText": "登录",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/findModel/index",
+      "style": {
+        "navigationBarTitleText": "查找型号",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/bind/index",
+      "style": {
+        "navigationBarTitleText": "设备绑定",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/bindHistory/index",
+      "style": {
+        "navigationBarTitleText": "绑定记录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/test/index",
+      "style": {
+        "navigationBarTitleText": "产品测试",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/test/result",
+      "style": {
+        "navigationBarTitleText": "产品测试",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/data/index",
+      "style": {
+        "navigationBarTitleText": "电控数据",
+        "navigationStyle": "custom"
+      }
     }
   ],
 
@@ -13,7 +62,7 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "水灵夕",
     "navigationBarBackgroundColor": "#fff",
-    "backgroundColor": "#fff"
+    "backgroundColor": "#e8f4fd"
   },
   "uniIdRouter": {}
 }

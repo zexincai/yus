@@ -308,7 +308,9 @@ function navTo(url) {
 }
 
 function logout() {
-  store.commit('setUserInfo', {})
+  store.commit('setUserInfo', { token: '' })
+  uni.setStorageSync('token', '')
+  uni.setStorageSync('userInfo', {})
   uni.reLaunch({ url: '/pages/login/index' })
 }
 </script>
@@ -696,12 +698,16 @@ async function doScan() {
     async success(res) {
       const code = res.result
       if (!snCode.value) {
-        // 第1次扫码 → SN
+        // 第1次扫码 → SN，响应可能已包含IMEI
         try {
           const data = await scanMachineMes({ mes: code })
           snCode.value = data.mes || code
           imeiCode.value = data.imei || ''
           deviceId.value = data.id
+          // 如果第1次扫码响应已包含IMEI，直接绑定
+          if (data.imei) {
+            await doBind()
+          }
         } catch (e) {}
       } else {
         // 第2次扫码 → IMEI
@@ -974,10 +980,18 @@ async function doSearch() {
   await fetchData()
 }
 
+// arg 是查询类型 (mes/imei)，keyword 是实际搜索值
+// 根据 keyword 内容自动判断查询类型：纯数字长度>10视为IMEI，否则默认mes
+function getArgType(kw) {
+  if (!kw) return 'mes'
+  return /^\d{15}$/.test(kw) ? 'imei' : 'mes'
+}
+
 async function fetchData() {
   try {
     const res = await bindDevices({
-      arg: keyword.value || 'mes',
+      arg: getArgType(keyword.value),
+      keyword: keyword.value || undefined,
       current: current.value,
       size
     })
@@ -1369,8 +1383,12 @@ const rows = ref([])
 const stepOrder = ['onlinetest', 'activedata', 'datavalidate', 'datareset']
 
 const nextStep = computed(() => {
-  const row = rows.value.find(r => !r.pass)
-  return row ? row.key : null
+  // 按固定顺序查找第一个未通过的步骤
+  for (const key of stepOrder) {
+    const row = rows.value.find(r => r.key === key)
+    if (row && !row.pass) return key
+  }
+  return null
 })
 
 async function loadResult() {
