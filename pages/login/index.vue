@@ -8,27 +8,15 @@
     <view class="form-area">
       <view class="input-row">
         <uni-icons type="person" size="22" color="#1a9de4" />
-        <input
-          class="input"
-          v-model="account"
-          type="number"
-          placeholder="请输入手机号"
-          placeholder-style="color:#aaa"
-        />
+        <input class="input" v-model="account" type="number" placeholder="请输入手机号" placeholder-style="color:#aaa" />
       </view>
       <view class="input-row">
         <uni-icons type="locked" size="22" color="#1a9de4" />
-        <input
-          class="input"
-          v-model="password"
-          :password="true"
-          placeholder="请输入密码"
-          placeholder-style="color:#aaa"
-        />
+        <input class="input" v-model="password" :password="true" placeholder="请输入密码" placeholder-style="color:#aaa" />
       </view>
     </view>
 
-    <button class="login-btn" @tap="doLogin">登录</button>
+    <button class="login-btn" :class="{ 'disabled': !account || !password }" @tap="doLogin">登录</button>
   </view>
 </template>
 
@@ -50,18 +38,18 @@ async function doLogin() {
     const res = await prodtestLogin({ account: account.value, password: password.value })
     store.commit('setUserInfo', res)
     uni.reLaunch({ url: '/pages/index/index' })
-  } catch (e) {}
+  } catch (e) { }
 }
 </script>
 
 <style lang="scss">
 .login-page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 120rpx 60rpx 0;
+  padding: 300rpx 60rpx 0;
 
   .logo-area {
     display: flex;
@@ -93,17 +81,22 @@ async function doLogin() {
   .input-row {
     background: #fff;
     border-radius: 60rpx;
-    padding: 28rpx 40rpx;
+    padding: 14rpx 40rpx;
     display: flex;
     align-items: center;
     gap: 20rpx;
-    box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
 
     .input {
       flex: 1;
+      padding-left: 4rpx;
       font-size: 30rpx;
       color: #222;
     }
+  }
+
+  .disabled {
+    opacity: 0.5;
   }
 
   .login-btn {
@@ -113,9 +106,11 @@ async function doLogin() {
     border-radius: 60rpx;
     font-size: 34rpx;
     font-weight: 600;
-    padding: 28rpx 0;
+    padding: 12rpx 0;
     border: none;
-    box-shadow: 0 4rpx 16rpx rgba(26,157,228,0.4);
+    box-shadow: 0 4rpx 16rpx rgba(26, 157, 228, 0.4);
   }
+
+
 }
 </style>

@@ -43,7 +43,7 @@ async function doScan() {
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
   padding-top: 24rpx;
 
   .scan-area {
@@ -53,7 +53,7 @@ async function doScan() {
     padding: 80rpx 0 60rpx;
 
     .phone-mock {
-      width: 2#F5F5F5
+      width: 280rpx;
       height: 360rpx;
       border-radius: 40rpx;
       background: rgba(26, 157, 228, 0.08);

@@ -86,7 +86,7 @@ export const deviceData = (data) =>
  */
 export const startTestDevice = (data) =>
   http.post(
-    "https://fuhui.wetime520.cn/youkoubackend/ma/prodtest/startTestDevice",
+    "https://yuq.fenaor.com/ma/prodtest/startTestDevice",
     data,
     {
       loading: true,
@@ -112,7 +112,7 @@ export const startTestDevice = (data) =>
  */
 export const scanMachineMes = (data) =>
   http.post(
-    "https://fuhui.wetime520.cn/youkoubackend/ma/prodtest/scanMachineMes",
+    "https://yuq.fenaor.com/ma/prodtest/scanMachineMes",
     data,
     {
       loading: true,
@@ -132,7 +132,7 @@ export const scanMachineMes = (data) =>
  * }
  */
 export const loadMachineTypes = (data) =>
-  http.get("http://localhost:8080/youkoubackend/ma/home/loadMachineTypes", data, {
+  http.get("https://yuq.fenaor.com/ma/home/loadMachineTypes", data, {
     loading: true,
   });
 
@@ -162,7 +162,7 @@ export const bindMachineImei = (data) =>
  * null
  */
 export const removeDevice = (data) =>
-  http.post("https://fuhui.wetime520.cn/youkoubackend/ma/prodtest/removeDevice", data, {
+  http.post("https://yuq.fenaor.com/ma/prodtest/removeDevice", data, {
     loading: true,
   });
 
@@ -407,6 +407,6 @@ export const resultTestDevice = (data) =>
  * ]
  */
 export const bindDevices = (data) =>
-  http.post("https://fuhui.wetime520.cn/youkoubackend/ma/prodtest/bindDevices", data, {
+  http.post("https://yuq.fenaor.com/ma/prodtest/bindDevices", data, {
     loading: true,
   });

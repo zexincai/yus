@@ -132,7 +132,7 @@ onMounted(loadResult)
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
   padding-top: 24rpx;
 
   .device-card {
@@ -142,7 +142,7 @@ onMounted(loadResult)
     padding: 28rpx 32rpx;
     box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
 
-    .card-head#F5F5F5
+    .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -273,7 +273,7 @@ onMounted(loadResult)
         }
 
         &.pending {
-          background: #f5f5f5;
+          background: #DFF1FB;
         }
       }
     }
@@ -283,7 +283,7 @@ onMounted(loadResult)
       align-items: center;
       justify-content: space-between;
       padding: 10rpx 0;
-      border-top: 1rpx solid #f5f5f5;
+      border-top: 1rpx solid #DFF1FB;
 
       .child-label {
         font-size: 26rpx;
@@ -316,7 +316,7 @@ onMounted(loadResult)
     }
 
     .pending-row {
-      border-top: 1rpx solid #f5f5f5;
+      border-top: 1rpx solid #DFF1FB;
     }
   }
 

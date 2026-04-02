@@ -10,11 +10,11 @@
 
     <view class="menu-list">
       <view class="menu-item" @tap="navTo('/pages/bind/index')">
-        <uni-icons type="scan" size="48" color="#1a3a6e" />
+        <uni-icons type="scan" size="30" color="#1a3a6e" />
         <text class="menu-label">设备绑定</text>
       </view>
       <view class="menu-item" @tap="navTo('/pages/test/index')">
-        <uni-icons type="checkbox" size="48" color="#1a3a6e" />
+        <uni-icons type="checkbox" size="30" color="#1a3a6e" />
         <text class="menu-label">产品测试</text>
       </view>
     </view>
@@ -43,14 +43,14 @@ function logout() {
 <style lang="scss">
 .index-page {
   min-height: 100vh;
-  background: #e8f4fd;
-  padding: 60rpx 40rpx;
+  background: #DFF1FB;
+  padding: 180rpx 60rpx;
 
   .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 80rpx;
+    margin-bottom: 280rpx;
 
     .logo {
       width: 200rpx;
@@ -78,16 +78,17 @@ function logout() {
   .menu-list {
     display: flex;
     flex-direction: column;
-    gap: 28rpx;
+    gap: 30rpx;
   }
 
   .menu-item {
     background: #fff;
-    border-radius: 20rpx;
-    padding: 56rpx 40rpx;
+    border-radius: 14rpx;
+    padding: 30rpx 40rpx 30rpx 30rpx;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 36rpx;
+    gap: 48rpx;
     box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
 
     .menu-label {

@@ -187,7 +187,7 @@ async function doLogin() {
 <style lang="scss">
 .login-page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -318,7 +318,7 @@ function logout() {
 <style lang="scss">
 .index-page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
   padding: 60rpx 40rpx;
 
   .header {
@@ -473,7 +473,7 @@ onMounted(() => {
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
 
   .nav-bar {
     display: flex;
@@ -741,7 +741,7 @@ async function doBind() {
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
   padding-bottom: 60rpx;
 
   .nav-bar {
@@ -1034,7 +1034,7 @@ onMounted(fetchData)
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
 
   .nav-bar {
     display: flex;
@@ -1202,7 +1202,7 @@ async function doScan() {
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
 
   .nav-bar {
     display: flex;
@@ -1425,7 +1425,7 @@ onMounted(() => {
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
 
   .nav-bar {
     display: flex;
@@ -1550,7 +1550,7 @@ onMounted(() => {
       align-items: center;
       justify-content: space-between;
       padding: 10rpx 0;
-      border-top: 1rpx solid #f5f5f5;
+      border-top: 1rpx solid #DFF1FB;
 
       .child-label { font-size: 26rpx; color: #555; flex: 1; }
 
@@ -1755,7 +1755,7 @@ onMounted(loadData)
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
 
   .nav-bar {
     display: flex;
@@ -1841,7 +1841,7 @@ onMounted(loadData)
       align-items: center;
       justify-content: space-between;
       padding: 24rpx 12rpx;
-      border-bottom: 1rpx solid #f5f5f5;
+      border-bottom: 1rpx solid #DFF1FB;
 
       &:last-child { border-bottom: none; }
 

@@ -2,22 +2,13 @@
   <view class="page">
     <view class="search-bar">
       <uni-icons type="search" size="18" color="#999" />
-      <input
-        class="search-input"
-        v-model="keyword"
-        placeholder="搜索型号/机型ID"
-        placeholder-style="color:#999"
-        @confirm="doSearch"
-      />
+      <input class="search-input" v-model="keyword" placeholder="搜索型号/机型ID" placeholder-style="color:#999"
+        @confirm="doSearch" />
       <text class="search-btn" @tap="doSearch">搜索</text>
     </view>
 
     <scroll-view scroll-y class="list">
-      <view
-        v-for="item in list"
-        :key="item.id"
-        class="list-item"
-      >
+      <view v-for="item in list" :key="item.id" class="list-item">
         <view class="item-info">
           <text class="item-name">{{ item.modelName }}</text>
           <text class="item-id">ID：{{ item.id }}</text>
@@ -40,7 +31,7 @@ async function doSearch() {
   try {
     const res = await loadMachineTypes({ name: keyword.value })
     list.value = res?.rows || []
-  } catch (e) {}
+  } catch (e) { }
 }
 
 function selectModel(item) {
@@ -60,7 +51,7 @@ onMounted(() => {
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #F5F5F5;
+  background: #DFF1FB;
   padding-top: 24rpx;
 
   .search-bar {
@@ -71,7 +62,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     gap: 16rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 
     .search-input {
       flex: 1;
@@ -87,10 +78,12 @@ onMounted(() => {
   }
 
   .list {
-    height: calc(100vh - 280rpx);
+    height: calc(100vh - 180rpx);
     padding: 0 32rpx;
+    box-sizing: border-box;
 
     .list-item {
+      box-sizing: border-box;
       background: #fff;
       border-radius: 16rpx;
       padding: 28rpx 32rpx;
@@ -98,7 +91,7 @@ onMounted(() => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 
       .item-info {
         flex: 1;

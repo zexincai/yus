@@ -143,7 +143,7 @@ onMounted(loadData)
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #e8f4fd;
+  background: #DFF1FB;
   padding-top: 24rpx;
 
   .device-card {
@@ -153,7 +153,7 @@ onMounted(loadData)
     padding: 28rpx 32rpx;
     box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
 
-    .card-mode#F5F5F5
+    .card-model {
       display: flex;
       align-items: center;
       gap: 16rpx;
@@ -248,7 +248,7 @@ onMounted(loadData)
       align-items: center;
       justify-content: space-between;
       padding: 24rpx 12rpx;
-      border-bottom: 1rpx solid #f5f5f5;
+      border-bottom: 1rpx solid #DFF1FB;
 
       &:last-child {
         border-bottom: none;
