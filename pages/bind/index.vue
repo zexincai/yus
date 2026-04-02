@@ -46,10 +46,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { scanMachineMes, bindMachineImei } from '@/api/api.js'
+import { ref, onMounted } from 'vue'
+import { scanMachineMes, bindMachineImei, loadMachineTypes } from '@/api/api.js'
 
 const selectedModel = ref(null)
+
+async function loadDefaultModel() {
+  try {
+    const res = await loadMachineTypes({ name: '' })
+    const first = res?.rows?.[0]
+    if (first) selectedModel.value = first
+  } catch (e) {}
+}
+
+onMounted(loadDefaultModel)
 const snCode = ref('')
 const imeiCode = ref('')
 
@@ -125,7 +135,7 @@ async function doScan() {
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #F5F5F5;
+  background: #DFF1FB;
   padding: 24rpx 0 60rpx;
 
   .section-label {
@@ -146,6 +156,7 @@ async function doScan() {
 
     .model-key {
       font-size: 30rpx;
+      width: 120rpx;
       font-weight: 600;
       color: #222;
     }
@@ -173,7 +184,7 @@ async function doScan() {
     padding: 40rpx 0 20rpx;
 
     .phone-mock {
-      width: 280rpx;
+      width: 360rpx;
       height: 360rpx;
       border-radius: 40rpx;
       background: rgba(26, 157, 228, 0.08);
@@ -192,7 +203,7 @@ async function doScan() {
 
     .scan-desc {
       font-size: 26rpx;
-      color: #666;
+      color: #062a4c;
     }
   }
 
@@ -250,12 +261,13 @@ async function doScan() {
   }
 
   .action-btn {
-    margin: 32rpx 80rpx 0;
+    margin: 80rpx auto 30rpx;
     background: #1a9de4;
     color: #fff;
     border-radius: 60rpx;
     font-size: 32rpx;
-    padding: 26rpx 0;
+    height: 90rpx;
+    width: 280rpx;
     display: flex;
     align-items: center;
     justify-content: center;
