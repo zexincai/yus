@@ -192,7 +192,7 @@ function goTest() {
       border-radius: 60rpx;
       font-size: 30rpx;
       color: #1a9de4;
-      background: #fff;
+      // background: #fff;
       border: 2rpx solid #1a9de4;
     }
 

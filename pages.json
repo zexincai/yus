@@ -47,7 +47,8 @@
     {
       "path": "pages/data/index",
       "style": {
-        "navigationBarTitleText": "电控数据"
+        "navigationBarTitleText": "电控数据",
+        "disableScroll": true
       }
     }
   ],

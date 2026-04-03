@@ -3,7 +3,11 @@
     <!-- 设备信息卡 -->
     <view v-if="deviceData" class="device-card">
       <view class="card-model">
-        <image class="device-icon" src="/static/images/param.png" mode="aspectFit" />
+        <image
+          class="device-icon"
+          src="/static/images/icon-news.png"
+          mode="aspectFit"
+        />
         <text class="model-name">{{ deviceData.modelName }}</text>
       </view>
       <view class="card-row">
@@ -40,7 +44,9 @@
             <text class="param-label">{{ row.title }}</text>
             <text class="param-value">{{ row.value }}</text>
           </view>
-          <text v-if="row.editable" class="modify-btn" @tap="openEdit(row)">修改</text>
+          <text v-if="row.editable" class="modify-btn" @tap="openEdit(row)"
+            >修改
+          </text>
         </view>
       </scroll-view>
     </view>
@@ -55,12 +61,20 @@
 
         <view v-if="editRow.type === 'radio'" class="radio-list">
           <!-- 当前值选项 -->
-          <view class="radio-item" @tap="editValue = editRow.value">
-            <view class="radio-circle" :class="{ checked: editValue === editRow.value }">
-              <uni-icons v-if="editValue === editRow.value" type="checkmarkempty" size="16" color="#fff" />
+          <!-- <view class="radio-item" @tap="editValue = editRow.value">
+            <view
+              class="radio-circle"
+              :class="{ checked: editValue === editRow.value }"
+            >
+              <uni-icons
+                v-if="editValue === editRow.value"
+                type="checkmarkempty"
+                size="16"
+                color="#fff"
+              />
             </view>
             <text class="radio-label">{{ editRow.value }}</text>
-          </view>
+          </view> -->
           <!-- 其他选项 -->
           <view
             v-for="opt in editRow.options"
@@ -68,8 +82,16 @@
             class="radio-item"
             @tap="editValue = opt.text"
           >
-            <view class="radio-circle" :class="{ checked: editValue === opt.text }">
-              <uni-icons v-if="editValue === opt.text" type="checkmarkempty" size="16" color="#fff" />
+            <view
+              class="radio-circle"
+              :class="{ checked: editValue === opt.text }"
+            >
+              <uni-icons
+                v-if="editValue === opt.text"
+                type="checkmarkempty"
+                size="16"
+                color="#fff"
+              />
             </view>
             <text class="radio-label">{{ opt.text }}</text>
           </view>
@@ -94,56 +116,62 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { deviceData as getDeviceData, cmdPost } from '@/api/api.js'
+import { ref, onMounted } from "vue";
+import { deviceData as getDeviceData, cmdPost } from "@/api/api.js";
 
-const pages = getCurrentPages()
-const curPage = pages[pages.length - 1]
-const options = curPage.$page?.options || curPage.options || {}
+const pages = getCurrentPages();
+const curPage = pages[pages.length - 1];
+const options = curPage.$page?.options || curPage.options || {};
 
-const deviceId = ref(options.deviceId || '')
-const deviceData = ref(null)
-const editRow = ref(null)
-const editValue = ref('')
+const deviceId = ref(options.deviceId || "");
+const deviceData = ref(null);
+const editRow = ref(null);
+const editValue = ref("");
 
 async function loadData() {
   try {
-    const res = await getDeviceData({ deviceId: deviceId.value })
-    deviceData.value = res
+    const res = await getDeviceData({ deviceId: deviceId.value });
+    deviceData.value = res;
   } catch (e) {}
 }
 
 function openEdit(row) {
-  editRow.value = row
-  editValue.value = String(row.value)
+  editRow.value = row;
+  editValue.value = String(row.value);
 }
 
 function closeEdit() {
-  editRow.value = null
-  editValue.value = ''
+  editRow.value = null;
+  editValue.value = "";
 }
 
 async function doEdit() {
+  let value = editValue.value;
+  if (editRow.value.type === "radio") {
+    const opt = editRow.value.options.find(
+      (opt) => opt.text === editValue.value,
+    );
+    value = opt.id;
+  }
   try {
     await cmdPost({
       deviceId: deviceId.value,
       key: editRow.value.key,
-      value: editValue.value
-    })
-    uni.showToast({ title: '指令下发成功', icon: 'none' })
-    closeEdit()
-    await loadData()
+      value: value,
+    });
+    uni.showToast({ title: "指令下发成功", icon: "none" });
+    closeEdit();
+    await loadData();
   } catch (e) {}
 }
 
-
-onMounted(loadData)
+onMounted(loadData);
 </script>
 
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #DFF1FB;
+  background: #dff1fb;
   padding-top: 24rpx;
 
   .device-card {
@@ -151,7 +179,7 @@ onMounted(loadData)
     background: #fff;
     border-radius: 16rpx;
     padding: 28rpx 32rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 
     .card-model {
       display: flex;
@@ -172,7 +200,7 @@ onMounted(loadData)
     }
 
     .card-row {
-      padding: 8rpx 0;
+      padding: 12rpx 0;
 
       .row-label {
         font-size: 26rpx;
@@ -197,7 +225,7 @@ onMounted(loadData)
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 
     .network-left {
       display: flex;
@@ -206,6 +234,7 @@ onMounted(loadData)
 
       .network-title {
         font-size: 30rpx;
+        margin-right: 10rpx;
         font-weight: 700;
         color: #222;
       }
@@ -226,10 +255,11 @@ onMounted(loadData)
   }
 
   .params-section {
-    margin: 0 32rpx;
-
+    margin: 20rpx 32rpx;
+    box-sizing: border-box;
     .params-title {
-      font-size: 28rpx;
+      padding: 10rpx 0;
+      font-size: 30rpx;
       color: #888;
       display: block;
       margin-bottom: 16rpx;
@@ -237,18 +267,19 @@ onMounted(loadData)
   }
 
   .params-list {
-    height: calc(100vh - 580rpx);
+    height: calc(100vh - 670rpx);
     background: #fff;
+    box-sizing: border-box;
     border-radius: 16rpx;
     padding: 0 20rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 
     .param-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 24rpx 12rpx;
-      border-bottom: 1rpx solid #DFF1FB;
+      border-bottom: 1rpx solid #dff1fb;
 
       &:last-child {
         border-bottom: none;
@@ -358,6 +389,7 @@ onMounted(loadData)
       margin-bottom: 40rpx;
 
       .edit-input {
+        height: 80rpx;
         border: 1rpx solid #ddd;
         border-radius: 12rpx;
         padding: 20rpx 24rpx;

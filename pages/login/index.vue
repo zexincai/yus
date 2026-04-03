@@ -8,44 +8,79 @@
     <view class="form-area">
       <view class="input-row">
         <uni-icons type="person" size="22" color="#1a9de4" />
-        <input class="input" v-model="account" type="number" placeholder="请输入手机号" placeholder-style="color:#aaa" />
+        <input
+          class="input"
+          v-model="account"
+          type="number"
+          placeholder="请输入手机号"
+          placeholder-style="color:#aaa"
+        />
       </view>
       <view class="input-row">
         <uni-icons type="locked" size="22" color="#1a9de4" />
-        <input class="input" v-model="password" :password="true" placeholder="请输入密码" placeholder-style="color:#aaa" />
+        <input
+          class="input"
+          v-model="password"
+          :password="true"
+          placeholder="请输入密码"
+          placeholder-style="color:#aaa"
+        />
       </view>
     </view>
 
-    <button class="login-btn" :class="{ 'disabled': !account || !password }" @tap="doLogin">登录</button>
+    <button
+      class="login-btn"
+      :class="{ disabled: !account || !password }"
+      @tap="doLogin"
+    >
+      登录
+    </button>
   </view>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useStore } from 'vuex'
-import { prodtestLogin } from '@/api/api.js'
+import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
+import { prodtestLogin } from "@/api/api.js";
 
-const store = useStore()
-const account = ref('')
-const password = ref('')
+const store = useStore();
+const account = ref("");
+const password = ref("");
+
+// 页面加载时读取缓存的账号密码
+onMounted(() => {
+  const cached = uni.getStorageSync("loginInfo");
+  if (cached) {
+    account.value = cached.account || "";
+    password.value = cached.password || "";
+  }
+});
 
 async function doLogin() {
   if (!account.value || !password.value) {
-    uni.showToast({ title: '请输入账号和密码', icon: 'none' })
-    return
+    uni.showToast({ title: "请输入账号和密码", icon: "none" });
+    return;
   }
   try {
-    const res = await prodtestLogin({ account: account.value, password: password.value })
-    store.commit('setUserInfo', res)
-    uni.reLaunch({ url: '/pages/index/index' })
-  } catch (e) { }
+    const res = await prodtestLogin({
+      account: account.value,
+      password: password.value,
+    });
+    // 登录成功后缓存账号密码
+    uni.setStorageSync("loginInfo", {
+      account: account.value,
+      password: password.value,
+    });
+    store.commit("setUserInfo", res);
+    uni.reLaunch({ url: "/pages/index/index" });
+  } catch (e) {}
 }
 </script>
 
 <style lang="scss">
 .login-page {
   min-height: 100vh;
-  background: #DFF1FB;
+  background: #dff1fb;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -110,7 +145,5 @@ async function doLogin() {
     border: none;
     box-shadow: 0 4rpx 16rpx rgba(26, 157, 228, 0.4);
   }
-
-
 }
 </style>
