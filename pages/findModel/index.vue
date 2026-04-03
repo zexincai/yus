@@ -2,18 +2,28 @@
   <view class="page">
     <view class="search-bar">
       <uni-icons type="search" size="18" color="#999" />
-      <input class="search-input" v-model="keyword" placeholder="搜索型号/机型ID" placeholder-style="color:#999"
-        @confirm="doSearch" />
+      <input
+        class="search-input"
+        v-model="keyword"
+        placeholder="搜索型号/机型ID"
+        placeholder-style="color:#999"
+        @confirm="doSearch"
+      />
       <text class="search-btn" @tap="doSearch">搜索</text>
     </view>
 
     <scroll-view scroll-y class="list">
-      <view v-for="item in list" :key="item.id" class="list-item">
+      <view
+        v-for="item in list"
+        :key="item.id"
+        class="list-item"
+        @tap="selectModel(item)"
+      >
         <view class="item-info">
           <text class="item-name">{{ item.modelName }}</text>
           <text class="item-id">ID：{{ item.id }}</text>
         </view>
-        <text class="select-btn" @tap="selectModel(item)">选择</text>
+        <text class="select-btn">选择</text>
       </view>
       <view v-if="list.length === 0" class="empty">暂无数据</view>
     </scroll-view>
@@ -21,37 +31,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { loadMachineTypes } from '@/api/api.js'
+import { ref, onMounted } from "vue";
+import { loadMachineTypes } from "@/api/api.js";
 
-const keyword = ref('')
-const list = ref([])
+const keyword = ref("");
+const list = ref([]);
 
 async function doSearch() {
   try {
-    const res = await loadMachineTypes({ name: keyword.value })
-    list.value = res?.rows || []
-  } catch (e) { }
+    const res = await loadMachineTypes({ name: keyword.value });
+    list.value = res?.rows || [];
+  } catch (e) {}
 }
 
 function selectModel(item) {
-  const pages = getCurrentPages()
-  const prevPage = pages[pages.length - 2]
-  if (prevPage) {
-    prevPage.$vm.onModelSelected(item)
-  }
-  uni.navigateBack()
+  uni.$emit("onModelSelected", item);
+  uni.navigateBack();
 }
 
 onMounted(() => {
-  doSearch()
-})
+  doSearch();
+});
 </script>
 
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #DFF1FB;
+  background: #dff1fb;
   padding-top: 24rpx;
 
   .search-bar {

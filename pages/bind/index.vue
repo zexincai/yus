@@ -5,7 +5,7 @@
       <text class="model-key">型号</text>
       <view class="model-right">
         <text class="model-val" :class="{ placeholder: !selectedModel }">
-          {{ selectedModel ? selectedModel.modelName : '未选择' }}
+          {{ selectedModel ? selectedModel.modelName : "未选择" }}
         </text>
         <uni-icons type="right" size="18" color="#888" />
       </view>
@@ -24,21 +24,31 @@
       <view class="card-row">
         <text class="card-label">SN：</text>
         <text class="card-value">{{ snCode }}</text>
-        <view class="delete-btn" @tap="clearScan">
+        <view class="delete-btn" @tap="doScan('snCode')">
           <uni-icons type="trash" size="20" color="#fff" />
         </view>
       </view>
       <view class="card-row">
         <text class="card-label">IMEI：</text>
-        <text class="card-value" :class="{ placeholder: !imeiCode }">
-          {{ imeiCode || '请扫描识别设备IMEI' }}
-        </text>
+        <input
+          class="card-value"
+          v-model="imeiCode"
+          placeholder="请扫描识别或手动输入设备IMEI"
+          placeholder-style="color: #aaa;"
+        />
+        <view v-if="imeiCode" class="delete-btn" @tap="doScan('imeiCode')">
+          <uni-icons type="trash" size="20" color="#fff" />
+        </view>
       </view>
     </view>
 
-    <button class="action-btn" @tap="doScan">
+    <button v-if="imeiCode && snCode" class="action-btn" @tap="doBind">
       <uni-icons type="scan" size="22" color="#fff" />
-      {{ snCode ? '继续扫码' : '扫码' }}
+      提交
+    </button>
+    <button v-else class="action-btn" @tap="doScan">
+      <uni-icons type="scan" size="22" color="#fff" />
+      {{ snCode ? "继续扫码" : "扫码" }}
     </button>
 
     <text class="history-link" @tap="toHistory">绑定记录</text>
@@ -46,96 +56,120 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { scanMachineMes, bindMachineImei, loadMachineTypes } from '@/api/api.js'
+import { ref, onMounted, onUnmounted } from "vue";
+import {
+  scanMachineMes,
+  bindMachineImei,
+  loadMachineTypes,
+} from "@/api/api.js";
 
-const selectedModel = ref(null)
+const selectedModel = ref(null);
 
 async function loadDefaultModel() {
   try {
-    const res = await loadMachineTypes({ name: '' })
-    const first = res?.rows?.[0]
-    if (first) selectedModel.value = first
+    const res = await loadMachineTypes({ name: "" });
+    const first = res?.rows?.[0];
+    if (first) selectedModel.value = first;
   } catch (e) {}
 }
 
-onMounted(loadDefaultModel)
-const snCode = ref('')
-const imeiCode = ref('')
+onMounted(() => {
+  loadDefaultModel();
+  uni.$on("onModelSelected", onModelSelected);
+});
+
+onUnmounted(() => {
+  uni.$off("onModelSelected", onModelSelected);
+});
+const snCode = ref("");
+const imeiCode = ref("");
 
 function toFindModel() {
-  uni.navigateTo({ url: '/pages/findModel/index' })
+  uni.navigateTo({ url: "/pages/findModel/index" });
 }
 
 function onModelSelected(item) {
-  selectedModel.value = item
+  selectedModel.value = item;
 }
 
-defineExpose({ onModelSelected })
+// defineExpose is no longer needed since we use event bus
 
 function toHistory() {
-  uni.navigateTo({ url: '/pages/bindHistory/index' })
+  uni.navigateTo({ url: "/pages/bindHistory/index" });
 }
 
 function clearScan() {
-  snCode.value = ''
-  imeiCode.value = ''
+  snCode.value = "";
+  imeiCode.value = "";
 }
 
 async function doBind() {
   if (!selectedModel.value || !snCode.value || !imeiCode.value) {
-    uni.showToast({ title: '信息不完整', icon: 'none' })
-    return
+    uni.showToast({ title: "信息不完整", icon: "none" });
+    return;
   }
   try {
     await bindMachineImei({
       machineId: selectedModel.value.id,
       mes: snCode.value,
-      imei: imeiCode.value
-    })
-    uni.showToast({ title: '绑定成功', icon: 'success' })
-    clearScan()
+      imei: imeiCode.value,
+    });
+    uni.showToast({ title: "绑定成功", icon: "success" });
+    clearScan();
   } catch (e) {}
 }
 
-async function doScan() {
+async function doScan(field) {
   if (!selectedModel.value) {
-    uni.showToast({ title: '请先��择机型', icon: 'none' })
-    return
+    uni.showToast({ title: "请先选择机型", icon: "none" });
+    return;
   }
+  const code = "00184467";
 
-  uni.scanCode({
-    onlyFromCamera: true,
-    async success(res) {
-      const code = res.result
-      if (!snCode.value) {
-        // 第1次扫码 → SN，响应可能已包含IMEI
-        try {
-          const data = await scanMachineMes({ mes: code })
-          snCode.value = data.mes || code
-          imeiCode.value = data.imei || ''
-          // 如果第1次扫码响应已包含IMEI，直接绑定
-          if (data.imei) {
-            await doBind()
-          }
-        } catch (e) {}
-      } else {
-        // 第2次扫码 → IMEI
-        imeiCode.value = code
-        await doBind()
-      }
-    },
-    fail() {
-      uni.showToast({ title: '扫码取消', icon: 'none' })
-    }
-  })
+  if (field === "snCode") {
+    snCode.value = code;
+  } else if (field === "imeiCode") {
+    imeiCode.value = code;
+  } else if (!snCode.value) {
+    // 第1次扫码 → SN，响应可能已包含IMEI
+    try {
+      snCode.value = code;
+    } catch (e) {}
+  } else {
+    imeiCode.value = code;
+  }
+  // uni.scanCode({
+  //   onlyFromCamera: true,
+  //   async success(res) {
+  //     const code = res.result
+  //     if (!snCode.value) {
+  //       // 第1次扫码 → SN，响应可能已包含IMEI
+  //       try {
+  //         const data = await scanMachineMes({ mes: code })
+  //         snCode.value = data.mes || code
+  //         imeiCode.value = data.imei || ''
+  //         // 如果第1次扫码响应已包含IMEI，直接绑定
+  //         if (data.imei) {
+  //           await doBind()
+  //         }
+  //       } catch (e) {}
+  //     } else {
+  //       // 第2次扫码 → IMEI
+  //       imeiCode.value = code
+  //       await doBind()
+  //     }
+  //   },
+  //   fail() {
+  //     uni.showToast({ title: '扫码取消', icon: 'none' })
+  //   }
+  // })
 }
 </script>
 
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #DFF1FB;
+  background: #dff1fb;
   padding: 24rpx 0 60rpx;
 
   .section-label {
@@ -152,7 +186,7 @@ async function doScan() {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 
     .model-key {
       font-size: 30rpx;
@@ -212,7 +246,7 @@ async function doScan() {
     background: #fff;
     border-radius: 16rpx;
     padding: 28rpx 32rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 
     .card-title {
       font-size: 28rpx;
@@ -226,6 +260,7 @@ async function doScan() {
       display: flex;
       align-items: center;
       padding: 16rpx 0;
+      min-height: 88rpx;
       border-bottom: 1rpx solid #f0f0f0;
 
       &:last-child {
@@ -273,7 +308,7 @@ async function doScan() {
     justify-content: center;
     gap: 12rpx;
     border: none;
-    box-shadow: 0 4rpx 16rpx rgba(26,157,228,0.35);
+    box-shadow: 0 4rpx 16rpx rgba(26, 157, 228, 0.35);
   }
 
   .history-link {

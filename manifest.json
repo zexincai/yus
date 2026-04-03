@@ -138,5 +138,17 @@
                 }
             }
         }
+    },
+    "h5" : {
+        "devServer" : {
+            "port" : 3000,
+            "proxy" : {
+                "/api" : {
+                    "target" : "https://micro.xunzhaotech.com",
+                    "changeOrigin" : true,
+                    "secure" : false
+                }
+            }
+        }
     }
 }

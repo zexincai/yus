@@ -4,7 +4,11 @@
     <view v-if="deviceInfo" class="device-card">
       <view class="card-header">
         <view class="model-info">
-          <image class="device-icon" src="/static/images/param.png" mode="aspectFit" />
+          <image
+            class="device-icon"
+            src="/static/images/param.png"
+            mode="aspectFit"
+          />
           <text class="model-name">{{ deviceInfo.modelName }}</text>
         </view>
         <view class="card-actions">
@@ -29,14 +33,18 @@
         class="continue-btn"
         :class="{ disabled: !nextStep }"
         @tap="continueTest"
-      >继续测试</text>
+        >继续测试</text
+      >
     </view>
 
     <scroll-view scroll-y class="test-list">
       <view v-for="row in rows" :key="row.key" class="test-group">
         <view class="group-header">
           <text class="group-label">{{ row.label }}</text>
-          <view class="pass-badge" :class="row.pass ? 'pass' : (row.value ? 'fail' : 'pending')">
+          <view
+            class="pass-badge"
+            :class="row.pass ? 'pass' : row.value ? 'fail' : 'pending'"
+          >
             <uni-icons
               v-if="row.value"
               :type="row.pass ? 'checkmarkempty' : 'closeempty'"
@@ -51,7 +59,9 @@
           <view v-for="child in row.childs" :key="child.key" class="child-row">
             <text class="child-label">{{ child.label }}</text>
             <view class="child-right">
-              <text class="child-value" :class="child.pass ? 'pass' : 'fail'">{{ child.value }}</text>
+              <text class="child-value" :class="child.pass ? 'pass' : 'fail'">{{
+                child.value
+              }}</text>
               <uni-icons
                 :type="child.pass ? 'checkmarkempty' : 'closeempty'"
                 size="16"
@@ -65,7 +75,9 @@
         <template v-else>
           <view v-if="row.value" class="child-row">
             <text class="child-label">{{ row.label }}</text>
-            <text class="child-value" :class="row.pass ? 'pass' : 'fail'">{{ row.value }}</text>
+            <text class="child-value" :class="row.pass ? 'pass' : 'fail'">{{
+              row.value
+            }}</text>
           </view>
           <view v-else class="child-row pending-row">
             <text class="child-label pending">等待测试...</text>
@@ -79,68 +91,68 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { resultTestDevice, startTestDevice } from '@/api/api.js'
+import { ref, computed, onMounted } from "vue";
+import { resultTestDevice, startTestDevice } from "@/api/api.js";
 
-const pages = getCurrentPages()
-const curPage = pages[pages.length - 1]
-const options = curPage.$page?.options || curPage.options || {}
+const pages = getCurrentPages();
+const curPage = pages[pages.length - 1];
+const options = curPage.$page?.options || curPage.options || {};
 
-const deviceId = ref(options.deviceId || '')
-const deviceInfo = ref(null)
-const rows = ref([])
+const deviceId = ref(options.deviceId || "");
+const deviceInfo = ref(null);
+const rows = ref([]);
 
-const stepOrder = ['onlinetest', 'activedata', 'datavalidate', 'datareset']
+const stepOrder = ["onlinetest", "activedata", "datavalidate", "datareset"];
 
 const nextStep = computed(() => {
   for (const key of stepOrder) {
-    const row = rows.value.find(r => r.key === key)
-    if (row && !row.pass) return key
+    const row = rows.value.find((r) => r.key === key);
+    if (row && !row.pass) return key;
   }
-  return null
-})
+  return null;
+});
 
 async function loadResult() {
   try {
-    const res = await resultTestDevice({ deviceId: deviceId.value })
-    deviceInfo.value = res
-    rows.value = res.rows || []
+    const res = await resultTestDevice({ deviceId: deviceId.value });
+    deviceInfo.value = res;
+    rows.value = res.rows || [];
   } catch (e) {}
 }
 
 async function continueTest() {
-  if (!nextStep.value) return
+  if (!nextStep.value) return;
   try {
-    await startTestDevice({ step: nextStep.value, deviceId: deviceId.value })
-    await loadResult()
+    await startTestDevice({ step: nextStep.value, deviceId: deviceId.value });
+    await loadResult();
   } catch (e) {}
 }
 
 function toData() {
-  const modelName = encodeURIComponent(deviceInfo.value?.modelName || '')
-  const mes = encodeURIComponent(deviceInfo.value?.mes || '')
-  const imei = encodeURIComponent(deviceInfo.value?.imei || '')
+  const modelName = encodeURIComponent(deviceInfo.value?.modelName || "");
+  const mes = encodeURIComponent(deviceInfo.value?.mes || "");
+  const imei = encodeURIComponent(deviceInfo.value?.imei || "");
   uni.navigateTo({
-    url: `/pages/data/index?deviceId=${deviceId.value}&modelName=${modelName}&mes=${mes}&imei=${imei}`
-  })
+    url: `/pages/data/index?deviceId=${deviceId.value}&modelName=${modelName}&mes=${mes}&imei=${imei}`,
+  });
 }
 
-
-onMounted(loadResult)
+onMounted(loadResult);
 </script>
 
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #DFF1FB;
+  background: #dff1fb;
   padding-top: 24rpx;
+  padding-bottom: 20rpx;
 
   .device-card {
     margin: 0 32rpx 24rpx;
     background: #fff;
     border-radius: 16rpx;
     padding: 28rpx 32rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
 
     .card-header {
       display: flex;
@@ -233,8 +245,10 @@ onMounted(loadResult)
   }
 
   .test-list {
-    height: calc(100vh - 520rpx);
+    // height: calc(100vh - 340rpx);
     padding: 0 32rpx;
+    margin-bottom: 20rpx;
+    box-sizing: border-box;
   }
 
   .test-group {
@@ -242,8 +256,8 @@ onMounted(loadResult)
     border-radius: 16rpx;
     padding: 24rpx 28rpx;
     margin-bottom: 20rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
-
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
     .group-header {
       display: flex;
       align-items: center;
@@ -273,7 +287,7 @@ onMounted(loadResult)
         }
 
         &.pending {
-          background: #DFF1FB;
+          background: #dff1fb;
         }
       }
     }
@@ -283,7 +297,7 @@ onMounted(loadResult)
       align-items: center;
       justify-content: space-between;
       padding: 10rpx 0;
-      border-top: 1rpx solid #DFF1FB;
+      border-top: 1rpx solid #dff1fb;
 
       .child-label {
         font-size: 26rpx;
@@ -316,7 +330,7 @@ onMounted(loadResult)
     }
 
     .pending-row {
-      border-top: 1rpx solid #DFF1FB;
+      border-top: 1rpx solid #dff1fb;
     }
   }
 

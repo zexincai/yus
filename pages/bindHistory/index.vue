@@ -2,8 +2,13 @@
   <view class="page">
     <view class="search-bar">
       <uni-icons type="search" size="18" color="#999" />
-      <input class="search-input" v-model="keyword" placeholder="搜索SN/IMEI/型号/机型ID" placeholder-style="color:#999"
-        @confirm="doSearch" />
+      <input
+        class="search-input"
+        v-model="keyword"
+        placeholder="搜索SN/IMEI/型号/机型ID"
+        placeholder-style="color:#999"
+        @confirm="doSearch"
+      />
       <text class="search-btn" @tap="doSearch">搜索</text>
     </view>
 
@@ -38,76 +43,83 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { bindDevices, removeDevice } from '@/api/api.js'
-import { onLoad } from '@dcloudio/uni-app'
+import { ref, onMounted } from "vue";
+import { bindDevices, removeDevice } from "@/api/api.js";
+import { onLoad } from "@dcloudio/uni-app";
 
-const keyword = ref('')
-const list = ref([])
-const current = ref(1)
-const size = 10
-const machineId = ref('')
-let rawList = []
+const keyword = ref("");
+const list = ref([]);
+const current = ref(1);
+const size = 10;
+const machineId = ref("");
+let rawList = [];
 function getArgType(kw) {
-  if (!kw) return 'mes'
-  return /^\d{15}$/.test(kw) ? 'imei' : 'mes'
+  if (!kw) return "mes";
+  return /^\d{15}$/.test(kw) ? "imei" : "mes";
 }
 
 async function doSearch() {
-  console.log(keyword.value, rawList)
-  if (!keyword.value) return list.value = [...rawList]
-  list.value = rawList.filter(d => d.modelName.includes(keyword.value) || d.mes.includes(keyword.value) || d.imei.includes(keyword.value))
+  console.log(keyword.value, rawList);
+  if (!keyword.value) return (list.value = [...rawList]);
+  list.value = rawList.filter(
+    (d) =>
+      d.modelName.includes(keyword.value) ||
+      d.mes.includes(keyword.value) ||
+      d.imei.includes(keyword.value),
+  );
 }
 
 async function fetchData() {
   try {
     const params = {
-      arg: machineId.value || '',
+      arg: machineId.value || "",
       current: current.value,
-      size
-    }
-    const res = await bindDevices(params)
+      size,
+    };
+    const res = await bindDevices(params);
     if (current.value === 1) {
-      list.value = res || []
+      list.value = res || [];
     } else {
-      list.value = [...list.value, ...(res || [])]
+      list.value = [...list.value, ...(res || [])];
     }
-  } catch (e) { } finally {
-    rawList = [...list.value]
+  } catch (e) {
+  } finally {
+    rawList = [...list.value];
   }
 }
 
 function loadMore() {
-  current.value++
-  fetchData()
+  current.value++;
+  fetchData();
 }
 
 function confirmDelete(item) {
   uni.showModal({
-    title: '提示',
-    content: '是否删除设备',
+    title: "提示",
+    content: "是否删除设备",
     success: async ({ confirm }) => {
       if (confirm) {
         try {
-          await removeDevice({ deviceId: item.id })
-          list.value = list.value.filter(d => d.id !== item.id)
-          uni.showToast({ title: '已删除', icon: 'success' })
-        } catch (e) { }
+          await removeDevice({ deviceId: item.id });
+          // list.value = list.value.filter(d => d.id !== item.id)
+          uni.showToast({ title: "已删除", icon: "success" });
+          fetchData();
+        } catch (e) {}
       }
-    }
-  })
+    },
+  });
 }
 
 onLoad((options) => {
-  machineId.value = options.machineId || ''
-  fetchData()
-})
+  machineId.value = options.machineId || "";
+  fetchData();
+});
 </script>
 
 <style lang="scss">
 .page {
   min-height: 100vh;
-  background: #DFF1FB;
+  background: #dff1fb;
   padding-top: 24rpx;
 
   .search-bar {
